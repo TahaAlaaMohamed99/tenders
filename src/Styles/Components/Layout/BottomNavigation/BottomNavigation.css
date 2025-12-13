@@ -1,0 +1,15 @@
+.Bottom_Navigation {
+  @apply fixed z-20 w-full h-16 -translate-x-1/2 bg-bgWhite dark:bg-bgWhiteDark  bottom-0 left-1/2 dark:shadow-dark shadow-light;
+}
+.Bottom_Navigation .Bottom_Navigation_container {
+  @apply py-2 px-4 flex items-center justify-between h-full;
+}
+.Bottom_Navigation .Bottom_Navigation_container .Navigation_link {
+  @apply flex items-center justify-center h-12 w-12 rounded-lg text-textColor dark:text-textColorDark;
+}
+.Bottom_Navigation .Bottom_Navigation_container .Navigation_link svg {
+  @apply w-6 h-6;
+}
+.Bottom_Navigation .Bottom_Navigation_container .Navigation_link.active {
+  @apply bg-bgColor dark:bg-bgColorDark text-primary dark:text-primaryDark;
+}/*# sourceMappingURL=BottomNavigation.css.map */

@@ -1,0 +1,53 @@
+.Sidebar {
+  @apply flex flex-col fixed  h-dvh  ease-linear duration-300   z-40 py-4  gap-4 overflow-hidden bg-bgWhite dark:bg-bgWhiteDark;
+  &.sidebar_main{
+    @apply md:start-0 -start-[15.625rem] md:w-[4.5rem] w-[15.625rem]
+  }
+  &.sidebar_ReportSetup {
+    @apply w-[15.625rem] lg:start-0  -start-[15.625rem];
+  }
+
+  .header_Sidebar {
+    @apply flex items-center  justify-between w-full h-10 ps-2 pe-3;
+    .sidebar_logo {
+      @apply text-primary dark:text-primaryDark flex items-center  w-full;
+      .icon_logo {
+        @apply min-w-12 flex items-center  justify-center;
+      }
+    }
+    .header_Sidebar_Title {
+      @apply text-lg text-titleColor px-4 dark:text-titleColorDark font-semibold  dark:bg-bgWhiteDark;
+    }
+    .sidebar_action_open {
+      svg {
+        @apply w-4 h-4;
+      }
+    }
+  }
+  .ReportSetup_menu_back {
+    @apply mx-4  p-3 rounded-md relative text-titleColor dark:text-titleColorDark hover:bg-primary dark:hover:bg-primaryDark hover:text-titleColorDark text-sm  font-medium flex items-center;
+    .icon {
+      @apply flex items-center bg-bgColor dark:bg-bgColorDark p-1 w-6 h-6 rounded me-2 justify-center;
+    }
+    .text {
+      @apply capitalize w-10/12 pe-3;
+    }
+    .icon_arrow {
+      @apply w-2.5 h-2.5 rtl:rotate-90 ltr:-rotate-90 absolute end-3;
+      svg {
+        @apply w-full h-full;
+      }
+    }
+    &:hover {
+      .icon {
+        @apply bg-bgWhite text-primary dark:text-primaryDark;
+      }
+    }
+  }
+  &.open_Sidebar {
+    @apply w-[15.625rem] start-0;
+  }
+  .nav_items{
+    @apply overflow-hidden overflow-y-auto
+  }
+}

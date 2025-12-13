@@ -1,0 +1,15 @@
+.page_error {
+  @apply bg-bgWhite dark:bg-bgWhiteDark h-dvh flex  text-primary dark:text-primaryDark flex-col justify-center items-center;
+}
+.page_error .icon_Page {
+  @apply xl:w-96 lg:w-80 md:w-72 max-w-[85vw] h-auto;
+}
+.page_error .icon_Page svg {
+  @apply w-full h-full;
+}
+.page_error .title {
+  @apply font-black  xl:text-3xl md:text-2xl mb-4 capitalize;
+}
+.page_error .text {
+  @apply font-semibold  md:text-xl sm:text-lg text-sm mb-8 text-center;
+}/*# sourceMappingURL=ErrorPage.css.map */

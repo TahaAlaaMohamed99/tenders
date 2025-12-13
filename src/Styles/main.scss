@@ -1,0 +1,386 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../assets//fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../assets//fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("../assets//fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("../assets//fonts/Roboto/Roboto-Black.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Cairo";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("../assets//fonts/Cairo/Cairo-Medium.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Cairo";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("../assets//fonts/Cairo/Cairo-SemiBold.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: "Cairo";
+    src: url("../assets//fonts/Cairo/Cairo-Bold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Cairo";
+    src: url("../assets//fonts/Cairo/Cairo-ExtraBold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: "Cairo";
+    src: url("../assets//fonts/Cairo/Cairo-Black.ttf") format("truetype");
+    font-weight: 900;
+    font-style: normal;
+  }
+}
+
+@layer base {
+  body {
+    @apply ltr:font-sans rtl:font-cairo bg-bgColor dark:bg-bgColorDark;
+  }
+  em {
+    @apply not-italic;
+  }
+  .flex-content-between {
+    @apply flex justify-between  items-center;
+  }
+  .flex_start_center {
+    @apply flex justify-start  items-center;
+  }
+  .flex_center_center {
+    @apply flex justify-center  items-center;
+  }
+  .flex_end_start {
+    @apply flex items-end justify-start;
+  }
+}
+
+@layer components {
+  .scrollable {
+    &::-webkit-scrollbar {
+      @apply w-1.5 h-1.5;
+      -webkit-appearance: none;
+    }
+    &::-webkit-scrollbar-track {
+      @apply bg-transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      @apply bg-textColor dark:bg-textColorDark rounded;
+    }
+  }
+  .scrollable_lg {
+    &::-webkit-scrollbar {
+      @apply w-2 h-2;
+      -webkit-appearance: none;
+    }
+    &::-webkit-scrollbar-track {
+      @apply bg-transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      @apply bg-textColor dark:bg-textColorDark rounded;
+    }
+  }
+  .error_text {
+    @apply text-error dark:text-errorDark text-[.75rem] font-medium  mt-1;
+  }
+  body,
+  .modal_box {
+    @extend .scrollable_lg;
+  }
+  .scrollable_container,
+  .nav_items,
+  .gridScroll,
+  .data_Grid,
+  .modal_table,
+  .tab_List,
+  .input_textarea,
+  .Custom_Select * div {
+    @extend .scrollable;
+  }
+  .form-group .btn-primary {
+    @apply min-h-11;
+  }
+  .form-group {
+    @apply w-full flex flex-col	mb-5 relative;
+    &.form-group_table {
+      @apply mb-0;
+      input {
+        @apply text-center;
+      }
+    }
+    label {
+      @apply text-sm font-medium text-titleColor dark:text-titleColorDark mb-2;
+      &.focused {
+        @apply text-primary dark:text-primaryDark;
+      }
+    }
+    .input_text,
+    .input_textarea {
+      @apply p-2 h-11 w-full text-titleColor dark:text-titleColorDark bg-white dark:bg-bgWhiteDark  border-borderColor  border-[.1187rem] rounded-[.25rem]  dark:border-borderColorDark  text-sm placeholder:text-textColor dark:placeholder:text-textColorDark placeholder:text-opacity-80 focus:border-primary  dark:focus:border-primaryDark outline-none focus-visible:border-primary dark:focus-visible:border-primaryDark;
+      &.opt_input {
+        @apply w-14 h-14 rounded-lg;
+      }
+      &.input_textarea {
+        @apply max-h-20 min-h-11;
+      }
+      &:focus,
+      &:focus-within,
+      &:hover {
+        @apply disabled:shadow-none shadow-custom dark:shadow-customDark;
+      }
+    }
+    &.form-group_icon {
+      .input_text {
+        @apply pe-8;
+      }
+      .icon_show_Password {
+        @apply absolute end-0 h-11 w-8 flex justify-center items-center top-0 cursor-pointer text-titleColor dark:text-titleColorDark;
+      }
+    }
+    &.error_group {
+      label {
+        @apply text-error;
+        &.focused {
+          @apply text-error;
+        }
+      }
+      .input_text,
+      .custom-date-picker {
+        @apply border-error;
+      }
+    }
+    &.form-group_iconSearch {
+      @apply relative mb-0;
+      .input_text {
+        @apply pe-7 h-9;
+      }
+      .Input_Icon {
+        @apply absolute w-7 end-0 top-0 p-1 pe-2 h-full flex justify-center items-center;
+      }
+    }
+  }
+
+  .col_SortableItem {
+    @apply flex items-center rounded-md  p-2 border-[1.5px] border-borderColor  dark:border-borderColorDark mb-2;
+    .icon_SortableItem {
+      @apply me-2 text-gray-400 hover:text-gray-600 focus:outline-none  cursor-grab active:cursor-grabbing;
+    }
+    .show_Col {
+      @apply w-4;
+    }
+  }
+}
+.css-hlgwow,
+.css-1dyz3mf {
+  padding: 0 !important;
+}
+
+.account-title {
+  @apply mb-2.5 text-titleColor  dark:text-titleColorDark  font-semibold 2xl:text-[1.75rem] lg:text-[1.625rem] text-[1.375rem]  leading-[normal];
+}
+.account-subtitle {
+  @apply text-textColor dark:text-textColorDark font-normal 2xl:text-[1.0625rem] text-base;
+}
+
+.forgot-password-container,
+.log-in-container {
+  @apply flex flex-wrap items-center min-h-dvh lg:px-16 md:px-10 p-4 bg-white dark:bg-bgWhiteDark;
+  .form-wrapper {
+    @apply lg:w-5/12 w-full lg:pe-16 md:pe-10 pe-0;
+    .form-content {
+      @apply flex flex-col;
+      .logo-wrapper {
+        @apply mb-14;
+      }
+    }
+  }
+  .back-to-login-link {
+    @apply flex_center_center mt-6 gap-1.5 text-titleColor dark:text-titleColorDark font-medium text-base;
+  }
+}
+
+.modal {
+  @apply w-full h-full  fixed  z-50 inset-0;
+}
+.overlay_bg {
+  @apply w-full h-full duration-500 ease-out  transition-all inset-0 absolute bg-titleColor;
+}
+.container_grid {
+  @apply sm:bg-white sm:dark:bg-bgWhiteDark  sm:p-6 rounded-2xl;
+}
+.grid_line,
+.multiple_Grid {
+  @apply 2xl:mx-10 xl:mx-8 md:mx-6 mx-4 mb-4;
+  .title_grid_line {
+    @apply lg:block hidden  text-titleColor dark:text-titleColorDark mb-8 text-sm font-semibold capitalize;
+  }
+
+  .Mega_Grid {
+    .data_Grid {
+      @apply h-56;
+      .not_Data .icon {
+        @apply w-40;
+      }
+    }
+
+    .btn.btn_md {
+      @apply px-2 text-sm;
+    }
+  }
+}
+.multiple_Grid {
+  @apply grid grid-cols-2 gap-6 mx-10;
+  .Mega_Grid .data_Grid .not_Data {
+    .icon {
+      @apply w-32;
+    }
+    .title {
+      @apply text-lg;
+    }
+  }
+}
+.Toastify__toast {
+  @apply text-titleColorDark min-h-14 font-medium rounded-xl  flex items-center;
+}
+.Toastify__toast--error {
+  @apply bg-errorDark;
+}
+.Toastify__toast--success {
+  @apply bg-success;
+}
+.Toastify__toast--warning {
+  @apply bg-warning;
+}
+.Toastify__toast--info {
+  @apply bg-titleColor dark:bg-bgColor text-titleColorDark dark:text-titleColor;
+  .Toastify__toast-icon {
+    @apply bg-bgColor dark:bg-titleColor;
+  }
+}
+.Toastify__toast-icon {
+  @apply bg-bgColor   rounded-full w-8 h-8 flex justify-center items-center;
+  svg {
+    @apply w-6 h-6;
+  }
+}
+
+.icon_Required {
+  @apply text-primary dark:text-primaryDark;
+}
+.form_container {
+  @apply py-4 sm:px-8 px-4 flex flex-col gap-4;
+}
+.dimensions_container {
+  @apply pt-0 mb-4;
+  &.dimensions_container_stepper {
+    @apply px-2;
+  }
+  .form_editor {
+    @apply bg-bgWhite dark:bg-bgWhiteDark p-4 rounded-xl border-2 border-borderColor dark:border-borderColorDark;
+    .title_dimension {
+      @apply w-full sm:px-2.5 text-titleColor dark:text-titleColorDark  font-semibold text-base  leading-[normal] mb-6;
+    }
+  }
+}
+
+.form_editor {
+  @apply lg:w-8/12 w-full  flex justify-between flex-wrap;
+  .cw_p {
+    @apply md:w-6/12 w-full sm:px-2.5;
+  }
+  .btn_form {
+    @apply w-44;
+  }
+}
+
+.text_ellipsis {
+  @apply text-ellipsis  line-clamp-1  overflow-hidden;
+}
+
+.sub_tab {
+  @apply grid   grid-cols-12 gap-4;
+
+  .list_tabs {
+    @apply m-auto overflow-hidden md:mb-0 mb-6 max-w-full  gap-4 flex lg:flex-col flex-row lg:justify-start justify-center lg:col-span-2 col-span-12;
+    &.horizontal {
+      @apply col-span-12 justify-center;
+      .tab_List {
+        @apply min-w-[auto] flex-row overflow-auto justify-between m-0 mb-6;
+        .tab {
+          @apply mb-2;
+          .title_tab {
+            @apply w-full;
+          }
+          &.tab_selected {
+            .icon_arrow {
+              @apply hidden;
+            }
+          }
+        }
+      }
+    }
+    .tab {
+      @apply p-2.5 w-auto cursor-pointer   flex items-center justify-between text-textColor rounded-md   dark:text-textColorDark text-sm font-medium;
+      .title_tab {
+        @apply lg:w-10/12 w-full truncate;
+      }
+      .icon_arrow {
+        @apply w-auto h-4 hidden ltr:rotate-180;
+      }
+      &.tab_selected {
+        @apply opacity-100 text-primary dark:text-primaryDark  bg-primary dark:bg-primaryDark bg-opacity-15 dark:bg-opacity-15;
+        .icon_arrow {
+          @apply lg:block;
+        }
+      }
+    }
+  }
+  .tab_List {
+    @apply lg:flex-col  flex-row overflow-auto   m-0;
+  }
+  .tab_contant {
+    @apply lg:col-span-10 col-span-12;
+    &.horizontal {
+      @apply col-span-12;
+      .grid_line {
+        @apply m-0;
+      }
+    }
+    .tab_panel {
+      .container_grid.grid_line {
+        @apply me-0;
+      }
+    }
+  }
+}

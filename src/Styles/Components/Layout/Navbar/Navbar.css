@@ -1,0 +1,91 @@
+.navbar_header {
+  @apply bg-bgColor dark:bg-bgColorDark 2xl:px-10 xl:px-8 md:px-6  px-4 py-4;
+}
+.navbar_header.sticky_header {
+  @apply bg-bgWhite dark:bg-bgWhiteDark sticky top-0 z-20;
+}
+.navbar_header .navbar_container {
+  @apply flex justify-between items-center;
+}
+.navbar_header .navbar_container .navbar_left {
+  @apply flex items-center;
+}
+.navbar_header .navbar_container .navbar_left .Hamburger_sidbar {
+  @apply bg-bgWhite dark:bg-bgWhiteDark p-1.5 rounded-md text-titleColor dark:text-titleColorDark  me-4;
+}
+.navbar_header .navbar_container .navbar_left .Hamburger_sidbar svg {
+  @apply w-6 h-6;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs {
+  @apply flex flex-col gap-[.125rem];
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .breadcrumbs_list {
+  @apply flex flex-wrap items-center gap-1;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .breadcrumbs_list .breadcrumb__item {
+  @apply font-bold text-xs uppercase text-textColor dark:text-textColorDark;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .breadcrumbs_list .breadcrumb__item.link {
+  @apply hover:text-primary dark:hover:text-primaryDark;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .breadcrumbs_list .breadcrumb_separator {
+  @apply font-bold text-xs text-titleColor dark:text-titleColorDark;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .page_Title {
+  @apply text-base font-medium text-titleColor dark:text-titleColorDark;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .btn_Bookmark {
+  @apply text-textColor dark:text-textColorDark hover:text-primary hover:dark:text-primaryDark;
+}
+.navbar_header .navbar_container .navbar_left .navbar_breadcrumbs .btn_Bookmark_Active {
+  @apply text-primary dark:text-primaryDark;
+}
+.navbar_header .navbar_container .navbar_Right {
+  @apply flex gap-3;
+}
+.navbar_header .navbar_container .navbar_Right .btn_icon {
+  @apply text-titleColor dark:text-titleColorDark hover:text-primary dark:hover:text-primaryDark relative;
+}
+.navbar_header .navbar_container .navbar_Right .btn_icon_Active {
+  @apply text-primary dark:text-primaryDark relative;
+}
+.navbar_header .navbar_container .navbar_Right .model_Notification {
+  @apply bg-bgWhite dark:bg-bgWhiteDark rounded-lg shadow w-[30vw]   absolute ltr:right-0 rtl:left-0 top-9;
+}
+.navbar_header .navbar_container .navbar_Right .model_Notification .header_model_Notification {
+  @apply w-full flex justify-between items-center  p-4  mb-4;
+}
+.navbar_header .navbar_container .navbar_Right .model_Notification .header_model_Notification .title {
+  @apply text-base font-medium text-titleColor dark:text-titleColorDark;
+}
+.navbar_header .navbar_container .navbar_Right .model_Notification .header_model_Notification .number_New {
+  @apply bg-primary dark:bg-primaryDark text-titleColorDark  px-2 py-1 rounded flex items-center justify-center gap-0.5 font-medium text-xs;
+}
+
+.bookmark {
+  @apply bg-bgColor dark:bg-bgColorDark rounded-md p-3 flex justify-between items-center mb-2.5 capitalize;
+}
+.bookmark .breadcrumbs_bookmark_list {
+  @apply w-11/12;
+}
+.bookmark .breadcrumbs_bookmark_list .breadcrumb {
+  @apply flex items-center m-0.5 text-textColor dark:text-textColorDark font-medium text-xs;
+}
+.bookmark .breadcrumbs_bookmark_list .breadcrumb .breadcrumb_separator {
+  @apply mx-0.5 text-titleColor dark:text-titleColorDark;
+}
+.bookmark .breadcrumbs_bookmark_list .title_bookmark {
+  @apply font-medium text-base text-titleColor dark:text-titleColorDark capitalize;
+}
+.bookmark .content_bookmark {
+  @apply flex items-center;
+}
+.bookmark .content_bookmark p {
+  @apply text-textColor dark:text-textColorDark font-medium text-sm;
+}
+.bookmark .checked_bookmark {
+  @apply text-primary dark:text-primaryDark w-1/12 flex items-center justify-end;
+}
+.bookmark .checked_bookmark svg {
+  @apply w-5 h-5;
+}/*# sourceMappingURL=Navbar.css.map */

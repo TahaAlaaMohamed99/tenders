@@ -1,0 +1,160 @@
+// Mixins
+@mixin icon-styles {
+  @apply flex items-center justify-center text-textColor dark:text-textColorDark;
+  svg {
+    @apply w-5 h-5;
+  }
+}
+
+@mixin text-styles {
+  @apply font-medium text-sm ms-3 w-10/12 text-textColor dark:text-textColorDark pe-1 capitalize;
+}
+
+@mixin active-styles {
+  @apply bg-bgColor dark:bg-bgColorDark;
+  
+  .icon_link,
+  .icon_single_tab,
+  .icon_Active,
+  .icon_dropdown,
+  .title_link,
+  .title_dropdown,
+  .chevron_dropdown,
+  .title_single_tab {
+    @apply text-primary dark:text-primaryDark;
+  }
+}
+
+// Placeholders
+%flex-column {
+  @apply flex flex-col;
+}
+
+%common-link-styles {
+  @apply flex items-center p-3 min-h-11 cursor-pointer rounded-lg relative;
+}
+
+// Main Styles
+.nav_items,
+.tab_List {
+  @extend %flex-column;
+  @apply gap-1.5;
+
+  .nav_link,
+  .nav_group,
+  &.tab_List {
+    @apply mx-3;
+
+    .dropdown {
+      @apply z-10 cursor-pointer;
+    }
+
+    .link,
+    .dropdown,
+    .single_tab {
+      @extend %common-link-styles;
+
+      .icon_link,
+      .icon_dropdown,
+      .icon_single_tab {
+        @include icon-styles;
+      }
+
+      .title_link,
+      .title_dropdown,
+      .title_single_tab {
+        @include text-styles;
+      }
+
+      .icon_Active {
+        @apply hidden;
+        svg {
+          @apply h-3.5 w-3.5 rtl:rotate-180;
+        }
+      }
+
+      .chevron_dropdown {
+        @apply text-textColor dark:text-textColorDark ease-linear duration-300;
+        svg {
+          @apply h-3.5 w-3.5;
+        }
+      }
+
+      &.link_active,
+      &.dropdown_open,
+      &.tab_selected {
+        @include active-styles;
+
+        .chevron_dropdown {
+          @apply rotate-180;
+        }
+        .icon_Active {
+          @apply inline-block;
+        }
+      }
+    }
+  }
+}
+
+.dropdown_menu {
+  @apply ease-linear duration-500;
+
+  .dropdown_item {
+    @apply mb-0.5 last:mb-0;
+
+    .dropdown_item_link,
+    .dropdown_item_tab {
+      @apply min-h-10 flex items-center p-2 ps-6 cursor-pointer relative;
+
+      .title_dropdown_item {
+        @include text-styles;
+        @apply w-full
+      }
+
+      .icon_Tree {
+        @apply text-borderColor dark:text-borderColorDark absolute start-3;
+
+        &.icon_Tree_ar {
+          svg {
+            transform: rotateY(180deg);
+          }
+        }
+      }
+
+      &.active,
+      &.tab_selected {
+        .title_dropdown_item {
+          @apply text-primary dark:text-primaryDark;
+        }
+      }
+    }
+
+    &.tab_selected {
+      @apply focus-visible:outline-none;
+      .title_dropdown_item {
+        @apply text-primary dark:text-primaryDark;
+      }
+    }
+  }
+}
+
+.has_sub_menu {
+  @apply ms-3 mt-3;
+
+  .dropdown {
+    @apply justify-between;
+
+    .title_dropdown_item {
+      @include text-styles;
+      @apply text-opacity-80;
+    }
+
+    &.dropdown_open {
+      @apply opacity-95;
+      .title_dropdown_item,
+      .chevron_dropdown {
+        @apply text-primary dark:text-primaryDark ;
+      }
+    }
+  }
+}

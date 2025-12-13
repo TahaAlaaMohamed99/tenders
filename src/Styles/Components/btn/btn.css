@@ -1,0 +1,39 @@
+.btn {
+  @apply sm:min-w-20 min-w-max font-medium  flex items-center rounded-[0.35rem] border-2 relative justify-center;
+}
+.btn .icon_btn {
+  @apply flex justify-center items-center;
+}
+.btn.btn-primary {
+  @apply bg-primary opacity-85 hover:opacity-100 dark:bg-primaryDark   border-primary dark:border-primaryDark  text-bgColor   disabled:opacity-70 disabled:border-textColor disabled:bg-borderColor disabled:dark:bg-borderColorDark disabled:text-textColor disabled:dark:border-textColorDark disabled:dark:text-textColorDark  gap-1.5;
+}
+.btn.btn-delete {
+  @apply bg-error dark:bg-errorDark   border-error dark:border-errorDark  text-bgWhite   gap-1.5;
+}
+.btn.btn-secondary {
+  @apply opacity-85 hover:opacity-100 hover:text-bgColor hover:bg-primary hover:dark:bg-primaryDark text-primary dark:text-primaryDark   border-primary dark:border-primaryDark disabled:opacity-70 disabled:border-textColor disabled:dark:border-textColorDark disabled:dark:text-textColorDark disabled:text-textColor gap-1.5;
+}
+.btn.btn-third {
+  @apply text-primary dark:text-primaryDark  gap-1.5;
+}
+.btn.btn-border-secondary {
+  @apply border-borderColor hover:bg-borderColor dark:hover:bg-borderColorDark  text-titleColor dark:border-borderColorDark dark:text-titleColorDark text-opacity-65 dark:text-opacity-65;
+}
+.btn.btn_lg {
+  @apply px-4 py-2.5 text-sm;
+}
+.btn.btn_lg .icon_btn {
+  @apply w-4 h-4;
+}
+.btn.btn_md {
+  @apply px-3.5 py-2 text-sm;
+}
+.btn.btn_md .icon_btn {
+  @apply w-3.5 h-3.5;
+}
+.btn.btn_sm {
+  @apply px-2.5 py-[.375rem] text-xs font-semibold;
+}
+.btn.btn_sm .icon_btn {
+  @apply w-4 h-4;
+}/*# sourceMappingURL=btn.css.map */

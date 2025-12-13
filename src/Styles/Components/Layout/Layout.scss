@@ -1,0 +1,12 @@
+.layout_wrapper {
+  @apply md:ps-[4.5rem] ease-linear duration-300;
+  &.layout_wrapper_isPinedSidebar {
+    @apply md:ps-[15.625rem];
+  }
+  &.layout_wrapper_isMenuReportSetup {
+    @apply lg:ps-[15.625rem] ps-0;
+  }
+}
+.layout_main_container {
+  @apply 2xl:mx-10 xl:mx-8 md:mx-6  mx-4 2xl:my-6 xl:my-5 md:my-4 mt-4 mb-24;
+}

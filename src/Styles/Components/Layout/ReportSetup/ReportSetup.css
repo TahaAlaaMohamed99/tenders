@@ -1,0 +1,30 @@
+.ReportSetup_wrapper {
+  @apply flex w-full;
+}
+.ReportSetup_wrapper .tabs {
+  @apply w-full;
+}
+.ReportSetup_wrapper .ReportSetup_menu {
+  @apply bg-bgWhite dark:bg-bgWhiteDark py-2.5  fixed h-dvh  w-[15.625rem]  start-0 top-0 bottom-0 overflow-auto;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_Title {
+  @apply mb-4 p-4 bg-bgWhite text-titleColor dark:text-titleColorDark font-semibold  dark:bg-bgWhiteDark;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_back {
+  @apply m-4 p-3 rounded-md relative text-titleColor dark:text-titleColorDark hover:bg-primary dark:hover:bg-primaryDark hover:text-titleColorDark text-sm  font-medium flex items-center;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_back .icon {
+  @apply flex items-center bg-bgColor dark:bg-bgColorDark p-1 w-6 h-6 rounded me-2 justify-center;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_back .text {
+  @apply capitalize w-10/12 pe-3;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_back .icon_arrow {
+  @apply w-2.5 h-2.5 rotate-90 absolute end-3;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_back .icon_arrow svg {
+  @apply w-full h-full;
+}
+.ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_back:hover .icon {
+  @apply bg-bgWhite text-primary dark:text-primaryDark;
+}/*# sourceMappingURL=ReportSetup.css.map */

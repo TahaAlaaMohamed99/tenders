@@ -1,0 +1,90 @@
+.navbar_header {
+  @apply bg-bgColor dark:bg-bgColorDark 2xl:px-10 xl:px-8 md:px-6  px-4 py-4;
+  &.sticky_header {
+    @apply bg-bgWhite dark:bg-bgWhiteDark sticky top-0 z-20;
+  }
+  .navbar_container {
+    @apply flex justify-between items-center;
+    .navbar_left {
+      @apply flex items-center;
+      .Hamburger_sidbar {
+        @apply bg-bgWhite dark:bg-bgWhiteDark p-1.5 rounded-md text-titleColor dark:text-titleColorDark  me-4;
+        svg {
+          @apply w-6 h-6;
+        }
+      }
+      .navbar_breadcrumbs {
+        @apply flex flex-col gap-[.125rem];
+        .breadcrumbs_list {
+          @apply flex flex-wrap items-center gap-1;
+          .breadcrumb__item {
+            @apply font-bold text-xs uppercase text-textColor dark:text-textColorDark;
+            &.link {
+              @apply hover:text-primary dark:hover:text-primaryDark;
+            }
+          }
+          .breadcrumb_separator {
+            @apply font-bold text-xs text-titleColor dark:text-titleColorDark;
+          }
+        }
+        .page_Title {
+          @apply text-base font-medium text-titleColor dark:text-titleColorDark;
+        }
+        .btn_Bookmark {
+          @apply text-textColor dark:text-textColorDark hover:text-primary hover:dark:text-primaryDark;
+        }
+        .btn_Bookmark_Active {
+          @apply text-primary dark:text-primaryDark;
+        }
+      }
+    }
+    .navbar_Right {
+      @apply flex gap-3;
+      .btn_icon {
+        @apply text-titleColor dark:text-titleColorDark hover:text-primary dark:hover:text-primaryDark relative;
+      }
+      .btn_icon_Active {
+        @apply text-primary dark:text-primaryDark relative;
+      }
+      .model_Notification {
+        @apply bg-bgWhite dark:bg-bgWhiteDark rounded-lg shadow w-[30vw]   absolute ltr:right-0 rtl:left-0 top-9;
+        .header_model_Notification {
+          @apply w-full flex justify-between items-center  p-4  mb-4;
+          .title {
+            @apply text-base font-medium text-titleColor dark:text-titleColorDark;
+          }
+          .number_New {
+            @apply bg-primary dark:bg-primaryDark text-titleColorDark  px-2 py-1 rounded flex items-center justify-center gap-0.5 font-medium text-xs;
+          }
+        }
+      }
+    }
+  }
+}
+.bookmark {
+  @apply bg-bgColor dark:bg-bgColorDark rounded-md p-3 flex justify-between items-center mb-2.5 capitalize;
+  .breadcrumbs_bookmark_list {
+    @apply w-11/12;
+    .breadcrumb {
+      @apply flex items-center m-0.5 text-textColor dark:text-textColorDark font-medium text-xs;
+      .breadcrumb_separator {
+        @apply mx-0.5 text-titleColor dark:text-titleColorDark;
+      }
+    }
+    .title_bookmark {
+      @apply font-medium text-base text-titleColor dark:text-titleColorDark capitalize;
+    }
+  }
+  .content_bookmark {
+    @apply flex items-center;
+    p {
+      @apply text-textColor dark:text-textColorDark font-medium text-sm;
+    }
+  }
+  .checked_bookmark {
+    @apply text-primary dark:text-primaryDark w-1/12 flex items-center justify-end;
+    svg {
+      @apply w-5 h-5;
+    }
+  }
+}

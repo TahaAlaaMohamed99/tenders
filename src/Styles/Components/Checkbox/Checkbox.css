@@ -1,0 +1,42 @@
+.form-check {
+  @apply flex items-center gap-2;
+}
+.form-check .checkbox-wrapper {
+  @apply flex items-center cursor-pointer relative;
+}
+.form-check .checkbox-wrapper .input_checkbox, .form-check .checkbox-wrapper .input_radio {
+  @apply h-5 w-5 cursor-pointer  bg-bgWhite dark:bg-bgWhiteDark appearance-none rounded  border border-borderColor dark:border-borderColorDark checked:bg-primary dark:checked:bg-primaryDark checked:border-primary dark:checked:border-primaryDark;
+}
+.form-check .checkbox-wrapper .input_checkbox.input_radio, .form-check .checkbox-wrapper .input_radio.input_radio {
+  @apply rounded-full;
+}
+.form-check .checkbox-wrapper .checkbox {
+  @apply absolute text-white  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none;
+}
+.form-check label {
+  @apply text-sm font-medium mb-0 text-titleColor dark:text-titleColorDark;
+}
+.form-check.Card_Checkbox {
+  @apply justify-between p-2 rounded-lg bg-bgWhite cursor-pointer border-[.1187rem] dark:bg-bgWhiteDark h-[2.875rem] mb-5;
+}
+.form-check.Card_Checkbox.default {
+  @apply border-borderColor  dark:border-borderColorDark;
+}
+.form-check.Card_Checkbox.default label {
+  @apply text-titleColor dark:text-titleColorDark mb-0;
+}
+.form-check.Card_Checkbox.disabled {
+  @apply border-borderColor dark:border-borderColorDark cursor-default;
+}
+.form-check.Card_Checkbox.disabled .input_checkbox {
+  @apply cursor-auto;
+}
+.form-check.Card_Checkbox.active {
+  @apply border-primary dark:border-primaryDark;
+}
+.form-check.Card_Checkbox.active label {
+  @apply text-primary dark:text-primaryDark;
+}
+.form-check.Card_Checkbox.active.disabled {
+  @apply opacity-75;
+}/*# sourceMappingURL=Checkbox.css.map */

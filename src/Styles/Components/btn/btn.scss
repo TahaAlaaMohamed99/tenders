@@ -1,0 +1,39 @@
+.btn {
+  @apply sm:min-w-20 min-w-max font-medium  flex items-center rounded-[0.35rem] border-2 relative justify-center;
+  .icon_btn {
+    @apply flex justify-center items-center;
+  }
+  &.btn-primary {
+    @apply bg-primary opacity-85 hover:opacity-100 dark:bg-primaryDark   border-primary dark:border-primaryDark  text-bgColor   disabled:opacity-70 disabled:border-textColor disabled:bg-borderColor disabled:dark:bg-borderColorDark disabled:text-textColor disabled:dark:border-textColorDark disabled:dark:text-textColorDark  gap-1.5;
+  }
+  &.btn-delete {
+    @apply bg-error dark:bg-errorDark   border-error dark:border-errorDark  text-bgWhite   gap-1.5;
+  }
+  &.btn-secondary {
+    @apply  opacity-85 hover:opacity-100 hover:text-bgColor hover:bg-primary hover:dark:bg-primaryDark text-primary dark:text-primaryDark   border-primary dark:border-primaryDark disabled:opacity-70 disabled:border-textColor disabled:dark:border-textColorDark disabled:dark:text-textColorDark disabled:text-textColor gap-1.5;
+  }
+  &.btn-third {
+    @apply  text-primary dark:text-primaryDark  gap-1.5;
+  }
+  &.btn-border-secondary {
+    @apply border-borderColor hover:bg-borderColor dark:hover:bg-borderColorDark  text-titleColor dark:border-borderColorDark dark:text-titleColorDark text-opacity-65 dark:text-opacity-65;
+  }
+  &.btn_lg {
+    @apply px-4 py-2.5 text-sm;
+    .icon_btn {
+      @apply w-4 h-4;
+    }
+  }
+  &.btn_md {
+    @apply px-3.5 py-2 text-sm;
+    .icon_btn {
+      @apply w-3.5 h-3.5;
+    }
+  }
+  &.btn_sm {
+    @apply px-2.5 py-[.375rem] text-xs font-semibold;
+    .icon_btn {
+      @apply w-4 h-4;
+    }
+  }
+}

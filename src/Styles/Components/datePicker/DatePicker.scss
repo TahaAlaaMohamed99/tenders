@@ -1,0 +1,158 @@
+.custom-date-picker {
+  @apply min-h-[2.8125rem] max-h-[2.8125rem] focus-within:outline-none focus-visible:outline-none w-full p-1.5 border-borderColor dark:border-borderColorDark rounded-md border-[1.2px]   focus-within:ring-primary dark:focus-within:ring-primaryDark bg-bgWhite dark:bg-bgWhiteDark;
+
+  .react-calendar__navigation {
+    @apply text-center;
+  }
+  .react-datetime-picker__inputGroup__amPm {
+    @apply text-titleColor text-sm rounded-lg focus:ring-primary dark:focus:ring-primaryDark focus:border-primary dark:focus:border-primaryDark  bg-bgWhite dark:bg-bgWhiteDark dark:border-gray-600  dark:text-titleColorDark;
+  }
+  .react-daterange-picker__range-divider {
+    @apply text-titleColor dark:text-titleColorDark;
+  }
+  button {
+    @apply rounded-md text-textColor dark:text-textColorDark;
+    &:hover {
+      @apply bg-bgColor dark:bg-bgColorDark text-titleColor dark:text-titleColorDark;
+    }
+
+    &.react-daterange-picker__clear-button,
+    &.react-daterange-picker__calendar-button,
+    &.react-datetime-picker__calendar-button {
+      @apply bg-transparent hover:text-primary dark:hover:text-primaryDark;
+    }
+
+    &.react-calendar__year-view__months__month.react-calendar__tile--hasActive {
+      @apply rounded-md;
+    }
+  }
+  abbr {
+    @apply no-underline;
+  }
+  .react-daterange-picker__inputGroup,
+  .react-datetime-picker__inputGroup {
+    direction: initial;
+    @apply min-w-[auto] rtl:text-end;
+  }
+  .react-calendar__navigation {
+    @apply text-center;
+  }
+  .react-daterange-picker__wrapper,
+  .react-datetime-picker__wrapper {
+    @apply border-none;
+
+    .react-daterange-picker__inputGroup__input,
+    .react-datetime-picker__inputGroup__input,
+    .react-datetime-picker__inputGroup__leadingZero,
+    .react-datetime-picker__inputGroup__divider {
+      @apply placeholder:text-textColor dark:placeholder:text-textColorDark text-titleColor dark:text-titleColorDark outline-none;
+    }
+
+    .react-daterange-picker__button,
+    .react-datetime-picker__button {
+      .react-daterange-picker__button__icon,
+      .react-datetime-picker__button__icon {
+        @apply stroke-borderColor dark:stroke-borderColorDark;
+      }
+      &:focus,
+      &:hover {
+        .react-daterange-picker__button__icon,
+        .react-datetime-picker__button__icon {
+          @apply stroke-primary dark:stroke-primaryDark;
+        }
+      }
+    }
+  }
+
+  .react-calendar {
+    @apply p-1.5 ltr:font-sans rtl:font-cairo  border-[1.2px] bg-white dark:bg-bgWhiteDark rounded-lg mt-1 overflow-hidden;
+
+    .react-calendar__tile {
+      @apply text-titleColor dark:text-titleColorDark;
+      &.react-calendar__month-view__days__day--weekend,
+      &.react-calendar__month-view__days__day--neighboringMonth,
+      &.react-calendar__decade-view__years__year--neighboringDecade,
+      &.react-calendar__century-view__decades__decade--neighboringCentury {
+        @apply text-textColor dark:text-textColorDark;
+      }
+      &:hover,
+      &:focus,
+      &.react-calendar__tile--now {
+        @apply bg-bgColor dark:bg-bgColorDark text-titleColor dark:text-titleColorDark;
+      }
+      &.react-calendar__tile--active,
+      &.react-calendar__tile--hasActive {
+        @apply bg-primary dark:bg-primaryDark text-bgColor;
+      }
+    }
+
+    .react-calendar__month-view__weekdays__weekday {
+      @apply text-titleColor dark:text-titleColorDark;
+    }
+
+    .react-calendar__month-view__weekdays__weekday--current {
+      @apply text-primary dark:text-primaryDark;
+    }
+  }
+
+  .react-daterange-picker__calendar {
+    .react-calendar__tile--range,
+    .react-calendar__tile--hover {
+      @apply rounded-none;
+    }
+    .react-calendar__tile--rangeStart,
+    .react-calendar__tile--hoverStart {
+      border-top-left-radius: 0.375rem;
+      border-bottom-left-radius: 0.375rem;
+    }
+    .react-calendar__tile--rangeEnd,
+    .react-calendar__tile--hoverEnd {
+      border-top-right-radius: 0.375rem;
+      border-bottom-right-radius: 0.375rem;
+    }
+  }
+
+  &:focus,
+  &:focus-within,
+  &:hover {
+    @apply border-primary dark:border-primaryDark    shadow-custom dark:shadow-customDark;
+  }
+
+  &:disabled {
+    &:focus,
+    &:focus-within,
+    &:active {
+      @apply border-borderColor dark:border-borderColorDark shadow-none;
+    }
+  }
+  .react-calendar__tile:disabled,
+  .react-calendar__navigation button:disabled {
+    @apply bg-borderColor dark:bg-borderColorDark bg-opacity-50 dark:bg-opacity-50;
+    &:hover {
+      @apply bg-borderColor dark:bg-borderColorDark bg-opacity-50 dark:bg-opacity-50;
+    }
+  }
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus {
+    @apply dark:bg-titleColor bg-titleColorDark;
+  }
+  &.react-datetime-picker--disabled {
+    @apply bg-white  dark:bg-bgWhiteDark;
+    &:hover {
+      @apply shadow-none border-borderColor dark:border-borderColorDark;
+    }
+    .react-datetime-picker__calendar-button{
+      @apply hover:text-textColor dark:hover:text-textColorDark
+    }
+    .react-daterange-picker__button,
+    .react-datetime-picker__button {
+      &:focus,
+      &:hover {
+        .react-daterange-picker__button__icon,
+        .react-datetime-picker__button__icon {
+          @apply stroke-borderColor dark:stroke-borderColorDark;
+        }
+      }
+    }
+  }
+}

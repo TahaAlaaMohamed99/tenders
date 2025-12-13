@@ -1,0 +1,18 @@
+.card_page_translations {
+  @apply p-4 relative bg-bgColor cursor-pointer dark:bg-bgColorDark rounded-lg text-titleColor dark:text-titleColorDark;
+}
+.card_page_translations .title_card {
+  @apply text-sm font-medium pe-6;
+}
+.card_page_translations .icon_arrow_card {
+  @apply hidden absolute end-4 top-4 w-4 h-4 rotate-[135deg];
+}
+.card_page_translations .icon_arrow_card svg {
+  @apply w-full h-full;
+}
+.card_page_translations:hover .title_card, .card_page_translations.active .title_card {
+  @apply text-primary dark:text-primaryDark;
+}
+.card_page_translations:hover .icon_arrow_card, .card_page_translations.active .icon_arrow_card {
+  @apply block;
+}/*# sourceMappingURL=Translations.css.map */
