@@ -71,13 +71,13 @@
     @apply not-italic;
   }
   .flex-content-between {
-    @apply flex justify-between  items-center;
+    @apply flex justify-between items-center;
   }
   .flex_start_center {
-    @apply flex justify-start  items-center;
+    @apply flex justify-start items-center;
   }
   .flex_center_center {
-    @apply flex justify-center  items-center;
+    @apply flex justify-center items-center;
   }
   .flex_end_start {
     @apply flex items-end justify-start;
@@ -129,13 +129,13 @@
     @apply bg-textColor dark:bg-textColorDark rounded;
   }
   .error_text {
-    @apply text-error dark:text-errorDark text-[.75rem] font-medium  mt-1;
+    @apply text-error dark:text-errorDark text-[.75rem] font-medium mt-1;
   }
   .form-group .btn-primary {
     @apply min-h-11;
   }
   .form-group {
-    @apply w-full flex flex-col	mb-5 relative;
+    @apply w-full flex flex-col relative;
   }
   .form-group.form-group_table {
     @apply mb-0;
@@ -151,7 +151,7 @@
   }
   .form-group .input_text,
   .form-group .input_textarea {
-    @apply p-2 h-11 w-full text-titleColor dark:text-titleColorDark bg-white dark:bg-bgWhiteDark  border-borderColor  border-[.1187rem] rounded-[.25rem]  dark:border-borderColorDark  text-sm placeholder:text-textColor dark:placeholder:text-textColorDark placeholder:text-opacity-80 focus:border-primary  dark:focus:border-primaryDark outline-none focus-visible:border-primary dark:focus-visible:border-primaryDark;
+    @apply p-2 h-11 w-full text-titleColor dark:text-titleColorDark bg-white dark:bg-bgWhiteDark border-borderColor border-[.1187rem] rounded-[.25rem] dark:border-borderColorDark text-sm placeholder:text-textColor dark:placeholder:text-textColorDark placeholder:text-opacity-80 focus:border-primary dark:focus:border-primaryDark outline-none focus-visible:border-primary dark:focus-visible:border-primaryDark;
   }
   .form-group .input_text.opt_input,
   .form-group .input_textarea.opt_input {
@@ -193,10 +193,10 @@
     @apply absolute w-7 end-0 top-0 p-1 pe-2 h-full flex justify-center items-center;
   }
   .col_SortableItem {
-    @apply flex items-center rounded-md  p-2 border-[1.5px] border-borderColor  dark:border-borderColorDark mb-2;
+    @apply flex items-center rounded-md p-2 border-[1.5px] border-borderColor dark:border-borderColorDark mb-2;
   }
   .col_SortableItem .icon_SortableItem {
-    @apply me-2 text-gray-400 hover:text-gray-600 focus:outline-none  cursor-grab active:cursor-grabbing;
+    @apply me-2 text-gray-400 hover:text-gray-600 focus:outline-none cursor-grab active:cursor-grabbing;
   }
   .col_SortableItem .show_Col {
     @apply w-4;
@@ -208,7 +208,7 @@
 }
 
 .account-title {
-  @apply mb-2.5 text-titleColor  dark:text-titleColorDark  font-semibold 2xl:text-[1.75rem] lg:text-[1.625rem] text-[1.375rem]  leading-[normal];
+  @apply mb-2.5 text-titleColor dark:text-titleColorDark font-semibold 2xl:text-[1.75rem] lg:text-[1.625rem] text-[1.375rem] leading-[normal];
 }
 
 .account-subtitle {
@@ -237,15 +237,15 @@
 }
 
 .modal {
-  @apply w-full h-full  fixed  z-50 inset-0;
+  @apply w-full h-full fixed z-50 inset-0;
 }
 
 .overlay_bg {
-  @apply w-full h-full duration-500 ease-out  transition-all inset-0 absolute bg-titleColor;
+  @apply w-full h-full duration-500 ease-out transition-all inset-0 absolute bg-titleColor;
 }
 
 .container_grid {
-  @apply sm:bg-white sm:dark:bg-bgWhiteDark  sm:p-6 rounded-2xl;
+  @apply sm:bg-white sm:dark:bg-bgWhiteDark sm:p-6 rounded-2xl;
 }
 
 .grid_line,
@@ -254,7 +254,7 @@
 }
 .grid_line .title_grid_line,
 .multiple_Grid .title_grid_line {
-  @apply lg:block hidden  text-titleColor dark:text-titleColorDark mb-8 text-sm font-semibold capitalize;
+  @apply lg:block hidden text-titleColor dark:text-titleColorDark mb-8 text-sm font-semibold capitalize;
 }
 .grid_line .Mega_Grid .data_Grid,
 .multiple_Grid .Mega_Grid .data_Grid {
@@ -280,7 +280,7 @@
 }
 
 .Toastify__toast {
-  @apply text-titleColorDark min-h-14 font-medium rounded-xl  flex items-center;
+  @apply text-titleColorDark min-h-14 font-medium rounded-xl flex items-center;
 }
 
 .Toastify__toast--error {
@@ -303,7 +303,7 @@
 }
 
 .Toastify__toast-icon {
-  @apply bg-bgColor   rounded-full w-8 h-8 flex justify-center items-center;
+  @apply bg-bgColor rounded-full w-8 h-8 flex justify-center items-center;
 }
 .Toastify__toast-icon svg {
   @apply w-6 h-6;
@@ -327,11 +327,11 @@
   @apply bg-bgWhite dark:bg-bgWhiteDark p-4 rounded-xl border-2 border-borderColor dark:border-borderColorDark;
 }
 .dimensions_container .form_editor .title_dimension {
-  @apply w-full sm:px-2.5 text-titleColor dark:text-titleColorDark  font-semibold text-base  leading-[normal] mb-6;
+  @apply w-full sm:px-2.5 text-titleColor dark:text-titleColorDark font-semibold text-base leading-[normal] mb-6;
 }
 
 .form_editor {
-  @apply lg:w-8/12 w-full  flex justify-between flex-wrap;
+  @apply lg:w-8/12 w-full flex justify-between flex-wrap;
 }
 .form_editor .cw_p {
   @apply md:w-6/12 w-full sm:px-2.5;
@@ -341,14 +341,14 @@
 }
 
 .text_ellipsis {
-  @apply text-ellipsis  line-clamp-1  overflow-hidden;
+  @apply text-ellipsis line-clamp-1 overflow-hidden;
 }
 
 .sub_tab {
-  @apply grid   grid-cols-12 gap-4;
+  @apply grid grid-cols-12 gap-4;
 }
 .sub_tab .list_tabs {
-  @apply m-auto overflow-hidden md:mb-0 mb-6 max-w-full  gap-4 flex lg:flex-col flex-row lg:justify-start justify-center lg:col-span-2 col-span-12;
+  @apply m-auto overflow-hidden md:mb-0 mb-6 max-w-full gap-4 flex lg:flex-col flex-row lg:justify-start justify-center lg:col-span-2 col-span-12;
 }
 .sub_tab .list_tabs.horizontal {
   @apply col-span-12 justify-center;
@@ -366,7 +366,7 @@
   @apply hidden;
 }
 .sub_tab .list_tabs .tab {
-  @apply p-2.5 w-auto cursor-pointer   flex items-center justify-between text-textColor rounded-md   dark:text-textColorDark text-sm font-medium;
+  @apply p-2.5 w-auto cursor-pointer flex items-center justify-between text-textColor rounded-md dark:text-textColorDark text-sm font-medium;
 }
 .sub_tab .list_tabs .tab .title_tab {
   @apply lg:w-10/12 w-full truncate;
@@ -375,13 +375,13 @@
   @apply w-auto h-4 hidden ltr:rotate-180;
 }
 .sub_tab .list_tabs .tab.tab_selected {
-  @apply opacity-100 text-primary dark:text-primaryDark  bg-primary dark:bg-primaryDark bg-opacity-15 dark:bg-opacity-15;
+  @apply opacity-100 text-primary dark:text-primaryDark bg-primary dark:bg-primaryDark bg-opacity-15 dark:bg-opacity-15;
 }
 .sub_tab .list_tabs .tab.tab_selected .icon_arrow {
   @apply lg:block;
 }
 .sub_tab .tab_List {
-  @apply lg:flex-col  flex-row overflow-auto   m-0;
+  @apply lg:flex-col flex-row overflow-auto m-0;
 }
 .sub_tab .tab_contant {
   @apply lg:col-span-10 col-span-12;

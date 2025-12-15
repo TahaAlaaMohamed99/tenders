@@ -62,37 +62,41 @@ export default function VendorsAddEdit() {
           const isFormIncomplete =
             !values.name || !values.vendorAccount || !values.currencyCode;
           return (
-            <Form className="grid grid-cols-2 gap-4">
-              <CustomInput
-                label="Name"
-                Required
-                value={values.name}
-                onChange={handleChange("name")}
-                placeholder="Enter Name"
-              />
-              <CustomInput
-                label="Vendor Account Number"
-                Required
-                value={values.vendorAccount}
-                onChange={handleChange("vendorAccount")}
-                placeholder="Enter Vendor Account Number"
-              />
-              <CustomeSelect
-                label="Currency"
-                options={useCurrencyOptions()}
-                value={values.currencyCode}
-                onChange={(value) => setFieldValue("currencyCode", value)}
-                placeholder="Select Currency"
-              />
+            <Form  >
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <CustomInput
+                  label="Name"
+                  Required
+                  value={values.name}
+                  onChange={handleChange("name")}
+                  placeholder="Enter Name"
+                />
+                <CustomInput
+                  label="Vendor Account Number"
+                  Required
+                  value={values.vendorAccount}
+                  onChange={handleChange("vendorAccount")}
+                  placeholder="Enter Vendor Account Number"
+                />
+                <CustomeSelect
+                  label="Currency"
+                  options={useCurrencyOptions()}
+                  value={values.currencyCode}
+                  onChange={(value) => setFieldValue("currencyCode", value)}
+                  placeholder="Select Currency"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+
                 <CustomeBtn
                   type="submit"
                   title={id !== "0" ? "edit" : "save"}
-                  ResourcePage="General"
-                  isLoading={isSubmitting}
+                   isLoading={isSubmitting}
                   disabled={isSubmitting || isFormIncomplete}
                   className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                  size="btn_sm mt-12"
+                  size="btn_lg "
                 />
+              </div>
             </Form>
           );
         }}

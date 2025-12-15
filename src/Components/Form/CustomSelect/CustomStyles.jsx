@@ -2,7 +2,7 @@ const CustomStyles = (errors, touched, isFocused) => ({
   control: (provided) => ({
     ...provided,
     border: isFocused
-      ? "0.12rem solid #000ba0"
+      ? "0.12rem solid #008080"
       : touched && errors
         ? "0.12rem solid #ea5455"
         : "0.12rem solid #E9EAEC",
@@ -10,7 +10,7 @@ const CustomStyles = (errors, touched, isFocused) => ({
       ? "0 0.1875rem 0.625rem 0 rgba(0, 182, 190, 0.1)"
       : "none",
     "&:hover": {
-      borderColor: "#000ba0",
+      borderColor: "#008080",
       boxShadow: "0 0.1875rem 0.625rem 0 rgba(0, 182, 190, 0.1)",
     },
     padding: "0.375rem 0.5rem",
@@ -49,9 +49,9 @@ const CustomStyles = (errors, touched, isFocused) => ({
   },
   dropdownIndicator: (provided, state) => ({
     ...provided,
-    color: isFocused ? "#000ba0" : "#A2A1A8",
+    color: isFocused ? "#008080" : "#A2A1A8",
     "&:hover": {
-      color: "#000ba0",
+      color: "#008080",
     },
     padding: "0",
   }),
@@ -62,9 +62,9 @@ const CustomStyles = (errors, touched, isFocused) => ({
   }),
   clearIndicator: (provided, state) => ({
     ...provided,
-    color: isFocused ? "#000ba0" : "#A2A1A8",
+    color: isFocused ? "#008080" : "#A2A1A8",
     "&:hover": {
-      color: "#000ba0",
+      color: "#008080",
     },
     cursor: "pointer",
     padding: "0",
@@ -84,9 +84,9 @@ const CustomStyles = (errors, touched, isFocused) => ({
   }),
   multiValue: (provided) => ({
     ...provided,
-    backgroundColor: "#000ba0",
+    backgroundColor: "#008080",
     borderRadius: "0.25rem",
-    color: "#000ba0",
+    color: "#008080",
     overflow: "hidden"
   }),
   multiValueLabel: (provided) => ({
@@ -99,7 +99,7 @@ const CustomStyles = (errors, touched, isFocused) => ({
     ...provided,
     color: "#F0F4FF",
     "&:hover": {
-      backgroundColor: "#000ba0",
+      backgroundColor: "#008080",
       color: "#F0F4FF",
       cursor: "pointer",
     },

@@ -68,40 +68,44 @@ export default function VendorGroupsAddEdit() {
             !values.vendorGroupId || !values.dataAreaId || !values.description;
 
           return (
-            <Form className="grid grid-cols-2 gap-4">
-              <CustomInput
-                label="Vendor Group ID"
-                Required
-                value={values.vendorGroupId}
-                onChange={handleChange("vendorGroupId")}
-                placeholder="Enter Vendor Group ID"
-              />
+            <Form  >
+              <div className="grid grid-cols-2 gap-4 mb-8">
 
-              <CustomInput
-                label="Data Area ID"
-                Required
-                value={values.dataAreaId}
-                onChange={handleChange("dataAreaId")}
-                placeholder="Enter Data Area ID"
-              />
+                <CustomInput
+                  label="Vendor Group ID"
+                  Required
+                  value={values.vendorGroupId}
+                  onChange={handleChange("vendorGroupId")}
+                  placeholder="Enter Vendor Group ID"
+                />
 
-              <CustomInput
-                label="Description"
-                Required
-                value={values.description}
-                onChange={handleChange("description")}
-                placeholder="Enter Description"
-              />
+                <CustomInput
+                  label="Data Area ID"
+                  Required
+                  value={values.dataAreaId}
+                  onChange={handleChange("dataAreaId")}
+                  placeholder="Enter Data Area ID"
+                />
 
-              <CustomeBtn
-                type="submit"
-                title={id !== "0" ? "edit" : "save"}
-                ResourcePage="General"
-                isLoading={isSubmitting}
-                disabled={isSubmitting || isFormIncomplete}
-                className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed mt-12"
-                size="btn_sm"
-              />
+                <CustomInput
+                  label="Description"
+                  Required
+                  value={values.description}
+                  onChange={handleChange("description")}
+                  placeholder="Enter Description"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <CustomeBtn
+                  type="submit"
+                  title={id !== "0" ? "edit" : "save"}
+                  ResourcePage="General"
+                  isLoading={isSubmitting}
+                  disabled={isSubmitting || isFormIncomplete}
+                  className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed  "
+                  size="btn_lg"
+                />
+              </div>
             </Form>
           );
         }}

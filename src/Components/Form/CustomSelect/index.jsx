@@ -106,11 +106,9 @@ export default function CustomeSelect({
 
           }}
           isLoading={isLoading}
-          // styles={
-          //   theme == "dark"
-          //     ? CustomStylesDark(errors, touched, isFocused)
-          //     : customStyles(errors, touched, isFocused)
-          // }
+          styles={
+            customStyles(errors, touched, isFocused)
+          }
           placeholder={<TranslationText titleGenerallist={titleGenerallist} title={placeholder} page={ResourcePage} />}
           onChange={(e) => {
             onChange(e);   // Pass the selected value to the onChange callback
@@ -132,18 +130,19 @@ export default function CustomeSelect({
             size="btn_sm"
             className="btn-primary min-w-min"
             onClick={() => {
-              if(setRecId){
+              if (setRecId) {
                 setRecId(0)
               }
               navigate(routeAddLookup, {
-              state: {
-                controllerMode: true,
-                prevRoute: window.location.pathname,
-                RecId: RecId || 0,
-                statePrevRoute: stateRoute
-              },
-            
-            })}}
+                state: {
+                  controllerMode: true,
+                  prevRoute: window.location.pathname,
+                  RecId: RecId || 0,
+                  statePrevRoute: stateRoute
+                },
+
+              })
+            }}
           />
         }
       </div>

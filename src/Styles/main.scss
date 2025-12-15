@@ -132,7 +132,7 @@
     @apply min-h-11;
   }
   .form-group {
-    @apply w-full flex flex-col	mb-5 relative;
+    @apply w-full flex flex-col  relative;
     &.form-group_table {
       @apply mb-0;
       input {

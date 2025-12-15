@@ -63,36 +63,40 @@ export default function CurrencyAddEdit() {
         {({ handleChange, setFieldValue, values }) => {
           const isFormIncomplete = !values.name || !values.currencyCode;
           return (
-            <Form className="grid grid-cols-2 gap-4">
-              <CustomInput
-                label="Name"
-                Required
-                value={values.name}
-                onChange={handleChange("name")}
-                placeholder="Enter Name"
-              />
-              <CustomeSelect
-                label="Currency Code"
-                options={currencyOptions}
-                value={
-                  currencyOptions.find(
-                    (opt) => opt.value === values.currencyCode
-                  ) || null
-                }
-                onChange={(selected) =>
-                  setFieldValue("currencyCode", selected?.value)
-                }
-                placeholder="Select Currency Code"
-              />
-              <CustomeBtn
-                type="submit"
-                title={id !== "0" ? "edit" : "save"}
-                ResourcePage="General"
-                isLoading={isSubmitting}
-                disabled={isSubmitting || isFormIncomplete}
-                className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                size="btn_md"
-              />
+            <Form>
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                <CustomInput
+                  label="Name"
+                  Required
+                  value={values.name}
+                  onChange={handleChange("name")}
+                  placeholder="Enter Name"
+                />
+                <CustomeSelect
+                  label="Currency Code"
+                  options={currencyOptions}
+                  value={
+                    currencyOptions.find(
+                      (opt) => opt.value === values.currencyCode
+                    ) || null
+                  }
+                  onChange={(selected) =>
+                    setFieldValue("currencyCode", selected?.value)
+                  }
+                  placeholder="Select Currency Code"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <CustomeBtn
+                  type="submit"
+                  title={id !== "0" ? "edit" : "save"}
+                  isLoading={isSubmitting}
+                  disabled={isSubmitting || isFormIncomplete}
+                  className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                  size="btn_lg"
+                />
+              </div>
+
             </Form>
           );
         }}
