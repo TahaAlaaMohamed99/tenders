@@ -8,8 +8,8 @@ export default {
         cairo: ["Cairo", "Roboto"],
       },
       colors: {
-        primary: "#000ba0",
-        primaryDark: "#1c64f2",
+        primary: "#008080",
+        primaryDark: "#b2d8d8",
         titleColor: "#0B0B0B",
         titleColorDark: "#F0F4FF",
         textColor: "#A2A1A8",

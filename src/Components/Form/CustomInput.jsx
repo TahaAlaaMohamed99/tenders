@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import TranslationText from "../TranslationText";
-import { useSelector } from "react-redux";
 import useTranslationText from "../../Hooks/useTranslationText";
 /**
  * CustomInput Component:
@@ -46,9 +45,7 @@ export default function CustomInput({
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const handleFocus = () => setIsFocused(true);
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
-  );
+
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -56,7 +53,7 @@ export default function CustomInput({
     setIsFocused(false);
     if (onBlur) onBlur(event);
   };
-  const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: currentLanguage });
+  const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: "en" });
   return (
     <div
       className={`form-group ${touched && errors ? " error_group " : ""} ${className || ""
@@ -66,7 +63,7 @@ export default function CustomInput({
         <label htmlFor={`mega_${name}`} className={isFocused ? "focused" : disabled ? "disabled" : ""}>
           <TranslationText title={label} page={ResourcePage} />
           {Required ? (
-            <span className="text-primary dark:text-primaryDark">*</span>
+            <span className="text-red-500 dark:text-primaryDark">*</span>
           ) : null}
         </label>
       )}

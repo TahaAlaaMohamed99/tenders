@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Select, { components } from "react-select";
 import customStyles from "./CustomStyles";
 import CustomStylesDark from "./CustomStylesDark";
-import { useSelector } from "react-redux";
 import TranslationText from "../../TranslationText";
 import { IconAdd, IconChevronDown, IconEdit, Iconloading } from "../../../assets/Icons/IconsSvg";
 import CustomeBtn from "../../CustomeBtn";
@@ -70,7 +69,7 @@ export default function CustomeSelect({
   };
 
   // Extract the current theme (light/dark) from the Redux store
-  const { theme } = useSelector((state) => state.themeSlice);
+  // const { theme } = useSelector((state) => state.themeSlice);
 
   // State to track if the select component is focused
   const [isFocused, setIsFocused] = useState(false);
@@ -107,11 +106,11 @@ export default function CustomeSelect({
 
           }}
           isLoading={isLoading}
-          styles={
-            theme == "dark"
-              ? CustomStylesDark(errors, touched, isFocused)
-              : customStyles(errors, touched, isFocused)
-          }
+          // styles={
+          //   theme == "dark"
+          //     ? CustomStylesDark(errors, touched, isFocused)
+          //     : customStyles(errors, touched, isFocused)
+          // }
           placeholder={<TranslationText titleGenerallist={titleGenerallist} title={placeholder} page={ResourcePage} />}
           onChange={(e) => {
             onChange(e);   // Pass the selected value to the onChange callback

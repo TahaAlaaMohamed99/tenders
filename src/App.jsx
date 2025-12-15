@@ -10,12 +10,9 @@ import {
   IconWarning,
 } from "./assets/Icons/IconsSvg";
 import PublicRoutes from "./Routes/PublicRoutes";
+import DashboardLayout from "./Layouts/DashboardLayout";
 
 export default function App() {
-
-
-
-
   // Use the custom useConfig hook to fetch configuration data.
   // If the configuration has not yet been fetched (config is null),
   // display a loader component to indicate loading state.
@@ -49,7 +46,9 @@ export default function App() {
           }
         }}
       />
-         <PublicRoutes />
-     </Router>
+      <DashboardLayout>
+        <PublicRoutes />
+      </DashboardLayout>
+    </Router>
   );
 }
