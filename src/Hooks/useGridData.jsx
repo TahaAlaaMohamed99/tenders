@@ -12,7 +12,7 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading) => {
     setIsLoading(true);
     try {
       const response = await Api.get(
-        `/${ApiGet}${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
+        `/${ApiGet}?${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
       );
       if (response !== 404) {
         let updatedData = response.data;
