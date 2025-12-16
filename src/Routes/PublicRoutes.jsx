@@ -8,6 +8,8 @@ const Vendors = lazy( () => import( "../Pages/Vendors" ) );
 const VendorsAddEdit = lazy( () => import( "../Pages/VendorsAddEdit" ) );
 const VendorGroups = lazy( () => import( "../Pages/vendorGroups" ) );
 const VendorGroupsAddEdit = lazy( () => import( "../Pages/VendorGroupsAddEdit" ) );
+const Login = lazy( () => import( "../Pages/Login" ) );
+
  
 export default function PublicRoutes() {
   return (

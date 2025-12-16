@@ -6,16 +6,30 @@ import {
   IconGroupsSharp,
   IconCurrencies,
 } from "../assets/Icons/IconsSvg";
-
+import { useAuth } from "../context/AuthContext";
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   const menuItems = [
-    { id: "currencies", label: "Currencies", path: "/currencies", icon: <IconCurrencies />},
-    { id: "vendors", label: "Vendors", path: "/vendors", icon: <Handshake />},
-    { id: "vendorGroups", label: "Vendor Groups", path: "/vendor-groups", icon: <IconGroupsSharp />}
+    {
+      id: "currencies",
+      label: "Currencies",
+      path: "/currencies",
+      icon: <IconCurrencies />,
+    },
+    { id: "vendors", label: "Vendors", path: "/vendors", icon: <Handshake /> },
+    {
+      id: "vendorGroups",
+      label: "Vendor Groups",
+      path: "/vendor-groups",
+      icon: <IconGroupsSharp />,
+    },
   ];
 
   return (
@@ -25,7 +39,7 @@ export default function Sidebar() {
         <span className="text-xl font-bold text-teal-600">Tenders</span>
       </div>
 
-      <nav className="p-4 flex-1 fixed">
+      <nav className="p-4 flex-1">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const isActive =
@@ -55,6 +69,16 @@ export default function Sidebar() {
           })}
         </ul>
       </nav>
+      <div className="p-4 border-t border-gray-200 mt-auto">
+        <CustomeBtn
+          type="button"
+          title="Logout"
+          ResourcePage="Sidebar"
+          size="btn_md"
+          onClick={handleLogout}
+          className="w-full justify-start gap-3 px-4 py-3 text-red-600 hover:bg-red-50 border-none"
+        />
+      </div>
     </aside>
   );
 }
