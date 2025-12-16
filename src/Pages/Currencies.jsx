@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit } from "../assets/Icons/IconsSvg";
+import { IconEdit, IconAdd } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
+import Loading from "../Components/loader";
 
 export default function Currencies() {
   const [currencies, setCurrencies] = useState([]);
@@ -104,7 +105,7 @@ export default function Currencies() {
     //     name: "Kuwaiti Dinar",
     //   },
     // ]);
-  }, []);
+  }, [currentPage]);
 
   const navigate = useNavigate();
   const handleRowClick = (id) => {
@@ -130,6 +131,7 @@ export default function Currencies() {
           onClick={() => handleRowClick(0)}
           className="bg-teal-600 text-white hover:bg-teal-700 transition-colors"
           title="Add New"
+          icon={<IconAdd />}
           size="btn_md"
           ResourcePage="Currencies"
         />
@@ -159,11 +161,17 @@ export default function Currencies() {
         <div className="overflow-y-auto max-h-[500px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
-              {currencies.length > 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={4} className="py-20">
+                    <Loading />
+                  </td>
+                </tr>
+              ) : currencies.length > 0 ? (
                 currencies.map((c) => (
                   <tr
                     key={c.recId}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-gray-50 transition-colors cursor-pointer"
                     onClick={() => handleRowClick(c.recId)}
                   >
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -201,7 +209,7 @@ export default function Currencies() {
                 <tr>
                   <td
                     colSpan={4}
-                    className="px-6 py-20 text-center text-gray-500 text-lg"
+                    className="px-6 py-40 text-center text-gray-500 text-lg"
                   >
                     No currencies found
                   </td>
@@ -212,12 +220,14 @@ export default function Currencies() {
         </div>
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalRows={totalRow}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-      />
+      {!isLoading && totalRow > pageSize && (
+        <Pagination
+          currentPage={currentPage}
+          totalRows={totalRow}
+          pageSize={pageSize}
+          onPageChange={ handlePageChange }
+        />
+      )}
     </div>
   );
 }
