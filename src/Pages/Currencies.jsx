@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit, IconAdd } from "../assets/Icons/IconsSvg";
+import { IconEdit, IconAdd, IconDeleteCurrency } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -186,7 +186,7 @@ export default function Currencies() {
                       {formatDate(c.createdOn)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end gap-2">
+                      <div className="flex -space-x-6 justify-end gap-2">
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Currencies"
@@ -195,7 +195,7 @@ export default function Currencies() {
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Currencies"
-                          title="Delete"
+                          icon={<IconDeleteCurrency className="w-5 h-5" />}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("Delete currency", c.recId);

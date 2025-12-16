@@ -56,7 +56,7 @@ export default function CustomInput({
   const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: "en" });
   return (
     <div
-      className={`form-group ${touched && errors ? " error_group " : ""} ${className || ""
+      className={`form-group ${type === "password" ? "form-group_icon" : ""} ${touched && errors ? " error_group " : ""} ${className || ""
         }`}
     >
       {label && (

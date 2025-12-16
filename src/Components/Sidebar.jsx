@@ -33,7 +33,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="bg-white shadow-lg w-50 h-screen border-r border-gray-300">
+    <aside className="bg-white shadow-lg w-48 h-screen border-r border-gray-300">
       <div className="flex items-center gap-2 p-4 border-b">
         <IconDasboard className="w-6 h-6 text-teal-600" />
         <span className="text-xl font-bold text-teal-600">Tenders</span>

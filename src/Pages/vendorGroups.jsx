@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit,IconAdd } from "../assets/Icons/IconsSvg";
+import { IconEdit,IconAdd, IconDeleteVendorGroup } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -121,10 +121,10 @@ export default function VendorGroups() {
           <thead className="bg-gray-50 border-b">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Vendor Group ID
+                Vendor Group
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Data Area ID
+                Data Area
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Description
@@ -132,7 +132,7 @@ export default function VendorGroups() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created On
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-12 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -169,8 +169,8 @@ export default function VendorGroups() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(group.createdOn)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex -space-x-6 justify-end">
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="VendorGroups"
@@ -179,7 +179,7 @@ export default function VendorGroups() {
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="VendorGroups"
-                          title="Delete"
+                          icon={<IconDeleteVendorGroup className="w-5 h-5" />}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("Delete vendor group", group.recId);

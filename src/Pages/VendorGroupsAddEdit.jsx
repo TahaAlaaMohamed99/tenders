@@ -2,9 +2,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Formik, Form } from "formik";
 import useGetById from "../Hooks/useGetById";
+import useGridData from "../Hooks/useGridData";
 import useHandleSubmit from "../Hooks/useHandleSubmit";
 import CustomInput from "../Components/Form/CustomInput";
 import CustomeBtn from "../Components/CustomeBtn";
+import CustomeSelect from "../Components/Form/CustomSelect";
 import Loading from "../Components/loader";
 import { IconClose } from "../assets/Icons/IconsSvg"; 
 export default function VendorGroupsAddEdit() {
@@ -12,9 +14,30 @@ export default function VendorGroupsAddEdit() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [venderGroups, setVendorGroups] = useState([]);
+  const [dataArea, setDataArea] = useState([]);
   const [data, setData] = useState({});
   const { handleSubmitFormik } = useHandleSubmit();
-
+  // const vendorsOptions = venderGroups.map((vg) => ({
+  //   value: vg.vendorGroupId,
+  //   label: vg.description || vg.vendorGroupId,
+  // }));
+  const vendorsOptions = [
+    { value: "Test 01", label: "Test 01" },
+    { value: "Test 02", label: "Test 02" },
+    { value: "Test 03", label: "Test 03" },
+    { value: "Test 04", label: "Test 04" },
+    { value: "Test 05", label: "Test 05" },
+  ];
+  const dataAreaOptions = [
+    { value: "Test 01", label: "Test 01" },
+    { value: "Test 02", label: "Test 02" },
+    { value: "Test 03", label: "Test 03" },
+    { value: "Test 04", label: "Test 04" },
+    { value: "Test 05", label: "Test 05" },
+  ];
+  // const { totalRow, fetchGridData: fetchVenderGroups } = useGridData("VendorGroups/GetLookup", setVendorGroups, setIsLoading);
+  // const { totalRow, fetchGridData: fetchDataArea } = useGridData("DataArea/GetLookup", setDataArea, setIsLoading);
   const fetchData = useGetById(
     "VendorGroups",
     id,
@@ -25,100 +48,114 @@ export default function VendorGroupsAddEdit() {
   );
 
   useEffect(() => {
+    // fetchVenderGroups();
+    // fetchDataArea();
     if (id !== "0") fetchData();
     else setIsLoading(false);
   }, [id, fetchData]);
 
-
-
   return (
     <div className="flex flex-col gap-16">
       <div className="flex items-center justify-between">
-      <h1 className="text-2xl font-bold text-gray-800">
-        {id !== "0"
-          ? "Update vendor group information"
-          : "Create a new vendor group"}
-      </h1>
-     <button
-        onClick={() => navigate("/vendor-groups")}
-        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-        title="Close"
-        type="button"
-      >
-      <IconClose className="w-6 h-6 text-gray-600" />
-      </button>
+        <h1 className="text-2xl font-bold text-gray-800">
+          {id !== "0"
+            ? "Update vendor group information"
+            : "Create a new vendor group"}
+        </h1>
+        <button
+          onClick={() => navigate("/vendor-groups")}
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          title="Close"
+          type="button"
+        >
+          <IconClose className="w-6 h-6 text-gray-600" />
+        </button>
       </div>
       {isLoading ? (
         <Loading />
-    ) : (
-      <Formik
-        initialValues={{
-          vendorGroupId: data.vendorGroupId || "",
-          dataAreaId: data.dataAreaId || "",
-          description: data.description || "",
-        }}
-        enableReinitialize
-        onSubmit={async(values) => {
-          await handleSubmitFormik({
-            apiPage: "VendorGroups",
-            values,
-            recId: id,
-            resourcePage: "VendorGroups",
-            setIsLoadingSubmit: setIsSubmitting,
-            setData,
-            navigateTo: "/vendor-groups",
-            fetchData,
-          });
-        }}
-      >
-        {({ handleChange, values }) => {
-          const isFormIncomplete =
-            !values.vendorGroupId || !values.dataAreaId || !values.description;
+      ) : (
+        <Formik
+          initialValues={{
+            vendorGroupId: data.vendorGroupId || "",
+            dataAreaId: data.dataAreaId || "",
+            description: data.description || "",
+          }}
+          enableReinitialize
+          onSubmit={async (values) => {
+            await handleSubmitFormik({
+              apiPage: "VendorGroups",
+              values,
+              recId: id,
+              resourcePage: "VendorGroups",
+              setIsLoadingSubmit: setIsSubmitting,
+              setData,
+              navigateTo: "/vendor-groups",
+              fetchData,
+            });
+          }}
+        >
+          {({ handleChange, setFieldValue, values }) => {
+            const isFormIncomplete =
+              !values.vendorGroupId ||
+              !values.dataAreaId ||
+              !values.description;
 
-          return (
-            <Form  >
-              <div className="grid grid-cols-2 gap-4 mb-8">
+            return (
+              <Form>
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  <CustomeSelect
+                    label="Vendor Group ID"
+                    options={vendorsOptions}
+                    value={
+                      vendorsOptions.find(
+                        (opt) => opt.value === values.vendorGroupId
+                      ) || null
+                    }
+                    onChange={(selected) =>
+                      setFieldValue("vendorGroupId", selected?.value)
+                    }
+                    Required
+                    placeholder="Select Vendor Group Code"
+                  />
+                  <CustomeSelect
+                    label="Data Area ID"
+                    options={dataAreaOptions}
+                    value={
+                      dataAreaOptions.find(
+                        (opt) => opt.value === values.dataAreaId
+                      ) || null
+                    }
+                    onChange={(selected) =>
+                      setFieldValue("dataAreaId", selected?.value)
+                    }
+                    Required
+                    placeholder="Select Data Area Code"
+                  />
 
-                <CustomInput
-                  label="Vendor Group ID"
-                  Required
-                  value={values.vendorGroupId}
-                  onChange={handleChange("vendorGroupId")}
-                  placeholder="Enter Vendor Group ID"
-                />
-
-                <CustomInput
-                  label="Data Area ID"
-                  Required
-                  value={values.dataAreaId}
-                  onChange={handleChange("dataAreaId")}
-                  placeholder="Enter Data Area ID"
-                />
-
-                <CustomInput
-                  label="Description"
-                  Required
-                  value={values.description}
-                  onChange={handleChange("description")}
-                  placeholder="Enter Description"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <CustomeBtn
-                  type="submit"
-                  title={id !== "0" ? "edit" : "save"}
-                  ResourcePage="General"
-                  isLoading={isSubmitting}
-                  disabled={isSubmitting || isFormIncomplete}
-                  className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed  "
-                  size="btn_lg"
-                />
-              </div>
-            </Form>
-          );
-        }}
-      </Formik>
-    )}
+                  <CustomInput
+                    label="Description"
+                    Required
+                    value={values.description}
+                    onChange={handleChange("description")}
+                    placeholder="Enter Description"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <CustomeBtn
+                    type="submit"
+                    title={id !== "0" ? "edit" : "save"}
+                    ResourcePage="General"
+                    isLoading={isSubmitting}
+                    disabled={isSubmitting || isFormIncomplete}
+                    className="bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed  "
+                    size="btn_lg"
+                  />
+                </div>
+              </Form>
+            );
+          }}
+        </Formik>
+      )}
     </div>
   );
 }

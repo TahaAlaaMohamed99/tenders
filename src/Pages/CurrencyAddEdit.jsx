@@ -94,6 +94,7 @@ export default function CurrencyAddEdit() {
                   onChange={(selected) =>
                     setFieldValue("currencyCode", selected?.value)
                   }
+                  Required
                   placeholder="Select Currency Code"
                 />
               </div>

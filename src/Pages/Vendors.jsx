@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit,IconAdd } from "../assets/Icons/IconsSvg";
+import { IconEdit,IconAdd, IconDeleteVendor } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -172,7 +172,7 @@ export default function Vendors() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created On
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-10 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -212,8 +212,8 @@ export default function Vendors() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(c.createdOn)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex items-center justify-end gap-2">
+                    <td className="py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex -space-x-8 justify-end">
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Vendors"
@@ -222,7 +222,7 @@ export default function Vendors() {
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Vendors"
-                          title="Delete"
+                          icon={<IconDeleteVendor className="w-4 h-4" />}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("Delete vendor", c.recId);

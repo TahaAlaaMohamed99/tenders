@@ -2,7 +2,7 @@ import Sidebar from "../Components/Sidebar";
 
 export default function DashboardLayout({ children }) {
   return (
-    <div className="min-h-screen grid grid-cols-[14rem_1fr]">
+    <div className="min-h-screen grid grid-cols-[12rem_1fr]">
       {/* Sidebar */}
       <Sidebar />
 
