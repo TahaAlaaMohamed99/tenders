@@ -20,7 +20,7 @@ export default function Sidebar() {
     {
       id: "currencies",
       label: "Currencies",
-      path: "/currencies",
+      path: "/",
       icon: <IconCurrencies />,
     },
     { id: "vendors", label: "Vendors", path: "/vendors", icon: <Handshake /> },

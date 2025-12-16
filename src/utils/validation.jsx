@@ -7,9 +7,9 @@ const creationDateYup = Yup.date().required('pleaseSelectCreationDate')
 const vacationCategory = Yup.object().required('pleaseSelectVacationCategory')
 const importanceYup = Yup.object().required('pleaseSelect')
 export const loginSchema = Yup.object().shape({
-  userName: Yup.string().required("userNameRequired"),
+  userName: Yup.string().required("user name required"),
   password: Yup.string()
-    .min(6, "passwordMinLength")
-    .required("passwordRequired"),
+    .min(6, "password must be at least 6 characters")
+    .required("password required"),
 });
  
