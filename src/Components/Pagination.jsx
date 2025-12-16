@@ -34,7 +34,7 @@ export default function Pagination({
 
   return (
     <div
-      className={`flex items-center justify-center gap-2 mt-4 ${
+      className={`flex items-center justify-end gap-2 mt-4 ${
         className || ""
       }`}
     >

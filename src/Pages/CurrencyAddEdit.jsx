@@ -7,6 +7,8 @@ import CustomInput from "../Components/Form/CustomInput";
 import CustomeSelect from "../Components/Form/CustomSelect/index";
 import CustomeBtn from "../Components/CustomeBtn";
 import useCurrencyOptions from "../Hooks/useCurrencyOptions";
+import Loading from "../Components/loader";
+import { IconClose } from "../assets/Icons/IconsSvg"; 
 export default function CurrencyAddEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -31,33 +33,42 @@ export default function CurrencyAddEdit() {
     else setIsLoading(false);
   }, [id, fetchData]);
 
-  // if (isLoading) return "...loading";
 
   return (
     <div className="flex flex-col gap-16 mt-10 px-4">
-      <h1 className="text-2xl font-bold">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">
         {id !== "0" ? "Edit Currency" : "Add Currency"}
-      </h1>
+        </h1>
+        <button
+          onClick={() => navigate("/currencies")}
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          title="Close"
+          type="button"
+        >
+          <IconClose className="w-6 h-6 text-gray-600" />
+        </button>
+      </div>
+      {isLoading ? (
+        <Loading />
+    ) : (
       <Formik
         initialValues={{
           currencyCode: data.currencyCode || "",
           name: data.name || "",
         }}
-        onSubmit={(values) => {
-          const isEdit = id !== "0";
-          const apiUrl = isEdit
-            ? `Currencies/Update?id=${id}`
-            : "Currencies/Add";
-          setIsSubmitting(true);
-          handleSubmitFormik(
-            apiUrl,
-            values,
-            "Currencies",
-            isEdit ? "edit" : "add",
-            setIsSubmitting,
-            setData,
-            () => navigate("/currencies")
-          );
+        enableReinitialize
+        onSubmit={async (values) => {
+            await handleSubmitFormik({
+              apiPage: "Currencies",
+              values,
+              recId: id,
+              resourcePage: "Currencies",
+              setIsLoadingSubmit: setIsSubmitting,
+              setData,
+              navigateTo: "/currencies",
+              fetchData,
+            });
         }}
       >
         {({ handleChange, setFieldValue, values }) => {
@@ -101,6 +112,7 @@ export default function CurrencyAddEdit() {
           );
         }}
       </Formik>
+      )}
     </div>
   );
 }

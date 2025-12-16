@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit } from "../assets/Icons/IconsSvg";
+import { IconEdit,IconAdd } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
+import Loading from "../Components/loader";
 
 export default function VendorGroups() {
   const navigate = useNavigate();
   const [ vendorGroups, setVendorGroups ] = useState( [] );
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-//   const totalRow = vendorGroups.length;
-  const pageSize = 10;
-  const { totalRow, fetchGridData } = useGridData(
-    "VendorGroups/GetAll",
-    setVendorGroups,
-    setIsLoading
-  );
+  const totalRow = vendorGroups.length;
+  const pageSize = 6;
+  // const { totalRow, fetchGridData } = useGridData(
+  //   "VendorGroups/GetAll",
+  //   setVendorGroups,
+  //   setIsLoading
+  // );
 
   const handlePageChange = (page) => {
     if (page < 1) return;
@@ -24,45 +25,66 @@ export default function VendorGroups() {
   };
 
   useEffect(() => {
-    fetchGridData(currentPage, pageSize);
-    // setVendorGroups([
-    //   {
-    //     vendorGroupId: "Test 05",
-    //     dataAreaId: "agtc",
-    //     description: "Test",
-    //     recId: 8,
-    //     createdOn: "2025-12-15T12:24:06.0514184",
-    //   },
-    //   {
-    //     vendorGroupId: "Test 04",
-    //     dataAreaId: "agtc",
-    //     description: "Test Group 4",
-    //     recId: 7,
-    //     createdOn: "2025-12-14T10:15:30.0514184",
-    //   },
-    //   {
-    //     vendorGroupId: "Test 03",
-    //     dataAreaId: "agtc",
-    //     description: "Test Group 3",
-    //     recId: 6,
-    //     createdOn: "2025-12-13T09:20:45.0514184",
-    //   },
-    //   {
-    //     vendorGroupId: "Test 02",
-    //     dataAreaId: "agtc",
-    //     description: "Test Group 2",
-    //     recId: 5,
-    //     createdOn: "2025-12-12T14:30:12.0514184",
-    //   },
-    //   {
-    //     vendorGroupId: "Test 01",
-    //     dataAreaId: "agtc",
-    //     description: "Test Group 1",
-    //     recId: 4,
-    //     createdOn: "2025-12-11T11:45:22.0514184",
-    //   },
-    // ]);
-  }, []);
+    // fetchGridData(currentPage, pageSize);
+    setVendorGroups([
+      {
+        vendorGroupId: "Test 05",
+        dataAreaId: "agtc",
+        description: "Test",
+        recId: 8,
+        createdOn: "2025-12-15T12:24:06.0514184",
+      },
+      {
+        vendorGroupId: "Test 04",
+        dataAreaId: "agtc",
+        description: "Test Group 4",
+        recId: 7,
+        createdOn: "2025-12-14T10:15:30.0514184",
+      },
+      {
+        vendorGroupId: "Test 03",
+        dataAreaId: "agtc",
+        description: "Test Group 3",
+        recId: 6,
+        createdOn: "2025-12-13T09:20:45.0514184",
+      },
+      {
+        vendorGroupId: "Test 02",
+        dataAreaId: "agtc",
+        description: "Test Group 2",
+        recId: 5,
+        createdOn: "2025-12-12T14:30:12.0514184",
+      },
+      {
+        vendorGroupId: "Test 01",
+        dataAreaId: "agtc",
+        description: "Test Group 1",
+        recId: 4,
+        createdOn: "2025-12-11T11:45:22.0514184",
+      },
+      {
+        vendorGroupId: "Test 06",
+        dataAreaId: "agtc",
+        description: "Test Group 6",
+        recId: 9,
+        createdOn: "2025-12-16T12:24:06.0514184",
+      },
+      {
+        vendorGroupId: "Test 07",
+        dataAreaId: "agtc",
+        description: "Test Group 7",
+        recId: 10,
+        createdOn: "2025-12-17T12:24:06.0514184",
+      },
+      {
+        vendorGroupId: "Test 08",
+        dataAreaId: "agtc",
+        description: "Test Group 8",
+        recId: 11,
+        createdOn: "2025-12-18T12:24:06.0514184",
+      },
+    ]);
+  }, [currentPage]);
 
   const handleRowClick = (id) => {
     navigate(`/vendor-groups/${id}`);
@@ -87,6 +109,7 @@ export default function VendorGroups() {
           onClick={() => handleRowClick(0)}
           className="bg-teal-600 text-white hover:bg-teal-700 transition-colors"
           title="Add New"
+          icon={<IconAdd />}
           size="btn_md"
           ResourcePage="VendorGroups"
         />
@@ -119,7 +142,13 @@ export default function VendorGroups() {
         <div className="overflow-y-auto max-h-[500px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
-              {vendorGroups.length > 0 ? (
+              {isLoading ? (
+                  <tr>
+                    <td colSpan={4} className="py-20">
+                      <Loading />
+                    </td>
+                  </tr>
+                ) : vendorGroups.length > 0 ? (
                 vendorGroups.map((group) => (
                   <tr
                     key={group.recId}
@@ -174,13 +203,14 @@ export default function VendorGroups() {
           </table>
         </div>
       </div>
-
+      {!isLoading && totalRow > pageSize && (
       <Pagination
         currentPage={currentPage}
         totalRows={totalRow}
         pageSize={pageSize}
         onPageChange={handlePageChange}
       />
+      )}
     </div>
   );
 }

@@ -5,7 +5,8 @@ import useGetById from "../Hooks/useGetById";
 import useHandleSubmit from "../Hooks/useHandleSubmit";
 import CustomInput from "../Components/Form/CustomInput";
 import CustomeBtn from "../Components/CustomeBtn";
-
+import Loading from "../Components/loader";
+import { IconClose } from "../assets/Icons/IconsSvg"; 
 export default function VendorGroupsAddEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -28,16 +29,28 @@ export default function VendorGroupsAddEdit() {
     else setIsLoading(false);
   }, [id, fetchData]);
 
-  // if (isLoading) return "...loading";
+
 
   return (
     <div className="flex flex-col gap-16">
+      <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-gray-800">
         {id !== "0"
           ? "Update vendor group information"
           : "Create a new vendor group"}
       </h1>
-
+     <button
+        onClick={() => navigate("/vendor-groups")}
+        className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+        title="Close"
+        type="button"
+      >
+      <IconClose className="w-6 h-6 text-gray-600" />
+      </button>
+      </div>
+      {isLoading ? (
+        <Loading />
+    ) : (
       <Formik
         initialValues={{
           vendorGroupId: data.vendorGroupId || "",
@@ -45,22 +58,17 @@ export default function VendorGroupsAddEdit() {
           description: data.description || "",
         }}
         enableReinitialize
-        onSubmit={(values) => {
-          const isEdit = id !== "0";
-          const apiUrl = isEdit
-            ? `VendorGroups/Update?id=${id}`
-            : "VendorGroups/Add";
-
-          setIsSubmitting(true);
-          handleSubmitFormik(
-            apiUrl,
+        onSubmit={async(values) => {
+          await handleSubmitFormik({
+            apiPage: "VendorGroups",
             values,
-            "VendorGroups",
-            isEdit ? "edit" : "add",
-            setIsSubmitting,
+            recId: id,
+            resourcePage: "VendorGroups",
+            setIsLoadingSubmit: setIsSubmitting,
             setData,
-            () => navigate("/vendor-groups")
-          );
+            navigateTo: "/vendor-groups",
+            fetchData,
+          });
         }}
       >
         {({ handleChange, values }) => {
@@ -110,6 +118,7 @@ export default function VendorGroupsAddEdit() {
           );
         }}
       </Formik>
+    )}
     </div>
   );
 }

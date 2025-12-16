@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit } from "../assets/Icons/IconsSvg";
+import { IconEdit,IconAdd } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
-
+import Loading from "../Components/loader";
 export default function Vendors() {
   const navigate = useNavigate();
-  const [vendors, setVendors] = useState([]);
+  const [ vendors, setVendors ] = useState( [] );
+  const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const totalRow = vendors.length;
   const pageSize = 10;
@@ -122,7 +123,7 @@ export default function Vendors() {
         createdOn: "2023-01-01",
       },
     ]);
-  }, []);
+  }, [currentPage]);
 
   const handleRowClick = (id) => {
     navigate(`/vendors/${id}`);
@@ -145,6 +146,7 @@ export default function Vendors() {
           onClick={() => handleRowClick(0)}
           className="bg-teal-600 text-white hover:bg-teal-700 transition-colors"
           title="Add New"
+          icon={<IconAdd />}
           size="btn_md"
           ResourcePage="Vendors"
         />
@@ -180,7 +182,13 @@ export default function Vendors() {
         <div className="overflow-y-auto max-h-[500px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
-              {vendors.length > 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={4} className="py-20">
+                    <Loading />
+                  </td>
+                </tr>
+              ) : vendors.length > 0 ? (
                 vendors.map((c) => (
                   <tr
                     key={c.recId}
@@ -239,12 +247,14 @@ export default function Vendors() {
         </div>
       </div>
 
-      <Pagination
-        currentPage={currentPage}
-        totalRows={totalRow}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-      />
+      {!isLoading && totalRow > pageSize && (
+        <Pagination
+          currentPage={currentPage}
+          totalRows={totalRow}
+          pageSize={pageSize}
+          onPageChange={ handlePageChange }
+        />
+      )}
     </div>
   );
 }

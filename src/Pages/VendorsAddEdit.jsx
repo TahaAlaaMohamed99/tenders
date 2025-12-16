@@ -7,7 +7,8 @@ import CustomInput from "../Components/Form/CustomInput";
 import CustomeSelect from "../Components/Form/CustomSelect/index";
 import CustomeBtn from "../Components/CustomeBtn";
 import useCurrencyOptions from "../Hooks/useCurrencyOptions";
-
+import Loading from "../Components/loader";
+import { IconClose } from "../assets/Icons/IconsSvg"; 
 export default function VendorsAddEdit() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -30,32 +31,44 @@ export default function VendorsAddEdit() {
     else setIsLoading(false);
   }, [id, fetchData]);
 
-  // if (isLoading) return "...loading";
+
 
   return (
     <div className="flex flex-col gap-16">
+      <div className="flex items-center justify-between">
       <h1 className="text-2xl font-bold text-gray-800">
         {id !== "0" ? "Update vendor information" : "Create a new vendor"}
-      </h1>
+        </h1>
+        <button
+          onClick={() => navigate("/vendors")}
+          className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          title="Close"
+          type="button"
+        >
+          <IconClose className="w-6 h-6 text-gray-600" />
+        </button>
+      </div>
+      {isLoading ? (
+        <Loading />
+    ) : (
       <Formik
         initialValues={{
           name: data.name || "",
           vendorAccount: data.vendorAccountNumber || "",
           currencyCode: data.currencyCode || "",
         }}
-        onSubmit={(values) => {
-          const isEdit = id !== "0";
-          const apiUrl = isEdit ? `Vendors/Update?id=${id}` : "Vendors/Add";
-          setIsSubmitting(true);
-          handleSubmitFormik(
-            apiUrl,
+        enableReinitialize
+        onSubmit={async (values) => {
+          await handleSubmitFormik({
+            apiPage: "Vendors",
             values,
-            "Vendors",
-            isEdit ? "edit" : "add",
-            setIsSubmitting,
+            recId: id,
+            resourcePage: "Vendors",
+            setIsLoadingSubmit: setIsSubmitting,
             setData,
-            () => navigate("/vendors")
-          );
+            navigateTo: "/vendors",
+            fetchData,
+          });
         }}
       >
         {({ handleChange, setFieldValue, values }) => {
@@ -101,6 +114,7 @@ export default function VendorsAddEdit() {
           );
         }}
       </Formik>
+    )}
     </div>
   );
 }

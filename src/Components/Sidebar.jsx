@@ -1,15 +1,21 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import CustomeBtn from "./CustomeBtn";
-import { IconDasboard } from "../assets/Icons/IconsSvg";
+import {
+  IconDasboard,
+  Handshake,
+  IconGroupsSharp,
+  IconCurrencies,
+} from "../assets/Icons/IconsSvg";
+
 
 export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const menuItems = [
-    { id: "currencies", label: "Currencies", path: "/currencies", icon: "$" },
-    { id: "vendors", label: "Vendors", path: "/vendors", icon: "V" },
-    { id: "vendorGroups", label: "Vendor Groups", path: "/vendor-groups", icon: "VG" },
+    { id: "currencies", label: "Currencies", path: "/currencies", icon: <IconCurrencies />},
+    { id: "vendors", label: "Vendors", path: "/vendors", icon: <Handshake />},
+    { id: "vendorGroups", label: "Vendor Groups", path: "/vendor-groups", icon: <IconGroupsSharp />}
   ];
 
   return (
@@ -19,7 +25,7 @@ export default function Sidebar() {
         <span className="text-xl font-bold text-teal-600">Tenders</span>
       </div>
 
-      <nav className="p-4 flex-1 overflow-y-auto">
+      <nav className="p-4 flex-1 fixed">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const isActive =
@@ -39,8 +45,8 @@ export default function Sidebar() {
                     w-full justify-start gap-3 px-4 py-3
                     ${
                       isActive
-                        ? "bg-blue-50 text-teal-600 font-medium hover:bg-blue-50"
-                        : "text-gray-700 hover:bg-gray-50"
+                        ? "bg-blue-50 text-teal-600 font-medium hover:bg-blue-50 border-none"
+                        : "text-gray-700 hover:bg-gray-50 border-none"
                     }
                   `}
                 />
