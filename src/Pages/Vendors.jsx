@@ -179,7 +179,7 @@ export default function Vendors() {
           </thead>
         </table>
 
-        <div className="overflow-y-auto max-h-[500px]">
+        <div className="overflow-y-auto max-h-[400px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
               {isLoading ? (
