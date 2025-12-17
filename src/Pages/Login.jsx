@@ -7,6 +7,7 @@ import { loginSchema } from "../utils/validation";
 
 import CustomInput from "../Components/Form/CustomInput";
 import CustomeBtn from "../Components/CustomeBtn";
+import { LogoName } from "../assets/Icons/IconsSvg";
 
 export default function Login() {
   const { login } = useAuth();
@@ -36,13 +37,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="h-screen bg-white flex">
       {/* Left Side */}
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center px-8 md:px-12 lg:px-16 bg-white">
+      <div className="w-full md:w-2/5 flex flex-col justify-center items-center px-4 md:px-12 lg:px-16 bg-white">
         <div className="max-w-md w-full space-y-6">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-800">Tenders</h1>
-            <h2 className="mt-2 text-2xl font-semibold text-gray-700">
+          <div className="flex flex-col items-center">
+               <LogoName className="w-40 mb-6" />
+             <h2 className="mt-2 text-2xl font-semibold text-gray-700">
               Welcome Back
             </h2>
             <p className="mt-2 text-sm text-gray-600">Let's get started.</p>
@@ -100,14 +101,13 @@ export default function Login() {
         </div>
       </div>
       {/* Right Side */}
-      <div className="hidden md:flex w-1/2 relative overflow-hidden">
-        {/* Curved Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-500 to-teal-600 rounded-tl-[80px]" />
+      <div className="hidden md:flex flex-col w-3/5 relative overflow-hidden  bg-gradient-to-br from-teal-500 to-teal-600 rounded-tl-[80px]">
+  
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center px-8 py-16 text-white mt-12">
-          <h2 className="text-4xl font-semibold leading-tight mb-4">
-            Control your Finances <br />
+        <div className="relative z-10 flex flex-col justify-center px-8 py-8 text-white mt-12">
+          <h2 className="text-3xl font-semibold leading-tight mb-4">
+            Control your Finances  
             With Our Smart Tool
           </h2>
 
@@ -116,13 +116,14 @@ export default function Login() {
             wealth easily.
           </p>
 
+        
+        </div>
           {/* Dashboard Image */}
           <img
             src="/TenderApp.png"
             alt="Dashboard Preview"
-            className="max-w-xl drop-shadow-2xl"
+            className=" w-full relative -end-16 drop-shadow-2xl"
           />
-        </div>
       </div>
     </div>
   );
