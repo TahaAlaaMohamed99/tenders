@@ -29,7 +29,7 @@ export default function VendorsAddEdit() {
   useEffect(() => {
     if (id !== "0") fetchData();
     else setIsLoading(false);
-  }, [id, fetchData]);
+  }, [id]);
 
 
 

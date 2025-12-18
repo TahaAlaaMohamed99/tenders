@@ -31,7 +31,7 @@ export default function CurrencyAddEdit() {
   useEffect(() => {
     if (id !== "0") fetchData();
     else setIsLoading(false);
-  }, [id, fetchData]);
+  }, [id]);
 
 
   return (

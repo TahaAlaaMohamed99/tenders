@@ -15,7 +15,7 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading) => {
         `/${ApiGet}?${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
       );
       if (response !== 404) {
-        let updatedData = response.data;
+        let updatedData = response.data ? response.data : response;
 
         setDataGrid(updatedData);
         setTotalRow(response.total);

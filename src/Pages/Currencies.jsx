@@ -11,12 +11,12 @@ export default function Currencies() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  const totalRow = currencies.length;
-  // const { totalRow, fetchGridData } = useGridData(
-  //   "Currencies/GetAll",
-  //   setCurrencies,
-  //   setIsLoading
-  // );
+  // const totalRow = currencies.length;
+  const { totalRow, fetchGridData } = useGridData(
+    "Currencies/GetAll",
+    setCurrencies,
+    setIsLoading
+  );
 
   const handlePageChange = (page) => {
     if (page < 1) return;
@@ -24,87 +24,87 @@ export default function Currencies() {
   };
 
   useEffect(() => {
-    // fetchGridData(currentPage, pageSize);
-     setCurrencies([
-      {
-        currencyCode: "AOA",
-        recId: 13,
-        createdOn: "2025-12-14T14:43:32.4906335",
-        name: "ANGOLA Currency",
-      },
-      {
-        currencyCode: "NGN",
-        recId: 12,
-        createdOn: "2025-12-14T14:30:25.0711346",
-        name: "Nigeriaa",
-      },
-      {
-        currencyCode: "EGP",
-        recId: 11,
-        createdOn: "2025-12-14T14:06:36.8408815",
-        name: "Egypt Currency",
-      },
-      {
-        currencyCode: "GBP",
-        recId: 10,
-        createdOn: "2025-12-14T14:06:33.2844631",
-        name: "Pound Sterling",
-      },
-      {
-        currencyCode: "CNY",
-        recId: 9,
-        createdOn: "2025-12-14T14:06:31.5822213",
-        name: "Yuan Renminbi",
-      },
-      {
-        currencyCode: "CHF",
-        recId: 8,
-        createdOn: "2025-12-14T14:06:29.9489311",
-        name: "Swiss Franc",
-      },
-      {
-        currencyCode: "QAR",
-        recId: 7,
-        createdOn: "2025-12-14T14:06:28.0552512",
-        name: "Qatari Rial",
-      },
-      {
-        currencyCode: "SAR",
-        recId: 6,
-        createdOn: "2025-12-14T14:06:24.5307478",
-        name: "Saudi Riyal",
-      },
-      {
-        currencyCode: "AED",
-        recId: 5,
-        createdOn: "2025-12-14T14:06:21.1909939",
-        name: "UAE Dirham",
-      },
-      {
-        currencyCode: "OMR",
-        recId: 4,
-        createdOn: "2025-12-14T14:06:17.7655592",
-        name: "Rial Omani",
-      },
-      {
-        currencyCode: "EUR",
-        recId: 3,
-        createdOn: "2025-12-14T14:06:15.9049108",
-        name: "Euro",
-      },
-      {
-        currencyCode: "USD",
-        recId: 2,
-        createdOn: "2025-12-14T14:06:14.1516051",
-        name: "US Dollar",
-      },
-      {
-        currencyCode: "KWD",
-        recId: 1,
-        createdOn: "2025-12-14T14:06:04.8710048",
-        name: "Kuwaiti Dinar",
-      },
-    ]);
+    fetchGridData(currentPage, pageSize);
+    //  setCurrencies([
+    //   {
+    //     currencyCode: "AOA",
+    //     recId: 13,
+    //     createdOn: "2025-12-14T14:43:32.4906335",
+    //     name: "ANGOLA Currency",
+    //   },
+    //   {
+    //     currencyCode: "NGN",
+    //     recId: 12,
+    //     createdOn: "2025-12-14T14:30:25.0711346",
+    //     name: "Nigeriaa",
+    //   },
+    //   {
+    //     currencyCode: "EGP",
+    //     recId: 11,
+    //     createdOn: "2025-12-14T14:06:36.8408815",
+    //     name: "Egypt Currency",
+    //   },
+    //   {
+    //     currencyCode: "GBP",
+    //     recId: 10,
+    //     createdOn: "2025-12-14T14:06:33.2844631",
+    //     name: "Pound Sterling",
+    //   },
+    //   {
+    //     currencyCode: "CNY",
+    //     recId: 9,
+    //     createdOn: "2025-12-14T14:06:31.5822213",
+    //     name: "Yuan Renminbi",
+    //   },
+    //   {
+    //     currencyCode: "CHF",
+    //     recId: 8,
+    //     createdOn: "2025-12-14T14:06:29.9489311",
+    //     name: "Swiss Franc",
+    //   },
+    //   {
+    //     currencyCode: "QAR",
+    //     recId: 7,
+    //     createdOn: "2025-12-14T14:06:28.0552512",
+    //     name: "Qatari Rial",
+    //   },
+    //   {
+    //     currencyCode: "SAR",
+    //     recId: 6,
+    //     createdOn: "2025-12-14T14:06:24.5307478",
+    //     name: "Saudi Riyal",
+    //   },
+    //   {
+    //     currencyCode: "AED",
+    //     recId: 5,
+    //     createdOn: "2025-12-14T14:06:21.1909939",
+    //     name: "UAE Dirham",
+    //   },
+    //   {
+    //     currencyCode: "OMR",
+    //     recId: 4,
+    //     createdOn: "2025-12-14T14:06:17.7655592",
+    //     name: "Rial Omani",
+    //   },
+    //   {
+    //     currencyCode: "EUR",
+    //     recId: 3,
+    //     createdOn: "2025-12-14T14:06:15.9049108",
+    //     name: "Euro",
+    //   },
+    //   {
+    //     currencyCode: "USD",
+    //     recId: 2,
+    //     createdOn: "2025-12-14T14:06:14.1516051",
+    //     name: "US Dollar",
+    //   },
+    //   {
+    //     currencyCode: "KWD",
+    //     recId: 1,
+    //     createdOn: "2025-12-14T14:06:04.8710048",
+    //     name: "Kuwaiti Dinar",
+    //   },
+    // ]);
   }, [currentPage]);
 
   const navigate = useNavigate();
@@ -174,23 +174,20 @@ export default function Currencies() {
                     className="hover:bg-gray-50 transition-colors cursor-pointer"
                     onClick={() => handleRowClick(c.recId)}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap truncate">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
                         {c.currencyCode}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate">
                       {c.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
                       {formatDate(c.createdOn)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap ">
                       <div className="flex -space-x-6  gap-2">
-                        <CustomeBtn
-                          size="btn_sm"
-                          ResourcePage="Currencies"
-                        />
+                        <CustomeBtn size="btn_sm" ResourcePage="Currencies" />
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Currencies"

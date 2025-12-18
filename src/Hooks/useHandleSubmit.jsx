@@ -65,9 +65,8 @@ export default function useHandleSubmit() {
         formData ? { headers: { "Content-Type": "multipart/form-data" } } : {}
       );
 
-      const { message, messageText } = response.data;
-
-      if (message === 200 || message === 1) {
+      const { message, isError } = response.data;
+      if ( !isError ) {
         toast.success(
           messageText || (
             <TranslationText
@@ -86,11 +85,19 @@ export default function useHandleSubmit() {
 
         fetchData?.();
         onSuccess?.();
-
-        if (navigateTo) {
-          navigate(navigateTo);
-        }
       }
+      else if ( isError ) {
+        toast.error(
+          <TranslationText
+            title={
+              message[0] ??
+              ( recId === "0" ? "addFailed" : "editFailed" )
+            }
+            ResourcePage={ resourcePage }
+          />
+        );
+      }
+      if (navigateTo) navigate(navigateTo);
     } catch (error) {
       const status = error?.response?.status;
 

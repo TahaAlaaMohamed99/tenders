@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit,IconAdd, IconDeleteVendorGroup, IconTrash } from "../assets/Icons/IconsSvg";
+import { IconAdd, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -11,13 +11,13 @@ export default function VendorGroups() {
   const [ vendorGroups, setVendorGroups ] = useState( [] );
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalRow = vendorGroups.length;
+  // const totalRow = vendorGroups.length;
   const pageSize = 6;
-  // const { totalRow, fetchGridData } = useGridData(
-  //   "VendorGroups/GetAll",
-  //   setVendorGroups,
-  //   setIsLoading
-  // );
+  const { totalRow, fetchGridData } = useGridData(
+    "VendorGroups/GetAll",
+    setVendorGroups,
+    setIsLoading
+  );
 
   const handlePageChange = (page) => {
     if (page < 1) return;
@@ -25,65 +25,65 @@ export default function VendorGroups() {
   };
 
   useEffect(() => {
-    // fetchGridData(currentPage, pageSize);
-    setVendorGroups([
-      {
-        vendorGroupId: "Test 05",
-        dataAreaId: "agtc",
-        description: "Test",
-        recId: 8,
-        createdOn: "2025-12-15T12:24:06.0514184",
-      },
-      {
-        vendorGroupId: "Test 04",
-        dataAreaId: "agtc",
-        description: "Test Group 4",
-        recId: 7,
-        createdOn: "2025-12-14T10:15:30.0514184",
-      },
-      {
-        vendorGroupId: "Test 03",
-        dataAreaId: "agtc",
-        description: "Test Group 3",
-        recId: 6,
-        createdOn: "2025-12-13T09:20:45.0514184",
-      },
-      {
-        vendorGroupId: "Test 02",
-        dataAreaId: "agtc",
-        description: "Test Group 2",
-        recId: 5,
-        createdOn: "2025-12-12T14:30:12.0514184",
-      },
-      {
-        vendorGroupId: "Test 01",
-        dataAreaId: "agtc",
-        description: "Test Group 1",
-        recId: 4,
-        createdOn: "2025-12-11T11:45:22.0514184",
-      },
-      {
-        vendorGroupId: "Test 06",
-        dataAreaId: "agtc",
-        description: "Test Group 6",
-        recId: 9,
-        createdOn: "2025-12-16T12:24:06.0514184",
-      },
-      {
-        vendorGroupId: "Test 07",
-        dataAreaId: "agtc",
-        description: "Test Group 7",
-        recId: 10,
-        createdOn: "2025-12-17T12:24:06.0514184",
-      },
-      {
-        vendorGroupId: "Test 08",
-        dataAreaId: "agtc",
-        description: "Test Group 8",
-        recId: 11,
-        createdOn: "2025-12-18T12:24:06.0514184",
-      },
-    ]);
+    fetchGridData(currentPage, pageSize);
+    // setVendorGroups([
+    //   {
+    //     vendorGroupId: "Test 05",
+    //     dataAreaId: "agtc",
+    //     description: "Test",
+    //     recId: 8,
+    //     createdOn: "2025-12-15T12:24:06.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 04",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 4",
+    //     recId: 7,
+    //     createdOn: "2025-12-14T10:15:30.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 03",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 3",
+    //     recId: 6,
+    //     createdOn: "2025-12-13T09:20:45.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 02",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 2",
+    //     recId: 5,
+    //     createdOn: "2025-12-12T14:30:12.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 01",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 1",
+    //     recId: 4,
+    //     createdOn: "2025-12-11T11:45:22.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 06",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 6",
+    //     recId: 9,
+    //     createdOn: "2025-12-16T12:24:06.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 07",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 7",
+    //     recId: 10,
+    //     createdOn: "2025-12-17T12:24:06.0514184",
+    //   },
+    //   {
+    //     vendorGroupId: "Test 08",
+    //     dataAreaId: "agtc",
+    //     description: "Test Group 8",
+    //     recId: 11,
+    //     createdOn: "2025-12-18T12:24:06.0514184",
+    //   },
+    // ]);
   }, [currentPage]);
 
   const handleRowClick = (id) => {
@@ -157,18 +157,18 @@ export default function VendorGroups() {
                     className="hover:bg-gray-50 transition-colors cursor-pointer"
                     onClick={() => handleRowClick(group.recId)}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
                         {group.vendorGroupId}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
                       {group.dataAreaId}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate">
                       {group.description}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
                       {formatDate(group.createdOn)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">

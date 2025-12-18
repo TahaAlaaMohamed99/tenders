@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit,IconAdd, IconDeleteVendor, IconTrash } from "../assets/Icons/IconsSvg";
+import { IconAdd, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -10,13 +10,13 @@ export default function Vendors() {
   const [ vendors, setVendors ] = useState( [] );
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalRow = vendors.length;
+  // const totalRow = vendors.length;
   const pageSize = 10;
-  // const { totalRow, fetchGridData } = useGridData(
-  //   "Vendors/GetAll",
-  //   setVendors,
-  //   setIsLoading
-  // );
+  const { totalRow, fetchGridData } = useGridData(
+    "Vendors/GetAll",
+    setVendors,
+    setIsLoading
+  );
 
   const handlePageChange = (page) => {
     if (page < 1) return;
@@ -24,105 +24,105 @@ export default function Vendors() {
   };
 
   useEffect(() => {
-    // fetchGridData(currentPage, pageSize);
-    setVendors([
-      {
-        recId: 1,
-        name: "Vendor 1",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 2,
-        name: "Vendor 2",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 3,
-        name: "Vendor 3",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 4,
-        name: "Vendor 4",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 5,
-        name: "Vendor 5",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 6,
-        name: "Vendor 6",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 7,
-        name: "Vendor 7",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 8,
-        name: "Vendor 8",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 9,
-        name: "Vendor 9",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 10,
-        name: "Vendor 10",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 11,
-        name: "Vendor 11",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-      {
-        recId: 12,
-        name: "Vendor 12",
-        vendorAccountNumber: "1234567890",
-        currencyCode: "USD",
-        vendorPartyType: "Supplier",
-        createdOn: "2023-01-01",
-      },
-    ]);
+    fetchGridData(currentPage, pageSize);
+    // setVendors([
+    //   {
+    //     recId: 1,
+    //     name: "Vendor 1",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 2,
+    //     name: "Vendor 2",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 3,
+    //     name: "Vendor 3",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 4,
+    //     name: "Vendor 4",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 5,
+    //     name: "Vendor 5",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 6,
+    //     name: "Vendor 6",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 7,
+    //     name: "Vendor 7",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 8,
+    //     name: "Vendor 8",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 9,
+    //     name: "Vendor 9",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 10,
+    //     name: "Vendor 10",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 11,
+    //     name: "Vendor 11",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    //   {
+    //     recId: 12,
+    //     name: "Vendor 12",
+    //     vendorAccountNumber: "1234567890",
+    //     currencyCode: "USD",
+    //     vendorPartyType: "Supplier",
+    //     createdOn: "2023-01-01",
+    //   },
+    // ]);
   }, [currentPage]);
 
   const handleRowClick = (id) => {
@@ -170,6 +170,9 @@ export default function Vendors() {
                 Party Type
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Vendor Group
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created On
               </th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -195,21 +198,24 @@ export default function Vendors() {
                     className="hover:bg-gray-50 transition-colors cursor-pointer"
                     onClick={() => handleRowClick(c.recId)}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 truncate">
                       {c.name}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
                       {c.vendorAccountNumber}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4 whitespace-nowrap truncate">
                       <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
                         {c.currencyCode}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
                       {c.vendorPartyType}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
+                      {c.vendorGroupId}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 truncate">
                       {formatDate(c.createdOn)}
                     </td>
                     <td className="py-4 whitespace-nowrap text-sm font-medium">

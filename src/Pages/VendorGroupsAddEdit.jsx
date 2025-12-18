@@ -18,26 +18,22 @@ export default function VendorGroupsAddEdit() {
   const [dataArea, setDataArea] = useState([]);
   const [data, setData] = useState({});
   const { handleSubmitFormik } = useHandleSubmit();
-  // const vendorsOptions = venderGroups.map((vg) => ({
-  //   value: vg.vendorGroupId,
-  //   label: vg.description || vg.vendorGroupId,
-  // }));
-  const vendorsOptions = [
-    { value: "Test 01", label: "Test 01" },
-    { value: "Test 02", label: "Test 02" },
-    { value: "Test 03", label: "Test 03" },
-    { value: "Test 04", label: "Test 04" },
-    { value: "Test 05", label: "Test 05" },
-  ];
-  const dataAreaOptions = [
-    { value: "Test 01", label: "Test 01" },
-    { value: "Test 02", label: "Test 02" },
-    { value: "Test 03", label: "Test 03" },
-    { value: "Test 04", label: "Test 04" },
-    { value: "Test 05", label: "Test 05" },
-  ];
-  // const { totalRow, fetchGridData: fetchVenderGroups } = useGridData("VendorGroups/GetLookup", setVendorGroups, setIsLoading);
-  // const { totalRow, fetchGridData: fetchDataArea } = useGridData("DataArea/GetLookup", setDataArea, setIsLoading);
+  // const vendorsOptions = [
+  //   { value: "Test 01", label: "Test 01" },
+  //   { value: "Test 02", label: "Test 02" },
+  //   { value: "Test 03", label: "Test 03" },
+  //   { value: "Test 04", label: "Test 04" },
+  //   { value: "Test 05", label: "Test 05" },
+  // ];
+  // const dataAreaOptions = [
+  //   { value: "Test 01", label: "Test 01" },
+  //   { value: "Test 02", label: "Test 02" },
+  //   { value: "Test 03", label: "Test 03" },
+  //   { value: "Test 04", label: "Test 04" },
+  //   { value: "Test 05", label: "Test 05" },
+  // ];
+  const { fetchGridData: fetchVenderGroups } = useGridData("VendorGroups/GetLookup", setVendorGroups, setIsLoading);
+  const { fetchGridData: fetchDataArea } = useGridData("Vendors/GetdataArea", setDataArea, setIsLoading);
   const fetchData = useGetById(
     "VendorGroups",
     id,
@@ -46,13 +42,24 @@ export default function VendorGroupsAddEdit() {
     "/vendor-groups",
     "VendorGroups"
   );
-
+  const vendorsOptions = Array.isArray(venderGroups)
+    ? venderGroups.map((vg) => ({
+        value: vg.vendorGroupId,
+        label: vg.vendorGroupId,
+      }))
+    : [];
+  const dataAreaOptions = Array.isArray(dataArea)
+    ? dataArea.map((vg) => ({
+        value: vg.legalEntityId,
+        label: vg.legalEntityId,
+      }))
+    : [];
   useEffect(() => {
-    // fetchVenderGroups();
-    // fetchDataArea();
+    fetchVenderGroups();
+    fetchDataArea();
     if (id !== "0") fetchData();
     else setIsLoading(false);
-  }, [id, fetchData]);
+  }, [id]);
 
   return (
     <div className="flex flex-col gap-16">
@@ -77,7 +84,7 @@ export default function VendorGroupsAddEdit() {
         <Formik
           initialValues={{
             vendorGroupId: data.vendorGroupId || "",
-            dataAreaId: data.dataAreaId || "",
+            dataAreaId: data.legalEntityId || "",
             description: data.description || "",
           }}
           enableReinitialize

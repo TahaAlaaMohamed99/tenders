@@ -33,11 +33,18 @@ export default function Pagination({
   for (let i = 1; i <= totalPages; i++) pageNumbers.push(i);
 
   return (
-    <div
-      className={`flex items-center justify-end gap-2 mt-4 ${
-        className || ""
-      }`}
-    >
+    <div className="flex items-center justify-between mt-2">
+      <span className="text-sm text-gray-600 whitespace-nowrap">
+        {`Showing ${(currentPage - 1) * pageSize + 1} to ${Math.min(
+          currentPage * pageSize,
+          totalRows
+        )} of ${totalRows} entries`}
+      </span>
+      <div
+        className={`flex items-center gap-2 mt-4 ${
+          className || ""
+        }`}
+      >
       <CustomeBtn
         title="Prev"
         size="btn_sm"
@@ -67,6 +74,7 @@ export default function Pagination({
         onClick={handleNext}
         className="bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
       />
+      </div>
     </div>
   );
 }
