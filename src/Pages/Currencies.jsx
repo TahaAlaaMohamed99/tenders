@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit, IconAdd, IconDeleteCurrency } from "../assets/Icons/IconsSvg";
+import { IconAdd, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -11,12 +11,12 @@ export default function Currencies() {
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
-  // const totalRow = currencies.length;
-  const { totalRow, fetchGridData } = useGridData(
-    "Currencies/GetAll",
-    setCurrencies,
-    setIsLoading
-  );
+  const totalRow = currencies.length;
+  // const { totalRow, fetchGridData } = useGridData(
+  //   "Currencies/GetAll",
+  //   setCurrencies,
+  //   setIsLoading
+  // );
 
   const handlePageChange = (page) => {
     if (page < 1) return;
@@ -24,87 +24,87 @@ export default function Currencies() {
   };
 
   useEffect(() => {
-    fetchGridData(currentPage, pageSize);
-    // setCurrencies([
-    //   {
-    //     currencyCode: "AOA",
-    //     recId: 13,
-    //     createdOn: "2025-12-14T14:43:32.4906335",
-    //     name: "ANGOLA Currency",
-    //   },
-    //   {
-    //     currencyCode: "NGN",
-    //     recId: 12,
-    //     createdOn: "2025-12-14T14:30:25.0711346",
-    //     name: "Nigeriaa",
-    //   },
-    //   {
-    //     currencyCode: "EGP",
-    //     recId: 11,
-    //     createdOn: "2025-12-14T14:06:36.8408815",
-    //     name: "Egypt Currency",
-    //   },
-    //   {
-    //     currencyCode: "GBP",
-    //     recId: 10,
-    //     createdOn: "2025-12-14T14:06:33.2844631",
-    //     name: "Pound Sterling",
-    //   },
-    //   {
-    //     currencyCode: "CNY",
-    //     recId: 9,
-    //     createdOn: "2025-12-14T14:06:31.5822213",
-    //     name: "Yuan Renminbi",
-    //   },
-    //   {
-    //     currencyCode: "CHF",
-    //     recId: 8,
-    //     createdOn: "2025-12-14T14:06:29.9489311",
-    //     name: "Swiss Franc",
-    //   },
-    //   {
-    //     currencyCode: "QAR",
-    //     recId: 7,
-    //     createdOn: "2025-12-14T14:06:28.0552512",
-    //     name: "Qatari Rial",
-    //   },
-    //   {
-    //     currencyCode: "SAR",
-    //     recId: 6,
-    //     createdOn: "2025-12-14T14:06:24.5307478",
-    //     name: "Saudi Riyal",
-    //   },
-    //   {
-    //     currencyCode: "AED",
-    //     recId: 5,
-    //     createdOn: "2025-12-14T14:06:21.1909939",
-    //     name: "UAE Dirham",
-    //   },
-    //   {
-    //     currencyCode: "OMR",
-    //     recId: 4,
-    //     createdOn: "2025-12-14T14:06:17.7655592",
-    //     name: "Rial Omani",
-    //   },
-    //   {
-    //     currencyCode: "EUR",
-    //     recId: 3,
-    //     createdOn: "2025-12-14T14:06:15.9049108",
-    //     name: "Euro",
-    //   },
-    //   {
-    //     currencyCode: "USD",
-    //     recId: 2,
-    //     createdOn: "2025-12-14T14:06:14.1516051",
-    //     name: "US Dollar",
-    //   },
-    //   {
-    //     currencyCode: "KWD",
-    //     recId: 1,
-    //     createdOn: "2025-12-14T14:06:04.8710048",
-    //     name: "Kuwaiti Dinar",
-    //   },
-    // ]);
+    // fetchGridData(currentPage, pageSize);
+     setCurrencies([
+      {
+        currencyCode: "AOA",
+        recId: 13,
+        createdOn: "2025-12-14T14:43:32.4906335",
+        name: "ANGOLA Currency",
+      },
+      {
+        currencyCode: "NGN",
+        recId: 12,
+        createdOn: "2025-12-14T14:30:25.0711346",
+        name: "Nigeriaa",
+      },
+      {
+        currencyCode: "EGP",
+        recId: 11,
+        createdOn: "2025-12-14T14:06:36.8408815",
+        name: "Egypt Currency",
+      },
+      {
+        currencyCode: "GBP",
+        recId: 10,
+        createdOn: "2025-12-14T14:06:33.2844631",
+        name: "Pound Sterling",
+      },
+      {
+        currencyCode: "CNY",
+        recId: 9,
+        createdOn: "2025-12-14T14:06:31.5822213",
+        name: "Yuan Renminbi",
+      },
+      {
+        currencyCode: "CHF",
+        recId: 8,
+        createdOn: "2025-12-14T14:06:29.9489311",
+        name: "Swiss Franc",
+      },
+      {
+        currencyCode: "QAR",
+        recId: 7,
+        createdOn: "2025-12-14T14:06:28.0552512",
+        name: "Qatari Rial",
+      },
+      {
+        currencyCode: "SAR",
+        recId: 6,
+        createdOn: "2025-12-14T14:06:24.5307478",
+        name: "Saudi Riyal",
+      },
+      {
+        currencyCode: "AED",
+        recId: 5,
+        createdOn: "2025-12-14T14:06:21.1909939",
+        name: "UAE Dirham",
+      },
+      {
+        currencyCode: "OMR",
+        recId: 4,
+        createdOn: "2025-12-14T14:06:17.7655592",
+        name: "Rial Omani",
+      },
+      {
+        currencyCode: "EUR",
+        recId: 3,
+        createdOn: "2025-12-14T14:06:15.9049108",
+        name: "Euro",
+      },
+      {
+        currencyCode: "USD",
+        recId: 2,
+        createdOn: "2025-12-14T14:06:14.1516051",
+        name: "US Dollar",
+      },
+      {
+        currencyCode: "KWD",
+        recId: 1,
+        createdOn: "2025-12-14T14:06:04.8710048",
+        name: "Kuwaiti Dinar",
+      },
+    ]);
   }, [currentPage]);
 
   const navigate = useNavigate();
@@ -120,16 +120,16 @@ export default function Currencies() {
     });
 
   return (
-    <div className="grid grid-cols-1 gap-6 pt-6">
+    <div className="grid grid-cols-1 gap-6 pt-1">
       {/* Header & Add Button */}
-      <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center justify-between mb-auto">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">Currencies</h2>
           <p className="text-sm text-gray-500 mt-3">Manage currencies</p>
         </div>
         <CustomeBtn
           onClick={() => handleRowClick(0)}
-          className="bg-teal-600 text-white hover:bg-teal-700 transition-colors"
+          className="bg-teal-600 text-white hover:bg-teal-700 transition-colors gap-2"
           title="Add New"
           icon={<IconAdd />}
           size="btn_md"
@@ -138,9 +138,9 @@ export default function Currencies() {
       </div>
 
       {/* Table / Content */}
-      <div className="overflow-x-auto border border-gray-200 rounded-lg">
+      <div className="overflow-x-auto border border-gray-200 rounded-lg bg-white">
         <table className="w-full table-fixed">
-          <thead className="bg-gray-50 border-b">
+          <thead className="border-b">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Currency Code
@@ -151,14 +151,14 @@ export default function Currencies() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created On
               </th>
-              <th className="px-20 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
         </table>
 
-        <div className="overflow-y-auto max-h-[400px]">
+        <div className="overflow-y-auto max-h-[500px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
               {isLoading ? (
@@ -185,17 +185,16 @@ export default function Currencies() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(c.createdOn)}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex -space-x-6 justify-end gap-2">
+                    <td className="px-6 py-4 whitespace-nowrap ">
+                      <div className="flex -space-x-6  gap-2">
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Currencies"
-                          icon={<IconEdit className="w-4 h-4" />}
                         />
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Currencies"
-                          icon={<IconDeleteCurrency className="w-5 h-5" />}
+                          icon={<IconTrash className="w-5 h-5" />}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("Delete currency", c.recId);

@@ -35,7 +35,7 @@ export default function CurrencyAddEdit() {
 
 
   return (
-    <div className="flex flex-col gap-16 mt-10 px-4">
+    <div className="flex flex-col gap-16 mt-1 px-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">
         {id !== "0" ? "Edit Currency" : "Add Currency"}

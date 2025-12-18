@@ -5,6 +5,7 @@ import {
   Handshake,
   IconGroupsSharp,
   IconCurrencies,
+  LogoName,
 } from "../assets/Icons/IconsSvg";
 import { useAuth } from "../context/AuthContext";
 
@@ -20,7 +21,7 @@ export default function Sidebar() {
     {
       id: "currencies",
       label: "Currencies",
-      path: "/",
+      path: "/currencies",
       icon: <IconCurrencies />,
     },
     { id: "vendors", label: "Vendors", path: "/vendors", icon: <Handshake /> },
@@ -33,10 +34,9 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="bg-white shadow-lg w-48 h-screen border-r border-gray-300">
+    <aside className="bg-white shadow-lg w-64 h-screen rounded-2xl">
       <div className="flex items-center gap-2 p-4 border-b">
-        <IconDasboard className="w-6 h-6 text-teal-600" />
-        <span className="text-xl font-bold text-teal-600">Tenders</span>
+        <LogoName className="w-40" />
       </div>
 
       <nav className="p-4 flex-1">
@@ -44,6 +44,7 @@ export default function Sidebar() {
           {menuItems.map((item) => {
             const isActive =
               location.pathname === item.path ||
+              location.pathname === item.path + "/*" ||
               location.pathname.startsWith(item.path + "/");
 
             return (
@@ -53,14 +54,14 @@ export default function Sidebar() {
                   title={item.label}
                   icon={item.icon}
                   ResourcePage="Sidebar"
-                  size="btn_md"
+                  size="btn_lg"
                   onClick={() => navigate(item.path)}
                   className={`
                     w-full justify-start gap-3 px-4 py-3
                     ${
                       isActive
-                        ? "bg-blue-50 text-teal-600 font-medium hover:bg-blue-50 border-none"
-                        : "text-gray-700 hover:bg-gray-50 border-none"
+                        ? "bg-blue-50 text-teal-600 font-bold !text-base hover:bg-blue-50 border-none"
+                        : "text-gray-700 hover:bg-gray-50 border-none font-bold !text-base"
                     }
                   `}
                 />
@@ -69,7 +70,7 @@ export default function Sidebar() {
           })}
         </ul>
       </nav>
-      <div className="p-4 border-t border-gray-200 mt-auto">
+      <div className="p-4 mt-auto">
         <CustomeBtn
           type="button"
           title="Logout"

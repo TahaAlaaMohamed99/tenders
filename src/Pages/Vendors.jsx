@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit,IconAdd, IconDeleteVendor } from "../assets/Icons/IconsSvg";
+import { IconEdit,IconAdd, IconDeleteVendor, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -135,7 +135,7 @@ export default function Vendors() {
       day: "numeric",
     });
   return (
-    <div className="grid grid-cols-1 gap-6 pt-6">
+    <div className="grid grid-cols-1 gap-6 pt-1">
       {/* Header & Add Button */}
       <div className="flex items-center justify-between mb-2">
         <div>
@@ -144,7 +144,7 @@ export default function Vendors() {
         </div>
         <CustomeBtn
           onClick={() => handleRowClick(0)}
-          className="bg-teal-600 text-white hover:bg-teal-700 transition-colors"
+          className="bg-teal-600 text-white hover:bg-teal-700 transition-colors gap-2"
           title="Add New"
           icon={<IconAdd />}
           size="btn_md"
@@ -153,9 +153,9 @@ export default function Vendors() {
       </div>
 
       {/* Table / Content */}
-      <div className="overflow-x-auto border border-gray-200 rounded-lg">
+      <div className="overflow-x-auto border border-gray-200 rounded-lg bg-white">
         <table className="w-full table-fixed">
-          <thead className="bg-gray-50 border-b">
+          <thead className=" border-b">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Name
@@ -172,14 +172,14 @@ export default function Vendors() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created On
               </th>
-              <th className="px-10 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
         </table>
 
-        <div className="overflow-y-auto max-h-[400px]">
+        <div className="overflow-y-auto max-h-[500px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
               {isLoading ? (
@@ -212,17 +212,13 @@ export default function Vendors() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(c.createdOn)}
                     </td>
-                    <td className="py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex -space-x-8 justify-end">
+                    <td className="py-4 whitespace-nowrap text-sm font-medium">
+                      <div className="flex -space-x-8">
+                        <CustomeBtn size="btn_sm" ResourcePage="Vendors" />
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="Vendors"
-                          icon={<IconEdit className="w-4 h-4" />}
-                        />
-                        <CustomeBtn
-                          size="btn_sm"
-                          ResourcePage="Vendors"
-                          icon={<IconDeleteVendor className="w-4 h-4" />}
+                          icon={<IconTrash className="w-4 h-4" />}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("Delete vendor", c.recId);
@@ -252,7 +248,7 @@ export default function Vendors() {
           currentPage={currentPage}
           totalRows={totalRow}
           pageSize={pageSize}
-          onPageChange={ handlePageChange }
+          onPageChange={handlePageChange}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
-import { IconEdit,IconAdd, IconDeleteVendorGroup } from "../assets/Icons/IconsSvg";
+import { IconEdit,IconAdd, IconDeleteVendorGroup, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
@@ -98,16 +98,18 @@ export default function VendorGroups() {
     });
 
   return (
-    <div className="grid grid-cols-1 gap-6 pt-6">
+    <div className="grid grid-cols-1 gap-6 pt-1">
       {/* Header & Add Button */}
       <div className="flex items-center justify-between mb-2">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">Vendor Groups</h2>
-          <p className="text-sm text-gray-500 mt-1">Manage your vendor groups</p>
+          <p className="text-sm text-gray-500 mt-1">
+            Manage your vendor groups
+          </p>
         </div>
         <CustomeBtn
           onClick={() => handleRowClick(0)}
-          className="bg-teal-600 text-white hover:bg-teal-700 transition-colors"
+          className="bg-teal-600 text-white hover:bg-teal-700 transition-colors gap-2"
           title="Add New"
           icon={<IconAdd />}
           size="btn_md"
@@ -116,9 +118,9 @@ export default function VendorGroups() {
       </div>
 
       {/* Table / Content */}
-      <div className="overflow-x-auto border border-gray-200 rounded-lg">
-        <table className="w-full table-fixed">
-          <thead className="bg-gray-50 border-b">
+      <div className="overflow-x-auto border border-gray-200 rounded-lg bg-white">
+        <table className="w-full table-fixed ">
+          <thead className="border-b">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Vendor Group
@@ -132,23 +134,23 @@ export default function VendorGroups() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Created On
               </th>
-              <th className="px-12 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
         </table>
 
-        <div className="overflow-y-auto max-h-[400px]">
+        <div className="overflow-y-auto max-h-[500px]">
           <table className="w-full table-fixed">
             <tbody className="divide-y divide-gray-200">
               {isLoading ? (
-                  <tr>
-                    <td colSpan={4} className="py-20">
-                      <Loading />
-                    </td>
-                  </tr>
-                ) : vendorGroups.length > 0 ? (
+                <tr>
+                  <td colSpan={4} className="py-20">
+                    <Loading />
+                  </td>
+                </tr>
+              ) : vendorGroups.length > 0 ? (
                 vendorGroups.map((group) => (
                   <tr
                     key={group.recId}
@@ -169,17 +171,13 @@ export default function VendorGroups() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {formatDate(group.createdOn)}
                     </td>
-                    <td className="px-2 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <div className="flex -space-x-6 justify-end">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex -space-x-8 ">
+                        <CustomeBtn size="btn_sm" ResourcePage="VendorGroups" />
                         <CustomeBtn
                           size="btn_sm"
                           ResourcePage="VendorGroups"
-                          icon={<IconEdit className="w-4 h-4" />}
-                        />
-                        <CustomeBtn
-                          size="btn_sm"
-                          ResourcePage="VendorGroups"
-                          icon={<IconDeleteVendorGroup className="w-5 h-5" />}
+                          icon={<IconTrash className="w-5 h-5" />}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("Delete vendor group", group.recId);
@@ -204,12 +202,12 @@ export default function VendorGroups() {
         </div>
       </div>
       {!isLoading && totalRow > pageSize && (
-      <Pagination
-        currentPage={currentPage}
-        totalRows={totalRow}
-        pageSize={pageSize}
-        onPageChange={handlePageChange}
-      />
+        <Pagination
+          currentPage={currentPage}
+          totalRows={totalRow}
+          pageSize={pageSize}
+          onPageChange={handlePageChange}
+        />
       )}
     </div>
   );
