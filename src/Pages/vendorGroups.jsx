@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CustomeBtn from "../Components/CustomeBtn";
 import { IconAdd, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
+import useHandleDelete from "../Hooks/useHandleDelete";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
 
@@ -11,8 +12,23 @@ export default function VendorGroups() {
   const [ vendorGroups, setVendorGroups ] = useState( [] );
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [ isDeleting, setIsDeleting ] = useState( false );
+  
+  const { handleDelete } = useHandleDelete();
+  const handleDeleteVendor = (id) => {
+    if (!window.confirm("Are you sure you want to delete this vendor?")) return;
+
+    handleDelete({
+      apiPage: "VendorGroups",
+      recId: id,
+      resourcePage: "VendorGroups",
+      setIsLoading: setIsDeleting,
+      onSuccess: () => fetchGridData(currentPage, pageSize),
+    });
+  };
+
   // const totalRow = vendorGroups.length;
-  const pageSize = 6;
+  const pageSize = 10;
   const { totalRow, fetchGridData } = useGridData(
     "VendorGroups/GetAll",
     setVendorGroups,
@@ -178,9 +194,10 @@ export default function VendorGroups() {
                           size="btn_sm"
                           ResourcePage="VendorGroups"
                           icon={<IconTrash className="w-5 h-5" />}
+                          disabled={isDeleting}
                           onClick={(e) => {
                             e.stopPropagation();
-                            console.log("Delete vendor group", group.recId);
+                            handleDeleteVendor(group.recId);
                           }}
                         />
                       </div>

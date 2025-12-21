@@ -18,18 +18,18 @@ export default function Sidebar() {
     navigate("/login");
   };
   const menuItems = [
-    {
-      id: "currencies",
-      label: "Currencies",
-      path: "/currencies",
-      icon: <IconCurrencies />,
-    },
     { id: "vendors", label: "Vendors", path: "/vendors", icon: <Handshake /> },
     {
       id: "vendorGroups",
       label: "Vendor Groups",
       path: "/vendor-groups",
       icon: <IconGroupsSharp />,
+    },
+    {
+      id: "currencies",
+      label: "Currencies",
+      path: "/currencies",
+      icon: <IconCurrencies />,
     },
   ];
 

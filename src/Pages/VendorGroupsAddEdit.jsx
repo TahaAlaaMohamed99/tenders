@@ -14,7 +14,6 @@ export default function VendorGroupsAddEdit() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [venderGroups, setVendorGroups] = useState([]);
   const [dataArea, setDataArea] = useState([]);
   const [data, setData] = useState({});
   const { handleSubmitFormik } = useHandleSubmit();
@@ -32,7 +31,6 @@ export default function VendorGroupsAddEdit() {
   //   { value: "Test 04", label: "Test 04" },
   //   { value: "Test 05", label: "Test 05" },
   // ];
-  const { fetchGridData: fetchVenderGroups } = useGridData("VendorGroups/GetLookup", setVendorGroups, setIsLoading);
   const { fetchGridData: fetchDataArea } = useGridData("Vendors/GetdataArea", setDataArea, setIsLoading);
   const fetchData = useGetById(
     "VendorGroups",
@@ -42,20 +40,14 @@ export default function VendorGroupsAddEdit() {
     "/vendor-groups",
     "VendorGroups"
   );
-  const vendorsOptions = Array.isArray(venderGroups)
-    ? venderGroups.map((vg) => ({
-        value: vg.vendorGroupId,
-        label: vg.vendorGroupId,
-      }))
-    : [];
+
   const dataAreaOptions = Array.isArray(dataArea)
     ? dataArea.map((vg) => ({
         value: vg.legalEntityId,
-        label: vg.legalEntityId,
+        label: vg.name,
       }))
     : [];
   useEffect(() => {
-    fetchVenderGroups();
     fetchDataArea();
     if (id !== "0") fetchData();
     else setIsLoading(false);
@@ -84,7 +76,7 @@ export default function VendorGroupsAddEdit() {
         <Formik
           initialValues={{
             vendorGroupId: data.vendorGroupId || "",
-            dataAreaId: data.legalEntityId || "",
+            dataAreaId: data.dataAreaId || "",
             description: data.description || "",
           }}
           enableReinitialize
@@ -102,6 +94,7 @@ export default function VendorGroupsAddEdit() {
           }}
         >
           {({ handleChange, setFieldValue, values }) => {
+          
             const isFormIncomplete =
               !values.vendorGroupId ||
               !values.dataAreaId ||
@@ -111,30 +104,23 @@ export default function VendorGroupsAddEdit() {
               <Form>
                 <div className="grid grid-cols-2 gap-4 mb-8">
                   <CustomeSelect
-                    label="Vendor Group ID"
-                    options={vendorsOptions}
-                    value={
-                      vendorsOptions.find(
-                        (opt) => opt.value === values.vendorGroupId
-                      ) || null
-                    }
-                    onChange={(selected) =>
-                      setFieldValue("vendorGroupId", selected?.value)
-                    }
-                    Required
-                    placeholder="Select Vendor Group Code"
-                  />
-                  <CustomeSelect
                     label="Data Area ID"
                     options={dataAreaOptions}
                     value={
                       dataAreaOptions.find(
-                        (opt) => opt.value === values.dataAreaId
+                        (opt) => opt.value.toLowerCase() === values.dataAreaId.toLowerCase()
                       ) || null
                     }
                     onChange={(selected) =>
                       setFieldValue("dataAreaId", selected?.value)
                     }
+                    Required
+                    placeholder="Select Data Area Code"
+                  />
+                  <CustomInput
+                    label="Vendor Group ID"
+                    value={values.vendorGroupId}
+                    onChange={handleChange("vendorGroupId")}
                     Required
                     placeholder="Select Data Area Code"
                   />

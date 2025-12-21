@@ -53,10 +53,11 @@ export default function useHandleSubmit() {
       const urlApi = useCustomUrl
         ? apiPage
         : isEdit
-        ? `${apiPage}/Update?id=${recId}`
+        ? `${apiPage}/Update`
         : `${apiPage}/Add`;
 
       const sendData = values;
+      isEdit && (sendData.recId = recId);
       const method = isEdit ? "put" : "post";
 
       const response = await Api[method](
@@ -65,10 +66,11 @@ export default function useHandleSubmit() {
         formData ? { headers: { "Content-Type": "multipart/form-data" } } : {}
       );
 
-      const { message, isError } = response.data;
-      if ( !isError ) {
+      const data = response || {};
+      const isError = data?.isError === true;
+      if (!isError) {
         toast.success(
-          messageText || (
+          data?.message || (
             <TranslationText
               title={isEdit ? "editSuccessfully" : "addedSuccessfully"}
               ResourcePage={resourcePage}
@@ -83,38 +85,32 @@ export default function useHandleSubmit() {
           });
         }
 
-        fetchData?.();
+        // fetchData?.();
         onSuccess?.();
-      }
-      else if ( isError ) {
-        toast.error(
-          <TranslationText
-            title={
-              message[0] ??
-              ( recId === "0" ? "addFailed" : "editFailed" )
-            }
-            ResourcePage={ resourcePage }
-          />
-        );
-      }
-      if (navigateTo) navigate(navigateTo);
-    } catch (error) {
-      const status = error?.response?.status;
+        if (navigateTo) navigate(navigateTo);
+        return;
+      } 
 
-      if (status === 400) {
-        toast.error(error?.response?.data?.title);
-        setData?.({ ...values });
-      } else {
         toast.error(
           <TranslationText
             title={
-              error?.response?.data?.details?.error ??
-              (recId === "0" ? "addFailed" : "editFailed")
+              Array.isArray(data?.message)
+                ? data.message[0]
+                : data?.message || (isEdit ? "editFailed" : "addFailed")
             }
             ResourcePage={resourcePage}
           />
         );
-      }
+    } catch (error) {
+      const backendMessage = error?.details || error?.message || error ||
+        (recId === "0" ? "addFailed" : "editFailed");
+
+      toast.error(
+        <TranslationText title={backendMessage} ResourcePage={resourcePage} />
+      );
+
+      // Keep form values intact
+      setData?.({ ...values });
     } finally {
       setIsLoadingSubmit?.(false);
     }

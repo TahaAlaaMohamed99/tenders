@@ -51,7 +51,7 @@ function AppContent() {
       <Routes>
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/currencies" replace /> : <Login />}
+          element={isAuthenticated ? <Navigate to="/vendors" replace /> : <Login />}
         />
 
         <Route

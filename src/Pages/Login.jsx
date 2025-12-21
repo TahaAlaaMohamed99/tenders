@@ -27,7 +27,7 @@ export default function Login() {
 
       if (success) {
         toast.success("Login successful!");
-        navigate("/currencies");
+        navigate("/vendors");
       } else {
         toast.error("Login failed!");
       }

@@ -28,7 +28,7 @@ const useGetById = (api, id, setIsLoading, setData, prevRoute , ResourcePage) =>
       setIsLoading(false);
      
     } catch (err) {
-        toast.error(<TranslationText page={ResourcePage} title="notFound" />)
+        toast.error(err?.error?.message || err?.error?.details || "not found");
         if(prevRoute){
           navigate(prevRoute)
         }

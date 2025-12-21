@@ -60,11 +60,11 @@ Api.interceptors.response.use(
         });
       }
   
-      if (error.response.status >= 400 && error.response.status < 500) {
+      if (error.response.status >= 400 && error.response.status < 500 ) {
         console.error("Client Error:", error.response.data);
         return Promise.reject({
-          message: error.response.data.message || "An error occurred. Please try again.",
-          details: error.response.data,
+          message: error.response.data.message || error?.message || "An error occurred. Please try again.",
+          details: error.response.data || error?.details ,
         });
       }
   
@@ -72,7 +72,7 @@ Api.interceptors.response.use(
       console.error("Unknown Error:", error.response.data);
       return Promise.reject({
         message: "An unexpected error occurred. Please try again.",
-        details: error.response.data,
+        details: error.response.data || error?.details
       });
     }
   );
