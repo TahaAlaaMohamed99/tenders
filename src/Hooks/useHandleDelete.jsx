@@ -52,8 +52,8 @@ export default function useHandleDelete() {
           ResourcePage={resourcePage}
         />
       );
-    } catch (error) { console.log(error)
-      const backendMessage = error?.details || error?.message || error || "deleteFailed";
+    } catch (error) {
+      const backendMessage = "Can not delete record while it's in use or linked to other records."//error?.details || error?.message || error || "deleteFailed";
 
       toast.error(
         <TranslationText title={backendMessage} ResourcePage={resourcePage} />

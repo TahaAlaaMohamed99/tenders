@@ -5,6 +5,7 @@ import { IconAdd, IconTrash } from "../assets/Icons/IconsSvg";
 import useGridData from "../Hooks/useGridData";
 import Pagination from "../Components/Pagination";
 import Loading from "../Components/loader";
+import { toast } from "react-toastify";
 
 export default function Currencies() {
   const [currencies, setCurrencies] = useState([]);
@@ -194,7 +195,7 @@ export default function Currencies() {
                           icon={<IconTrash className="w-5 h-5" />}
                           onClick={(e) => {
                             e.stopPropagation();
-                            console.log("Delete currency", c.recId);
+                            toast.error("Delete not allowed");
                           }}
                         />
                       </div>
