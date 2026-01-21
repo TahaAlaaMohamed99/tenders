@@ -7,7 +7,8 @@ import { loginSchema } from "../utils/validation";
 
 import CustomInput from "../Components/Form/CustomInput";
 import CustomeBtn from "../Components/CustomeBtn";
-import { LogoName } from "../assets/Icons/IconsSvg";
+import { LogoName, LoginImage, LoginDots, LoginDotsRight, LoginDotsLeft } from "../assets/Icons/IconsSvg";
+
 
 export default function Login() {
   const { login } = useAuth();
@@ -37,18 +38,22 @@ export default function Login() {
   };
 
   return (
-    <div className="h-screen bg-white flex">
-      {/* Left Side */}
-      <div className="w-full md:w-2/5 flex flex-col justify-center items-center px-4 md:px-12 lg:px-16 bg-white">
-        <div className="max-w-md w-full space-y-6">
-          <div className="flex flex-col items-center">
-               <LogoName className="w-40 mb-6" />
-             <h2 className="mt-2 text-2xl font-semibold text-gray-700">
+    <div className="flex h-screen overflow-hidden bg-white">
+      {/* Left Panel - Form Section */}
+      <div className="flex w-full flex-col items-center justify-center bg-white px-6 md:w-2/5 md:px-8 lg:px-12 xl:px-16">
+        <div className="w-full max-w-md space-y-6">
+          {/* Header */}
+          <div className="flex flex-col items-center space-y-2">
+            <LogoName className="mb-2 w-44 lg:w-48 xl:w-52" />
+            <h2 className="text-xl font-semibold text-titleColor lg:text-3xl dark:text-titleColorDark">
               Welcome Back
             </h2>
-            <p className="mt-2 text-sm text-gray-600">Let's get started.</p>
+            <p className="text-sm text-textColor dark:text-textColorDark">
+              let's get started.
+            </p>
           </div>
 
+          {/* Form */}
           <Formik
             initialValues={initialValues}
             validationSchema={loginSchema}
@@ -56,20 +61,22 @@ export default function Login() {
           >
             {({ values, handleChange, handleBlur, touched, errors }) => {
               const isFormIncomplete = !values.userName || !values.password;
+              
               return (
-                <Form className="mt-8 space-y-6">
+                <Form className="mt-6 space-y-4 lg:mt-8 lg:space-y-5">
                   <div className="space-y-4">
                     <CustomInput
-                      label="Username"
+                      label="Email or username"
                       name="userName"
                       type="text"
                       value={values.userName}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      placeholder="Enter your username"
+                      placeholder="Enter your email or username"
                       Required
                       touched={touched.userName}
                       errors={errors.userName}
+                      className="[&_.input_text]:rounded-lg [&_.input_text]:bg-bgColor [&_.input_text]:px-4 [&_.input_text]:py-3 [&_.input_text]:dark:bg-bgColorDark"
                     />
 
                     <CustomInput
@@ -83,14 +90,15 @@ export default function Login() {
                       Required
                       touched={touched.password}
                       errors={errors.password}
+                      className="[&_.input_text]:rounded-lg [&_.input_text]:bg-bgColor [&_.input_text]:px-4 [&_.input_text]:py-3 [&_.input_text]:dark:bg-bgColorDark"
                     />
                   </div>
 
                   <CustomeBtn
                     type="submit"
-                    title="Sign In"
+                    title="Sign in"
                     isLoading={isLoading}
-                    className="w-full bg-primary text-white hover:bg-teal-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full rounded-full bg-primary text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primaryDark dark:text-titleColor"
                     size="btn_md"
                     disabled={isFormIncomplete}
                   />
@@ -100,31 +108,40 @@ export default function Login() {
           </Formik>
         </div>
       </div>
-      {/* Right Side */}
-      <div className="hidden md:flex flex-col w-3/5 relative overflow-hidden  bg-gradient-to-br from-teal-500 to-teal-600 rounded-tl-[80px]">
-  
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center px-8 py-8 text-white mt-12">
-          <h2 className="text-3xl font-semibold leading-tight mb-4">
-            Control your Finances  
+      {/* Right Panel - Dashboard Preview */}
+      <div className="relative hidden w-3/5 flex-col overflow-hidden rounded-tl-[80px] bg-primary md:flex dark:bg-primaryDark">
+        {/* Decorative Dots - Center Top */}
+        <div className="absolute left-1/3 top-0 z-0 -translate-x-1/2">
+          <LoginDots className="h-10 w-20 opacity-20 lg:h-12 lg:w-24" />
+        </div>
+
+        {/* Decorative Dots - Right Edge */}
+        <LoginDotsRight className="absolute right-0 top-0 z-10 h-full w-10 opacity-20 lg:w-12" />
+
+        {/* Content Section */}
+        <div className="relative z-10 mb-6 flex flex-col justify-center space-y-3 px-8 py-8 text-white lg:mb-8 lg:mt-4 lg:space-y-4 lg:px-12 xl:mb-12 xl:mt-8 xl:px-16">
+          <h2 className="ml-8 max-w-lg text-xl font-semibold leading-tight lg:ml-12 lg:text-4xl xl:max-w-xl xl:text-5xl">
+            Control your Finances
+            <br />
             With Our Smart Tool
           </h2>
 
-          <p className="text-white/80 max-w-md ">
+          <p className="ml-8 max-w-sm text-md text-white/90 lg:ml-12 lg:max-w-md lg:text-base xl:max-w-lg">
             Invest intelligently and discover a better way to manage your entire
             wealth easily.
           </p>
-
-        
         </div>
-          {/* Dashboard Image */}
-          <img
-            src="/TenderApp.png"
-            alt="Dashboard Preview"
-            className=" w-full relative -end-16 drop-shadow-2xl"
-          />
+
+        {/* Dashboard Image Container */}
+        <div className="relative z-10 flex flex-1 items-end justify-center overflow-visible px-4 lg:justify-end lg:px-0">
+          <LoginImage className="h-auto w-full max-w-lg object-contain lg:max-w-xl xl:max-w-2xl" />
+        </div>
+
+        {/* Decorative Dots - Bottom Left */}
+        <LoginDotsLeft className="absolute bottom-0 left-24 z-10 w-10 opacity-20 lg:left-32 lg:w-12" />
       </div>
     </div>
   );
 }
+
