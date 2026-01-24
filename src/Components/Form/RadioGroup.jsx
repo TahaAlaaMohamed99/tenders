@@ -4,8 +4,8 @@ import TranslationText from '../TranslationText'
 
 export default function RadioGroup({ KeyGenerallist, label, options, optionsIcons = null, fieldName, values, onChange }) {
     return (
-        <div className='form-group cw_p'>
-            <label><TranslationText title={label} page={`Generallist?.${KeyGenerallist}`} /></label>
+        <div className='w-full flex flex-col'>
+            <label className="text-sm font-medium text-titleColor dark:text-titleColorDark mb-2"><TranslationText title={label} page={`Generallist?.${KeyGenerallist}`} /></label>
             <div className='grid grid-cols-2 gap-3'>
                 {options?.map((option, index) => (
                     <CardRadio

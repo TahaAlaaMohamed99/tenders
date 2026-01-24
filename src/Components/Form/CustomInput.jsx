@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
+import { useSelector } from "react-redux";
+
 /**
  * CustomInput Component:
  * This component renders a customizable input field with various types (e.g., text, password).
  * It handles validation, translations, and custom styling. It also includes a password visibility toggle for password fields.
+ * Features a static floating label that sits on the border with a customizable background.
+ * Uses Redux for language handling with prop override.
  * 
  * @param {string} label - The label to display for the input field.
- * @param {string} type - The type of the input (e.g., text, password).
+ * @param {string} type - The type of the input (e.g., text, password, email, number).
  * @param {string} value - The current value of the input field.
  * @param {string} placeholder - Placeholder text shown when no value is entered.
  * @param {Function} onChange - Callback function to handle changes in the input value.
@@ -20,8 +24,11 @@ import useTranslationText from "../../Hooks/useTranslationText";
  * @param {string} autoComplete - The autoComplete attribute for the input field.
  * @param {string} name - The name attribute of the input field.
  * @param {node} icon - The icon to display inside the input field (optional).
- * @param {string} lang - Language setting for the field (optional).
  * @param {string} ResourcePage - The resource page used for translations.
+ * @param {string} dir - Text direction (ltr/rtl) for the input field.
+ * @param {string} lang - Language setting for translations (overrides Redux if provided)
+ * @param {ref} ref - React ref for the input element.
+ * @param {string} labelBgColor - Custom background color for the label (e.g., "bg-white", "bg-gray-50"). Defaults to bgWhite/bgWhiteDark.
  */
 export default function CustomInput({
   label,
@@ -40,10 +47,19 @@ export default function CustomInput({
   icon,
   ResourcePage = "",
   dir,
-  ref = null
+  lang,
+  ref = null,
+  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark"
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  
+  // Redux language fallback
+  const currentLanguage = useSelector(
+    (state) => state.themeSlice.currentLanguage
+  );
+  const effectiveLang = lang || currentLanguage || "en";
+
   const handleFocus = () => setIsFocused(true);
 
   const handleShowPassword = () => {
@@ -53,50 +69,80 @@ export default function CustomInput({
     setIsFocused(false);
     if (onBlur) onBlur(event);
   };
-  const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: "en" });
+  const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: effectiveLang });
+  
   return (
-    <div
-      className={`form-group ${type === "password" ? "form-group_icon" : ""} ${touched && errors ? " error_group " : ""} ${className || ""
-        }`}
-    >
-      {label && (
-        <label htmlFor={`mega_${name}`} className={isFocused ? "focused" : disabled ? "disabled" : ""}>
-          <TranslationText title={label} page={ResourcePage} />
-          {Required ? (
-            <span className="text-red-500 dark:text-primaryDark">*</span>
-          ) : null}
-        </label>
-      )}
+    <div className={`w-full ${className || ""}`}>
       <div className="relative">
+        {label && (
+          <label 
+            htmlFor={`arkaan_${name}`}
+            className={`
+              input-label-floating
+              ${labelBgColor}
+              ${isFocused 
+                ? "text-primary dark:text-primaryDark" 
+                : disabled 
+                  ? "text-textColor dark:text-textColorDark opacity-60" 
+                  : "text-titleColor dark:text-titleColorDark"
+              }
+              ${touched && errors ? "text-error dark:text-errorDark" : ""}
+            `}
+          >
+            <TranslationText title={label} page={ResourcePage} />
+            {Required && (
+              <span className="icon_Required ml-0.5">*</span>
+            )}
+          </label>
+        )}
+        
         <input
           type={showPassword ? "text" : type}
-          placeholder={
-            textPlaceholder
-          }
+          placeholder={textPlaceholder}
           dir={dir}
           disabled={disabled}
           value={value}
           onChange={disabled ? null : onChange}
           onFocus={disabled ? null : handleFocus}
           onBlur={disabled ? null : handleBlur}
-          id={`mega_${name}`}
+          id={`arkaan_${name}`}
           autoComplete={autoComplete}
-          className="input_text"
           name={name}
           ref={ref}
+          className={`
+            input-field-base
+            ${touched && errors 
+              ? "border-error dark:border-errorDark" 
+              : isFocused 
+                ? "border-primary dark:border-primaryDark" 
+                : "border-borderColor dark:border-borderColorDark"
+            }
+            ${disabled ? "opacity-60 cursor-not-allowed bg-disabled dark:bg-bgColorDark" : ""}
+            ${type === "password" || icon ? "pr-12" : ""}
+          `}
         />
+        
         {type === "password" && (
-          <span
-            onClick={() => handleShowPassword()}
-            className="icon_show_Password "
+          <button
+            type="button"
+            onClick={handleShowPassword}
+            className="
+              absolute right-4 top-1/2 -translate-y-1/2
+              text-textColor dark:text-textColorDark
+              hover:text-titleColor dark:hover:text-titleColorDark
+              transition-colors duration-200
+              w-5 h-5 flex items-center justify-center
+              focus:outline-none
+            "
+            aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? (
               <svg
                 viewBox="64 64 896 896"
                 focusable="false"
                 data-icon="eye"
-                width="1em"
-                height="1em"
+                width="20"
+                height="20"
                 fill="currentColor"
                 aria-hidden="true"
               >
@@ -107,8 +153,8 @@ export default function CustomInput({
                 viewBox="64 64 896 896"
                 focusable="false"
                 data-icon="eye-invisible"
-                width="1em"
-                height="1em"
+                width="20"
+                height="20"
                 fill="currentColor"
                 aria-hidden="true"
               >
@@ -116,15 +162,24 @@ export default function CustomInput({
                 <path d="M508 624c-3.46 0-6.87-.16-10.25-.47l-52.82 52.82a176.09 176.09 0 00227.42-227.42l-52.82 52.82c.31 3.38.47 6.79.47 10.25a111.94 111.94 0 01-112 112z"></path>
               </svg>
             )}
+          </button>
+        )}
+        
+        {icon && (
+          <span className="
+            absolute right-4 top-1/2 -translate-y-1/2
+            text-textColor dark:text-textColorDark
+            w-5 h-5 flex items-center justify-center
+          ">
+            {icon}
           </span>
         )}
-        {icon && <span className="Input_Icon">{icon}</span>}
       </div>
 
       {touched && errors && (
-        <em className="error_text">
+        <p className="input-error-msg">
           <TranslationText title={errors} page={ResourcePage} />
-        </em>
+        </p>
       )}
     </div>
   );

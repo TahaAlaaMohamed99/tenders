@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Resources from "../../resources.json";
 import TranslationText from "../TranslationText";
+import { useSelector } from "react-redux";
 
 const OTPInput = ({
   length = 6,
@@ -18,6 +19,12 @@ const OTPInput = ({
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRefs = useRef(new Array(length).fill(null));
+  
+  // Redux language fallback
+  const currentLanguage = useSelector(
+    (state) => state.themeSlice.currentLanguage
+  );
+  const effectiveLang = lang || currentLanguage || "en";
 
   useEffect(() => {
     if (autoFocus && inputRefs.current[0]) {
@@ -76,12 +83,8 @@ const OTPInput = ({
   };
 
   return (
-    <div
-      className={`form-group  ${touched && errors ? "error_group" : ""} ${
-        className || ""
-      }`}
-    >
-      <div className="flex-content-between gap-2">
+    <div className={`w-full ${className || ""}`}>
+      <div className="flex justify-between items-center gap-2">
         {Array.from({ length }, (_, index) => (
           <input
             key={index}
@@ -95,20 +98,30 @@ const OTPInput = ({
             onFocus={handleFocus}
             onBlur={handleBlur}
             disabled={disabled}
-            id={index === 0 ? `mega_${name}` : undefined}
+            id={index === 0 ? `arkaan_${name}` : undefined}
             name={`${name}_${index}`}
-            className="input_text opt_input text-center"
+            className={`
+              input-otp
+              ${touched && errors 
+                ? "border-error dark:border-errorDark" 
+                : isFocused 
+                  ? "border-primary dark:border-primaryDark shadow-custom dark:shadow-customDark" 
+                  : "border-borderColor dark:border-borderColorDark"
+              }
+              ${disabled ? "opacity-60 cursor-not-allowed bg-disabled dark:bg-bgColorDark" : ""}
+              focus:border-primary dark:focus:border-primaryDark
+            `}
           />
         ))}
       </div>
       {touched && errors && (
-        <em className="error_text">
-          {lang ? (
+        <p className="input-error-msg text-center">
+          {effectiveLang ? (
             <TranslationText title={errors} page={ResourcePage} />
           ) : (
             errors
           )}
-        </em>
+        </p>
       )}
     </div>
   );

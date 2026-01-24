@@ -6,10 +6,14 @@ import TranslationText from "../../TranslationText";
 import { IconAdd, IconChevronDown, IconEdit, Iconloading } from "../../../assets/Icons/IconsSvg";
 import CustomeBtn from "../../CustomeBtn";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 /**
  * CustomeSelect Component:
  * This component renders a customizable select input using the 'react-select' library.
  * It handles multiple selections, custom styles, validation, and translations.
+ * Features a static floating label that sits on the border with a customizable background.
+ * Uses Redux for language handling with prop override.
  * 
  * @param {boolean} isMulti - Determines whether the select allows multiple selections.
  * @param {array} options - The options to be displayed in the select dropdown.
@@ -26,6 +30,8 @@ import { useNavigate } from "react-router-dom";
  * @param {string} menuPlacement - Defines the placement of the dropdown menu (default is "bottom").
  * @param {string} ResourcePage - The resource page used for translations.
  * @param {boolean} titleGenerallist - Flag for using a general list of titles for translation.
+ * @param {string} labelBgColor - Custom background color for the label (e.g., "bg-white", "bg-gray-50"). Defaults to bgWhite/bgWhiteDark.
+ * @param {string} lang - Language for translations (overrides Redux if provided)
  */
 const CustomDropdownIndicator = (props) => {
   const { selectProps } = props;
@@ -60,17 +66,26 @@ export default function CustomeSelect({
   routeAddLookup = null,
   stateRoute,
   RecId = 0,
-  setRecId
+  setRecId,
+  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
+  lang
 }) {
   const navigate = useNavigate()
   // Custom input component for the react-select's Input component
   const CustomInput = (props) => {
-    return <components.Input {...props} autoComplete={`mega_Select${label}`} />;
+    return <components.Input {...props} autoComplete={`arkaan_Select${label}`} />;
   };
 
   // Extract the current theme (light/dark) from the Redux store
   // const { theme } = useSelector((state) => state.themeSlice);
-
+  
+  // Redux language fallback
+  const currentLanguage = useSelector(
+    (state) => state.themeSlice.currentLanguage
+  );
+  // effectiveLang logic isn't strictly needed for TranslationText component calls inside here as they usually handle it, 
+  // but if we need it for props logic we have it.
+  
   // State to track if the select component is focused
   const [isFocused, setIsFocused] = useState(false);
 
@@ -84,71 +99,87 @@ export default function CustomeSelect({
   };
 
   return (
-    <div
-      className={`form-group ${touched && errors ? "error_group" : ""} ${className || ""}`}
-    >
-      {/* Render label if provided */}
-      {label && (
-        <label className={isFocused ? "focused" : isDisabled ? "disabled" : ""}>
-          <TranslationText titleGenerallist={titleGenerallist} title={label} page={ResourcePage} />
-          {Required ? <span className="icon_Required">*</span> : null}
-        </label>
-      )}
-      <div className="flex-content-between">
-        {/* Render the select input */}
-        <Select
-          isClearable={isClearable}
-          options={options}
-          isMulti={isMulti}
-          components={{
-            DropdownIndicator: CustomDropdownIndicator,
-            Input: CustomInput,  // Use the custom input component
-
-          }}
-          isLoading={isLoading}
-          styles={
-            customStyles(errors, touched, isFocused)
-          }
-          placeholder={<TranslationText titleGenerallist={titleGenerallist} title={placeholder} page={ResourcePage} />}
-          onChange={(e) => {
-            onChange(e);   // Pass the selected value to the onChange callback
-            setIsFocused(false);  // Reset the focus state after change
-          }}
-          isDisabled={isDisabled}
-          className={"Custom_Select " + (routeAddLookup != null ? "w-11/12 pe-3" : "w-full")}
-          value={value}   // Set the selected value
-          onBlur={handleBlur}  // Handle blur event
-          onFocus={handleFocus}  // Handle focus event
-          inputId={`mega_${label}`}  // Unique id for the input field
-
-          menuPlacement={menuPlacement}  // Position the dropdown menu
-        />
-
-        {routeAddLookup != null &&
-          <CustomeBtn
-            icon={RecId > 0 ? <IconEdit /> : <IconAdd />}
-            size="btn_sm"
-            className="btn-primary min-w-min"
-            onClick={() => {
-              if (setRecId) {
-                setRecId(0)
+    <div className={`w-full ${className || ""}`}>
+      <div className="relative">
+        {/* Render floating label if provided */}
+        {label && (
+          <label 
+            htmlFor={`arkaan_${label}`}
+            className={`
+              input-label-floating z-10
+              ${labelBgColor}
+              ${isFocused 
+                ? "text-primary dark:text-primaryDark" 
+                : isDisabled 
+                  ? "text-textColor dark:text-textColorDark opacity-60" 
+                  : "text-titleColor dark:text-titleColorDark"
               }
-              navigate(routeAddLookup, {
-                state: {
-                  controllerMode: true,
-                  prevRoute: window.location.pathname,
-                  RecId: RecId || 0,
-                  statePrevRoute: stateRoute
-                },
-
-              })
+              ${touched && errors ? "text-error dark:text-errorDark" : ""}
+            `}
+          >
+            <TranslationText titleGenerallist={titleGenerallist} title={label} page={ResourcePage} />
+            {Required && <span className="icon_Required ml-0.5">*</span>}
+          </label>
+        )}
+        
+        <div className="flex items-center gap-2">
+          {/* Render the select input */}
+          <Select
+            isClearable={isClearable}
+            options={options}
+            isMulti={isMulti}
+            components={{
+              DropdownIndicator: CustomDropdownIndicator,
+              Input: CustomInput,  // Use the custom input component
             }}
+            isLoading={isLoading}
+            styles={
+              customStyles(errors, touched, isFocused)
+            }
+            placeholder={<TranslationText titleGenerallist={titleGenerallist} title={placeholder} page={ResourcePage} />}
+            onChange={(e) => {
+              onChange(e);   // Pass the selected value to the onChange callback
+              setIsFocused(false);  // Reset the focus state after change
+            }}
+            isDisabled={isDisabled}
+            className={routeAddLookup != null ? "flex-1" : "w-full"}
+            value={value}   // Set the selected value
+            onBlur={handleBlur}  // Handle blur event
+            onFocus={handleFocus}  // Handle focus event
+            inputId={`arkaan_${label}`}  // Unique id for the input field
+            menuPlacement={menuPlacement}  // Position the dropdown menu
           />
-        }
+
+          {routeAddLookup != null &&
+            <CustomeBtn
+              icon={RecId > 0 ? <IconEdit /> : <IconAdd />}
+              size="btn_sm"
+              className="btn-primary min-w-min"
+              onClick={() => {
+                if (setRecId) {
+                  setRecId(0)
+                }
+                navigate(routeAddLookup, {
+                  state: {
+                    controllerMode: true,
+                    prevRoute: window.location.pathname,
+                    RecId: RecId || 0,
+                    statePrevRoute: stateRoute
+                  },
+
+                })
+              }}
+            />
+          }
+        </div>
       </div>
 
       {/* Show validation errors if the field is touched and has errors */}
-      {touched && errors && <em className="error_text"><TranslationText titleGenerallist={titleGenerallist} title={errors} page={ResourcePage} /></em>}
+      {touched && errors && (
+        <p className="input-error-msg">
+          <TranslationText titleGenerallist={titleGenerallist} title={errors} page={ResourcePage} />
+        </p>
+      )}
     </div>
   );
 }

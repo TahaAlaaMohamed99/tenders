@@ -200,6 +200,31 @@
       @apply w-4;
     }
   }
+
+  /* Reusable Form Component Classes */
+  .input-label-floating {
+    @apply absolute -top-2.5 left-3 px-2 text-sm font-medium pointer-events-none transition-colors;
+  }
+
+  .input-field-base {
+    @apply w-full px-4 py-3 rounded-xl text-base 
+    bg-bgWhite dark:bg-bgWhiteDark 
+    text-titleColor dark:text-titleColorDark 
+    placeholder:text-textColor dark:placeholder:text-textColorDark 
+    border 
+    focus:outline-none;
+  }
+
+  .input-error-msg {
+    @apply mt-1.5 text-sm text-error dark:text-errorDark;
+  }
+
+  .input-otp {
+    @apply w-14 h-14 rounded-lg text-center text-lg font-medium
+    bg-bgWhite dark:bg-bgWhiteDark
+    text-titleColor dark:text-titleColorDark
+    border focus:outline-none transition-all duration-200;
+  }
 }
 .css-hlgwow,
 .css-1dyz3mf {
@@ -246,7 +271,7 @@
     @apply lg:block hidden  text-titleColor dark:text-titleColorDark mb-8 text-sm font-semibold capitalize;
   }
 
-  .Mega_Grid {
+  .Arkaan_Grid {
     .data_Grid {
       @apply h-56;
       .not_Data .icon {
@@ -261,7 +286,7 @@
 }
 .multiple_Grid {
   @apply grid grid-cols-2 gap-6 mx-10;
-  .Mega_Grid .data_Grid .not_Data {
+  .Arkaan_Grid .data_Grid .not_Data {
     .icon {
       @apply w-32;
     }
@@ -298,6 +323,7 @@
 .icon_Required {
   @apply text-primary dark:text-red-500;
 }
+
 .form_container {
   @apply py-4 sm:px-8 px-4 flex flex-col gap-4;
 }

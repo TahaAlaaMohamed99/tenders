@@ -1,29 +1,60 @@
 import React from "react";
 import TranslationText from "../TranslationText";
 import "../../Styles/Components/Checkbox/Checkbox.css";
+
+/**
+ * CustomCheckbox Component:
+ * Renders a custom styled checkbox matching the application design.
+ * Uses Tailwind CSS for styling, replacing external CSS files.
+ * 
+ * @param {boolean} value - Checkbox value
+ * @param {string} label - Label text
+ * @param {Function} onChange - Change handler
+ * @param {boolean} checked - Checked state (overrides value if provided)
+ * @param {string} ResourcePage - Translation resource page
+ * @param {string} className - Additional CSS classes for wrapper
+ * @param {boolean} disabled - Disabled state
+ */
 export default function CustomCheckbox({
   value,
   label,
   onChange,
   checked = "",
   ResourcePage = "",
+  className = "",
+  disabled = false,
+  touched,
+  errors
 }) {
+  const isChecked = checked !== "" ? checked : value === true;
+
   return (
-    <div className="form-check">
-      <div className="checkbox-wrapper">
-        <input
-          type="checkbox"
-          className="input_checkbox peer"
-          id="check"
-          value={value}
-          aria-label={label}
-          onChange={onChange}
-          checked={checked != "" ? checked : value == true}
-        />
-        <span className={"checkbox opacity-0 peer-checked:opacity-100"}>
+    <div className={`form-check flex flex-col ${className}`}>
+      <div className="flex items-center gap-2">
+        <div className="checkbox-wrapper relative flex items-center">
+          <input
+            type="checkbox"
+            className={`
+              input_checkbox peer relative h-5 w-5 appearance-none rounded border 
+              bg-white dark:bg-bgWhiteDark 
+              cursor-pointer transition-all duration-200 
+              disabled:opacity-50 disabled:cursor-not-allowed
+              ${touched && errors 
+                ? "border-error dark:border-errorDark" 
+                : "border-gray-300 dark:border-gray-600 checked:border-primary dark:checked:border-primary"
+              }
+              checked:bg-primary dark:checked:bg-primary
+            `}
+            id={`check_${label}`}
+            value={value}
+            aria-label={label}
+            onChange={disabled ? null : onChange}
+            checked={isChecked}
+            disabled={disabled}
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-3.5 w-3.5"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity duration-200"
             viewBox="0 0 20 20"
             fill="currentColor"
             stroke="currentColor"
@@ -35,11 +66,25 @@ export default function CustomCheckbox({
               clipRule="evenodd"
             />
           </svg>
-        </span>
+        </div>
+        {label && (
+          <label 
+            htmlFor={`check_${label}`}
+            className={`
+              text-sm font-medium cursor-pointer select-none 
+              ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
+              ${touched && errors ? "text-error dark:text-errorDark" : "text-titleColor dark:text-titleColorDark"}
+            `}
+          >
+            <TranslationText title={label} page={ResourcePage} />
+          </label>
+        )}
       </div>
-      <label htmlFor={label}>
-       <TranslationText title={label} page={ResourcePage} /> 
-      </label>
+      {touched && errors && (
+        <p className="input-error-msg">
+          <TranslationText title={errors} page={ResourcePage} />
+        </p>
+      )}
     </div>
   );
 }
