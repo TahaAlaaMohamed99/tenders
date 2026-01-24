@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
-import { useSelector } from "react-redux";
+import { useSafeSelector } from "../../Hooks/useSafeSelector";
 
 /**
  * CustomTextarea Component:
@@ -46,10 +46,10 @@ export default function CustomTextarea({
 }) {
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
-
+  
   // Redux language fallback
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
+  const currentLanguage = useSafeSelector(
+    (state) => state.themeSlice?.currentLanguage
   );
   
   // Use prop lang if available, otherwise use Redux language, otherwise 'en'

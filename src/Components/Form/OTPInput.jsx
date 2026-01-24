@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import Resources from "../../resources.json";
 import TranslationText from "../TranslationText";
-import { useSelector } from "react-redux";
+import { useSafeSelector } from "../../Hooks/useSafeSelector";
 
 const OTPInput = ({
   length = 6,
@@ -21,8 +21,8 @@ const OTPInput = ({
   const inputRefs = useRef(new Array(length).fill(null));
   
   // Redux language fallback
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
+  const currentLanguage = useSafeSelector(
+    (state) => state.themeSlice?.currentLanguage
   );
   const effectiveLang = lang || currentLanguage || "en";
 

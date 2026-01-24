@@ -3,7 +3,7 @@ import DateRangePicker from "@wojtekmaj/react-daterange-picker";
 import '@wojtekmaj/react-daterange-picker/dist/DateRangePicker.css';
 import '../../Styles/Components/datePicker/DatePicker.css';
 import TranslationText from "../TranslationText";
-import { useSelector } from "react-redux";
+import { useSafeSelector } from "../../Hooks/useSafeSelector";
 
 /**
  * CustomDateRangePicker Component:
@@ -46,8 +46,8 @@ export default function CustomDateRangePicker({
   const [isFocused, setIsFocused] = useState(false);
   
   // Redux language fallback
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
+  const currentLanguage = useSafeSelector(
+    (state) => state.themeSlice?.currentLanguage
   );
   const effectiveLang = lang || currentLanguage || "en";
 

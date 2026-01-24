@@ -6,7 +6,7 @@ import TranslationText from "../../TranslationText";
 import { IconAdd, IconChevronDown, IconEdit, Iconloading } from "../../../assets/Icons/IconsSvg";
 import CustomeBtn from "../../CustomeBtn";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSafeSelector } from "../../../Hooks/useSafeSelector";
 
 /**
  * CustomeSelect Component:
@@ -77,11 +77,11 @@ export default function CustomeSelect({
   };
 
   // Extract the current theme (light/dark) from the Redux store
-  // const { theme } = useSelector((state) => state.themeSlice);
+  // const { theme } = useSafeSelector((state) => state.themeSlice);
   
   // Redux language fallback
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
+  const currentLanguage = useSafeSelector(
+    (state) => state.themeSlice?.currentLanguage
   );
   // effectiveLang logic isn't strictly needed for TranslationText component calls inside here as they usually handle it, 
   // but if we need it for props logic we have it.

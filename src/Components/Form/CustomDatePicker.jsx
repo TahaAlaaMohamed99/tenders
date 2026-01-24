@@ -4,7 +4,7 @@ import 'react-datetime-picker/dist/DateTimePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import 'react-clock/dist/Clock.css';
 import TranslationText from "../TranslationText";
-import { useSelector } from "react-redux";
+import { useSafeSelector } from "../../Hooks/useSafeSelector";
 import '../../Styles/Components/datePicker/DatePicker.css'
 import { IconCalendar, Iconloading } from "../../assets/Icons/IconsSvg";
 /**
@@ -52,9 +52,9 @@ export default function CustomDatePicker({
   labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark"
 }) {
   const [isFocused, setIsFocused] = useState(false);
-  // Current language logic - use prop or Redux
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
+  // Current language logic - use prop or Redux (safe)
+  const currentLanguage = useSafeSelector(
+    (state) => state.themeSlice?.currentLanguage
   );
   const effectiveLanguage = lang || currentLanguage;
   

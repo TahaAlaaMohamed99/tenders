@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
-import { useSelector } from "react-redux";
+import { useSafeSelector } from "../../Hooks/useSafeSelector";
 
 /**
  * CustomInput Component:
@@ -55,8 +55,8 @@ export default function CustomInput({
   const [showPassword, setShowPassword] = useState(false);
   
   // Redux language fallback
-  const currentLanguage = useSelector(
-    (state) => state.themeSlice.currentLanguage
+  const currentLanguage = useSafeSelector(
+    (state) => state.themeSlice?.currentLanguage
   );
   const effectiveLang = lang || currentLanguage || "en";
 
