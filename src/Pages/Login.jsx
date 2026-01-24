@@ -40,7 +40,17 @@ export default function Login() {
   return (
     <div className="flex h-screen overflow-hidden bg-white">
       {/* Left Panel - Form Section */}
-      <div className="flex w-full flex-col items-center justify-center bg-white px-6 md:w-2/5 md:px-8 lg:px-12 xl:px-16">
+      <div className="relative flex w-full flex-col items-center justify-center bg-white px-6 md:w-2/5 md:px-8 lg:px-12 xl:px-16">
+        {/* Decorative Dots - Top Left Corner */}
+        <div className="absolute left-[-2%] top-0 z-0">
+          <LoginDots className="h-12 w-20 lg:h-16 lg:w-24" />
+        </div>
+
+        {/* Decorative Dots - Bottom Right Corner */}
+        <div className="absolute bottom-0 right-[-3%] z-0 rotate-90">
+          <LoginDots className="lg:h-16 lg:w-24" />
+        </div>
+
         <div className="w-full max-w-md space-y-6">
           {/* Header */}
           <div className="flex flex-col items-center space-y-2">
@@ -94,30 +104,35 @@ export default function Login() {
                     />
                   </div>
 
-                  <CustomeBtn
-                    type="submit"
-                    title="Sign in"
-                    isLoading={isLoading}
-                    className="w-full rounded-full bg-primary text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primaryDark dark:text-titleColor"
-                    size="btn_md"
-                    disabled={isFormIncomplete}
-                  />
+                    <CustomeBtn
+                      type="submit"
+                      title="Sign in"
+                      isLoading={isLoading}
+                      className="w-full rounded-full bg-primary text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primaryDark dark:text-titleColor"
+                      size="btn_md"
+                      disabled={isFormIncomplete}
+                    />
                 </Form>
               );
             }}
           </Formik>
+        </div>
+
+        {/* Decorative Dots - Sign-in Button */}
+        <div className="absolute bottom-[21.5%] left-1/4">
+          <LoginDots className="h-10 w-20 lg:h-12 lg:w-24" />
         </div>
       </div>
 
       {/* Right Panel - Dashboard Preview */}
       <div className="relative hidden w-3/5 flex-col overflow-hidden rounded-tl-[80px] bg-primary md:flex dark:bg-primaryDark">
         {/* Decorative Dots - Center Top */}
-        <div className="absolute left-1/3 top-0 z-0 -translate-x-1/2">
-          <LoginDots className="h-10 w-20 opacity-20 lg:h-12 lg:w-24" />
+        <div className="absolute left-1/3 top-[-1%] z-0">
+          <LoginDots className="h-10 w-20 lg:h-12 lg:w-24" />
         </div>
 
         {/* Decorative Dots - Right Edge */}
-        <LoginDotsRight className="absolute right-0 top-0 z-10 h-full w-10 opacity-20 lg:w-12" />
+        <LoginDotsRight className="absolute right-0 top-0 z-10 h-full w-10 lg:w-10" />
 
         {/* Content Section */}
         <div className="relative z-10 mb-6 flex flex-col justify-center space-y-3 px-8 py-8 text-white lg:mb-8 lg:mt-4 lg:space-y-4 lg:px-12 xl:mb-12 xl:mt-8 xl:px-16">
@@ -134,12 +149,12 @@ export default function Login() {
         </div>
 
         {/* Dashboard Image Container */}
-        <div className="relative z-10 flex flex-1 items-end justify-center overflow-visible px-4 lg:justify-end lg:px-0">
+        <div className="relative z-20 flex flex-1 items-end justify-center overflow-visible px-4 lg:justify-end lg:px-0">
           <LoginImage className="h-auto w-full max-w-lg object-contain lg:max-w-xl xl:max-w-2xl" />
         </div>
 
         {/* Decorative Dots - Bottom Left */}
-        <LoginDotsLeft className="absolute bottom-0 left-24 z-10 w-10 opacity-20 lg:left-32 lg:w-12" />
+        <LoginDotsLeft className="absolute -bottom-px left-24 z-10 w-12 lg:left-32 lg:w-14" />
       </div>
     </div>
   );
