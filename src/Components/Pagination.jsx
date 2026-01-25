@@ -1,7 +1,7 @@
-import CustomeBtn from "./CustomeBtn";
+import CustomBtn from "./CustomBtn";
 
 /**
- * Pagination Component using CustomeBtn
+ * Pagination Component using CustomBtn
  *
  * @param {number} currentPage - Current active page
  * @param {number} totalRows - Total number of rows/items
@@ -37,43 +37,39 @@ export default function Pagination({
       <span className="text-sm text-gray-600 whitespace-nowrap">
         {`Showing ${(currentPage - 1) * pageSize + 1} to ${Math.min(
           currentPage * pageSize,
-          totalRows
+          totalRows,
         )} of ${totalRows} entries`}
       </span>
-      <div
-        className={`flex items-center gap-2 mt-4 ${
-          className || ""
-        }`}
-      >
-      <CustomeBtn
-        title="Prev"
-        size="btn_sm"
-        disabled={currentPage === 1}
-        onClick={handlePrev}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      />
-
-      {pageNumbers.map((num) => (
-        <CustomeBtn
-          key={num}
-          title={num.toString()}
+      <div className={`flex items-center gap-2 mt-4 ${className || ""}`}>
+        <CustomBtn
+          title="Prev"
           size="btn_sm"
-          onClick={() => handlePageClick(num)}
-          className={
-            num === currentPage
-              ? "bg-teal-600 text-white"
-              : "bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-          }
+          disabled={currentPage === 1}
+          onClick={handlePrev}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
         />
-      ))}
 
-      <CustomeBtn
-        title="Next"
-        size="btn_sm"
-        disabled={currentPage === totalPages}
-        onClick={handleNext}
-        className="bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-      />
+        {pageNumbers.map((num) => (
+          <CustomBtn
+            key={num}
+            title={num.toString()}
+            size="btn_sm"
+            onClick={() => handlePageClick(num)}
+            className={
+              num === currentPage
+                ? "bg-teal-600 text-white"
+                : "bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            }
+          />
+        ))}
+
+        <CustomBtn
+          title="Next"
+          size="btn_sm"
+          disabled={currentPage === totalPages}
+          onClick={handleNext}
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        />
       </div>
     </div>
   );

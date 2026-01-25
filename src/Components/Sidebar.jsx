@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import CustomeBtn from "./CustomeBtn";
+import CustomBtn from "./CustomBtn";
 import {
   IconDasboard,
   Handshake,
@@ -49,7 +49,7 @@ export default function Sidebar() {
 
             return (
               <li key={item.id}>
-                <CustomeBtn
+                <CustomBtn
                   type="button"
                   title={item.label}
                   icon={item.icon}
@@ -71,7 +71,7 @@ export default function Sidebar() {
         </ul>
       </nav>
       <div className="p-4 mt-auto">
-        <CustomeBtn
+        <CustomBtn
           type="button"
           title="Logout"
           ResourcePage="Sidebar"

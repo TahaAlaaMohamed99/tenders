@@ -1,6 +1,6 @@
 import React from "react";
 import TranslationText from "./TranslationText";
-import { Iconloading } from "../assets/Icons/IconsSvg";
+import { IconLoading, LoginDots } from "../assets/Icons/IconsSvg";
 import "../Styles/Components/btn/btn.css";
 
 /**
@@ -19,7 +19,7 @@ import "../Styles/Components/btn/btn.css";
  * 
  * @returns {JSX.Element} - A styled button element with optional loading and icon support.
  */
-export default function CustomeBtn({
+export default function CustomBtn({
   className,
   size = "btn_lg",
   icon,
@@ -29,6 +29,7 @@ export default function CustomeBtn({
   ResourcePage = "",
   disabled = false,
   isLoading = false,
+  loginDots = false,
 }) {
   // A mapping object for loading labels based on the button's title
   const labelLoading = {
@@ -37,17 +38,18 @@ export default function CustomeBtn({
   };
 
   return (
+    <div className="relative">
     <button
       type={type} // Button type (e.g., "button", "submit")
       aria-label={title} // Accessibility label for screen readers
       disabled={disabled} // Disables the button if `disabled` is true
       onClick={!disabled && !isLoading ? onClick : undefined} // Prevents click handling when disabled or loading
-      className={"btn " + className + " " + size} // Dynamically applies classes for styling
+      className={`btn ${size} ${className ?? ""} relative`}// Dynamically applies classes for styling
     >
       {isLoading ? (
         // Loading state: Show a spinner icon and a loading message
         <>
-          <Iconloading className="w-4 h-4" /> {/* Loading spinner */}
+          <IconLoading className="w-4 h-4" /> {/* Loading spinner */}
           <TranslationText
             page="General"
             title={labelLoading[title] || "loading"} // Dynamically selects a loading message or defaults to "loading"
@@ -70,5 +72,12 @@ export default function CustomeBtn({
         </>
       )}
     </button>
+      {/* Decorative Dots - Sign-in Button */ }
+    { loginDots &&
+      <div className="absolute left-1/4 pointer-events-none">
+        <LoginDots className="h-10 w-20 lg:h-12 lg:w-24" />
+      </div>
+    }
+  </div>
   );
 }

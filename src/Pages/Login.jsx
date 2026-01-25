@@ -6,9 +6,13 @@ import { Formik, Form } from "formik";
 import { loginSchema } from "../utils/validation";
 
 import CustomInput from "../Components/Form/CustomInput";
-import CustomeBtn from "../Components/CustomeBtn";
-import { LogoName, LoginImage, LoginDots, LoginDotsRight, LoginDotsLeft } from "../assets/Icons/IconsSvg";
-
+import CustomBtn from "../Components/CustomBtn";
+import {
+  LogoName,
+  LoginImage,
+  LoginDotsRight,
+  LoginDots,
+} from "../assets/Icons/IconsSvg";
 
 export default function Login() {
   const { login } = useAuth();
@@ -38,7 +42,10 @@ export default function Login() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-white">
+    <div className=" relative flex h-screen overflow-hidden bg-white">
+      {/* Decorative Dots - Right Edge */}
+      <LoginDotsRight className="absolute right-0 top-0 z-10 h-full lg:w-10" />
+
       {/* Left Panel - Form Section */}
       <div className="relative flex w-full flex-col items-center justify-center bg-white px-6 md:w-2/5 md:px-8 lg:px-12 xl:px-16">
         {/* Decorative Dots - Top Left Corner */}
@@ -71,7 +78,7 @@ export default function Login() {
           >
             {({ values, handleChange, handleBlur, touched, errors }) => {
               const isFormIncomplete = !values.userName || !values.password;
-              
+
               return (
                 <Form className="mt-6 space-y-4 lg:mt-8 lg:space-y-5">
                   <div className="space-y-4">
@@ -104,23 +111,19 @@ export default function Login() {
                     />
                   </div>
 
-                    <CustomeBtn
-                      type="submit"
-                      title="Sign in"
-                      isLoading={isLoading}
-                      className="w-full rounded-full bg-primary text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primaryDark dark:text-titleColor"
-                      size="btn_md"
-                      disabled={isFormIncomplete}
-                    />
+                  <CustomBtn
+                    type="submit"
+                    title="Sign in"
+                    isLoading={isLoading}
+                    className="w-full rounded-full bg-primary text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primaryDark dark:text-titleColor"
+                    size="btn_md"
+                    disabled={isFormIncomplete}
+                    loginDots={true}
+                  />
                 </Form>
               );
             }}
           </Formik>
-        </div>
-
-        {/* Decorative Dots - Sign-in Button */}
-        <div className="absolute bottom-[21.5%] left-1/4">
-          <LoginDots className="h-10 w-20 lg:h-12 lg:w-24" />
         </div>
       </div>
 
@@ -130,10 +133,6 @@ export default function Login() {
         <div className="absolute left-1/3 top-[-1%] z-0">
           <LoginDots className="h-10 w-20 lg:h-12 lg:w-24" />
         </div>
-
-        {/* Decorative Dots - Right Edge */}
-        <LoginDotsRight className="absolute right-0 top-0 z-10 h-full w-10 lg:w-10" />
-
         {/* Content Section */}
         <div className="relative z-10 mb-6 flex flex-col justify-center space-y-3 px-8 py-8 text-white lg:mb-8 lg:mt-4 lg:space-y-4 lg:px-12 xl:mb-12 xl:mt-8 xl:px-16">
           <h2 className="ml-8 max-w-lg text-xl font-semibold leading-tight lg:ml-12 lg:text-4xl xl:max-w-xl xl:text-5xl">
@@ -152,11 +151,7 @@ export default function Login() {
         <div className="relative z-20 flex flex-1 items-end justify-center overflow-visible px-4 lg:justify-end lg:px-0">
           <LoginImage className="h-auto w-full max-w-lg object-contain lg:max-w-xl xl:max-w-2xl" />
         </div>
-
-        {/* Decorative Dots - Bottom Left */}
-        <LoginDotsLeft className="absolute -bottom-px left-24 z-10 w-12 lg:left-32 lg:w-14" />
       </div>
     </div>
   );
 }
-
