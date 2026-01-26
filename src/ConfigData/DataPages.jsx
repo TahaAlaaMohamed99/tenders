@@ -1,11 +1,73 @@
 import Vendors from "../Pages/Vendors";
 import VendorsAddEdit from "../Pages/VendorsAddEdit";
+import PlaceholderPage from "../Components/PlaceholderPage";
 
 export const DataPages = {
+    Dashboard: {
+        Api: "dashboard",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+        isSelected: false,
+    },
+    Journal: {
+        Api: "Journal",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    SubmissionDocuments: {
+        Api: "SubmissionDocuments",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    Reports: {
+        Api: "Reports",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    Setup: {
+        Api: "Setup",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    VendorGroups: {
+        Api: "VendorGroups",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    Currencies: {
+        Api: "Currencies",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    Items: {
+        Api: "Items",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    Departments: {
+        Api: "Departments",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
+    Settings: {
+        Api: "Settings",
+        componentViwe: PlaceholderPage,
+        componentAddEdit: PlaceholderPage,
+        keyId: "id",
+    },
     Vendors: {
         Api: "Vendors",
-        componentViwe: <Vendors />,
-        componentAddEdit: <VendorsAddEdit />,
+        componentViwe: Vendors,
+        componentAddEdit: VendorsAddEdit,
         keyId: "recId",
         isSelected: true,
         columns: [

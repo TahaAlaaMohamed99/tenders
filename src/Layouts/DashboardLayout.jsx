@@ -9,7 +9,8 @@ export default function DashboardLayout() {
 
       {/* Main Content */}
       <main className="p-6 ">
-        <div className="max-w-7xl mx-auto">          <Outlet />
+        <div className="max-w-7xl mx-auto">
+          <Outlet />
         </div>
       </main>
     </div>

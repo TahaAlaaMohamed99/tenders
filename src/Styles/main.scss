@@ -302,7 +302,7 @@
   @apply bg-errorDark;
 }
 .Toastify__toast--success {
-  @apply bg-success;
+  @apply bg-bgColor text-primary;
 }
 .Toastify__toast--warning {
   @apply bg-warning;

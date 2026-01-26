@@ -12,5 +12,5 @@ export default function useLayout(title = '') {
     return () => {
       dispatch(clearBreadcrumbs());
     };
-  }, [dispatch, ConfiPage]);
+  }, [dispatch, title]);
 }

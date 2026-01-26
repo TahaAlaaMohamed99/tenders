@@ -16,16 +16,26 @@ export const useProcessMenu = (items, order, dataPages) => {
           ResourcePage: `${item.keyPage}`,
           routePage: item.routePage,
           subMenu: false,
+          showMenu: item.showMenu || 'mainMenu',
         };
       } else {
         // Group sub-menu items
         if (!moduleMap[item.keyModule]) {
           moduleMap[item.keyModule] = {
-            title: item.ResourceModule,
+            title: item.ResourceModule || item.keyModule,
             keyModule: item.keyModule,
             subMenu: true,
             subItems: [],
+            showMenu: item.showMenu || 'mainMenu',
           };
+        } else if (!moduleMap[item.keyModule].subItems) {
+             // If entry exists but has no subItems (was standalone), convert it.
+             moduleMap[item.keyModule].subItems = [];
+             moduleMap[item.keyModule].subMenu = true;
+             // Ensure keyModule and title are set for the converted parent
+             moduleMap[item.keyModule].keyModule = item.keyModule;
+             moduleMap[item.keyModule].title = moduleMap[item.keyModule].ResourcePage || item.keyModule;
+             moduleMap[item.keyModule].showMenu = item.showMenu || 'mainMenu';
         }
         moduleMap[item.keyModule].subItems.push({
           keyPage: item.keyPage,

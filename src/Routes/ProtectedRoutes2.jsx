@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
   
 import SidebarLogs from "../ConfigData/SidebarLogs.json";
 
@@ -57,6 +57,7 @@ export default function ProtectedRoutes() {
                     {/* <Route path="/" element={<Dashboard />} /> */}
                     {/* Created Routes pages  Main */}
                     {CreatedRoutes(SidebarLogs, DataPages)}
+                    <Route index element={<Navigate to="/dashboard" replace />} />
 
                 </Route>
             </Routes>

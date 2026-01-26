@@ -12,7 +12,6 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Login from "./Pages/Login";
 import PublicRoutes from "./Routes/ProtectedRoutes2";
-import DashboardLayout from "./Layouts/DashboardLayout";
 import { useTheme } from "./Hooks/useTheme";
 
 function AppContent() {
@@ -52,16 +51,14 @@ function AppContent() {
       <Routes>
         <Route
           path="/login"
-          element={isAuthenticated ? <Navigate to="/vendors" replace /> : <Login />}
+          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />}
         />
 
         <Route
           path="/*"
           element={
             <PrivateRoute>
-              <DashboardLayout>
-                <PublicRoutes />
-              </DashboardLayout>
+              <PublicRoutes />
             </PrivateRoute>
           }
         />
@@ -74,7 +71,7 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <PublicRoutes />
+        <AppContent />
       </AuthProvider>
     </Router>
   );

@@ -1,8 +1,32 @@
 [
     {
-        "keyPage": "dashboard",
+        "keyPage": "Dashboard",
         "keyModule": null,
-        "routePage": "Dashboard",
+        "routePage": "dashboard",
+        "showMenu": "mainMenu"
+    },
+     {
+        "keyPage": "Journal",
+        "keyModule": null,
+        "routePage": "Journal",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "SubmissionDocuments",
+        "keyModule": "Journal",
+        "routePage": "SubmissionDocuments",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Reports",
+        "keyModule": null,
+        "routePage": "Reports",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Setup",
+        "keyModule": null,
+        "routePage": "Setup",
         "showMenu": "mainMenu"
     },
     {
@@ -10,5 +34,35 @@
         "keyModule": "Setup",
         "routePage": "Vendors",
         "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "VendorGroups",
+        "keyModule": "Setup",
+        "routePage": "VendorGroups",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Currencies",
+        "keyModule": "Setup",
+        "routePage": "Currencies",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Items",
+        "keyModule": "Setup",
+        "routePage": "Items",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Departments",
+        "keyModule": "Setup",
+        "routePage": "Departments",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Settings",
+        "keyModule": null,
+        "routePage": "Settings",
+        "showMenu": "settings"
     }
 ]
