@@ -11,13 +11,14 @@ import {
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Login from "./Pages/Login";
-import PublicRoutes from "./Routes/PublicRoutes";
+import PublicRoutes from "./Routes/ProtectedRoutes2";
 import DashboardLayout from "./Layouts/DashboardLayout";
+import { useTheme } from "./Hooks/useTheme";
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
   useConfig();
-
+  useTheme()
   return (
     <>
       <ToastContainer
@@ -73,7 +74,7 @@ export default function App() {
   return (
     <Router>
       <AuthProvider>
-        <AppContent />
+        <PublicRoutes />
       </AuthProvider>
     </Router>
   );

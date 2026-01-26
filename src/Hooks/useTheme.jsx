@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentLanguage, toggleTheme } from "../store/Reducers/Layout/themeSlice";
 
+
 export function useTheme() {
   const dispatch = useDispatch();
 

@@ -1,0 +1,14 @@
+[
+    {
+        "keyPage": "dashboard",
+        "keyModule": null,
+        "routePage": "Dashboard",
+        "showMenu": "mainMenu"
+    },
+    {
+        "keyPage": "Vendors",
+        "keyModule": "Setup",
+        "routePage": "Vendors",
+        "showMenu": "mainMenu"
+    }
+]
