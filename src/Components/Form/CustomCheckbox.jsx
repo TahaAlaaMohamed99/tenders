@@ -15,7 +15,7 @@ import "../../Styles/Components/Checkbox/Checkbox.css";
  * @param {string} className - Additional CSS classes for wrapper
  * @param {boolean} disabled - Disabled state
  */
-export default function CustomCheckbox({
+const CustomCheckbox = React.forwardRef(({
   value,
   label,
   onChange,
@@ -25,7 +25,7 @@ export default function CustomCheckbox({
   disabled = false,
   touched,
   errors
-}) {
+}, ref) => {
   const isChecked = checked !== "" ? checked : value === true;
 
   return (
@@ -33,6 +33,7 @@ export default function CustomCheckbox({
       <div className="flex items-center gap-2">
         <div className="checkbox-wrapper relative flex items-center">
           <input
+            ref={ref} // Forwarded ref
             type="checkbox"
             className={`
               input_checkbox peer relative h-5 w-5 appearance-none rounded border 
@@ -87,4 +88,6 @@ export default function CustomCheckbox({
       )}
     </div>
   );
-}
+});
+
+export default CustomCheckbox;

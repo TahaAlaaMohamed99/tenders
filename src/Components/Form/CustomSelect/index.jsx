@@ -50,7 +50,7 @@ const CustomDropdownIndicator = (props) => {
     </components.DropdownIndicator>
   );
 };
-export default function CustomeSelect({
+const CustomeSelect = React.forwardRef(({
   isMulti,
   options,
   isDisabled = false,
@@ -74,12 +74,12 @@ export default function CustomeSelect({
   setRecId,
   labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
   lang,
-}) {
+}, ref) => {
   const navigate = useNavigate();
   // Custom input component for the react-select's Input component
   const CustomInput = (props) => {
     return (
-      <components.Input {...props} autoComplete={`arkaan_Select${label}`} />
+      <components.Input {...props} autoComplete={`arkaan_Select${label}`} reference={ref} />
     );
   };
 
@@ -137,6 +137,7 @@ export default function CustomeSelect({
         <div className="flex items-center gap-2">
           {/* Render the select input */}
           <Select
+            ref={ref} // Attach the forwarded ref here
             isClearable={isClearable}
             options={options}
             isMulti={isMulti}
@@ -201,4 +202,6 @@ export default function CustomeSelect({
       )}
     </div>
   );
-}
+});
+
+export default CustomeSelect;

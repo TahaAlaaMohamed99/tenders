@@ -11,7 +11,7 @@ import {
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Login from "./Pages/Login";
-import PublicRoutes from "./Routes/ProtectedRoutes2";
+import DynamicRouter from "./Routes/DynamicRouter";
 import { useTheme } from "./Hooks/useTheme";
 
 function AppContent() {
@@ -58,7 +58,7 @@ function AppContent() {
           path="/*"
           element={
             <PrivateRoute>
-              <PublicRoutes />
+              <DynamicRouter />
             </PrivateRoute>
           }
         />

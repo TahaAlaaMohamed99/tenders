@@ -7532,7 +7532,7 @@ export const LoginDots = ({ className }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1_13445)">
+      <g clipPath="url(#clip0_1_13445)">
         <circle cx="1.5" cy="1.5" r="1.5" fill="#D2D6DB" />
         <circle cx="10.5" cy="1.5" r="1.5" fill="#D2D6DB" />
         <circle cx="19.5" cy="1.5" r="1.5" fill="#D2D6DB" />

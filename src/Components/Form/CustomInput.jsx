@@ -30,7 +30,7 @@ import { useSafeSelector } from "../../Hooks/useSafeSelector";
  * @param {ref} ref - React ref for the input element.
  * @param {string} labelBgColor - Custom background color for the label (e.g., "bg-white", "bg-gray-50"). Defaults to bgWhite/bgWhiteDark.
  */
-export default function CustomInput({
+const CustomInput = React.forwardRef(({
   label,
   type,
   value,
@@ -48,9 +48,9 @@ export default function CustomInput({
   ResourcePage = "",
   dir,
   lang,
-  ref = null,
-  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark"
-}) {
+  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
+  ...props // Capture any other props
+}, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -97,6 +97,7 @@ export default function CustomInput({
         )}
         
         <input
+          {...props} // Spread remaining props to input
           type={showPassword ? "text" : type}
           placeholder={textPlaceholder}
           dir={dir}
@@ -108,7 +109,7 @@ export default function CustomInput({
           id={`arkaan_${name}`}
           autoComplete={autoComplete}
           name={name}
-          ref={ref}
+          ref={ref} // Forwarded Ref
           className={`
             input-field-base
             ${touched && errors 
@@ -183,4 +184,6 @@ export default function CustomInput({
       )}
     </div>
   );
-}
+});
+
+export default CustomInput;

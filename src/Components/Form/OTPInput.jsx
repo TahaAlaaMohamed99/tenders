@@ -3,7 +3,7 @@ import Resources from "../../resources.json";
 import TranslationText from "../TranslationText";
 import { useSafeSelector } from "../../Hooks/useSafeSelector";
 
-const OTPInput = ({
+const OTPInput = React.forwardRef(({
   length = 6,
   value,
   onChange,
@@ -16,7 +16,7 @@ const OTPInput = ({
   name,
   lang,
   ResourcePage = "",
-}) => {
+}, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRefs = useRef(new Array(length).fill(null));
   
@@ -31,6 +31,14 @@ const OTPInput = ({
       inputRefs.current[0].focus();
     }
   }, [autoFocus]);
+
+  // Combine parent ref and internal ref for the first input
+  // This allows DynamicForm to focus the first OTP box
+  const setFirstRef = (el) => {
+      inputRefs.current[0] = el;
+      if (typeof ref === 'function') ref(el);
+      else if (ref) ref.current = el;
+  };
 
   const handleChange = (index, inputValue) => {
     if (!/^\d*$/.test(inputValue)) return;
@@ -88,7 +96,8 @@ const OTPInput = ({
         {Array.from({ length }, (_, index) => (
           <input
             key={index}
-            ref={(el) => (inputRefs.current[index] = el)}
+            // Use setFirstRef for the first element, otherwise just internal ref
+            ref={index === 0 ? setFirstRef : (el) => (inputRefs.current[index] = el)}
             type="text"
             maxLength={1}
             value={value[index] || ""}
@@ -125,6 +134,6 @@ const OTPInput = ({
       )}
     </div>
   );
-};
+});
 
 export default OTPInput;

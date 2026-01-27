@@ -31,7 +31,7 @@ import { IconCalendar, IconLoading } from "../../assets/Icons/IconsSvg";
  * @param {string} lang - Language override (default: uses Redux state).
  * @param {string} labelBgColor - Label background color (default: bgWhite/bgWhiteDark).
  */
-export default function CustomDatePicker({
+const CustomDatePicker = React.forwardRef(({
   touched,
   errors,
   label,
@@ -50,7 +50,7 @@ export default function CustomDatePicker({
   isLoading = false,
   lang,
   labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
-}) {
+}, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   // Current language logic - use prop or Redux (safe)
   const currentLanguage = useSafeSelector(
@@ -89,38 +89,40 @@ export default function CustomDatePicker({
         )}
 
         {/* DateTimePicker component */}
-        <DateTimePicker
-          onChange={onChange} // Triggered when the date is changed
-          value={value} // The current value of the date picker
-          required={Required} // Mark the field as required if true
-          minDate={minDate || undefined} // Minimum date that can be selected
-          maxDate={maxDate || undefined} // Maximum date that can be selected
-          onFocus={() => setIsFocused(true)} // Set the field as focused when clicked
-          onBlur={handleBlur} // Triggered when the field loses focus
-          onCalendarClose={onClose || null} // Triggered when the calendar is closed
-          className="custom-date-picker" // Custom CSS class for styling
-          disabled={disabled} // Disable the date picker if true
-          clearIcon={Required && null} // Don't show the clear icon if required
-          format={
-            viewTime
-              ? effectiveLanguage == "ar"
-                ? "dd-MM-yyyy h:mm:ss a"
-                : "yyyy-MM-dd h:mm:ss a"
-              : effectiveLanguage == "ar"
-                ? "yyyy-MM-dd"
-                : "dd-MM-yyyy"
-          } // Date format (with or without time)
-          disableClock={true} // Disable the clock in the time picker
-          locale={effectiveLanguage == "ar" ? "ar" : "en"}
-          disableCalendar={disableCalendar}
-          calendarIcon={
-            isLoading ? (
-              <IconLoading className="text-primary dark:text-primaryDark" />
-            ) : (
-              <IconCalendar className="w-6 h-6" />
-            )
-          }
-        />
+        <div ref={ref} tabIndex={-1} className="outline-none"> 
+            <DateTimePicker
+              onChange={onChange} // Triggered when the date is changed
+              value={value} // The current value of the date picker
+              required={Required} // Mark the field as required if true
+              minDate={minDate || undefined} // Minimum date that can be selected
+              maxDate={maxDate || undefined} // Maximum date that can be selected
+              onFocus={() => setIsFocused(true)} // Set the field as focused when clicked
+              onBlur={handleBlur} // Triggered when the field loses focus
+              onCalendarClose={onClose || null} // Triggered when the calendar is closed
+              className="custom-date-picker" // Custom CSS class for styling
+              disabled={disabled} // Disable the date picker if true
+              clearIcon={Required && null} // Don't show the clear icon if required
+              format={
+                viewTime
+                  ? effectiveLanguage == "ar"
+                    ? "dd-MM-yyyy h:mm:ss a"
+                    : "yyyy-MM-dd h:mm:ss a"
+                  : effectiveLanguage == "ar"
+                    ? "yyyy-MM-dd"
+                    : "dd-MM-yyyy"
+              } // Date format (with or without time)
+              disableClock={true} // Disable the clock in the time picker
+              locale={effectiveLanguage == "ar" ? "ar" : "en"}
+              disableCalendar={disableCalendar}
+              calendarIcon={
+                isLoading ? (
+                  <IconLoading className="text-primary dark:text-primaryDark" />
+                ) : (
+                  <IconCalendar className="w-6 h-6" />
+                )
+              }
+            />
+        </div>
       </div>
 
       {/* Display error message if the field has errors */}
@@ -131,4 +133,6 @@ export default function CustomDatePicker({
       )}
     </div>
   );
-}
+});
+
+export default CustomDatePicker;
