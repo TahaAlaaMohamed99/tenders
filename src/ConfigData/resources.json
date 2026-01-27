@@ -1,0 +1,34 @@
+{
+  "en": {
+    "en": "EN",
+    "ar": "الانجليزيه"
+  },
+  "ar": {
+    "en": "AR",
+    "ar": "العربيه"
+  },
+  "key": {
+    "en": "Key",
+    "ar": "المفتاح"
+  },
+ "Gender": {
+      "title": {
+        "en": "Gender",
+        "ar": "الجنس"
+      },
+      "titleGrid": {
+        "en": "Employee Gender",
+        "ar": "جنس الموظف"
+      },
+      "values": {
+        "male": {
+          "en": "Male",
+          "ar": "ذكر"
+        },
+        "female": {
+          "en": "Female",
+          "ar": "أنثى"
+        }
+      }
+    }
+}

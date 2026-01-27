@@ -1,0 +1,98 @@
+.Confirmation_Modal {
+  @apply flex justify-center items-center;
+  .modal_content {
+    @apply bg-bgWhite dark:bg-bgWhiteDark z-40 py-5 px-2 lg:max-h-[95vh]  rounded-lg relative flex flex-col lg:max-w-[35vw]  lg:min-w-[32vw] md:min-w-[52vw] md:max-w-[55vw] min-w-[90vw] max-w-[90vw] gap-5;
+    &.modal_xl {
+      @apply lg:max-w-[55vw]    lg:min-w-[32vw] md:min-w-[52vw] md:max-w-[55vw] min-w-[90vw] max-w-[90vw];
+      .modal_body .modal_content_body {
+        @apply max-h-[65vh];
+      }
+      .modal_footer {
+        button {
+          @apply w-5/12;
+        }
+      }
+    }
+    .header_modal {
+      @apply flex justify-between px-3 items-start;
+      &.justify_end {
+        @apply justify-end;
+      }
+      .modal_icon {
+        @apply bg-opacity-20 dark:bg-opacity-20  w-10 h-10 rounded-md flex justify-center items-center;
+        svg {
+          @apply w-5 h-5;
+        }
+      }
+      .Closed_btn {
+        @apply w-5 h-5;
+        svg {
+          @apply w-full h-full  text-textColor dark:text-textColorDark text-opacity-75 hover:text-titleColor dark:hover:text-titleColorDark;
+        }
+      }
+    }
+    .modal_title {
+      @apply text-titleColor px-1 lg:px-3 dark:text-titleColorDark font-medium text-lg mb-1.5;
+    }
+    .modal_body {
+      .modal_description {
+        @apply text-textColor dark:text-textColorDark font-normal px-1 lg:px-3 text-sm;
+      }
+      .modal_content_body {
+        @apply overflow-y-auto max-h-[30vh] px-1 lg:px-3;
+      }
+    }
+    .modal_footer {
+      @apply items-center flex px-1 lg:px-3 justify-between;
+      button {
+        @apply w-5/12 lg:w-4/12;
+      }
+    }
+  }
+  &.delete {
+    .modal_icon {
+      @apply bg-error dark:bg-errorDark text-error dark:text-errorDark;
+    }
+  }
+  &.primary {
+    .modal_icon {
+      @apply bg-primary dark:bg-primaryDark text-primary dark:text-primaryDark;
+    }
+  }
+  &.info {
+    .modal_icon {
+      @apply text-titleColor dark:text-titleColorDark border-2 border-titleColor dark:border-titleColorDark;
+    }
+  }
+  &.default {
+    .header_modal {
+      .modal_icon {
+        @apply bg-bgColor   dark:bg-textColorDark  text-titleColor  dark:text-titleColorDark;
+      }
+    }
+  }
+  &.viweComment {
+    .modal_content {
+      @apply bg-bgColorDark  dark:bg-bgColor;
+
+      .modal_title {
+        @apply dark:text-titleColor   text-titleColorDark;
+      }
+    }
+    .header_modal {
+      .Closed_btn {
+        svg {
+          @apply dark:hover:text-titleColor hover:text-titleColorDark;
+        }
+      }
+      .modal_icon {
+        @apply text-titleColor dark:text-titleColorDark  bg-opacity-100 w-8 h-8 dark:bg-opacity-100    dark:bg-titleColor  bg-titleColorDark;
+      }
+    }
+    .modal_content .modal_body {
+      .modal_description {
+        @apply bg-bgColor py-1 font-medium rounded-md mx-1 dark:bg-bgColorDark text-titleColor  dark:text-titleColorDark;
+      }
+    }
+  }
+}

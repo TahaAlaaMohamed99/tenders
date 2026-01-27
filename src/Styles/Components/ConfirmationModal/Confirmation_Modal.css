@@ -1,0 +1,75 @@
+.Confirmation_Modal {
+  @apply flex justify-center items-center;
+}
+.Confirmation_Modal .modal_content {
+  @apply bg-bgWhite dark:bg-bgWhiteDark z-40 py-5 px-2 lg:max-h-[95vh] rounded-lg relative flex flex-col lg:max-w-[35vw] lg:min-w-[32vw] md:min-w-[52vw] md:max-w-[55vw] min-w-[90vw] max-w-[90vw] gap-5;
+}
+.Confirmation_Modal .modal_content.modal_xl {
+  @apply lg:max-w-[55vw] lg:min-w-[32vw] md:min-w-[52vw] md:max-w-[55vw] min-w-[90vw] max-w-[90vw];
+}
+.Confirmation_Modal .modal_content.modal_xl .modal_body .modal_content_body {
+  @apply max-h-[65vh];
+}
+.Confirmation_Modal .modal_content.modal_xl .modal_footer button {
+  @apply w-5/12;
+}
+.Confirmation_Modal .modal_content .header_modal {
+  @apply flex justify-between px-3 items-start;
+}
+.Confirmation_Modal .modal_content .header_modal.justify_end {
+  @apply justify-end;
+}
+.Confirmation_Modal .modal_content .header_modal .modal_icon {
+  @apply bg-opacity-20 dark:bg-opacity-20 w-10 h-10 rounded-md flex justify-center items-center;
+}
+.Confirmation_Modal .modal_content .header_modal .modal_icon svg {
+  @apply w-5 h-5;
+}
+.Confirmation_Modal .modal_content .header_modal .Closed_btn {
+  @apply w-5 h-5;
+}
+.Confirmation_Modal .modal_content .header_modal .Closed_btn svg {
+  @apply w-full h-full text-textColor dark:text-textColorDark text-opacity-75 hover:text-titleColor dark:hover:text-titleColorDark;
+}
+.Confirmation_Modal .modal_content .modal_title {
+  @apply text-titleColor px-1 lg:px-3 dark:text-titleColorDark font-medium text-lg mb-1.5;
+}
+.Confirmation_Modal .modal_content .modal_body .modal_description {
+  @apply text-textColor dark:text-textColorDark font-normal px-1 lg:px-3 text-sm;
+}
+.Confirmation_Modal .modal_content .modal_body .modal_content_body {
+  @apply overflow-y-auto max-h-[30vh] px-1 lg:px-3;
+}
+.Confirmation_Modal .modal_content .modal_footer {
+  @apply items-center flex px-1 lg:px-3 justify-between;
+}
+.Confirmation_Modal .modal_content .modal_footer button {
+  @apply w-5/12 lg:w-4/12;
+}
+.Confirmation_Modal.delete .modal_icon {
+  @apply bg-error dark:bg-errorDark text-error dark:text-errorDark;
+}
+.Confirmation_Modal.primary .modal_icon {
+  @apply bg-primary dark:bg-primaryDark text-primary dark:text-primaryDark;
+}
+.Confirmation_Modal.info .modal_icon {
+  @apply text-titleColor dark:text-titleColorDark border-2 border-titleColor dark:border-titleColorDark;
+}
+.Confirmation_Modal.default .header_modal .modal_icon {
+  @apply bg-bgColor dark:bg-textColorDark text-titleColor dark:text-titleColorDark;
+}
+.Confirmation_Modal.viweComment .modal_content {
+  @apply bg-bgColorDark dark:bg-bgColor;
+}
+.Confirmation_Modal.viweComment .modal_content .modal_title {
+  @apply dark:text-titleColor text-titleColorDark;
+}
+.Confirmation_Modal.viweComment .header_modal .Closed_btn svg {
+  @apply dark:hover:text-titleColor hover:text-titleColorDark;
+}
+.Confirmation_Modal.viweComment .header_modal .modal_icon {
+  @apply text-titleColor dark:text-titleColorDark bg-opacity-100 w-8 h-8 dark:bg-opacity-100 dark:bg-titleColor bg-titleColorDark;
+}
+.Confirmation_Modal.viweComment .modal_content .modal_body .modal_description {
+  @apply bg-bgColor py-1 font-medium rounded-md mx-1 dark:bg-bgColorDark text-titleColor dark:text-titleColorDark;
+}/*# sourceMappingURL=Confirmation_Modal.css.map */
