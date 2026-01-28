@@ -5,7 +5,7 @@
   @apply w-full;
 }
 .ReportSetup_wrapper .ReportSetup_menu {
-  @apply bg-bgWhite dark:bg-bgWhiteDark py-2.5  fixed h-dvh  w-[15.625rem]  start-0 top-0 bottom-0 overflow-auto;
+  @apply bg-bgWhite dark:bg-bgWhiteDark py-2.5  fixed h-dvh  w-64  start-0 top-0 bottom-0 overflow-auto;
 }
 .ReportSetup_wrapper .ReportSetup_menu .ReportSetup_menu_Title {
   @apply mb-4 p-4 bg-bgWhite text-titleColor dark:text-titleColorDark font-semibold  dark:bg-bgWhiteDark;

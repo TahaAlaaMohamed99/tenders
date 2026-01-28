@@ -1,8 +1,8 @@
-export default function Vendors() {
+import React from 'react';
+import DynamicPlaceholder from '../Components/DynamicPlaceholder';
+
+export default function Vendors(props) {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Vendors Page</h1>
-      <p>This is a placeholder for the Vendors page content.</p>
-    </div>
+    <DynamicPlaceholder {...props} />
   );
 }

@@ -31,10 +31,18 @@ export default {
         "extra-loose": "normal",
       },
       boxShadow: {
-        light: "0 0 10px 0 rgba(163, 162, 168, 0.25)", // Light shadow
-        dark: "0 0 10px 0 rgba(0, 0, 0, 0.25)", // Dark shadow
-        custom: "0 0.1875rem 0.625rem 0 rgba(0, 11, 160, 0.09)",
-        customDark: "0 0.1875rem 0.625rem 0 rgba(0, 11, 160, 0.1)",
+        light: "none", // Was "0 0 10px 0 rgba(163, 162, 168, 0.25)",
+        dark: "none", // Was "0 0 10px 0 rgba(0, 0, 0, 0.25)",
+        custom: "none", // Was "0 0.1875rem 0.625rem 0 rgba(0, 11, 160, 0.09)",
+        customDark: "none", // Was "0 0.1875rem 0.625rem 0 rgba(0, 11, 160, 0.1)",
+        // Overriding default Tailwind shadows to be flat/none as requested
+        sm: "none",
+        DEFAULT: "none",
+        md: "none",
+        lg: "none",
+        xl: "none",
+        "2xl": "none",
+        inner: "none",
       },
     },
   },

@@ -1,4 +1,4 @@
-import { IconAttachments, IconDashboard, IconColumnSettings } from "../assets/Icons/IconsSvg";
+import { IconReport,IconSetup, IconDashboard, IconSettings, IconJournal } from "../assets/Icons/IconsSvg";
  
 export const ModuleOrderSidbar = [
   {
@@ -7,19 +7,19 @@ export const ModuleOrderSidbar = [
   },
   {
     keyModule: "Journal",
-    icon: <IconAttachments />,
+    icon: <IconJournal />,
   },
   {
     keyModule: "Reports",
-    icon: <IconAttachments />,
+    icon: <IconReport />,
   },
   {
     keyModule: "Setup",
-    icon: <IconAttachments />,
+    icon: <IconSetup />,
   },
   {
     keyModule: "Settings",
-    icon: <IconColumnSettings />,
+    icon: <IconSettings />,
   },
 
 ];

@@ -1,10 +1,10 @@
 .layout_wrapper {
-  @apply md:ps-[4.5rem] ease-linear duration-300;
+  @apply md:ps-16 ease-linear duration-300;
   &.layout_wrapper_isPinedSidebar {
-    @apply md:ps-[15.625rem];
+    @apply md:ps-64;
   }
   &.layout_wrapper_isMenuReportSetup {
-    @apply lg:ps-[15.625rem] ps-0;
+    @apply lg:ps-64 ps-0;
   }
 }
 .layout_main_container {

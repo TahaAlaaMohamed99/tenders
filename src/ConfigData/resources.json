@@ -11,6 +11,20 @@
     "en": "Key",
     "ar": "المفتاح"
   },
+  "General": {
+    "logout": {
+      "en": "Logout",
+      "ar": "تسجيل خروج"
+    },
+    "cancel": {
+      "en": "Cancel",
+      "ar": "إلغاء"
+    },
+    "areYouSureYouWantToLogout": {
+      "en": "Are you sure you want to logout?",
+      "ar": "هل أنت متأكد أنك تريد تسجيل الخروج؟"
+    }
+  },
  "Gender": {
       "title": {
         "en": "Gender",
@@ -29,6 +43,60 @@
           "en": "Female",
           "ar": "أنثى"
         }
+      }
+    },
+    "Sidebar": {
+      "Dashboard": {
+         "en": "Dashboard",
+         "ar": "لوحة التحكم" 
+      },
+      "Journal": {
+         "en": "Journal",
+         "ar": "اليومية" 
+      },
+      "SubmissionDocuments": {
+         "en": "Submission Documents",
+         "ar": "وثائق التقديم" 
+      },
+      "Reports": {
+         "en": "Reports",
+         "ar": "التقارير" 
+      },
+      "Setup": {
+         "en": "Setup",
+         "ar": "الإعدادات" 
+      },
+      "Vendors": {
+         "en": "Vendors",
+         "ar": "الموردين" 
+      },
+      "VendorGroups": {
+         "en": "Vendor Groups",
+         "ar": "مجموعات الموردين" 
+      },
+      "Currencies": {
+         "en": "Currencies",
+         "ar": "العملات" 
+      },
+      "Items": {
+         "en": "Items",
+         "ar": "الأصناف" 
+      },
+      "Departments": {
+         "en": "Departments",
+         "ar": "الأقسام" 
+      },
+      "Settings": {
+         "en": "Settings",
+         "ar": "الإعدادات العامة" 
+      },
+      "Help": {
+         "en": "Help",
+         "ar": "مساعدة" 
+      },
+      "LogoutAccount": {
+         "en": "Logout Account",
+         "ar": "تسجيل خروج" 
       }
     }
 }

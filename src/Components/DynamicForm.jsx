@@ -31,7 +31,76 @@ const DynamicForm = React.memo(({
     const { sections } = formSchema || {};
 
     // 1. Initialize Formik
-    // We use useFormik here to keep state local to this form component.
+    // Enhanced Schema Builder for robust, configuration-based validation
+    const createValidationSchema = (sections) => {
+        if (!sections) return Yup.object();
+
+        return Yup.object().shape(
+            sections.reduce((acc, section) => {
+                section.fields.forEach(field => {
+                    let schema;
+
+                    // Base Type Validation
+                    switch (field.type) {
+                        case 'number':
+                            schema = Yup.number().typeError('Must be a number');
+                            break;
+                        case 'email':
+                            schema = Yup.string().email('Invalid email format');
+                            break;
+                        case 'date':
+                            schema = Yup.date().nullable().typeError('Invalid date');
+                            break;
+                        case 'checkbox':
+                            schema = Yup.boolean();
+                            break;
+                        default:
+                            schema = Yup.string();
+                    }
+
+                    // Apply Validation Rules from Configuration
+                    if (field.validation) {
+                         // Required
+                         if (field.validation.required) {
+                             schema = schema.required(field.validation.message || `${field.label || 'Field'} is required`);
+                         }
+                         
+                         // Min Length / Min Value
+                         if (field.validation.min !== undefined) {
+                             schema = field.type === 'number' 
+                                ? schema.min(field.validation.min, `Min value is ${field.validation.min}`)
+                                : schema.min(field.validation.min, `Min length is ${field.validation.min} characters`);
+                         }
+
+                         // Max Length / Max Value
+                         if (field.validation.max !== undefined) {
+                            schema = field.type === 'number' 
+                               ? schema.max(field.validation.max, `Max value is ${field.validation.max}`)
+                               : schema.max(field.validation.max, `Max length is ${field.validation.max} characters`);
+                         }
+
+                         // Regex Pattern
+                         if (field.validation.matches) {
+                             schema = schema.matches(new RegExp(field.validation.matches), field.validation.message || 'Invalid format');
+                         }
+                         
+                         // Email (explicit flag override)
+                         if (field.validation.email) {
+                             schema = schema.email(field.validation.message || 'Invalid email');
+                         }
+                    } 
+                    // Legacy support for flat "required" prop if validation obj missing
+                    else if (field.required) {
+                        schema = schema.required(`${field.label || 'Field'} is required`);
+                    }
+
+                    acc[field.name] = schema;
+                });
+                return acc;
+            }, {})
+        );
+    };
+
     const formik = useFormik({
         enableReinitialize: true,
         initialValues: sections ? sections.reduce((acc, section) => {
@@ -40,16 +109,7 @@ const DynamicForm = React.memo(({
             });
             return acc;
         }, {}) : {},
-        validationSchema: Yup.object().shape(
-            sections ? sections.reduce((acc, section) => {
-                section.fields.forEach(field => {
-                   if (field.required) {
-                       acc[field.name] = Yup.string().required(`${field.label} is required`);
-                   }
-                });
-                return acc;
-            }, {}) : {}
-        ),
+        validationSchema: createValidationSchema(sections),
         onSubmit: (values) => {
             onSave(values); 
         },
@@ -104,7 +164,7 @@ const DynamicForm = React.memo(({
                 }}
                 value={formik.values[field.name]}
                 onChange={handleChange}
-                error={formik.errors[field.name]}
+                errors={formik.errors[field.name]}
                 touched={formik.touched[field.name]}
                 className="mb-4"
             />

@@ -1,10 +1,10 @@
 .Sidebar {
   @apply flex flex-col fixed  h-dvh  ease-linear duration-300   z-40 py-4  gap-4 overflow-hidden bg-bgWhite dark:bg-bgWhiteDark;
   &.sidebar_main{
-    @apply md:start-0 -start-[15.625rem] md:w-[4.5rem] w-[15.625rem]
+    @apply md:start-0 -start-64 md:w-16 w-64;
   }
   &.sidebar_ReportSetup {
-    @apply w-[15.625rem] lg:start-0  -start-[15.625rem];
+    @apply w-64 lg:start-0  -start-64;
   }
 
   .header_Sidebar {
@@ -12,7 +12,7 @@
     .sidebar_logo {
       @apply text-primary dark:text-primaryDark flex items-center  w-full;
       .icon_logo {
-        @apply min-w-12 flex items-center  justify-center;
+        @apply min-w-10 flex items-center  justify-center;
       }
     }
     .header_Sidebar_Title {
@@ -45,7 +45,7 @@
     }
   }
   &.open_Sidebar {
-    @apply w-[15.625rem] start-0;
+    @apply w-64 start-0;
   }
   .nav_items{
     @apply overflow-hidden overflow-y-auto

@@ -2,10 +2,10 @@
   @apply flex flex-col fixed  h-dvh  ease-linear duration-300   z-40 py-4  gap-4 overflow-hidden bg-bgWhite dark:bg-bgWhiteDark;
 }
 .Sidebar.sidebar_main {
-  @apply md:start-0 -start-[15.625rem] md:w-[4.5rem] w-[15.625rem];
+  @apply md:start-0 -start-64 md:w-16 w-64;
 }
 .Sidebar.sidebar_ReportSetup {
-  @apply w-[15.625rem] lg:start-0  -start-[15.625rem];
+  @apply w-64 lg:start-0  -start-64;
 }
 .Sidebar .header_Sidebar {
   @apply flex items-center  justify-between w-full h-10 ps-2 pe-3;
@@ -14,7 +14,7 @@
   @apply text-primary dark:text-primaryDark flex items-center  w-full;
 }
 .Sidebar .header_Sidebar .sidebar_logo .icon_logo {
-  @apply min-w-12 flex items-center  justify-center;
+  @apply min-w-10 flex items-center  justify-center;
 }
 .Sidebar .header_Sidebar .header_Sidebar_Title {
   @apply text-lg text-titleColor px-4 dark:text-titleColorDark font-semibold  dark:bg-bgWhiteDark;
@@ -41,7 +41,7 @@
   @apply bg-bgWhite text-primary dark:text-primaryDark;
 }
 .Sidebar.open_Sidebar {
-  @apply w-[15.625rem] start-0;
+  @apply w-64 start-0;
 }
 .Sidebar .nav_items {
   @apply overflow-hidden overflow-y-auto;

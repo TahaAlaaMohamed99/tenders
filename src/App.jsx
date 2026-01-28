@@ -1,4 +1,5 @@
 import { BrowserRouter as Router,Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import useConfig from "./Hooks/useConfig";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,17 +18,19 @@ import { useTheme } from "./Hooks/useTheme";
 function AppContent() {
   const { isAuthenticated } = useAuth();
   useConfig();
-  useTheme()
+  useTheme();
+  const { currentLanguage } = useSelector((state) => state.themeSlice);
+
   return (
     <>
       <ToastContainer
-        position="top-left"
+        position={currentLanguage === 'ar' ? "top-right" : "top-left"}
         autoClose={3600}
         draggable="mouse"
         hideProgressBar={true}
         newestOnTop={true}
         closeButton={false}
-        rtl={false}
+        rtl={currentLanguage === 'ar'}
         pauseOnFocusLoss={false}
         pauseOnHover={true}
         icon={({ type }) => {

@@ -9,13 +9,15 @@ import "../Styles/Components/btn/btn.css";
  * @param {Object} props - The properties passed to the component.
  * @param {string} props.className - Additional custom classes for styling the button.
  * @param {string} [props.size="btn_lg"] - The size of the button (e.g., "btn_sm", "btn_md", "btn_lg").
- * @param {ReactNode} [props.icon] - Optional icon to display inside the button.
+ * @param {ReactNode} [props.icon] - Optional icon to display inside the button (left side).
+ * @param {ReactNode} [props.iconEnd] - Optional icon to display inside the button (right side).
  * @param {string} props.title - The title or text for the button, used for display and translation.
  * @param {Function} props.onClick - The click handler function for the button.
  * @param {string} [props.type="button"] - The type of the button (e.g., "button", "submit", "reset").
  * @param {string} [props.ResourcePage=""] - The resource page identifier for translation purposes.
  * @param {boolean} [props.disabled=false] - Determines if the button should be disabled.
  * @param {boolean} [props.isLoading=false] - Determines if the button should display a loading state.
+ * @param {boolean} [props.loginDots=false] - Shows decorative dots for login style buttons.
  * 
  * @returns {JSX.Element} - A styled button element with optional loading and icon support.
  */
@@ -23,6 +25,7 @@ export default function CustomBtn({
   className,
   size = "btn_lg",
   icon,
+  iconEnd,
   title,
   onClick,
   type = "button",
@@ -60,13 +63,14 @@ export default function CustomBtn({
         <>
           {icon && <span className="icon_btn">{icon}</span>} {/* Optional icon */}
           {title &&
-          <span>
+          <span className={iconEnd ? "flex-1 text-start" : ""}>
           <TranslationText
             page={ResourcePage}
             title={title} // Displays the translated button title
           />
         </span>
           }
+          {iconEnd && <span className="icon_btn_end">{iconEnd}</span>} {/* Optional trailing icon */}
           
 
         </>

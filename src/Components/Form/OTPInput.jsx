@@ -3,6 +3,24 @@ import Resources from "../../resources.json";
 import TranslationText from "../TranslationText";
 import { useSafeSelector } from "../../Hooks/useSafeSelector";
 
+/**
+ * OTPInput Component
+ * A multi-input component for One-Time Passwords.
+ * 
+ * @param {Object} props
+ * @param {number} [props.length=6] - Number of input fields.
+ * @param {string} props.value - The current OTP value string.
+ * @param {Function} props.onChange - Handler called with { target: { name, value } }.
+ * @param {Function} [props.onBlur] - Handler called on blur.
+ * @param {boolean} [props.touched] - Formik touched state.
+ * @param {string} [props.errors] - Validation error message.
+ * @param {boolean} [props.disabled=false] - Disables all inputs.
+ * @param {boolean} [props.autoFocus=true] - Auto-focuses the first input on mount.
+ * @param {string} [props.className] - Custom classes for the wrapper.
+ * @param {string} props.name - Field name (used for ID generation).
+ * @param {string} [props.lang] - Explicit language override ('en'/'ar').
+ * @param {string} [props.ResourcePage=""] - Translation namespace for error messages.
+ */
 const OTPInput = React.forwardRef(({
   length = 6,
   value,

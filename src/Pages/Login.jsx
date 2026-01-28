@@ -93,7 +93,7 @@ export default function Login() {
                       Required
                       touched={touched.userName}
                       errors={errors.userName}
-                      className="[&_.input_text]:rounded-lg [&_.input_text]:bg-bgColor [&_.input_text]:px-4 [&_.input_text]:py-3 [&_.input_text]:dark:bg-bgColorDark"
+                      className="[&_.input-field-base]:rounded-lg [&_.input-field-base]:bg-bgColor [&_.input-field-base]:px-4 [&_.input-field-base]:py-3 [&_.input-field-base]:dark:bg-bgColorDark"
                     />
 
                     <CustomInput
@@ -107,7 +107,7 @@ export default function Login() {
                       Required
                       touched={touched.password}
                       errors={errors.password}
-                      className="[&_.input_text]:rounded-lg [&_.input_text]:bg-bgColor [&_.input_text]:px-4 [&_.input_text]:py-3 [&_.input_text]:dark:bg-bgColorDark"
+                      className="[&_.input-field-base]:rounded-lg [&_.input-field-base]:bg-bgColor [&_.input-field-base]:px-4 [&_.input-field-base]:py-3 [&_.input-field-base]:dark:bg-bgColorDark"
                     />
                   </div>
 
@@ -116,7 +116,7 @@ export default function Login() {
                     title="Sign in"
                     isLoading={isLoading}
                     className="w-full rounded-full bg-primary text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primaryDark dark:text-titleColor"
-                    size="btn_md"
+                    size="btn_lg"
                     disabled={isFormIncomplete}
                     loginDots={true}
                   />
