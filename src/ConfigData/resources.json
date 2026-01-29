@@ -11,6 +11,50 @@
     "en": "Key",
     "ar": "المفتاح"
   },
+  "control_finances": {
+    "en": "Control your Finances",
+    "ar": "تحكم في أموالك"
+  },
+  "with_smart_tool": {
+    "en": "With Our Smart Tool",
+    "ar": "مع أداتنا الذكية"
+  },
+  "invest_intelligently": {
+    "en": "Invest intelligently and discover a better way to manage your entire wealth easily.",
+    "ar": "استثمر بذكاء واكتشف طريقة أفضل لإدارة ثروتك بالكامل بسهولة."
+  },
+  "employeeProfiles": {
+    "en": "Employee Profiles",
+    "ar": "ملفات الموظفين"
+  },
+  "welcome_back": {
+    "en": "Welcome Back",
+    "ar": "مرحباً بعودتك"
+  },
+  "lets_get_started": {
+    "en": "let's get started.",
+    "ar": "دعنا نبدأ."
+  },
+  "email_or_username": {
+    "en": "Email or username",
+    "ar": "البريد الإلكتروني أو اسم المستخدم"
+  },
+  "enter_email_username": {
+    "en": "Enter your email or username",
+    "ar": "أدخل بريدك الإلكتروني أو اسم المستخدم"
+  },
+  "password": {
+    "en": "Password",
+    "ar": "كلمة المرور"
+  },
+  "enter_password": {
+    "en": "Enter your password",
+    "ar": "أدخل كلمة المرور"
+  },
+  "sign_in": {
+    "en": "Sign in",
+    "ar": "تسجيل الدخول"
+  },
   "General": {
     "logout": {
       "en": "Logout",

@@ -49,6 +49,7 @@ const CustomInput = React.forwardRef(({
   dir,
   lang,
   labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
+  forceLightMode = false,
   ...props // Capture any other props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -59,6 +60,7 @@ const CustomInput = React.forwardRef(({
     (state) => state.themeSlice?.currentLanguage
   );
   const effectiveLang = lang || currentLanguage || "en";
+  const isRtl = effectiveLang === "ar" || dir === "rtl";
 
   const handleFocus = () => setIsFocused(true);
 
@@ -81,12 +83,12 @@ const CustomInput = React.forwardRef(({
               input-label-floating
               ${labelBgColor}
               ${isFocused 
-                ? "text-primary dark:text-primaryDark" 
+                ? `text-primary ${!forceLightMode ? "dark:text-primaryDark" : ""}` 
                 : disabled 
-                  ? "text-textColor dark:text-textColorDark opacity-60" 
-                  : "text-titleColor dark:text-titleColorDark"
+                  ? `text-textColor ${!forceLightMode ? "dark:text-textColorDark" : ""} opacity-60` 
+                  : `text-titleColor ${!forceLightMode ? "dark:text-titleColorDark" : ""}`
               }
-              ${touched && errors ? "text-error dark:text-errorDark" : ""}
+              ${touched && errors ? `text-error ${!forceLightMode ? "dark:text-errorDark" : ""}` : ""}
             `}
           >
             <TranslationText title={label}  />
@@ -112,14 +114,15 @@ const CustomInput = React.forwardRef(({
           ref={ref} // Forwarded Ref
           className={`
             input-field-base
+            ${forceLightMode ? "dark:bg-bgWhite dark:text-titleColor dark:placeholder:text-textColor" : ""}
             ${touched && errors 
-              ? "border-error dark:border-errorDark" 
+              ? `border-error ${!forceLightMode ? "dark:border-errorDark" : ""}` 
               : isFocused 
-                ? "border-primary dark:border-primaryDark" 
-                : "border-borderColor dark:border-borderColorDark"
+                ? `border-primary ${!forceLightMode ? "dark:border-primaryDark" : ""}` 
+                : `border-borderColor ${!forceLightMode ? "dark:border-borderColorDark" : ""}`
             }
-            ${disabled ? "opacity-60 cursor-not-allowed bg-disabled dark:bg-bgColorDark" : ""}
-            ${type === "password" || icon ? "pr-12" : ""}
+            ${disabled ? `opacity-60 cursor-not-allowed bg-disabled ${!forceLightMode ? "dark:bg-bgColorDark" : ""}` : ""}
+            ${(type === "password" || icon) ? (isRtl ? "pl-12" : "pr-12") : ""}
           `}
         />
         
@@ -127,14 +130,15 @@ const CustomInput = React.forwardRef(({
           <button
             type="button"
             onClick={handleShowPassword}
-            className="
-              absolute right-4 top-1/2 -translate-y-1/2
-              text-textColor dark:text-textColorDark
-              hover:text-titleColor dark:hover:text-titleColorDark
+            className={`
+              absolute top-1/2 -translate-y-1/2
+              ${isRtl ? "left-4" : "right-4"}
+              text-textColor ${!forceLightMode ? "dark:text-textColorDark" : ""}
+              hover:text-titleColor ${!forceLightMode ? "dark:hover:text-titleColorDark" : ""}
               transition-colors duration-200
               w-5 h-5 flex items-center justify-center
               focus:outline-none
-            "
+            `}
             aria-label={showPassword ? "Hide password" : "Show password"}
           >
             {showPassword ? (
@@ -167,11 +171,12 @@ const CustomInput = React.forwardRef(({
         )}
         
         {icon && (
-          <span className="
-            absolute right-4 top-1/2 -translate-y-1/2
+          <span className={`
+            absolute top-1/2 -translate-y-1/2
+            ${isRtl ? "left-4" : "right-4"}
             text-textColor dark:text-textColorDark
             w-5 h-5 flex items-center justify-center
-          ">
+          `}>
             {icon}
           </span>
         )}
