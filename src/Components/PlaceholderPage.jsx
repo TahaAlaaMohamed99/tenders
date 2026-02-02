@@ -1,11 +1,12 @@
 import React from 'react';
 import useLayout from '../Hooks/useLayout';
-
-export default function PlaceholderPage({ ResourcePage }) {
+import MegaGrid from './MegaGrid';
+export default function PlaceholderPage({ ResourcePage, ConfiPage, DataPage }) {
   // Set the page title using the layout hook
   useLayout(ResourcePage);
 
   return (
+    <>
     <div className="p-8 bg-white rounded-2xl shadow-sm h-full flex flex-col items-center justify-center text-center">
       <div className="bg-gray-50 p-6 rounded-full mb-4">
         <svg
@@ -26,6 +27,20 @@ export default function PlaceholderPage({ ResourcePage }) {
       <p className="text-gray-500 max-w-md">
         This module is currently under development. Please check back later for updates.
       </p>
+      
     </div>
+    <MegaGrid
+        GridKey={"Test"}
+        columns={DataPage.columns}
+        ConfiPage={ConfiPage}
+        ResourcePage={ResourcePage}
+        routeKey={`edit`}
+        ExcelExport={true}
+        isSearch={true}
+data={[]}
+
+      />
+    </>
+    
   );
 }

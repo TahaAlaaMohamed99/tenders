@@ -1,0 +1,201 @@
+import { Formik, Form } from "formik";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useContext,
+} from "react";
+import CustomInput from "../Form/CustomInput";
+import CustomDateRangePicker from "../Form/CustomDateRangePicker";
+import PopupModalSlide from "../PopupModalSlide";
+import { IconFilter } from "../../assets/Icons/IconsSvg";
+import CustomeSelect from "../Form/CustomSelect";
+import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
+import useGetLookup from "../../hooks/useGetLookup";
+import useGetGenerallist from "../../hooks/useGetGenerallist";
+import { MegaGridContext } from "./MegaGridContext";
+  
+
+export default function FilterGrid({ isVisible, setIsVisible }) {
+  const formikRef = useRef();
+  const {
+    columnState,
+    GridKey,
+    valuesFilter,
+    handleFilterGrid,
+    handleClearFilter,
+  } = useContext(MegaGridContext);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasLoaded, setHasLoaded] = useState(false);
+
+  const [dropdownLists, setDropdownLists] = useState(() => {
+    const initialLists = {};
+    columnState.all.forEach((column) => {
+      if (column.generallist || column.lookupName) {
+        initialLists[column.generallist || column.lookupName] = [];
+      }
+    });
+    return initialLists;
+  });
+  const { getLookupFilterGrid } = useGetLookup();
+  const { getGenerallist } = useGetGenerallist();
+
+  const FilterColumns = columnState.all.filter(
+    (column) => column.isFilter != false && !column.hidden
+  );
+   const fetchDropdownOptions = useCallback(() => {
+    if (hasLoaded) return;
+
+    setIsLoading(true);
+
+    FilterColumns?.forEach((column) => {
+      if (column.generallist && !dropdownLists[column.generallist]?.length) {
+        getGenerallist(column.generallist, setIsLoading, (data) =>
+          setDropdownLists((prev) => ({
+            ...prev,
+            [column.generallist]: data,
+          }))
+        );
+      }
+
+      if (column.lookupName && !dropdownLists[column.lookupName]?.length) {
+        getLookupFilterGrid(
+          column.lookupName,
+          column?.keysLookup?.name || "name",
+          column?.keysLookup?.recId || "recId",
+          (data) =>
+            setDropdownLists((prev) => ({
+              ...prev,
+              [column.lookupName]: data,
+            })),
+          column.keyRecId || "recId",
+          column.keyGetLookup != false ? true : false
+        );
+      }
+    });
+
+    setHasLoaded(true);
+    setIsLoading(false);
+  }, [FilterColumns, hasLoaded, dropdownLists]);
+
+  useEffect(() => {
+    if (isVisible) {
+      if (!hasLoaded) {
+        fetchDropdownOptions();
+      }
+      setHasLoaded(true);
+    }
+  }, [isVisible]);
+
+  const handleSubmitFilter = (values) => {
+    const nonEmptyFields = Object.keys(values).filter(
+      (key) => values[key] != "" && values[key] != null
+    );
+    setLocalStorageBtoa(`MegaGrid_Filters_${GridKey}`, values);
+    if (nonEmptyFields.length == 0) {
+      handleClearFilter();
+    } else {
+      handleFilterGrid(values, nonEmptyFields);
+    }
+    setIsVisible(false);
+  };
+
+  return (
+    <>
+      <PopupModalSlide
+        modalSize="w-96"
+        isVisible={isVisible}
+        toggleClick={() => {
+          setIsVisible(false);
+        }}
+        submitClick={() => formikRef.current?.handleSubmit()}
+        isLoading={isLoading}
+        title="filter"
+        icon={<IconFilter />}
+        ResourcePage="Grid"
+        ResourceBtns="Grid"
+        titleSubmitBtn="applyFilters"
+        titleCancel="clearFilter"
+        CancelClick={() => {
+          formikRef.current?.resetForm();
+          setIsVisible(false);
+          localStorage.removeItem(`MegaGrid_Filters_${GridKey}`);
+          handleClearFilter();
+        }}
+      >
+        <Formik
+          innerRef={formikRef}
+          initialValues={valuesFilter}
+          enableReinitialize={true}
+          onSubmit={(values) => handleSubmitFilter(values)}
+        >
+          {({ handleSubmit, handleChange, setFieldValue, values }) => (
+            <Form
+              autoComplete="off"
+              noValidate="noValidate"
+              onSubmit={handleSubmit}
+            >
+
+              {FilterColumns?.map((column) => {
+
+                if (column.type === "date" || column?.type == "dateTime") {
+                  return (
+                    <CustomDateRangePicker
+                      key={column.key}
+                      label={column.title}
+                      ResourcePage={column?.ResourcePage}
+                      value={values[column.key]}
+                      onChange={(dateRange) =>
+                        setFieldValue(column.key, dateRange)
+                      }
+                    />
+                  );
+                }
+              
+                if (
+                  column.isFilterSelect ||
+                  column.lookupName ||
+                  column.generallist
+                ) {
+                  return (
+                    <CustomeSelect
+                      key={`mega_${column.key}`}
+                      label={column.title}
+                      isMulti={column.lookupName ? true : false}
+                      titleGenerallist={column.generallist ? true : false}
+                      value={values[column.key] || []}
+                      ResourcePage={column?.ResourcePage || column?.generallist}
+                      options={
+                        dropdownLists[
+                        column.generallist || column.lookupName
+                        ] || []
+                      }
+                      onChange={(e) => setFieldValue(column.key, e)}
+                      isClearable
+                    />
+                  );
+                }
+               
+                return (column?.key &&
+                  <CustomInput
+                    key={column.key}
+                    label={column.title}
+                    autoComplete={column.key}
+                    ResourcePage={column?.ResourcePage}
+                    name={column.key}
+                    isNumber={column?.type == "number"}
+                    type={column?.type == "percent" ? "percent" : "text"}
+                    value={values[column?.key] || ""}
+                    onChange={handleChange(column?.key)}
+                  />
+                );
+              })}
+            </Form>
+          )}
+        </Formik>
+      </PopupModalSlide>
+    </>
+  );
+}

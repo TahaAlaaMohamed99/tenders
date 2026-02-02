@@ -1,0 +1,74 @@
+.popupModalSlide .form_editor {
+  @apply w-full;
+}
+.popupModalSlide .btn-primary,
+.popupModalSlide .btn-secondary {
+  @apply min-h-11;
+}
+.popupModalSlide .btn-primary.btn_sm,
+.popupModalSlide .btn-secondary.btn_sm {
+  @apply min-h-9;
+}
+.popupModalSlide .modal_body {
+  @apply bg-white dark:bg-bgWhiteDark h-dvh max-h-dvh max-w-[95vw] absolute top-0 end-0 duration-300 ease-out transition-all;
+}
+.popupModalSlide .modal_header {
+  @apply flex justify-between items-center p-4 bg-white dark:bg-bgWhiteDark top-0 sticky z-40;
+}
+.popupModalSlide .modal_header .box_header {
+  @apply flex items-center gap-1 w-[calc(100%-1rem)];
+}
+.popupModalSlide .modal_header .box_header .icon {
+  @apply w-5;
+}
+.popupModalSlide .modal_header .box_header .icon svg {
+  @apply w-full text-titleColor dark:text-titleColorDark;
+}
+.popupModalSlide .modal_header .box_header .title {
+  @apply text-titleColor dark:text-titleColorDark w-[calc(100%-1rem)] text-base font-bold uppercase leading-[normal];
+}
+.popupModalSlide .modal_header .Closed_btn {
+  @apply w-5 h-5 text-textColor dark:text-textColorDark text-opacity-75 hover:text-opacity-100;
+}
+.popupModalSlide .modal_header .Closed_btn svg {
+  @apply w-full h-full;
+}
+.popupModalSlide .modal_body_custom {
+  @apply m-2.5 rounded-lg h-[calc(100dvh-20px)] max-w-[95vw];
+}
+.popupModalSlide .modal_box {
+  @apply w-full overflow-hidden;
+}
+.popupModalSlide .modal_contact {
+  @apply p-4 overflow-auto;
+}
+.popupModalSlide .modal_footer {
+  @apply p-4 bg-white dark:bg-bgWhiteDark justify-between min-h-14 z-30 absolute w-full bottom-0 items-center grid grid-cols-2 gap-2;
+}
+
+.modal_md {
+  @apply xl:w-[50vw] lg:w-[65vw] w-[100vw];
+}
+.modal_md .modal_footer {
+  @apply xl:gap-[25vw] lg:gap-[15vw];
+}
+
+.modal_sm {
+  @apply w-96;
+}
+.modal_sm .form-group.cw_p {
+  @apply w-full;
+}
+
+::-webkit-scrollbar {
+  @apply w-2 h-2 border-none p-2;
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-bgWhite dark:bg-bgWhiteDark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-textColor dark:bg-textColorDark hover:bg-opacity-60 rounded hover:bg-titleColor dark:hover:bg-titleColorDark;
+}/*# sourceMappingURL=PopupModalSlide.css.map */

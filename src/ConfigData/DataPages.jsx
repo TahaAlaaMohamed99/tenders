@@ -31,6 +31,17 @@ export const DataPages = {
         componentViwe: PlaceholderPage,
         componentAddEdit: PlaceholderPage,
         keyId: "id",
+        columns: [
+            {
+                key: "name",
+                title: "description",
+                width: 200,
+                maxWidth: 220,
+                minWidth:100,
+                isFilter: true,
+                fixed: true,
+            }
+        ]
     },
     Setup: {
         Api: "Setup",

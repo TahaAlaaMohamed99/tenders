@@ -1,0 +1,78 @@
+@charset "UTF-8";
+.print-header,
+.print-footer,
+.print-area {
+  display: none;
+}
+
+@media print {
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #fff;
+  }
+  .print-area.active-print {
+    display: table;
+    height: auto !important;
+
+  }
+  
+  .print-component {
+    page-break-inside: auto;
+  }
+  .print-row {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  @page {
+    margin: 0;
+    size: auto;
+  }
+  body {
+    visibility: hidden;
+  }
+  .print-area {
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: -80px;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .no-print {
+    display: none;
+  }
+  .report-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+  }
+  .report-header {
+    position: fixed;
+    height: 65px;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+  }
+  .report-header img {
+    padding: 0.25rem;
+  }
+  table {
+    page-break-inside: auto;
+  }
+  tr,
+  thead,
+  tfoot {
+    page-break-inside: avoid;
+  }
+  thead {
+    display: table-header-group;
+  }
+  tfoot {
+    display: table-footer-group;
+  }
+}/*# sourceMappingURL=layoutPrint.css.map */
