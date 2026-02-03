@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect, useRef } from "react";
-import { MegaGridContext } from "./MegaGridContext";
+import { TendersGridContext } from "./TendersGridContext";
 import TranslationText from "../TranslationText";
 import { IconRowActions } from "../../assets/Icons";
 
@@ -17,7 +17,7 @@ const DropdownGrid = ({
   position = "absolute",
 }) => {
   const { selectedRows, isSelectedAll, handleSelectAll, setRowTransaction, currentLanguage } =
-    useContext(MegaGridContext);
+    useContext(TendersGridContext);
 
   const [isOpen, setIsOpen] = useState(false);
   const [menuStyle, setMenuStyle] = useState({});

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { MegaGridContext } from '../MegaGridContext'
+import { TendersGridContext } from '../TendersGridContext'
 
 export default function GridScroll({
   gridScrollRef,
@@ -7,7 +7,7 @@ export default function GridScroll({
   totalfixedColumnsWidth,
   totalDefaultColumnsWidthPx
 }) {
-  const { isTree, rowActionList, isOpenInNewTab, isSelected, isOpenChildGrid, onClickRow } = useContext(MegaGridContext)
+  const { isTree, rowActionList, isOpenInNewTab, isSelected, isOpenChildGrid, onClickRow } = useContext(TendersGridContext)
 const calcMarginStart = () => {
   let margin = totalfixedColumnsWidth;
 

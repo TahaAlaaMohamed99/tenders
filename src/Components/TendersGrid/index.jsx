@@ -1,5 +1,5 @@
 import { useContext, useState, useMemo, useCallback } from "react";
-import { MegaGridContext, MegaGridProvider } from "./MegaGridContext";
+import { TendersGridContext, TendersGridProvider } from "./TendersGridContext";
 import DasktopGrid from "./DasktopGrid/DasktopGrid";
 import MobileGrid from "./MobileGrid";
 import DropdownGrid from "./DropdownGrid";
@@ -63,9 +63,9 @@ const FilterButton = ({
   </>
 );
 
-function MegaGridInner() {
+function TendersGridInner() {
   const deviceType = useDeviceType();
-  const context = useContext(MegaGridContext);
+  const context = useContext(TendersGridContext);
   
    const {
     SelectedActions,
@@ -473,10 +473,10 @@ function MegaGridInner() {
   );
 }
 
- export default function MegaGrid(props) {
+ export default function TendersGrid(props) {
   return (
-    <MegaGridProvider {...props}>
-      <MegaGridInner />
-    </MegaGridProvider>
+    <TendersGridProvider {...props}>
+      <TendersGridInner />
+    </TendersGridProvider>
   );
 }

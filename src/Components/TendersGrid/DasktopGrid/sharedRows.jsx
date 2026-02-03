@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useCallback, memo } from "react";
 import CustomeSelect from "../../Form/CustomSelect";
-import { MegaGridContext } from "../MegaGridContext";
+import { TendersGridContext } from "../TendersGridContext";
 import { useformatDataGrid } from "../../../utils/useformatDataGrid";
 import CustomInput from "../../Form/CustomInput";
 import CustomCheckbox from "../../Form/CustomCheckbox";
@@ -251,7 +251,7 @@ const SharedRows = ({ type, row }) => {
     isEditRows = true,
     EditCulomsRow,
     keyId = "id",
-  } = useContext(MegaGridContext);
+  } = useContext(TendersGridContext);
 
   const visibleColumns = useMemo(() => {
     return columnState[type]?.filter((col) => !col.hiddenShow) || [];

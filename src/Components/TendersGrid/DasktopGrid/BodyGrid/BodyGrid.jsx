@@ -3,7 +3,7 @@ import FixedRows from "./FixedRows";
 import DefaultRows from "./DefaultRows";
 import DropdownGrid from "../../DropdownGrid";
 import NotData from "../../NotData";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 
 const RowAction = memo(({ row, rowActionList, isSelected }) => {
   if (!rowActionList) {
@@ -66,7 +66,7 @@ const BodyGrid = ({
     rowActionList,
     getData,
     isSelectorHight,
-  } = useContext(MegaGridContext);
+  } = useContext(TendersGridContext);
 
   const [displayedRowsCount, setDisplayedRowsCount] = useState(ROWS_PER_BATCH);
   const isLoadingMore = useRef(false);

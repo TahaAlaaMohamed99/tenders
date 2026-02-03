@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import FixedColumns from "./FixedColumns";
 import DefaultColumns from "./DefaultColumns";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 
 export default function HeaderGrid({
   handleScroll,
   totalDefaultColumnsWidthPx,
   scrollableContainerHeaderRef,
 }) {
-  const { rowActionList } = useContext(MegaGridContext)
+  const { rowActionList } = useContext(TendersGridContext)
 
   return (
     <div className="header_Grid ">

@@ -24,7 +24,7 @@ import {
 } from "../../assets/Icons";
 import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
 import TranslationText from "../TranslationText";
-import { MegaGridContext } from "./MegaGridContext";
+import { TendersGridContext } from "./TendersGridContext";
 import useTranslationText from "../../Hooks/useTranslationText";
 import { useSelector } from "react-redux";
 import { Tooltip } from "react-tooltip";
@@ -37,7 +37,7 @@ const CustomizeColumn = () => {
     GridKey,
     ResourcePage,
     currentLanguage,
-   } = useContext(MegaGridContext);
+   } = useContext(TendersGridContext);
 
   const [localColumns, setLocalColumns] = useState([]); // Local state for column modifications
   const [isOpen, setIsOpen] = useState(false); // Modal visibility state
@@ -68,7 +68,7 @@ const CustomizeColumn = () => {
 
   // Save current configuration to local storage and propagate changes
   const saveToLocalStorage = () => {
-    setLocalStorageBtoa(`MegaGrid_${GridKey}`, localColumns); // Custom local storage function
+    setLocalStorageBtoa(`TendersGrid_${GridKey}`, localColumns); // Custom local storage function
     handleColumnSettingsChange(localColumns); // Update parent component's state
     setIsOpen(!isOpen); // Close the modal
   };

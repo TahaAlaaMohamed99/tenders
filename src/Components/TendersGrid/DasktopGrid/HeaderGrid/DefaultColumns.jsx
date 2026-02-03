@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import ResizableColumn from "./ResizableColumn";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 
 const DefaultColumns = ({
   totalDefaultColumnsWidthPx
 }) => {
-  const { columnState, handleSort } = useContext(MegaGridContext)
+  const { columnState, handleSort } = useContext(TendersGridContext)
 
 
 

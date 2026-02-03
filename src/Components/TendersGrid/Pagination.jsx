@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import CustomeSelect from "../Form/CustomSelect";
 import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
 import TranslationText from "../TranslationText";
-import { MegaGridContext } from "./MegaGridContext";
+import { TendersGridContext } from "./TendersGridContext";
 
 const Pagination = ({
   children,
   deviceType,
   isHeader = false,
-  context = MegaGridContext
+  context = TendersGridContext
 }) => {
   const { pageSizeList = [
     { label: "10", value: 10 },
@@ -97,7 +97,7 @@ const Pagination = ({
                 options={pageSizeList}
                 isClearable={false}
                 onChange={(e) => {
-                  setLocalStorageBtoa(`MegaGrid_${GridKey}_PageSize`, e.value);
+                  setLocalStorageBtoa(`TendersGrid_${GridKey}_PageSize`, e.value);
                   setPageSizeShow(e.value);
                   handlePageSize(1, e.value);
                 }}

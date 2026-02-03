@@ -1,14 +1,14 @@
 import React, { useCallback, useRef, useEffect, useContext } from "react";
 import { IconsSortBto, IconsSortTop, IconTextField } from "../../../../assets/Icons";
 import TranslationText from "../../../TranslationText";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 
 const ResizableColumn = ({
   column,
   className,
   onClick,
 }) => {
-  const { ResourcePage, sortConfig, handleResize } = useContext(MegaGridContext)
+  const { ResourcePage, sortConfig, handleResize } = useContext(TendersGridContext)
 
   const columnRef = useRef(null);
   const startXRef = useRef(null);

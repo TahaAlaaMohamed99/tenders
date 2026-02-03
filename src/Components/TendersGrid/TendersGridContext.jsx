@@ -4,7 +4,7 @@ import { createContext, useState, useCallback, useEffect, useRef, useMemo } from
 import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
 import { useSelector } from "react-redux";
  
-export const MegaGridContext = createContext();
+export const TendersGridContext = createContext();
 
 const mergeColumns = (savedColumns, newColumns, dimensionsColumns, editsColumns, protectedKeys) => {
   const mergedColumns = savedColumns.map((oldCol) => {
@@ -41,7 +41,7 @@ const mergeColumns = (savedColumns, newColumns, dimensionsColumns, editsColumns,
   return mergedColumns;
 };
 
-export const MegaGridProvider = ({ children, ...props }) => {
+export const TendersGridProvider = ({ children, ...props }) => {
 
   const [columnState, setColumnState] = useState({
     all: [],
@@ -69,7 +69,7 @@ export const MegaGridProvider = ({ children, ...props }) => {
   const { currentLanguage, theme } = useSelector((state) => state.themeSlice);
  
   const protectedKeys = useMemo(() => ["hidden", "hiddenMobile", "width"], []);
-  const storageKey = useMemo(() => `MegaGrid_${props.GridKey}`, [props.GridKey]);
+  const storageKey = useMemo(() => `TendersGrid_${props.GridKey}`, [props.GridKey]);
 
   const getFromLocalStorage = useCallback((key) => {
     if (localStorageCache.current.has(key)) {
@@ -508,8 +508,8 @@ export const MegaGridProvider = ({ children, ...props }) => {
   ]);
 
   return (
-    <MegaGridContext.Provider value={contextValue}>
+    <TendersGridContext.Provider value={contextValue}>
       {children}
-    </MegaGridContext.Provider>
+    </TendersGridContext.Provider>
   );
 };

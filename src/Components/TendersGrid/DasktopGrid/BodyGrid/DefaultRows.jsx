@@ -1,5 +1,5 @@
 import { useContext, } from "react";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 
 import SharedRows from "../sharedRows";
 
@@ -8,7 +8,7 @@ export default function DefaultRows({ row, level = 0, rowsLength }) {
     onClickRow,
     selectedRows,
     isTree,
-  } = useContext(MegaGridContext);
+  } = useContext(TendersGridContext);
 
   return (
     <div

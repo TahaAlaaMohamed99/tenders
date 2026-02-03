@@ -1,6 +1,6 @@
 import React from 'react';
 import useLayout from '../Hooks/useLayout';
-import MegaGrid from './MegaGrid';
+import TendersGrid from './TendersGrid';
 export default function PlaceholderPage({ ResourcePage, ConfiPage, DataPage }) {
   // Set the page title using the layout hook
   useLayout(ResourcePage);
@@ -29,7 +29,7 @@ export default function PlaceholderPage({ ResourcePage, ConfiPage, DataPage }) {
       </p>
       
     </div>
-    <MegaGrid
+    <TendersGrid
         GridKey={"Test"}
         columns={DataPage.columns}
         ConfiPage={ConfiPage}

@@ -7,7 +7,7 @@ import {
   IconTreeView,
 } from "../../../../assets/Icons";
 import { Link } from "react-router-dom";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 import { useContext } from "react";
 import useTranslationText from "../../../../Hooks/useTranslationText";
 import SharedRows from "../sharedRows";
@@ -27,7 +27,7 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
     toggleChildGrid,
     openedChildGrid,
     setOpenedChildGrid,
-   } = useContext(MegaGridContext);
+   } = useContext(TendersGridContext);
 
   return (
     <div

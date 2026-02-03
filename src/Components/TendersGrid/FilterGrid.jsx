@@ -14,7 +14,7 @@ import CustomeSelect from "../Form/CustomSelect";
 import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
 import useGetLookup from "../../Hooks/useGetLookup";
 import useGetGenerallist from "../../Hooks/useGetGenerallist";
-import { MegaGridContext } from "./MegaGridContext";
+import { TendersGridContext } from "./TendersGridContext";
   
 
 export default function FilterGrid({ isVisible, setIsVisible }) {
@@ -25,7 +25,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
     valuesFilter,
     handleFilterGrid,
     handleClearFilter,
-  } = useContext(MegaGridContext);
+  } = useContext(TendersGridContext);
 
   const [isLoading, setIsLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -93,7 +93,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
     const nonEmptyFields = Object.keys(values).filter(
       (key) => values[key] != "" && values[key] != null
     );
-    setLocalStorageBtoa(`MegaGrid_Filters_${GridKey}`, values);
+    setLocalStorageBtoa(`TendersGrid_Filters_${GridKey}`, values);
     if (nonEmptyFields.length == 0) {
       handleClearFilter();
     } else {
@@ -121,7 +121,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
         CancelClick={() => {
           formikRef.current?.resetForm();
           setIsVisible(false);
-          localStorage.removeItem(`MegaGrid_Filters_${GridKey}`);
+          localStorage.removeItem(`TendersGrid_Filters_${GridKey}`);
           handleClearFilter();
         }}
       >

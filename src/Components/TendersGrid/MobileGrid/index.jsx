@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useformatDataGrid } from "../../../utils/useformatDataGrid";
 import TranslationText from "../../TranslationText";
 import { IconRowActions, IconTreeView } from "../../../assets/Icons";
-import { MegaGridContext } from "../MegaGridContext";
+import { TendersGridContext } from "../TendersGridContext";
 export default function MobileGrid() {
   const {
     columnState,
@@ -15,7 +15,7 @@ export default function MobileGrid() {
     isTree,
     toggleRow,
     currentLanguage,
-  } = useContext(MegaGridContext);
+  } = useContext(TendersGridContext);
   const [isOpenBottomSheet, setIsOpenBottomSheet] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const handleOpenSheet = (item) => {

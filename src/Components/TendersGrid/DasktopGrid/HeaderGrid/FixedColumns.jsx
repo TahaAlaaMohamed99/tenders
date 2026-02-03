@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import CustomCheckbox from "../../../Form/CustomCheckbox";
 import ResizableColumn from "./ResizableColumn";
-import { MegaGridContext } from "../../MegaGridContext";
+import { TendersGridContext } from "../../TendersGridContext";
 import { IconTreeView } from "../../../../assets/Icons";
 
 export default function FixedColumns() {
-  const { columnState, isSelectedAll, onClickRow, handleSelectAll, isSelected, isOpenInNewTab, isTree, handleSort, toggleAllRows, isOpenAll, isOpenChildGrid } = useContext(MegaGridContext)
+  const { columnState, isSelectedAll, onClickRow, handleSelectAll, isSelected, isOpenInNewTab, isTree, handleSort, toggleAllRows, isOpenAll, isOpenChildGrid } = useContext(TendersGridContext)
   return (
     <div className="fixed_Columns flex flex-nowrap">
       {isSelected && (

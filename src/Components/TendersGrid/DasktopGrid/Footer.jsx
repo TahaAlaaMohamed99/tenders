@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import FixedColumns from "./HeaderGrid/FixedColumns";
 import DefaultColumns from "./HeaderGrid/DefaultColumns";
-import { MegaGridContext } from "../MegaGridContext";
+import { TendersGridContext } from "../TendersGridContext";
 import useFormatNumber from "../../../utils/useFormatNumber";
 import TranslationText from "../../TranslationText";
 
@@ -19,8 +19,8 @@ const Footer = ({ totalDefaultColumnsWidthPx, scrollableContainerDataRef }) => {
     isEditRows,
 
     getData,
-  } = useContext(MegaGridContext);
-  const { rowActionList } = useContext(MegaGridContext);
+  } = useContext(TendersGridContext);
+  const { rowActionList } = useContext(TendersGridContext);
   const [originalTotals, setOriginalTotals] = useState({});
   const handleTotalAmount = (columnKey) => {
     const total = getData.reduce((acc, current) => {

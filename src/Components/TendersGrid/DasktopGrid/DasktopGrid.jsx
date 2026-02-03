@@ -5,11 +5,11 @@ import {
 import GridScroll from "./GridScroll";
 import BodyGrid from "./BodyGrid/BodyGrid";
 import HeaderGrid from "./HeaderGrid/HeaderGrid";
-import { MegaGridContext } from "../MegaGridContext";
+import { TendersGridContext } from "../TendersGridContext";
 import Footer from "./Footer";
 
 export default function DasktopGrid() {
-  const { columnState, rowActionList } = useContext(MegaGridContext);
+  const { columnState, rowActionList } = useContext(TendersGridContext);
 
   const totalfixedColumnsWidth = columnState?.fixed.reduce(
     (total, column) => total + (column.width ? parseFloat(column.width) : 0),
