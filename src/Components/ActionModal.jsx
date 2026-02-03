@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
-import { IconColsed } from "../assets/Icons/IconsSvg";
+import { IconColsed } from "../assets/Icons";
 
 /**
  * ActionModal - A flexible modal component supporting multiple display modes.

@@ -67,6 +67,10 @@
     "areYouSureYouWantToLogout": {
       "en": "Are you sure you want to logout?",
       "ar": "هل أنت متأكد أنك تريد تسجيل الخروج؟"
+    },
+    "AccountSettings": {
+      "en": "Account Settings",
+      "ar": "إعدادات الحساب"
     }
   },
  "Gender": {

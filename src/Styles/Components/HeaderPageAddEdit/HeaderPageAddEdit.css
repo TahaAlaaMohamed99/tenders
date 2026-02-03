@@ -1,0 +1,127 @@
+/**
+ * HeaderPageAddEdit Styles
+ * ========================
+ * 
+ * Styles for the reusable header component used in Add/Edit pages.
+ * Includes responsive design for mobile (bottom sheet).
+ * 
+ * Structure:
+ * - .Header_Page: Main container
+ * - .Header_container: Flex container for header content
+ * - .Header_Start: Left section (icon, title, status)
+ * - .Header_End: Right section (action buttons)
+ */
+
+/* =========================================
+   MAIN CONTAINER
+   ========================================= */
+.Header_Page {
+  @apply w-full bg-bgWhite dark:bg-bgWhiteDark border-b border-borderColor dark:border-borderColorDark;
+}
+
+.Header_container {
+  @apply flex items-center justify-between px-4 py-3 md:px-6 md:py-4 relative;
+}
+
+/* =========================================
+   START SECTION (Left)
+   ========================================= */
+.Header_Start {
+  @apply flex items-center gap-3;
+}
+
+.Header_Start .icon {
+  @apply w-8 h-8 flex items-center justify-center text-primary dark:text-primaryDark;
+}
+
+.Header_Start .icon svg {
+  @apply w-5 h-5;
+}
+
+.Header_Start .title {
+  @apply text-lg font-semibold text-titleColor dark:text-titleColorDark max-w-[200px] md:max-w-none;
+}
+
+/* =========================================
+   STATUS BADGE
+   ========================================= */
+.state_rec {
+  @apply px-2.5 py-1 rounded-full text-xs font-medium;
+}
+
+.state_rec .status_text {
+  @apply max-w-[100px];
+}
+
+/* Status Colors */
+.state_rec.Draft {
+  @apply bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300;
+}
+
+.state_rec.Submitted {
+  @apply bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300;
+}
+
+.state_rec.FullyApproved {
+  @apply bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300;
+}
+
+.state_rec.Rejected {
+  @apply bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-300;
+}
+
+.state_rec.Posted {
+  @apply bg-purple-100 text-purple-600 dark:bg-purple-900 dark:text-purple-300;
+}
+
+/* =========================================
+   END SECTION (Right - Action Buttons)
+   ========================================= */
+.Header_End {
+  @apply flex items-center gap-2;
+}
+
+.btn_Header_End {
+  @apply w-9 h-9 flex items-center justify-center rounded-lg 
+         text-titleColor dark:text-titleColorDark
+         hover:bg-bgColor dark:hover:bg-bgColorDark
+         transition-colors duration-200;
+}
+
+.btn_Header_End svg {
+  @apply w-5 h-5;
+}
+
+.btn_Header_End.Active {
+  @apply text-primary dark:text-primaryDark;
+}
+
+.btn_Header_End.delete_icon {
+  @apply text-error dark:text-errorDark hover:bg-error hover:bg-opacity-10;
+}
+
+/* =========================================
+   MOBILE BOTTOM SHEET ACTIONS
+   ========================================= */
+.Container_BottomSheet {
+  @apply flex flex-col gap-1 p-2;
+}
+
+.Container_BottomSheet .btn_action {
+  @apply w-full flex items-center gap-3 px-4 py-3 rounded-lg
+         text-titleColor dark:text-titleColorDark
+         hover:bg-bgColor dark:hover:bg-bgColorDark
+         transition-colors duration-200;
+}
+
+.Container_BottomSheet .btn_action .icon_action {
+  @apply w-5 h-5 flex-shrink-0;
+}
+
+.Container_BottomSheet .btn_action .title_action {
+  @apply text-sm font-medium;
+}
+
+.Container_BottomSheet .btn_action.Active {
+  @apply text-primary dark:text-primaryDark bg-primary bg-opacity-10;
+}

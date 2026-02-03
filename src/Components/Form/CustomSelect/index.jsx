@@ -8,7 +8,7 @@ import {
   IconChevronDown,
   IconEdit,
   IconLoading,
-} from "../../../assets/Icons/IconsSvg";
+} from "../../../assets/Icons";
 import CustomBtn from "../../CustomBtn";
 import { useNavigate } from "react-router-dom";
 import { useSafeSelector } from "../../../Hooks/useSafeSelector";

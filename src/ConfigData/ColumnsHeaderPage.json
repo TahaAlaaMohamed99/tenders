@@ -1,0 +1,11 @@
+{
+  "Vendors": [
+    { "key": "name", "label": "name" },
+    { "key": "vendorGroupId", "label": "vendorGroupId" },
+    { "key": "currencyCode", "label": "currencyCode" }
+  ],
+  "VendorGroups": [
+    { "key": "vendorGroupId", "label": "vendorGroupId" },
+    { "key": "description", "label": "description" }
+  ]
+}

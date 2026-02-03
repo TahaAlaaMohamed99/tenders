@@ -19,7 +19,7 @@
         @apply justify-end;
       }
       .modal_icon {
-        @apply bg-opacity-20 dark:bg-opacity-20  w-10 h-10 rounded-md flex justify-center items-center;
+        @apply  w-10 h-10 rounded-md flex justify-center items-center;
         svg {
           @apply w-5 h-5;
         }
@@ -51,12 +51,12 @@
   }
   &.delete {
     .modal_icon {
-      @apply bg-error dark:bg-errorDark text-error dark:text-errorDark;
+      @apply text-error dark:text-errorDark;
     }
   }
   &.primary {
     .modal_icon {
-      @apply bg-primary dark:bg-primaryDark text-primary dark:text-primaryDark;
+      @apply text-primary dark:text-primaryDark;
     }
   }
   &.info {
@@ -67,7 +67,7 @@
   &.default {
     .header_modal {
       .modal_icon {
-        @apply bg-bgColor   dark:bg-textColorDark  text-titleColor  dark:text-titleColorDark;
+        @apply text-titleColor  dark:text-titleColorDark;
       }
     }
   }

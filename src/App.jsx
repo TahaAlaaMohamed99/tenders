@@ -8,12 +8,13 @@ import {
   IconInfo,
   IconSuccess,
   IconWarning,
-} from "./assets/Icons/IconsSvg";
+} from "./assets/Icons";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Login from "./Pages/Login";
 import DynamicRouter from "./Routes/DynamicRouter";
 import { useTheme } from "./Hooks/useTheme";
+import AppTooltip from "./Components/AppTooltip";
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -24,7 +25,7 @@ function AppContent() {
   return (
     <>
       <ToastContainer
-        position={currentLanguage === 'ar' ? "top-right" : "top-left"}
+        position={currentLanguage === 'ar' ? "top-left" : "top-right"}
         autoClose={3600}
         draggable="mouse"
         hideProgressBar={true}
@@ -50,6 +51,7 @@ function AppContent() {
           }
         }}
       />
+      <AppTooltip />
 
       <Routes>
         <Route

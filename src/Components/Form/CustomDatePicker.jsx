@@ -6,7 +6,7 @@ import "react-clock/dist/Clock.css";
 import TranslationText from "../TranslationText";
 import { useSafeSelector } from "../../Hooks/useSafeSelector";
 import "../../Styles/Components/datePicker/DatePicker.css";
-import { IconCalendar, IconLoading } from "../../assets/Icons/IconsSvg";
+import { IconCalendar, IconLoading } from "../../assets/Icons";
 /**
  * CustomDatePicker Component:
  * This component renders a customizable date-time picker with floating label design.

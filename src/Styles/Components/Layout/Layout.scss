@@ -1,6 +1,6 @@
 .layout_wrapper {
   @apply md:ps-16 ease-linear duration-300;
-  &.layout_wrapper_isPinedSidebar {
+  &.layout_wrapper_isCollapsed {
     @apply md:ps-64;
   }
   &.layout_wrapper_isMenuReportSetup {

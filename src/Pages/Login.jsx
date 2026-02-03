@@ -12,7 +12,7 @@ import {
   LoginImage,
   LoginDotsRight,
   LoginDots,
-} from "../assets/Icons/IconsSvg";
+} from "../assets/Icons";
 import TranslationText from "../Components/TranslationText";
 
 export default function Login() {

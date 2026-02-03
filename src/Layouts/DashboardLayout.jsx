@@ -5,7 +5,7 @@ import Header from "../Components/Header";
 
 export default function DashboardLayout() {
   const menuSettings = useSelector((state) => state.menuSettingsSlice);
-  const isCollapsed = menuSettings?.isPinedSidebar || false;
+  const isCollapsed = !menuSettings?.isSidebarExpanded;
 
   return (
     <div 

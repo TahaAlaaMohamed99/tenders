@@ -1,129 +1,397 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import DynamicForm from '../Components/DynamicForm';
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { toast } from 'react-toastify';
+/**
+ * @fileoverview Vendors Add/Edit Page
+ * 
+ * This page demonstrates the SOLID pattern for Add/Edit pages:
+ * 1. HeaderPageAddEdit - Handles all header actions (Save, Delete, Bookmark, etc.)
+ * 2. Formik Form - Handles form state and validation
+ * 3. Custom Components - Render individual fields with translation support
+ * 
+ * ## Architecture Flow
+ * 
+ * ```
+ * User clicks Save (in Header)
+ *        ↓
+ * HeaderPageAddEdit.onSubmit() called
+ *        ↓
+ * formikRef.current.submitForm()
+ *        ↓
+ * Formik validates and calls onSubmit
+ *        ↓
+ * handleSubmitFormik() sends to API
+ * ```
+ * 
+ * @module Pages/VendorsAddEdit
+ */
 
-// Hooks
-import useHandleSubmit from '../Hooks/useHandleSubmit';
-import useHandleDelete from '../Hooks/useHandleDelete';
-import useGetById from '../Hooks/useGetById';
-import useGetLookup from '../Hooks/useGetLookup'; // <--- Import Lookup Hook
-import useCurrencyOptions from '../Hooks/useCurrencyOptions'; // <--- Import Currency Hook
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { Formik, Form } from "formik";
 
-// Components
-import CustomInput from '../Components/Form/CustomInput';
-import CustomeSelect from '../Components/Form/CustomSelect';
+// =============================================
+// HOOKS - Reusable logic for API operations
+// =============================================
+import useGetById from "../Hooks/useGetById";
+import useGridData from "../Hooks/useGridData";
+import useHandleSubmit from "../Hooks/useHandleSubmit";
+import useDeviceType from "../Hooks/useDeviceType";
+import useRouteMemory from "../Hooks/useRouteMemory";
+import { setBreadcrumbs, clearBreadcrumbs } from "../store/Reducers/Layout/breadcrumbsSlice";
 
-export default function VendorsAddEdit(props) {
-  const navigate = useNavigate();
+// =============================================
+// COMPONENTS - UI building blocks
+// =============================================
+import HeaderPageAddEdit from "../Components/HeaderPageAddEdit";
+import CustomInput from "../Components/Form/CustomInput";
+import CustomeSelect from "../Components/Form/CustomSelect/index";
+import Loading from "../Components/loader";
+
+/**
+ * VendorsAddEdit Component
+ * 
+ * Handles both Add and Edit modes for Vendor records.
+ * 
+ * ## Key Features
+ * - Uses HeaderPageAddEdit for standardized header with actions
+ * - Formik for form state management
+ * - Cascading select (dataArea → vendorGroup)
+ * - All labels translated via ResourcePage
+ * 
+ * @returns {JSX.Element} The rendered page
+ * 
+ * @example
+ * // Route configuration:
+ * <Route path="/vendors/:id" element={<VendorsAddEdit />} />
+ * 
+ * // Add mode: /vendors/0
+ * // Edit mode: /vendors/123
+ */
+export default function VendorsAddEdit() {
+  // =============================================
+  // ROUTING - Get ID from URL params
+  // =============================================
   const { id } = useParams();
-  const { state } = useLocation();
-  const recId = id || state?.RecId || 0;
-
-  // 1. API Hooks
-  const { handleSubmitFormik } = useHandleSubmit();
-  const { handleDelete: apiHandleDelete } = useHandleDelete();
-  const { getLookup } = useGetLookup(); // <--- Init Lookup Hook
-  const currencyOptions = useCurrencyOptions(); // <--- Init Currency Hook (returns list)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [vendorGroups, setVendorGroups] = useState([]); // <--- State for Vendor Groups
+  // Responsive layout detection
+  const deviceType = useDeviceType();
+  
+  // Route memory for "Go Back" navigation
+  const { goBack } = useRouteMemory("setup");
+  
+  /**
+   * Reference to Formik instance
+   * Used to trigger form submission from HeaderPageAddEdit
+   * @type {React.RefObject<import('formik').FormikProps>}
+   */
+  const formikRef = useRef(null);
 
-  // 2. Fetch Data (Edit Mode)
-  const fetchData = useGetById(
-      props.DataPage?.Api || "Vendors",
-      recId, 
-      setIsLoading, 
-      setData, 
-      props.PageUrl, 
-      props.ResourcePage
+  // =============================================
+  // STATE - Local component state
+  // =============================================
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  /** @type {[Array, Function]} Vendor groups for dropdown */
+  const [venderGroups, setVendorGroups] = useState([]);
+  
+  /** @type {[Array, Function]} Data areas (legal entities) */
+  const [dataArea, setDataArea] = useState([]);
+  
+  /** @type {[Array, Function]} Currency options */
+  const [currencies, setCurrencies] = useState([]);
+  
+  /** @type {[Object, Function]} Current record data (edit mode) */
+  const [data, setData] = useState({});
+
+  // =============================================
+  // HOOKS - API operations
+  // =============================================
+  const { handleSubmitFormik } = useHandleSubmit();
+  
+  /**
+   * Fetch vendor groups lookup data
+   * Returns: [{ vendorGroupId, dataAreaId, description }]
+   */
+  const { fetchGridData: fetchVenderGroups } = useGridData(
+    "VendorGroups/GetLookup",
+    setVendorGroups,
+    setIsLoading
+  );
+  
+  /**
+   * Fetch currencies lookup data
+   * Returns: [{ currencyCode, name }]
+   */
+  const { fetchGridData: fetchCurrencies } = useGridData(
+    "Currencies/GetLookup",
+    setCurrencies,
+    setIsLoading
+  );
+  
+  /**
+   * Fetch data areas (legal entities)
+   * Returns: [{ legalEntityId, name }]
+   */
+  const { fetchGridData: fetchDataArea } = useGridData(
+    "Vendors/GetdataArea",
+    setDataArea,
+    setIsLoading
   );
 
-  // 3. Fetch Lookups
+  /**
+   * Fetch single vendor record by ID (edit mode)
+   */
+  const fetchData = useGetById(
+    "Vendors",
+    id,
+    setIsLoading,
+    setData,
+    "/vendors",
+    "Vendors"
+  );
+
+  // =============================================
+  // LOOKUP TRANSFORMATIONS
+  // =============================================
+  
+  /**
+   * Filters vendor groups by selected data area
+   * This creates the CASCADE effect:
+   * When dataArea changes → only show matching vendorGroups
+   * 
+   * @param {Array} groups - All vendor groups
+   * @param {string} dataAreaId - Selected data area ID
+   * @returns {Array} Filtered options for select
+   */
+  const getFilteredVendorGroups = (groups, dataAreaId) =>
+    dataAreaId
+      ? groups
+          .filter((vg) => vg.dataAreaId.toLowerCase() === dataAreaId.toLowerCase())
+          .map((vg) => ({ value: vg.vendorGroupId, label: vg.vendorGroupId }))
+      : [];
+
+  /**
+   * Transform currencies to select options
+   * Format: "USD - US Dollar"
+   */
+  const currenciesOptions = Array.isArray(currencies)
+    ? currencies.map((cc) => ({
+        value: cc.currencyCode,
+        label: `${cc.currencyCode} - ${cc.name}`,
+      }))
+    : [];
+    
+  /**
+   * Transform data areas to select options
+   */
+  const dataAreaOptions = Array.isArray(dataArea)
+    ? dataArea.map((da) => ({
+        value: da.legalEntityId.toLowerCase(),
+        label: da.name,
+      }))
+    : [];
+
+  // =============================================
+  // EFFECTS - Load data on mount
+  // =============================================
   useEffect(() => {
-    // Fetch Record if Edit
-    if (recId > 0) fetchData();
-
-    // Fetch Vendor Groups Lookup
-    getLookup(
-        "VendorGroups", // API Endpoint
-        "name",         // Label Key
-        null, 
-        "id",           // Value Key
-        setIsLoading, 
-        setVendorGroups // Set State
-    );
-  }, [recId]);
-
-  // 4. Component Registry - MEMOIZED to prevent recreating the object map on every render
-  // This is crucial for performance so `DynamicForm` doesn't re-render excessively.
-  const vendorComponents = useMemo(() => ({
-      // Method 1: standard mapping (props come from Schema)
-      'select': CustomeSelect,
-      
-      // Method 2: Wrapped Component (props come from HERE + Schema)
-      'text': (props) => <CustomInput {...props} labelBgColor="bg-gray-100 dark:bg-gray-800" />,
-  }), []);
-
-  // 5. Lookups Map - MEMOIZED
-  const lookups = useMemo(() => ({
-      vendorGroup: vendorGroups,
-      currencyCode: currencyOptions
-  }), [vendorGroups, currencyOptions]);
-
-  const handleSave = useCallback((values) => {
-    handleSubmitFormik({
-        apiPage: props.DataPage?.Api || "Vendors",
-        values: values,
-        recId: recId,
-        navigateTo: -1, 
-        onSuccess: () => toast.success("Saved Successfully")
-    });
-  }, [handleSubmitFormik, props.DataPage?.Api, recId]);
-
-  const handleDelete = useCallback(() => {
-    if(window.confirm("Delete this record?")) {
-        apiHandleDelete({
-            apiPage: props.DataPage?.Api || "Vendors",
-            recId: recId,
-            navigateTo: -1,
-            onSuccess: () => toast.info("Deleted")
-        });
+    // Fetch all lookups in parallel
+    fetchVenderGroups();
+    fetchCurrencies();
+    fetchDataArea();
+    
+    // Fetch record if edit mode (id !== "0")
+    if (id !== "0") {
+      fetchData();
+    } else {
+      setIsLoading(false);
     }
-  }, [apiHandleDelete, props.DataPage?.Api, recId]);
+  }, [id]);
 
+  // Set breadcrumbs for navigation
+  useEffect(() => {
+    dispatch(setBreadcrumbs({
+      companyName: "",
+      ResourceModule: "Setup",
+      moduleLink: "/Setup/Vendors",
+      pageTitle: id === "0" ? "addVendor" : "editVendor"
+    }));
+    return () => dispatch(clearBreadcrumbs());
+  }, [id, dispatch]);
+
+  // =============================================
+  // RENDER
+  // =============================================
   return (
-    <DynamicForm 
-        {...props} 
-        recId={recId}
-        // Enrich Schema with Data AND Options
-        DataPage={{ 
-            ...props.DataPage, 
-            formSchema: { 
-                ...props.DataPage?.formSchema, 
-                sections: populateSchema(props.DataPage?.formSchema?.sections, data, lookups) 
-            } 
-        }}
-        components={vendorComponents}
-        onSave={handleSave}
-        onDelete={handleDelete}
-        onBack={() => navigate(-1)}
-    />
+    <div className="flex flex-col">
+      {/* =========================================
+          HEADER - Actions (Save, Delete, Close)
+          ========================================= */}
+      <HeaderPageAddEdit
+        // Mode: "add" or "edit" based on ID
+        option={id !== "0" ? "edit" : "add"}
+        id={Number(id)}
+        
+        // Translation namespace for this page
+        ResourcePage="Vendors"
+        
+        // Title keys (translated via ResourcePage)
+        titleAdd="addVendor"
+        titleEdit="editVendor"
+        
+        // API endpoint for delete operation
+        apiKey="Vendors"
+        
+        /**
+         * Save handler - triggers Formik submit
+         * This is the KEY INTEGRATION:
+         * Header button → Formik submit → API call
+         */
+        onSubmit={() => formikRef.current?.submitForm()}
+        isLoadingSubmit={isSubmitting}
+        
+        // Data state for internal operations
+        data={data}
+        setData={setData}
+        
+        // Navigation
+        goBackPrev={() => goBack("/Setup/Vendors")}
+        
+        // Show delete button in edit mode
+        isDelete={id !== "0"}
+      />
+
+      {/* =========================================
+          FORM CONTENT
+          ========================================= */}
+      <div className={`${deviceType === "mobile" ? "p-2" : "p-4 md:p-6"}`}>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          <Formik
+            // Expose Formik instance via ref
+            innerRef={formikRef}
+            
+            // Initial values from fetched data (edit) or empty (add)
+            initialValues={{
+              name: data.name || "",
+              vendorGroupId: data.vendorGroupId || "",
+              dataAreaId: data?.dataAreaId || "",
+              currencyCode: data.currencyCode || "",
+            }}
+            
+            // Re-initialize when data changes (after fetch)
+            enableReinitialize
+            
+            /**
+             * Form submission handler
+             * Called after Formik validation passes
+             */
+            onSubmit={async (values) => {
+              await handleSubmitFormik({
+                apiPage: "Vendors",
+                values,
+                recId: id,
+                resourcePage: "Vendors",
+                setIsLoadingSubmit: setIsSubmitting,
+                setData,
+                navigateTo: "/vendors",
+                fetchData,
+              });
+            }}
+          >
+            {({ handleChange, setFieldValue, values }) => {
+              // Get filtered vendor groups based on selected dataArea
+              const filteredVendorOptions = getFilteredVendorGroups(
+                venderGroups,
+                values.dataAreaId
+              );
+
+              return (
+                <Form>
+                  {/* Section Title */}
+                  <h3 className="text-base font-semibold text-titleColor dark:text-titleColorDark mb-4">
+                    Vendor Info
+                  </h3>
+                  
+                  {/* Form Grid - 2 columns */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Name Field */}
+                    <CustomInput
+                      label="name"
+                      ResourcePage="Vendors"
+                      Required
+                      value={values.name}
+                      onChange={handleChange("name")}
+                      placeholder="enterName"
+                    />
+                    
+                    {/* Data Area Select */}
+                    <CustomeSelect
+                      label="dataAreaId"
+                      ResourcePage="Vendors"
+                      options={dataAreaOptions}
+                      value={
+                        dataAreaOptions.find(
+                          (opt) => opt.value === values.dataAreaId
+                        ) || null
+                      }
+                      onChange={(selected) => {
+                        setFieldValue("dataAreaId", selected?.value);
+                        // CASCADE CLEAR: Reset vendorGroupId when dataArea changes
+                        setFieldValue("vendorGroupId", "");
+                      }}
+                      Required
+                      placeholder="selectDataArea"
+                    />
+                    
+                    {/* Vendor Group Select (filtered by dataArea) */}
+                    <CustomeSelect
+                      label="vendorGroupId"
+                      ResourcePage="Vendors"
+                      options={filteredVendorOptions}
+                      value={
+                        filteredVendorOptions.find(
+                          (opt) => opt.value === values.vendorGroupId
+                        ) || null
+                      }
+                      onChange={(selected) =>
+                        setFieldValue("vendorGroupId", selected?.value)
+                      }
+                      Required
+                      placeholder={
+                        values.dataAreaId
+                          ? "selectVendorGroup"
+                          : "selectDataAreaFirst"
+                      }
+                      isDisabled={!values.dataAreaId}
+                    />
+
+                    {/* Currency Code Select */}
+                    <CustomeSelect
+                      label="currencyCode"
+                      ResourcePage="Vendors"
+                      options={currenciesOptions}
+                      value={
+                        currenciesOptions.find(
+                          (opt) => opt.value === values.currencyCode
+                        ) || null
+                      }
+                      onChange={(selected) =>
+                        setFieldValue("currencyCode", selected?.value)
+                      }
+                      Required
+                      placeholder="selectCurrency"
+                    />
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
+        )}
+      </div>
+    </div>
   );
 }
-
-// Helper: Populate Schema with Fetched Data AND Options
-const populateSchema = (sections, data, lookups) => {
-    if (!sections) return sections;
-    return sections.map(section => ({
-        ...section,
-        fields: section.fields.map(field => ({
-            ...field,
-            // 1. Inject Data (Edit Mode)
-            defaultValue: data ? data[field.name] : '',
-            // 2. Inject Options (If exists in lookups map)
-            options: lookups[field.name] || field.options || []
-        }))
-    }));
-};

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ActionModal from "./ActionModal";
-import { IconColsed } from "../assets/Icons/IconsSvg";
+import { IconColsed } from "../assets/Icons";
 import CustomBtn from "./CustomBtn";
 import TranslationText from "./TranslationText";
 import "../Styles/Components/ConfirmationModal/Confirmation_Modal.css";
@@ -62,31 +62,22 @@ export default function ConfirmationModal({
       } ${className}`}
     >
         <div className={`modal_content ${modalLg ? "modal_xl" : ""} h-full border-none p-0 w-full max-w-full`}>
-             <div className={"header_modal " + (!icon ? "justify_end" : "")}>
-                {type == "viweComment" || iconAndTitle ? (
-                  <div className="flex gap-1 items-center ">
-                    {icon && <div className="modal_icon">{icon}</div>}
+             <div className={"header_modal " + (!icon && !title ? "justify_end" : "")}>
+                <div className="flex gap-1 items-center ">
+                  {icon && <div className="modal_icon">{icon}</div>}
+                  {title && (
                     <h2 className="modal_title">
                       <TranslationText page={ResourcePage} title={title} />{" "}
                       {subTitle && <TranslationText title={subTitle} />}
                     </h2>
-                  </div>
-                ) : (
-                  icon && <div className="modal_icon">{icon}</div>
-                )}
+                  )}
+                </div>
                 {/* Modal Title */}
                 <button type="button" onClick={onCancel} className="Closed_btn">
                   <IconColsed />
                 </button>
               </div>
               <div className={"modal_body"}>
-                {/* Conditionally render icon */}
-                {title && type != "viweComment" && !iconAndTitle && (
-                  <h2 className="modal_title">
-                    <TranslationText page={ResourcePage} title={title} />{" "}
-                    {subTitle && <TranslationText title={subTitle} />}
-                  </h2>
-                )}
                 {/* Modal Description */}
                 {description && (
                   <p className="modal_description">
@@ -107,18 +98,18 @@ export default function ConfirmationModal({
                 <div className="modal_footer">
                   <CustomBtn
                     title={cancelButtonLabel}
-                    className="btn-border-secondary"
+                    className="btn-border-secondary-filled"
                     onClick={onCancel}
                     size="btn_md"
                   />
                   <CustomBtn
                     title={confirmButtonLabel}
                     className={
-                      type == "delete"
+                      (type == "delete"
                         ? "btn-delete"
                         : type == "primary"
                         ? "btn-primary"
-                        : "btn-default-Modal"
+                        : "btn-default-Modal") + " !w-auto !min-w-fit px-6"
                     }
                     size="btn_md"
                     disabled={confirmDisabled}

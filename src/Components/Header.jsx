@@ -6,7 +6,7 @@ import {
   IconLight, 
   IconNotification, 
   IconLogout
-} from "../assets/Icons/IconsSvg";
+} from "../assets/Icons";
 import { toggleTheme, setCurrentLanguage } from "../store/Reducers/Layout/themeSlice";
 import CustomBtn from "./CustomBtn";
 import ActionModal from "./ActionModal";
@@ -15,6 +15,9 @@ import LanguageSelector from "./HeaderParts/LanguageSelector";
 import ProfileMenu from "./HeaderParts/ProfileMenu";
 import ConfirmationModal from "./ConfirmationModal";
 import TranslationText from "./TranslationText";
+
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 /**
  * Header Component
@@ -28,6 +31,8 @@ import TranslationText from "./TranslationText";
  */
 export default function Header() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   
   // State Selectors
   const breadcrumbs = useSelector((state) => state.breadcrumbsSlice.breadcrumbs);
@@ -58,6 +63,12 @@ export default function Header() {
 
   const handleLogout = () => {
     setActiveModal("logout_confirm");
+  };
+
+  const handleConfirmLogout = () => {
+    logout();
+    setActiveModal(null);
+    navigate('/login');
   };
 
   return (
@@ -155,11 +166,7 @@ export default function Header() {
         <ConfirmationModal
             isVisible={activeModal === "logout_confirm"}
             onCancel={() => setActiveModal(null)}
-            onConfirm={() => {
-                // console.log("Proceeding with Logout...");
-                setActiveModal(null);
-                // navigate('/login') or auth logic here
-            }}
+            onConfirm={handleConfirmLogout}
             title="logout"
             subTitle=""
             description="areYouSureYouWantToLogout"

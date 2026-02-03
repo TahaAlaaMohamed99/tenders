@@ -1,4 +1,4 @@
-import { IconReport,IconSetup, IconDashboard, IconSettings, IconJournal } from "../assets/Icons/IconsSvg";
+import { IconReport,IconSetup, IconDashboard, IconSettings, IconJournal } from "../assets/Icons";
  
 export const ModuleOrderSidbar = [
   {

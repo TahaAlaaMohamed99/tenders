@@ -1,4 +1,5 @@
 import React from "react";
+import TranslationText from "../TranslationText";
 
 /**
  * ProfileMenu Component
@@ -27,14 +28,14 @@ export default function ProfileMenu({ user, onLogout }) {
         
         <div className="space-y-1">
             <button className="w-full px-3 py-2 rounded-lg text-start text-sm hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                Account Settings
+                <TranslationText title="AccountSettings" page="General" />
             </button>
-            <button 
+            {/* <button 
                 onClick={onLogout}
                 className="w-full px-3 py-2 rounded-lg text-start text-sm hover:bg-error/10 text-error transition-colors"
             >
-               Logout
-            </button>
+                <TranslationText title="logout" page="General" />
+            </button> */}
         </div>
     </>
   );

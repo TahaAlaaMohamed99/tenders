@@ -5,10 +5,11 @@ import { useSelector, useDispatch } from "react-redux"; // Redux hooks
 import { useAuth } from "../context/AuthContext";
 import { useProcessMenu } from "../Hooks/useProcessMenu";
 import CustomBtn from "./CustomBtn";
-import { LogoText, IconArrowDown, IconHelp, IconLogout, IconArrowLeft, LogoIcon} from "../assets/Icons/IconsSvg"; 
-import { togglePinedSidebar } from "../store/Reducers/Layout/menuSettingsSlice"; // Action
-import CustomTooltip from "./CustomTooltip";
+import { LogoText, IconArrowDown, IconHelp, IconLogout, IconArrowLeft, LogoIcon, IconTreeView } from "../assets/Icons"; 
+import { IconTree, IconTreeEnd } from "../assets/Icons/StatusIcons"; 
+import { toggleSidebarExpanded } from "../store/Reducers/Layout/menuSettingsSlice"; // Action
 import TranslationText from "./TranslationText";
+import ConfirmationModal from "./ConfirmationModal";
 
 // Configuration Data
 import SidebarLogs from "../ConfigData/SidebarLogs.json";
@@ -59,6 +60,7 @@ const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }
       className="bg-white border border-borderColor shadow-2xl rounded-2xl p-2 w-56 animate-in fade-in zoom-in-95 duration-200"
     >
       <ul className="space-y-1">
+        {/* Direct Items */}
         {module.subItems?.map((item) => {
           const fullPath = item.routeModule
             ? `/${item.routeModule}/${item.routePage}`
@@ -82,6 +84,40 @@ const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }
             </li>
           );
         })}
+
+        {/* SubModules */}
+        {module.subModuleList?.map((subMod) => (
+           <React.Fragment key={subMod.title}>
+             {/* Optional Header for SubModule in Menu? Maybe a separator? */}
+             <li className="px-3 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider border-t border-gray-100 mt-1 pt-2">
+                 <TranslationText page="Sidebar" title={subMod.ResourceSubModule} />
+             </li>
+             
+             {subMod.items.map((item) => {
+                const fullPath = item.routeModule
+                  ? `/${item.routeModule}/${item.routePage}`
+                  : `/${item.routePage}`;
+                const active = isActiveRoute(fullPath);
+                return (
+                    <li key={item.keyPage}>
+                    <button
+                        onClick={() => {
+                        handleNavigation(fullPath);
+                        onClose();
+                        }}
+                        className={`w-full text-start px-3 py-2.5 rounded-lg text-sm transition-all duration-200 ${
+                        active
+                            ? "bg-primary text-white shadow-md"
+                            : "text-textColor hover:bg-gray-50 hover:text-titleColor"
+                        }`}
+                    >
+                        <TranslationText page="Sidebar" title={item.keyPage} />
+                    </button>
+                    </li>
+                );
+             })}
+           </React.Fragment>
+        ))}
       </ul>
     </div>,
     document.body
@@ -97,12 +133,26 @@ const SidebarItem = memo(({
     toggleModule, 
     handleNavigation, 
     isActiveRoute, 
-    handleMouseEnter, 
-    handleMouseLeave, 
-    handleCollapsedClick 
+    handleCollapsedClick,
+    activeFloatingMenu 
 }) => {
   
   const isExpanded = expandedModule === module.keyModule;
+
+  // State for collapsible sub-items (3rd level)
+  const [expandedSubObjects, setExpandedSubObjects] = useState({});
+
+  useEffect(() => {
+    // If submodule is collapsed (parent module closed), reset 3rd level?
+    // Or keep them open? Let's reset for cleaner UX or keep logic simple.
+  }, [expandedModule]);
+
+  const toggleSubObject = (key) => {
+    setExpandedSubObjects(prev => ({
+        ...prev,
+        [key]: !prev[key]
+    }));
+  }
 
   // Check if any child is active
   const hasActiveChild =
@@ -112,7 +162,15 @@ const SidebarItem = memo(({
       const fullPath = item.routeModule
         ? `/${item.routeModule}/${item.routePage}`
         : `/${item.routePage}`;
-      return isActiveRoute(fullPath);
+       if (isActiveRoute(fullPath)) return true;
+       // Check 3rd level
+       if (item.subItems) {
+           return item.subItems.some(sub => {
+                const subPath = `/${item.routePage}/${sub.routePage}`; // Assumption on route structure
+                return isActiveRoute(subPath);
+           });
+       }
+       return false;
     });
 
   const isParentActive = isExpanded || hasActiveChild;
@@ -150,10 +208,6 @@ const SidebarItem = memo(({
         <div>
           <div
             className="relative"
-            onMouseEnter={(e) =>
-              handleMouseEnter(e, module.title || module.keyModule, itemId)
-            }
-            onMouseLeave={handleMouseLeave}
             onClick={(e) =>
               isCollapsed ? handleCollapsedClick(e, module) : toggleModule(module)
             }
@@ -162,6 +216,16 @@ const SidebarItem = memo(({
               type="button"
               title={!isCollapsed ? module.title || module.keyModule : ""}
               ResourcePage="Sidebar"
+              // Pass tooltip if collapsed
+              tooltip={isCollapsed ? module.title || module.keyModule : ""} 
+              // Force placement to "top" if this menu is open, else side
+              tooltipPlacement={
+                activeFloatingMenu?.module?.keyModule === module.keyModule
+                  ? "top"
+                  : document.documentElement.dir === "rtl"
+                  ? "left"
+                  : "right"
+              }
               className={buttonClass}
               icon={
                 <span
@@ -189,66 +253,265 @@ const SidebarItem = memo(({
             <div
               className={`
                 overflow-hidden transition-all duration-300 ease-in-out
-                ${isExpanded ? "max-h-96 opacity-100 mt-1" : "max-h-0 opacity-0"}
+                ${isExpanded ? "max-h-[1000px] opacity-100 mt-1" : "max-h-0 opacity-0"}
                 `}
             >
-              <ul className="relative ml-5 pl-4 rtl:ml-0 rtl:mr-5 rtl:pl-0 rtl:pr-4 space-y-1">
-                {module.subItems.map((item, idx) => {
-                  const fullPath = item.routeModule
-                    ? `/${item.routeModule}/${item.routePage}`
-                    : `/${item.routePage}`;
-                  const isItemActive = isActiveRoute(fullPath);
-                  const isLast = idx === module.subItems.length - 1;
-                  
-                  return (
-                    <li key={item.keyPage} className="relative">
-                      {/* Tree Lines */}
-                      <div className="absolute -left-[11px] rtl:-right-[11px] rtl:left-auto top-0 h-[20px] w-4 border-l-2 rtl:border-l-0 rtl:border-r-2 border-b-2 border-borderColor rounded-bl-lg rtl:rounded-bl-none rtl:rounded-br-lg"></div>
-                      {!isLast && (
-                        <div className="absolute -left-[11px] rtl:-right-[11px] rtl:left-auto top-[20px] bottom-0 w-[1px] bg-borderColor"></div>
-                      )}
+                  <ul className="relative ml-5 pl-4 rtl:ml-0 rtl:mr-5 rtl:pl-0 rtl:pr-4">
+                    {/* Direct Child Items */}
+                    {module.subItems.map((item, idx) => {
+                      const fullPath = item.routeModule
+                        ? `/${item.routeModule}/${item.routePage}`
+                        : `/${item.routePage}`;
+                      const isItemActive = isActiveRoute(fullPath);
+                      
+                      const hasSubModules = module.subModuleList && module.subModuleList.length > 0;
+                      const isLastDirectItem = idx === module.subItems.length - 1;
+                      // Logic: If there are submodules following, this is NOT the last visual item in the tree spine.
+                      const isVisuallyLastInfo = isLastDirectItem && !hasSubModules; 
+                      
+                      const has3rdLevel = item.subItems && item.subItems.length > 0;
+                      const is3rdLevelOpen = expandedSubObjects[item.keyPage];
 
-                      <CustomBtn
-                        type="button"
-                        title={item.keyPage}
-                        ResourcePage="Sidebar"
-                        onClick={() => handleNavigation(fullPath)}
-                        className={`
-                            w-full flex items-center justify-start px-4 py-2 rounded-lg text-sm transition-all duration-200 border-none
-                            ${
-                              isItemActive
-                                ? "!bg-gray-500 !text-white font-medium shadow-sm" // Kept specific color for sub-item active
-                                : "text-textColor hover:text-titleColor hover:bg-gray-50"
-                            }
-                        `}
-                      />
-                    </li>
-                  );
-                })}
-              </ul>
+                      return (
+                        <li key={item.keyPage} className="relative">
+                          {/* Tree Lines - SVG Icons */}
+                          <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
+                              {/* Continuous Spine Line for non-last items */}
+                              {!isVisuallyLastInfo && (
+                                  <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
+                              )}
+                              {/* The L-curve for this item */}
+                              <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
+                          </div>
+
+                        {/* Item Row */}
+                        <div 
+                            className="relative"
+                            onClick={(e) => {
+                                if(has3rdLevel) {
+                                    e.stopPropagation();
+                                    toggleSubObject(item.keyPage);
+                                } else {
+                                    handleNavigation(fullPath);
+                                }
+                            }}
+                        >
+                            <CustomBtn
+                            type="button"
+                            title={item.keyPage}
+                            ResourcePage="Sidebar"
+                            className={`
+                                w-full flex items-center justify-start px-4 py-2 rounded-lg text-sm transition-all duration-200 border-none relative
+                                ${
+                                    isItemActive
+                                    ? "!bg-gray-500 !text-white font-medium shadow-sm"
+                                    : "text-textColor hover:text-titleColor hover:bg-gray-50"
+                                }
+                            `}
+                            // Render arrow if 3rd level exists
+                            icon={has3rdLevel ? (
+                                <span className={`absolute right-2 rtl:left-2 rtl:right-auto transition-transform duration-200 ${is3rdLevelOpen ? 'rotate-180' : ''}`}>
+                                     <IconArrowDown className="w-2 h-2" />
+                                </span>
+                            ) : null}
+                            />
+                        </div>
+
+                        {/* 3rd Level Render */}
+                        {has3rdLevel && (
+                             <div className={`
+                                overflow-hidden transition-all duration-300 ease-in-out
+                                ${is3rdLevelOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+                             `}>
+                                 <ul className="relative ml-6 rtl:mr-6 rtl:ml-0 pl-2 rtl:pr-2">
+                                     {item.subItems.map((sub, sIdx) => {
+                                         const subPath = `/${sub.routePage}`; // Simple path construction for now
+                                         const isSubActive = isActiveRoute(subPath);
+                                         const isLastSub = sIdx === item.subItems.length - 1;
+
+                                         return (
+                                             <li key={sub.keyPage} className="relative">
+                                                  {/* Level 3 Spine */}
+                                                  <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
+                                                      {!isLastSub && (
+                                                          <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
+                                                      )}
+                                                      <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
+                                                  </div>
+                                                  
+                                                  <CustomBtn
+                                                    type="button"
+                                                    title={sub.keyPage}
+                                                    ResourcePage="Sidebar"
+                                                    onClick={() => handleNavigation(subPath)} // Demo nav
+                                                    className={`
+                                                        text-xs py-1.5 px-3 rounded-md w-full text-start
+                                                        ${
+                                                            isSubActive
+                                                            ? "bg-gray-200 text-gray-900 font-medium"
+                                                            : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                                        }
+                                                    `}
+                                                  />
+                                             </li>
+                                         )
+                                      })}
+                                  </ul>
+                             </div>
+                        )}
+                      </li>
+                    );
+                  })}
+
+                  {/* SubModules (Grouped Items) */ }
+                  {module.subModuleList && module.subModuleList.map((subMod, modIdx) => {
+                      const isLastModule = modIdx === module.subModuleList.length - 1;
+                      
+                      return (
+                        <li key={subMod.title} className="relative pt-2">
+                              {/* Line connecting from previous elements (Main Spine) */}
+                              <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 bottom-0 w-5 flex justify-center h-full z-0">
+                                  {/* If last module, line stops at center (h-1/2), else full height */}
+                                  <div className={`w-[2px] bg-gray-300 ${isLastModule ? 'h-1/2' : 'h-full'}`}></div>
+                              </div>
+
+                              {/* Group Title Node */}
+                              <div className="relative pl-6 rtl:pl-0 rtl:pr-6 mb-1 z-10 flex items-center">
+                                  {/* Icon Tree View as generic folder icon */}
+                                  <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto flex items-center justify-center bg-white rtl:scale-x-[-1] w-5">
+                                      <IconTreeView className="w-4 h-4 text-gray-400 bg-white" /> 
+                                  </div>
+
+                                  <h4 className="text-[11px] font-bold text-gray-400 uppercase tracking-wider ml-1 rtl:mr-1">
+                                      <TranslationText page="Sidebar" title={subMod.ResourceSubModule} />
+                                  </h4>
+                              </div>
+
+                              {/* Items in this SubModule */}
+                              <ul className="relative ml-4 pl-4 rtl:ml-0 rtl:mr-4 rtl:pl-0 rtl:pr-4">
+                                  {subMod.items.map((item, itemIdx) => {
+                                      const fullPath = item.routeModule
+                                        ? `/${item.routeModule}/${item.routePage}`
+                                        : `/${item.routePage}`;
+                                      const isItemActive = isActiveRoute(fullPath);
+                                      const isLastItem = itemIdx === subMod.items.length - 1;
+                                      const has3rdLevel = item.subItems && item.subItems.length > 0;
+                                      const is3rdLevelOpen = expandedSubObjects[item.keyPage];
+
+                                      return (
+                                        <li key={item.keyPage} className="relative">
+                                            {/* Tree Lines - Level 2 Spine */}
+                                            <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
+                                                {/* Continuous Spine Line for non-last items */}
+                                                {!isLastItem && (
+                                                    <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
+                                                )}
+                                                <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
+                                            </div>
+
+                                            <div 
+                                                className="relative"
+                                                onClick={(e) => {
+                                                    if(has3rdLevel) {
+                                                        e.stopPropagation();
+                                                        toggleSubObject(item.keyPage);
+                                                    } else {
+                                                        handleNavigation(fullPath);
+                                                    }
+                                                }}
+                                            >
+                                                <CustomBtn
+                                                    type="button"
+                                                    title={item.keyPage}
+                                                    ResourcePage="Sidebar"
+                                                    className={`
+                                                        w-full flex items-center justify-start px-4 py-2 rounded-lg text-sm transition-all duration-200 border-none
+                                                        ${
+                                                            isItemActive
+                                                            ? "!bg-gray-500 !text-white font-medium shadow-sm"
+                                                            : "text-textColor hover:text-titleColor hover:bg-gray-50"
+                                                        }
+                                                    `}
+                                                    icon={has3rdLevel ? (
+                                                        <span className={`absolute right-2 rtl:left-2 rtl:right-auto transition-transform duration-200 ${is3rdLevelOpen ? 'rotate-180' : ''}`}>
+                                                            <IconArrowDown className="w-2 h-2" />
+                                                        </span>
+                                                    ) : null}
+                                                />
+                                            </div>
+
+                                            {/* 3rd Level Render (duplicate logic for now, could be componentized) */}
+                                            {has3rdLevel && (
+                                                <div className={`
+                                                    overflow-hidden transition-all duration-300 ease-in-out
+                                                    ${is3rdLevelOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+                                                `}>
+                                                    <ul className="relative ml-6 rtl:mr-6 rtl:ml-0 pl-2 rtl:pr-2">
+                                                        {item.subItems.map((sub, sIdx) => {
+                                                            const subPath = `/${item.routePage}/${sub.routePage}`; // Fix parent route usage
+                                                            const isSubActive = isActiveRoute(subPath);
+                                                            const isLastSub = sIdx === item.subItems.length - 1;
+
+                                                            return (
+                                                                <li key={sub.keyPage} className="relative">
+                                                                    {/* Level 3 Spine */}
+                                                                    <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
+                                                                        {!isLastSub && (
+                                                                            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
+                                                                        )}
+                                                                        <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
+                                                                    </div>
+                                                                    <CustomBtn
+                                                                        type="button"
+                                                                        title={sub.keyPage}
+                                                                        ResourcePage="Sidebar"
+                                                                        onClick={() => handleNavigation(subPath)}
+                                                                        className={`
+                                                                            text-xs py-1.5 px-3 rounded-md w-full text-start
+                                                                            ${
+                                                                                isSubActive
+                                                                                ? "bg-gray-200 text-gray-900 font-medium"
+                                                                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                                                                            }
+                                                                        `}
+                                                                    />
+                                                                </li>
+                                                            )
+                                                        })}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </li>
+                                     );
+                                 })}
+                             </ul>
+                        </li>
+                     );
+                  })}
+                </ul>
             </div>
           )}
         </div>
       </li>
     );
   }
-
-  // Standalone Item
+  
+  // Standalone Item... (remains mostly same, just check if it needs update)
+  {/* The rest of the component (Standalone Item) is usually fine if it doesn't have children */}
   return (
     <li
       key={itemId}
       className={`select-none mb-1 group relative ${isCollapsed ? "px-0" : "px-2"}`}
     >
-      <div
-        onMouseEnter={(e) =>
-          handleMouseEnter(e, module.title || module.keyPage, itemId)
-        }
-        onMouseLeave={handleMouseLeave}
-      >
+      <div>
         <CustomBtn
           type="button"
           title={!isCollapsed ? module.title || module.keyPage : ""}
           ResourcePage="Sidebar"
+          // Pass tooltip if collapsed
+          tooltip={isCollapsed ? module.title || module.keyPage : ""}
+          // Force placement to the side
+          tooltipPlacement={document.documentElement.dir === "rtl" ? "left" : "right"}
           onClick={() =>
             handleNavigation(module.routePage ? `/${module.routePage}` : "/")
           }
@@ -276,9 +539,8 @@ export default function Sidebar() {
   const { logout } = useAuth();
 
   const menuSettings = useSelector((state) => state.menuSettingsSlice);
-  const isCollapsed = menuSettings?.isPinedSidebar || false;
+  const isCollapsed = !menuSettings?.isSidebarExpanded;
 
-  const [hoveredItem, setHoveredItem] = useState(null); // { id, rect, text }
   const [activeFloatingMenu, setActiveFloatingMenu] = useState(null); // { module, rect }
 
   // Process the menu structure
@@ -288,8 +550,8 @@ export default function Sidebar() {
     DataPages
   );
 
-  // State for the single currently expanded module (Accordion behavior)
   const [expandedModule, setExpandedModule] = useState(null);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
   // Initialize expanded state based on current route (Auto-expand active parent)
   useEffect(() => {
@@ -319,7 +581,12 @@ export default function Sidebar() {
   }, [location.pathname, processedMenu]);
 
   const handleLogout = () => {
+    setShowLogoutConfirm(true);
+  };
+
+  const confirmLogout = () => {
     logout();
+    setShowLogoutConfirm(false);
     navigate("/login");
   };
 
@@ -375,15 +642,6 @@ export default function Sidebar() {
   };
 
   // --- Handlers for Hover/Click in Collapsed Mode ---
-  const handleMouseEnter = (e, text, id) => {
-    if (!isCollapsed) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    setHoveredItem({ id, rect, text });
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredItem(null);
-  };
 
   const handleCollapsedClick = (e, module) => {
     if (!isCollapsed) return;
@@ -429,21 +687,23 @@ export default function Sidebar() {
       {/* Main Sidebar Container */}
       <aside
         className={`
-                bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[100vh] my-auto flex flex-col font-sans rounded-2xl border-borderColor sticky top-4
-                transition-all duration-300 ease-in-out relative
+                m-2 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[calc(100vh-16px)] flex flex-col font-sans rounded-2xl border-borderColor sticky top-2
+                relative
                 ${isCollapsed ? "w-16 px-2" : "w-64 px-2"} 
                 z-40
             `}
       >
         {/* Toggle Button */}
         <button
-          onClick={() => dispatch(togglePinedSidebar())}
+          onClick={() => dispatch(toggleSidebarExpanded())}
           className="absolute -right-3 rtl:right-auto rtl:-left-3 top-9 w-6 h-6 bg-white border border-borderColor rounded-lg flex items-center justify-center shadow-md text-borderColor hover:text-primary transition-all duration-200 z-50 focus:outline-none hover:scale-105 active:scale-95"
           style={{ marginTop: "-14px" }}
         >
           <IconArrowLeft
             className={`w-3 h-3 transition-transform duration-300 ${
-              isCollapsed ? (document.dir==="rtl" ? "" : "rotate-180") : (document.dir==="rtl" ? "rotate-180" : "")
+              isCollapsed 
+                ? "rotate-180 rtl:rotate-0" 
+                : "rotate-0 rtl:rotate-180"
             }`}
           />
         </button>
@@ -452,7 +712,7 @@ export default function Sidebar() {
         <div
           className={`flex items-center gap-2 mt-4 mb-4 ${
             isCollapsed ? "justify-center" : "justify-start ps-4"
-          } transition-all duration-300 overflow-visible`}
+          } overflow-visible`}
         >
           <LogoIcon className="w-8 h-8 shrink-0 text-primary" />
           {!isCollapsed && <LogoText className="h-6" />}
@@ -477,9 +737,8 @@ export default function Sidebar() {
                     toggleModule={toggleModule}
                     handleNavigation={handleNavigation}
                     isActiveRoute={isActiveRoute}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
                     handleCollapsedClick={handleCollapsedClick}
+                    activeFloatingMenu={activeFloatingMenu}
                   />
                 ))}
             </ul>
@@ -504,9 +763,8 @@ export default function Sidebar() {
                       toggleModule={toggleModule}
                       handleNavigation={handleNavigation}
                       isActiveRoute={isActiveRoute}
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
                       handleCollapsedClick={handleCollapsedClick}
+                      activeFloatingMenu={activeFloatingMenu}
                     />
                   ))}
               </ul>
@@ -518,14 +776,14 @@ export default function Sidebar() {
         <div className={`${isCollapsed ? "p-0" : "p-2"} mt-auto mb-4`}>
           <div className="flex flex-col gap-1">
             {/* Help */}
-            <div
-              onMouseEnter={(e) => handleMouseEnter(e, "Help", "help-btn")}
-              onMouseLeave={handleMouseLeave}
-            >
+            <div>
               <CustomBtn
                 type="button"
-                title={!isCollapsed ? "Help" : ""}
+                title={!isCollapsed ? "Help" : ""} // key
                 ResourcePage="Sidebar"
+                tooltip={isCollapsed ? "Help" : ""} 
+                // Force placement to the side
+                tooltipPlacement={document.documentElement.dir === "rtl" ? "left" : "right"}
                 className={`
                         flex items-center transition-colors font-medium text-sm border-none rounded-xl
                         ${
@@ -541,14 +799,14 @@ export default function Sidebar() {
             </div>
 
             {/* Logout */}
-            <div
-              onMouseEnter={(e) => handleMouseEnter(e, "Logout", "logout-btn")}
-              onMouseLeave={handleMouseLeave}
-            >
+            <div>
               <CustomBtn
                 type="button"
-                title={!isCollapsed ? "LogoutAccount" : ""}
-                ResourcePage="Sidebar"
+                title={!isCollapsed ? "logout" : ""} // key
+                ResourcePage="General" // Usually logout is in General
+                tooltip={isCollapsed ? "logout" : ""}
+                // Force placement to the side
+                tooltipPlacement={document.documentElement.dir === "rtl" ? "left" : "right"}
                 onClick={handleLogout}
                 className={`
                         flex items-center transition-colors font-medium text-sm border-none rounded-xl group
@@ -559,7 +817,7 @@ export default function Sidebar() {
                         }
                     `}
                 icon={
-                  <IconLogout className="w-5 h-5 text-error transition-transform group-hover:scale-110" />
+                  <IconLogout className="w-5 h-5 text-error transition-transform group-hover:scale-110 rtl:scale-x-[-1]" />
                 }
               />
             </div>
@@ -570,15 +828,6 @@ export default function Sidebar() {
       {/* Portals for Tooltips and Menus */}
       {isCollapsed && (
         <>
-          {hoveredItem && !activeFloatingMenu && (
-            <CustomTooltip
-              content={hoveredItem.text} // This is the translation key
-              ResourcePage="Sidebar"
-              rect={hoveredItem.rect}
-              visible={true}
-              placement={document.documentElement.dir === "rtl" ? "left" : "right"}
-            />
-          )}
           {activeFloatingMenu && (
             <FloatingMenu
               module={activeFloatingMenu.module}
@@ -590,6 +839,21 @@ export default function Sidebar() {
           )}
         </>
       )}
+
+      {/* Logout Confirmation Modal */}
+      <ConfirmationModal
+        isVisible={showLogoutConfirm}
+        onCancel={() => setShowLogoutConfirm(false)}
+        onConfirm={confirmLogout}
+        title="logout"
+        subTitle=""
+        description="areYouSureYouWantToLogout"
+        type="delete"
+        confirmButtonLabel="logout"
+        cancelButtonLabel="cancel"
+        icon={<IconLogout className="w-12 h-12" />}
+        ResourcePage="General"
+      />
     </>
   );
 }

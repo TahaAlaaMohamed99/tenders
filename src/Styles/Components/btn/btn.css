@@ -19,6 +19,9 @@
 .btn.btn-border-secondary {
   @apply border-borderColor hover:bg-borderColor dark:hover:bg-borderColorDark text-titleColor dark:border-borderColorDark dark:text-titleColorDark text-opacity-65 dark:text-opacity-65;
 }
+.btn.btn-border-secondary-filled {
+  @apply bg-borderColor border border-transparent hover:border-borderColor dark:bg-borderColorDark dark:hover:bg-transparent dark:hover:border-borderColorDark text-titleColor dark:text-titleColorDark text-opacity-65 dark:text-opacity-65;
+}
 .btn.btn_lg {
   @apply px-4 py-2.5 text-sm;
 }

@@ -1,0 +1,43 @@
+{
+  "RecordStatus": [
+    {
+      "label": "Draft",
+      "value": 0,
+      "className": "Draft"
+    },
+    {
+      "label": "Submitted",
+      "value": 1,
+      "className": "Submitted"
+    },
+    {
+      "label": "FullyApproved",
+      "value": 2,
+      "className": "FullyApproved"
+    },
+    {
+      "label": "Rejected",
+      "value": 3,
+      "className": "Rejected"
+    },
+    {
+      "label": "Posted",
+      "value": 4,
+      "className": "Posted"
+    }
+  ],
+  "WorkflowStatus": [
+    {
+      "label": "pending",
+      "value": 0
+    },
+    {
+      "label": "approved",
+      "value": 1
+    },
+    {
+      "label": "rejected",
+      "value": 2
+    }
+  ]
+}

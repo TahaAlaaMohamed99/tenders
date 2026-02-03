@@ -1,6 +1,6 @@
 import React from "react";
 import TranslationText from "./TranslationText";
-import { IconLoading, LoginDots } from "../assets/Icons/IconsSvg";
+import { IconLoading, LoginDots } from "../assets/Icons";
 import "../Styles/Components/btn/btn.css";
 
 /**
@@ -18,6 +18,7 @@ import "../Styles/Components/btn/btn.css";
  * @param {boolean} [props.disabled=false] - Determines if the button should be disabled.
  * @param {boolean} [props.isLoading=false] - Determines if the button should display a loading state.
  * @param {boolean} [props.loginDots=false] - Shows decorative dots for login style buttons.
+ * @param {string} [props.tooltip] - Translation key for the tooltip.
  * 
  * @returns {JSX.Element} - A styled button element with optional loading and icon support.
  */
@@ -33,6 +34,8 @@ export default function CustomBtn({
   disabled = false,
   isLoading = false,
   loginDots = false,
+  tooltipPlacement, // New prop for manual placement control
+  ...props
 }) {
   // A mapping object for loading labels based on the button's title
   const labelLoading = {
@@ -42,13 +45,18 @@ export default function CustomBtn({
 
   return (
     <div className="relative">
-    <button
-      type={type} // Button type (e.g., "button", "submit")
-      aria-label={title} // Accessibility label for screen readers
-      disabled={disabled} // Disables the button if `disabled` is true
-      onClick={!disabled && !isLoading ? onClick : undefined} // Prevents click handling when disabled or loading
-      className={`btn ${size} ${className ?? ""} relative`}// Dynamically applies classes for styling
-    >
+      <button
+        type={type} // Button type (e.g., "button", "submit")
+        aria-label={title} // Accessibility label for screen readers
+        disabled={disabled} // Disables the button if `disabled` is true
+        onClick={!disabled && !isLoading ? onClick : undefined} // Prevents click handling when disabled or loading
+        className={`btn ${size} ${className ?? ""} relative`} // Dynamically applies classes for styling
+        // Tooltip Attributes for AppTooltip
+        data-tooltip-id="global-tooltip"
+        data-tooltip-content={props.tooltip}
+        data-resource-page={props.ResourcePage || ResourcePage}
+        data-tooltip-place={tooltipPlacement}
+      >
       {isLoading ? (
         // Loading state: Show a spinner icon and a loading message
         <>
@@ -78,7 +86,7 @@ export default function CustomBtn({
     </button>
       {/* Decorative Dots - Sign-in Button */ }
     { loginDots &&
-      <div className="absolute left-1/4 pointer-events-none">
+      <div className="absolute left-1/4 rtl:right-1/4 rtl:left-auto pointer-events-none">
         <LoginDots className="h-10 w-20 lg:h-12 lg:w-24" />
       </div>
     }

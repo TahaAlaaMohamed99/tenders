@@ -1,0 +1,10 @@
+{
+  "Vendors": {
+    "parent": null,
+    "route": "/vendors"
+  },
+  "VendorGroups": {
+    "parent": null,
+    "route": "/vendor-groups"
+  }
+}
