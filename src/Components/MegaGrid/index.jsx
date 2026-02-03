@@ -12,7 +12,7 @@ import {
  
   IconRowActions,
   IconSearch,
- } from "../../assets/Icons/IconsSvg";
+ } from "../../assets/Icons";
 import ExcelExportButton from "../ExcelExportButton";
 import PrintComponent from "../PrintComponent/PrintComponent";
 import Pagination from "./Pagination";

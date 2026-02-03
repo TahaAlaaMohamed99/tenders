@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import CustomCheckbox from "../../../Form/CustomCheckbox";
 import ResizableColumn from "./ResizableColumn";
 import { MegaGridContext } from "../../MegaGridContext";
-import { IconTreeViwe } from "../../../../assets/Icons/IconsSvg";
+import { IconTreeView } from "../../../../assets/Icons";
 
 export default function FixedColumns() {
   const { columnState, isSelectedAll, onClickRow, handleSelectAll, isSelected, isOpenInNewTab, isTree, handleSort, toggleAllRows, isOpenAll, isOpenChildGrid } = useContext(MegaGridContext)
@@ -33,7 +33,7 @@ export default function FixedColumns() {
       )}
       {isTree && (
         <div onClick={() => toggleAllRows()} className="header_Item h-10 w-10">
-          <IconTreeViwe className={"w-5 h-5 " + (isOpenAll ? "text-primary dark:text-primaryDark" : "text-textColor dark:text-textColorDark")} />
+          <IconTreeView className={"w-5 h-5 " + (isOpenAll ? "text-primary dark:text-primaryDark" : "text-textColor dark:text-textColorDark")} />
         </div>
       )}
       {columnState?.fixed?.filter((col) => !col.hiddenShow)?.map((column, index) => (

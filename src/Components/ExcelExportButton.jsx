@@ -1,5 +1,5 @@
 import React from "react";
-import { IconXsl } from "../assets/Icons/IconsSvg";
+import { IconXsl } from "../assets/Icons";
 import { useFormatDate } from "../utils/useFormatDate";
 import useFormatNumber from "../utils/useFormatNumber";
 import useTranslationText from "../Hooks/useTranslationText";

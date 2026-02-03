@@ -1,5 +1,5 @@
 import React from 'react'
-import { IconNotData, IconNotDataDark } from '../../assets/Icons/IconsSvg'
+import { IconNotData, IconNotDataDark } from '../../assets/Icons'
 import TranslationText from '../TranslationText'
 
 export default function NotData({ theme }) {

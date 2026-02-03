@@ -4,7 +4,7 @@ import {
   IconError,
   IconMaximize,
   IconMinimize,
-} from "../assets/Icons/IconsSvg";
+} from "../assets/Icons";
 import CustomBtn from "./CustomBtn";
 import "../Styles/Components/PopupModalSlide/PopupModalSlide.css";
 import TranslationText from "./TranslationText";

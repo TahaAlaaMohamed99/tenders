@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useEffect, useContext } from "react";
-import { IconsSortBto, IconsSortTop, IconTextField } from "../../../../assets/Icons/IconsSvg";
+import { IconsSortBto, IconsSortTop, IconTextField } from "../../../../assets/Icons";
 import TranslationText from "../../../TranslationText";
 import { MegaGridContext } from "../../MegaGridContext";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { IconPrint } from "../../assets/Icons/IconsSvg";
+import { IconPrint } from "../../assets/Icons";
 import "../../Styles/Components/Print/layoutPrint.css";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";

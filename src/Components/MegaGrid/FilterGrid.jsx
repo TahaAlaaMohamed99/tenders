@@ -9,11 +9,11 @@ import React, {
 import CustomInput from "../Form/CustomInput";
 import CustomDateRangePicker from "../Form/CustomDateRangePicker";
 import PopupModalSlide from "../PopupModalSlide";
-import { IconFilter } from "../../assets/Icons/IconsSvg";
+import { IconFilter } from "../../assets/Icons";
 import CustomeSelect from "../Form/CustomSelect";
 import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
-import useGetLookup from "../../hooks/useGetLookup";
-import useGetGenerallist from "../../hooks/useGetGenerallist";
+import useGetLookup from "../../Hooks/useGetLookup";
+import useGetGenerallist from "../../Hooks/useGetGenerallist";
 import { MegaGridContext } from "./MegaGridContext";
   
 

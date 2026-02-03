@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useformatDataGrid } from "../../../utils/useformatDataGrid";
 import TranslationText from "../../TranslationText";
- import { IconRowActions, IconTreeViwe } from "../../../assets/Icons/IconsSvg";
+import { IconRowActions, IconTreeView } from "../../../assets/Icons";
 import { MegaGridContext } from "../MegaGridContext";
 export default function MobileGrid() {
   const {
@@ -66,7 +66,7 @@ export default function MobileGrid() {
                         }}
                       >
                         {row.children && row.children.length > 0 && (
-                          <IconTreeViwe />
+                          <IconTreeView />
                         )}
                       </button>
                     )}

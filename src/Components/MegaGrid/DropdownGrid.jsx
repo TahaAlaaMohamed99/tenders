@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { MegaGridContext } from "./MegaGridContext";
 import TranslationText from "../TranslationText";
-import { IconRowActions } from "../../assets/Icons/IconsSvg";
+import { IconRowActions } from "../../assets/Icons";
 
 const DropdownGrid = ({
   menuItems,

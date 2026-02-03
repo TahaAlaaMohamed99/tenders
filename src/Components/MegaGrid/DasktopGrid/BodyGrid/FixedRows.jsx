@@ -4,8 +4,8 @@ import {
   IconBookOpen,
   IconEdit,
   IconNewTab,
-  IconTreeViwe,
-} from "../../../../assets/Icons/IconsSvg";
+  IconTreeView,
+} from "../../../../assets/Icons";
 import { Link } from "react-router-dom";
 import { MegaGridContext } from "../../MegaGridContext";
 import { useContext } from "react";
@@ -149,7 +149,7 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
             }
           }}
         >
-          {row.children && row.children.length > 0 && <IconTreeViwe />}
+          {row.children && row.children.length > 0 && <IconTreeView />}
         </button>
       )}
 

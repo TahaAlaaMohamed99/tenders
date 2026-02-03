@@ -21,7 +21,7 @@ import {
   IconEyeClosed,
   IconHiddenMobile,
   IconMobile,
-} from "../../assets/Icons/IconsSvg";
+} from "../../assets/Icons";
 import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
 import TranslationText from "../TranslationText";
 import { MegaGridContext } from "./MegaGridContext";
