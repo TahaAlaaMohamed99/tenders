@@ -1,12 +1,52 @@
 {
   "Gender": [
-    {
-      "label": "male",
-      "value": 1
-    },
-    {
-      "label": "female",
-      "value": 2
-    }
+    { "label": "male", "value": 1 },
+    { "label": "female", "value": 2 }
+  ],
+  "NoYes": [
+    { "label": "no", "value": 1 },
+    { "label": "yes", "value": 2 }
+  ],
+  "IsActive": [
+    { "label": "active", "value": 1 },
+    { "label": "inactive", "value": 2 }
+  ],
+  "BiddingType": [
+    { "label": "tender", "value": 1 },
+    { "label": "auction", "value": 2 },
+    { "label": "practice", "value": 3 },
+    { "label": "directAttribution", "value": 4 }
+  ],
+  "WorkflowStatus": [
+    { "label": "new", "value": 1 },
+    { "label": "submitted", "value": 2 },
+    { "label": "fullyApproved", "value": 3 },
+    { "label": "rejected", "value": 4 },
+    { "label": "calculating", "value": 9 },
+    { "label": "faildCalculate", "value": 10 },
+    { "label": "calculated", "value": 11 },
+    { "label": "posting", "value": 12 },
+    { "label": "faildPost", "value": 13 },
+    { "label": "posted", "value": 999 }
+  ],
+  "ApprovalStatus": [
+    { "label": "approved", "value": 1 },
+    { "label": "rejected", "value": 2 }
+  ],
+  "ProductType": [
+    { "label": "item", "value": 1 },
+    { "label": "service", "value": 2 }
+  ],
+  "SerialNumberSequencType": [
+    { "label": "auto", "value": 1 },
+    { "label": "manual", "value": 2 }
+  ],
+  "SerialNumberResetType": [
+    { "label": "never", "value": 1 },
+    { "label": "monthly", "value": 2 },
+    { "label": "yearly", "value": 3 }
+  ],
+  "TransactionName": [
+    { "label": "submissionDocument", "value": 1 }
   ]
 }

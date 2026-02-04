@@ -49,7 +49,7 @@ const CustomDatePicker = React.forwardRef(({
   ResourcePage = "",
   isLoading = false,
   lang,
-  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
+  labelBgColor = "bg-bgColor dark:bg-bgColorDark",
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   // Current language logic - use prop or Redux (safe)

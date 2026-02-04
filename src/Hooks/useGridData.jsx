@@ -12,13 +12,35 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading) => {
     setIsLoading(true);
     try {
       const response = await Api.get(
-        `/${ApiGet}?${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
+        `/${ApiGet}/GetAll?${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
       );
       if (response !== 404) {
-        let updatedData = response.data ? response.data : response;
+        const hasMetaTotal =
+          response?.totalCount !== undefined ||
+          response?.total !== undefined ||
+          response?.totalRows !== undefined;
+        const updatedData = response?.data && hasMetaTotal ? response : response?.data ? response.data : response;
+        const rows = Array.isArray(response?.data?.data)
+          ? response.data.data
+          : Array.isArray(response?.data)
+            ? response.data
+            : Array.isArray(updatedData?.data)
+              ? updatedData.data
+              : Array.isArray(updatedData)
+                ? updatedData
+                : [];
 
-        setDataGrid(updatedData);
-        setTotalRow(response.total);
+        setDataGrid(rows);
+        // Handle different API response structures for total count
+        const total =
+          updatedData?.totalCount ??
+          updatedData?.total ??
+          updatedData?.totalRows ??
+          response?.totalCount ??
+          response?.total ??
+          response?.totalRows ??
+          0;
+        setTotalRow(total);
       } else {
         setDataGrid([]);
         setTotalRow(0);

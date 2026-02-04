@@ -4,7 +4,7 @@ import customStyles from "./CustomStyles";
 import CustomStylesDark from "./CustomStylesDark";
 import TranslationText from "../../TranslationText";
 import {
-  IconAdd,
+  IconAddDoc,
   IconChevronDown,
   IconEdit,
   IconLoading,
@@ -40,13 +40,21 @@ import { useSafeSelector } from "../../../Hooks/useSafeSelector";
  */
 const CustomDropdownIndicator = (props) => {
   const { selectProps } = props;
+  const isOpen = selectProps.menuIsOpen;
   return (
     <components.DropdownIndicator {...props}>
-      {selectProps.isLoading ? (
-        <IconLoading className="text-primary dark:text-primaryDark w-4 h-4 ms-1" />
-      ) : (
-        <IconChevronDown className="w-4 h-4  ms-1" />
-      )}
+      <div className="flex items-center">
+        {/* Fixed separator line */}
+        <div className="h-6 w-px bg-borderColor dark:bg-borderColorDark mr-3" />
+        {/* Rotating arrow */}
+        {selectProps.isLoading ? (
+          <IconLoading className="text-primary dark:text-primaryDark w-4 h-4" />
+        ) : (
+          <IconChevronDown 
+            className={`w-4 h-4 text-textColor dark:text-textColorDark transition-transform duration-200 ${isOpen ? 'rotate-180' : 'rotate-0'}`} 
+          />
+        )}
+      </div>
     </components.DropdownIndicator>
   );
 };
@@ -65,15 +73,16 @@ const CustomeSelect = React.forwardRef(({
   className,
   menuPlacement = "bottom",
   ResourcePage = "",
-  isClearable = true,
+  isClearable = false,
   titleGenerallist = false,
   isLoading = false,
   routeAddLookup = null,
   stateRoute,
   RecId = 0,
   setRecId,
-  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
+  labelBgColor = "bg-bgColor dark:bg-bgColorDark",
   lang,
+  isSmall,
 }, ref) => {
   const navigate = useNavigate();
   // Custom input component for the react-select's Input component
@@ -90,8 +99,6 @@ const CustomeSelect = React.forwardRef(({
   const currentLanguage = useSafeSelector(
     (state) => state.themeSlice?.currentLanguage,
   );
-  // effectiveLang logic isn't strictly needed for TranslationText component calls inside here as they usually handle it,
-  // but if we need it for props logic we have it.
 
   // State to track if the select component is focused
   const [isFocused, setIsFocused] = useState(false);
@@ -146,7 +153,7 @@ const CustomeSelect = React.forwardRef(({
               Input: CustomInput, // Use the custom input component
             }}
             isLoading={isLoading}
-            styles={customStyles(errors, touched, isFocused)}
+            styles={customStyles(errors, touched, isFocused, isSmall)}
             placeholder={
               <TranslationText
                 titleGenerallist={titleGenerallist}
@@ -165,11 +172,12 @@ const CustomeSelect = React.forwardRef(({
             onFocus={handleFocus} // Handle focus event
             inputId={`arkaan_${label}`} // Unique id for the input field
             menuPlacement={menuPlacement} // Position the dropdown menu
+            menuPortalTarget={document.body} // Render menu in portal to avoid overflow issues
           />
 
           {routeAddLookup != null && (
             <CustomBtn
-              icon={RecId > 0 ? <IconEdit /> : <IconAdd />}
+              icon={RecId > 0 ? <IconEdit /> : <IconAddDoc />}
               size="btn_sm"
               className="btn-primary min-w-min"
               onClick={() => {

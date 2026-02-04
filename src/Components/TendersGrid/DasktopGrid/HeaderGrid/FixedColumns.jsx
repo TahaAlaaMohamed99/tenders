@@ -19,10 +19,7 @@ export default function FixedColumns() {
           />
         </div>
       )}
-      {onClickRow && (
-        <div className="header_Item h-10 w-10">
-        </div>
-      )}
+      {/* Placeholder removed since we are removing the action column */}
       {isOpenInNewTab && (
         <div className="header_Item h-10 w-10">
         </div>

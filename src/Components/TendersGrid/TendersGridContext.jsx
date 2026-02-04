@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useState, useCallback, useEffect, useRef, useMemo } from "react";
-import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
+import { setLocalStorageBtoa, getLocalStorageAtob } from "../../utils/useFromLocalStorage";
 import { useSelector } from "react-redux";
  
 export const TendersGridContext = createContext();
@@ -59,6 +59,11 @@ export const TendersGridProvider = ({ children, ...props }) => {
   const [sortConfig, setSortConfig] = useState([]);
   const [openRows, setOpenRows] = useState({});
   const [isOpenAll, setIsOpenAll] = useState(false);
+  const [valuesFilter, setValuesFilter] = useState(() => {
+    // Load saved filters from localStorage on initialization
+    const filterKey = `TendersGrid_Filters_${props.GridKey}`;
+    return getLocalStorageAtob(filterKey, {});
+  });
 
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
@@ -107,8 +112,20 @@ export const TendersGridProvider = ({ children, ...props }) => {
     const dimensionsColumns = props.dimensionsColumns || [];
     const editsColumns = props.editsColumns || [];
 
+    // Schema mismatch detection: if new columns differ from saved columns
+    const savedKeys = new Set(savedColumns.map(c => c.key));
+    const newKeys = new Set(newColumns.map(c => c.key));
+    const hasNewColumnsNotInSaved = newColumns.some(c => !savedKeys.has(c.key));
+    const hasSavedColumnsNotInNew = savedColumns.some(c => !newKeys.has(c.key));
+    const schemaMismatch = newColumns.length > 0 && (hasNewColumnsNotInSaved || hasSavedColumnsNotInNew);
+    const effectiveSavedColumns = schemaMismatch ? [] : savedColumns;
+
+    if (schemaMismatch && savedColumns.length > 0) {
+      console.log(`[TendersGrid] Schema mismatch detected for ${storageKey}, resetting cached columns`);
+    }
+
     const mergedColumns = mergeColumns(
-      savedColumns,
+      effectiveSavedColumns,
       newColumns,
       dimensionsColumns,
       editsColumns,
@@ -163,6 +180,84 @@ export const TendersGridProvider = ({ children, ...props }) => {
     setOpenRows(newState);
     setIsOpenAll(true);
   }, [getData, props.isTree]);
+
+  useEffect(() => {
+    // If there are active filters, reapply them; otherwise reset to original data
+    const hasActiveFilters = valuesFilter && Object.keys(valuesFilter).length > 0 && 
+      Object.values(valuesFilter).some(v => {
+        if (v === "" || v == null) return false;
+        // Check for date range objects
+        if (typeof v === 'object' && !Array.isArray(v)) {
+          return !(v.start && v.end); // Consider empty if both start and end are falsy
+        }
+        return true;
+      });
+    
+    if (hasActiveFilters) {
+      const activeFields = Object.keys(valuesFilter).filter(
+        key => {
+          const val = valuesFilter[key];
+          if (val === "" || val == null) return false;
+          // For date ranges, check if both start and end exist
+          if (typeof val === 'object' && !Array.isArray(val) && val.start && val.end) {
+            return true;
+          }
+          // For other values
+          return val !== "" && val != null;
+        }
+      );
+      
+      // Apply filter using the same logic as handleFilterGrid
+      const filteredData = props.data?.filter((row) => {
+        return activeFields.every((field) => {
+          const filterValue = valuesFilter[field];
+          if (!filterValue || filterValue === "") return true;
+          
+          const rowValue = row[field];
+          if (rowValue == null) return false;
+          
+          // Handle date range objects
+          if (filterValue && typeof filterValue === 'object' && !Array.isArray(filterValue)) {
+            if (filterValue.start && filterValue.end) {
+              const rowDate = new Date(rowValue);
+              const startDate = new Date(filterValue.start);
+              const endDate = new Date(filterValue.end);
+              startDate.setHours(0, 0, 0, 0);
+              endDate.setHours(23, 59, 59, 999);
+              rowDate.setHours(0, 0, 0, 0);
+              return rowDate >= startDate && rowDate <= endDate;
+            }
+            if (filterValue.value !== undefined) {
+              return rowValue === filterValue.value || String(rowValue).toLowerCase() === String(filterValue.value).toLowerCase();
+            }
+            return false;
+          }
+          
+          // Handle array values (for multi-select)
+          if (Array.isArray(filterValue)) {
+            if (filterValue.length === 0) return true;
+            return filterValue.some(fv => {
+              const fvValue = fv?.value !== undefined ? fv.value : fv;
+              return String(rowValue).toLowerCase() === String(fvValue).toLowerCase() || 
+                     String(rowValue).toLowerCase().includes(String(fvValue).toLowerCase());
+            });
+          }
+          
+          // Handle select object with value property
+          if (filterValue && typeof filterValue === 'object' && filterValue.value !== undefined) {
+            return rowValue === filterValue.value || String(rowValue).toLowerCase() === String(filterValue.value).toLowerCase();
+          }
+          
+          // Handle string/number comparison
+          return String(rowValue).toLowerCase().includes(String(filterValue).toLowerCase());
+        });
+      }) || [];
+      
+      setGetData(filteredData);
+    } else {
+      setGetData(props.data || []);
+    }
+  }, [props.data, valuesFilter]);
 
   const handleColumnSettingsChange = useCallback((updatedColumns) => {
     const fixed = updatedColumns.filter((col) => col?.fixed);
@@ -371,6 +466,66 @@ export const TendersGridProvider = ({ children, ...props }) => {
     });
   }, [props.data]);
 
+  const handleSortDirection = useCallback((columnKey, direction) => {
+    setSortConfig((prevConfig) => {
+      let newConfig = [...prevConfig];
+      const existingIndex = newConfig.findIndex((item) => item.key === columnKey);
+
+      if (existingIndex !== -1) {
+        newConfig[existingIndex] = {
+          ...newConfig[existingIndex],
+          direction: direction,
+          clickCount: direction === "asc" ? 1 : 2,
+        };
+        // Move to top priority
+        const selectedConfig = newConfig.splice(existingIndex, 1)[0];
+        newConfig.unshift(selectedConfig);
+      } else {
+        newConfig.unshift({
+          key: columnKey,
+          direction: direction,
+          clickCount: direction === "asc" ? 1 : 2,
+          priority: 1,
+        });
+        // Adjust priorities
+        newConfig.forEach((item, i) => {
+          if (i > 0) item.priority = i + 1;
+        });
+      }
+
+      const sortedData = [...props.data].sort((a, b) => {
+        for (const { key, direction } of newConfig) {
+          const aValue = a[key];
+          const bValue = b[key];
+
+          if (aValue == null) return direction === "asc" ? -1 : 1;
+          if (bValue == null) return direction === "asc" ? 1 : -1;
+
+          let comparison = 0;
+
+          if (key === "createdOn" || key.includes("Date") || key.includes("date")) {
+            comparison = new Date(aValue) - new Date(bValue);
+          } else if (typeof aValue === "number" && typeof bValue === "number") {
+             comparison = aValue - bValue;
+          } else {
+            comparison = String(aValue).localeCompare(String(bValue), undefined, {
+              numeric: true,
+              sensitivity: "base",
+            });
+          }
+
+          if (comparison !== 0) {
+            return direction === "asc" ? comparison : -comparison;
+          }
+        }
+        return 0;
+      });
+
+      setGetData(sortedData);
+      return newConfig;
+    });
+  }, [props.data]);
+
   const handleClearAllGrid = useCallback(() => {
     setGetData(props.data);
     setRowsEdited([]);
@@ -447,6 +602,67 @@ export const TendersGridProvider = ({ children, ...props }) => {
     };
   }, []);
 
+  const handleFilterGrid = useCallback((values, fields) => {
+    setValuesFilter(values);
+    // Apply filter to data - filter getData based on values
+    const filteredData = props.data?.filter((row) => {
+      return fields.every((field) => {
+        const filterValue = values[field];
+        if (!filterValue || filterValue === "") return true;
+        
+        const rowValue = row[field];
+        if (rowValue == null) return false;
+        
+        // Handle date range objects (for date filters)
+        if (filterValue && typeof filterValue === 'object' && !Array.isArray(filterValue)) {
+          if (filterValue.start && filterValue.end) {
+            const rowDate = new Date(rowValue);
+            const startDate = new Date(filterValue.start);
+            const endDate = new Date(filterValue.end);
+            // Set time to start/end of day for proper comparison
+            startDate.setHours(0, 0, 0, 0);
+            endDate.setHours(23, 59, 59, 999);
+            rowDate.setHours(0, 0, 0, 0);
+            return rowDate >= startDate && rowDate <= endDate;
+          }
+          // If it's an object but not a date range, try to match by value property (for select objects)
+          if (filterValue.value !== undefined) {
+            return rowValue === filterValue.value || String(rowValue).toLowerCase() === String(filterValue.value).toLowerCase();
+          }
+          return false;
+        }
+        
+        // Handle array values (for multi-select)
+        if (Array.isArray(filterValue)) {
+          if (filterValue.length === 0) return true;
+          // Check if any selected value matches the row value
+          return filterValue.some(fv => {
+            const fvValue = fv?.value !== undefined ? fv.value : fv;
+            return String(rowValue).toLowerCase() === String(fvValue).toLowerCase() || 
+                   String(rowValue).toLowerCase().includes(String(fvValue).toLowerCase());
+          });
+        }
+        
+        // Handle select object with value property
+        if (filterValue && typeof filterValue === 'object' && filterValue.value !== undefined) {
+          return rowValue === filterValue.value || String(rowValue).toLowerCase() === String(filterValue.value).toLowerCase();
+        }
+        
+        // Handle string/number comparison
+        return String(rowValue).toLowerCase().includes(String(filterValue).toLowerCase());
+      });
+    }) || [];
+    
+    setGetData(filteredData);
+  }, [props.data]);
+
+  const handleClearFilter = useCallback(() => {
+    const filterKey = `TendersGrid_Filters_${props.GridKey}`;
+    localStorage.removeItem(filterKey);
+    setValuesFilter({});
+    setGetData(props.data);
+  }, [props.data, props.GridKey]);
+
   const contextValue = useMemo(() => ({
     ...props,
     currentLanguage,
@@ -462,6 +678,7 @@ export const TendersGridProvider = ({ children, ...props }) => {
     handleSearch,
     setGetData,
     handleSort,
+    handleSortDirection,
     isDropdownOpen,
     setIsDropdownOpen,
     sortConfig,
@@ -480,6 +697,9 @@ export const TendersGridProvider = ({ children, ...props }) => {
     setRowsEdited,
     rowsEdited,
     handleClearAllGrid,
+    valuesFilter,
+    handleFilterGrid,
+    handleClearFilter,
   }), [
     props,
     currentLanguage,
@@ -494,6 +714,7 @@ export const TendersGridProvider = ({ children, ...props }) => {
     handleSelectAll,
     handleSearch,
     handleSort,
+    handleSortDirection,
     isDropdownOpen,
     sortConfig,
     toggleDropdown,
@@ -505,7 +726,11 @@ export const TendersGridProvider = ({ children, ...props }) => {
     isViewerGrid,
     rowsEdited,
     handleClearAllGrid,
+    valuesFilter,
+    handleFilterGrid,
+    handleClearFilter,
   ]);
+
 
   return (
     <TendersGridContext.Provider value={contextValue}>

@@ -1,5 +1,5 @@
 .custom-date-picker {
-  @apply min-h-[2.8125rem] max-h-[2.8125rem] focus-within:outline-none focus-visible:outline-none w-full p-1.5 border-borderColor dark:border-borderColorDark rounded-md border-[1.2px]   focus-within:ring-primary dark:focus-within:ring-primaryDark bg-bgWhite dark:bg-bgWhiteDark;
+  @apply min-h-[2.8125rem] max-h-[2.8125rem] focus-within:outline-none focus-visible:outline-none w-full pt-3 pb-1.5 px-3 border-borderColor dark:border-borderColorDark rounded-xl border-[1.2px] focus-within:ring-primary dark:focus-within:ring-primaryDark bg-bgWhite dark:bg-bgWhiteDark;
 }
 .custom-date-picker .react-calendar__navigation {
   @apply text-center;

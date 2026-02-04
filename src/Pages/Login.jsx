@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
@@ -18,28 +18,37 @@ import TranslationText from "../Components/TranslationText";
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Get the redirect path from location state, default to dashboard
+  const from = location.state?.from?.pathname || "/dashboard";
 
   const initialValues = {
     userName: "",
     password: "",
+    rememberMe: false,
   };
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
 
-    setTimeout(() => {
-      const success = login(values.userName, values.password);
+    try {
+      const result = await login(values.userName, values.password, values.rememberMe);
 
-      if (success) {
+      if (result.success) {
         toast.success("Login successful!");
-        navigate("/vendors");
+        // Navigate to the originally requested page or dashboard
+        navigate(from, { replace: true });
       } else {
-        toast.error("Login failed!");
+        toast.error(result.error || "Login failed!");
       }
-
+    } catch (error) {
+      toast.error("An unexpected error occurred. Please try again.");
+      console.error("Login error:", error);
+    } finally {
       setIsLoading(false);
-    }, 500);
+    }
   };
 
   return (
@@ -114,6 +123,22 @@ export default function Login() {
                       forceLightMode={true} // Enforce light mode colors
                       className="[&_.input-field-base]:rounded-lg [&_.input-field-base]:bg-bgColor [&_.input-field-base]:px-4 [&_.input-field-base]:py-3"
                     />
+                  </div>
+
+                  {/* Remember Me Checkbox */}
+                  <div className="flex items-center justify-between">
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <input
+                        type="checkbox"
+                        name="rememberMe"
+                        checked={values.rememberMe}
+                        onChange={handleChange}
+                        className="h-4 w-4 cursor-pointer rounded border-gray-300 text-primary focus:ring-primary focus:ring-offset-0"
+                      />
+                      <span className="text-sm text-textColor select-none">
+                        <TranslationText title="remember_me" />
+                      </span>
+                    </label>
                   </div>
 
                   <CustomBtn

@@ -16,11 +16,11 @@
    MAIN CONTAINER
    ========================================= */
 .Header_Page {
-  @apply w-full bg-bgWhite dark:bg-bgWhiteDark border-b border-borderColor dark:border-borderColorDark;
+  @apply w-full bg-bgColor dark:bg-bgColorDark;
 }
 
 .Header_container {
-  @apply flex items-center justify-between px-4 py-3 md:px-6 md:py-4 relative;
+  @apply flex items-center justify-between px-4 py-4 relative;
 }
 
 /* =========================================
@@ -39,7 +39,7 @@
 }
 
 .Header_Start .title {
-  @apply text-lg font-semibold text-titleColor dark:text-titleColorDark max-w-[200px] md:max-w-none;
+  @apply text-base font-semibold text-titleColor dark:text-titleColorDark max-w-[200px] md:max-w-none;
 }
 
 /* =========================================
@@ -82,14 +82,15 @@
 }
 
 .btn_Header_End {
-  @apply w-9 h-9 flex items-center justify-center rounded-lg 
-         text-titleColor dark:text-titleColorDark
-         hover:bg-bgColor dark:hover:bg-bgColorDark
-         transition-colors duration-200;
+  @apply flex items-center justify-center gap-2 px-4 h-[38px] rounded-full text-sm font-medium 
+         text-titleColor dark:text-titleColorDark 
+         bg-bgWhite dark:bg-bgWhiteDark 
+         hover:bg-bgColor dark:hover:bg-bgColorDark 
+         transition-all duration-200;
 }
 
 .btn_Header_End svg {
-  @apply w-5 h-5;
+  @apply w-4 h-4 flex-shrink-0;
 }
 
 .btn_Header_End.Active {

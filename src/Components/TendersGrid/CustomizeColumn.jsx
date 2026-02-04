@@ -27,10 +27,10 @@ import TranslationText from "../TranslationText";
 import { TendersGridContext } from "./TendersGridContext";
 import useTranslationText from "../../Hooks/useTranslationText";
 import { useSelector } from "react-redux";
-import { Tooltip } from "react-tooltip";
+
 
 // Main component for column customization
-const CustomizeColumn = () => {
+const CustomizeColumn = ({ showText }) => {
   const {
     columnState,
     handleColumnSettingsChange,
@@ -38,12 +38,12 @@ const CustomizeColumn = () => {
     ResourcePage,
     currentLanguage,
    } = useContext(TendersGridContext);
-
+   
   const [localColumns, setLocalColumns] = useState([]); // Local state for column modifications
   const [isOpen, setIsOpen] = useState(false); // Modal visibility state
 
   // Sync localColumns with parent-provided columnState.all
-  useEffect(() => {
+   useEffect(() => {
     setLocalColumns(columnState.all);
   }, [columnState.all]);
 
@@ -93,37 +93,31 @@ const CustomizeColumn = () => {
     <>
       {/* Settings button to open the column customization modal */}
       <button
-        className="btn_icon_action"
-        data-tooltip-content={useTranslationText({
-          page: "Grid",
-          title: "customizeColumns",
-          lang: currentLanguage,
-         })}
-        data-tooltip-id="customizeColumns"
+        className={showText ? "btn_text_icon" : "btn_icon_action"}
+        data-tooltip-content="customizeColumns"
+        data-resource-page="Grid"
+        data-tooltip-id="global-tooltip"
+        data-tooltip-place="bottom"
         type="button"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <IconColumnSettings
-          bgCircle="bg-white dark:bg-bgWhiteDark"
-         />
+        <IconColumnSettings bgCircle="bg-white dark:bg-bgWhiteDark" />
+        {showText && <TranslationText title="CustomPicker" page="Grid"/>}
       </button>
-      <Tooltip
-        className="tooltip_Mega z-50"
-        id="customizeColumns"
-        place="bottom-start"
-      />
       {/* Modal for column customization */}
       <PopupModalSlide
         modalSize="w-96"
         isVisible={isOpen}
         toggleClick={() => setIsOpen(!isOpen)}
         submitClick={() => saveToLocalStorage()}
+        CancelClick={() => setIsOpen(!isOpen)}
         icon={
           <IconColumnSettings className="text-titleColor dark:text-titleColorDark " />
         }
         titleSubmitBtn="saveChange"
         title="customizeColumns"
         ResourcePage="Grid"
+        ResourceBtns="Grid"
         titleCancel="cancel"
       >
         {/* Drag-and-drop context for column ordering */}
@@ -208,12 +202,9 @@ const SortableItem = ({ column, handleVisibilityChange, ResourcePage }) => {
           <button
             className="show_Col  "
             onClick={() => handleVisibilityChange(column.key, "hiddenMobile")}
-            data-tooltip-content={useTranslationText({
-              title: `${!column.hiddenMobile ? "hiddenMobile" : "showMobile"}`,
-              lang: currentLanguage,
-               page: "Grid",
-            })}
-            data-tooltip-id="hiddenMobile"
+            data-tooltip-content={!column.hiddenMobile ? "hiddenMobile" : "showMobile"}
+            data-resource-page="Grid"
+            data-tooltip-id="global-tooltip"
           >
             {!column.hiddenMobile ? (
               <IconMobile className="text-titleColor dark:text-titleColorDark" />
@@ -221,20 +212,13 @@ const SortableItem = ({ column, handleVisibilityChange, ResourcePage }) => {
               <IconHiddenMobile className="text-textColor dark:text-textColorDark" />
             )}
           </button>
-          <Tooltip
-            className="tooltip_Mega"
-            id={"hiddenMobile"}
-            place="bottom-end"
-          />
+          
           <button
             className="show_Col  "
             onClick={() => handleVisibilityChange(column.key, "hidden")}
-            data-tooltip-content={useTranslationText({
-              title: `${!column.hidden ? "hidden" : "show"}`,
-              lang: currentLanguage,
-               page: "Grid",
-            })}
-            data-tooltip-id="hidden"
+            data-tooltip-content={!column.hidden ? "hidden" : "show"}
+            data-resource-page="Grid"
+            data-tooltip-id="global-tooltip"
           >
             {!column.hidden ? (
               <IconEye className="text-titleColor dark:text-titleColorDark" />
@@ -242,7 +226,6 @@ const SortableItem = ({ column, handleVisibilityChange, ResourcePage }) => {
               <IconEyeClosed className="text-textColor dark:text-textColorDark" />
             )}
           </button>
-          <Tooltip className="tooltip_Mega" id={"hidden"} place="bottom" />
         </div>
       </div>
     </div>

@@ -195,7 +195,7 @@ const BodyGrid = ({
     const scrollTop = element.scrollTop;
     const clientHeight = element.clientHeight;
 
-    const currentVisibleRows = Math.ceil((scrollTop + clientHeight) / 44);
+    const currentVisibleRows = Math.ceil((scrollTop + clientHeight) / 40);
 
     if (
       currentVisibleRows >= displayedRowsCount - (ROWS_PER_BATCH - THRESHOLD) &&
@@ -223,7 +223,7 @@ const BodyGrid = ({
       <div
         className="flex w-full flex-nowrap"
         style={{
-          minHeight: displayedRows.length * 44 + "px"
+          minHeight: displayedRows.length * 40 + "px"
         }}
       >
         <div className="fixed_Data">
@@ -240,20 +240,20 @@ const BodyGrid = ({
               className="default_Data"
               style={{
                 width: totalDefaultColumnsWidthPx,
-                minHeight: flattenedRows.length * 44 + "px"
+                minHeight: flattenedRows.length * 40 + "px"
               }}
             >
               {renderRows(displayedRows)}
             </div>
           ) : (
-            <div style={{ minHeight: flattenedRows.length * 44 + "px" }}>
+            <div style={{ minHeight: flattenedRows.length * 40 + "px" }}>
               {renderRowsEmpty(displayedRows)}
             </div>
           )}
         </div>
 
         <div className="fixed_Data">
-          {renderRowActionList(displayedRows)}
+          {/* Action column removed */}
         </div>
       </div>
     </div>

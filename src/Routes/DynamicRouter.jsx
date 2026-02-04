@@ -39,7 +39,7 @@ const RouteFactory = (sidebarLogs, dataPages) => {
                     path={`${pathPage}/:option/:id`}
                     element={
                         <Suspense fallback={<Loading />}>
-                            <AddEditPage ConfiMainPage={page} keyPage={page.keyPage} ResourcePage={ResourcePage} ApiPage={elementsPage.Api} />
+                            <AddEditPage ConfiMainPage={page} DataPage={elementsPage} keyPage={page.keyPage} ResourcePage={ResourcePage} ApiPage={elementsPage.Api} />
                         </Suspense>
                     }
                 />

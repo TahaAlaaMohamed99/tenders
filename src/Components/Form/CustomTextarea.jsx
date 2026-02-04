@@ -42,7 +42,7 @@ const CustomTextarea = React.forwardRef(({
   ResourcePage = "",
   dir,
   lang,
-  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark"
+  labelBgColor = "bg-bgColor dark:bg-bgColorDark"
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);

@@ -105,7 +105,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
   return (
     <>
       <PopupModalSlide
-        modalSize="w-96"
+        modalSize="w-[500px] max-w-[90vw]"
         isVisible={isVisible}
         toggleClick={() => {
           setIsVisible(false);
@@ -127,26 +127,28 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
       >
         <Formik
           innerRef={formikRef}
-          initialValues={valuesFilter}
+          initialValues={valuesFilter || {}}
           enableReinitialize={true}
           onSubmit={(values) => handleSubmitFilter(values)}
         >
-          {({ handleSubmit, handleChange, setFieldValue, values }) => (
+          {({ handleSubmit, handleChange, setFieldValue, values = {} }) => (
             <Form
               autoComplete="off"
               noValidate="noValidate"
               onSubmit={handleSubmit}
+              className="flex flex-col gap-4 p-4"
             >
-
               {FilterColumns?.map((column) => {
+                if (!column?.key) return null;
 
-                if (column.type === "date" || column?.type == "dateTime") {
+                // Date and DateTime types - use date range picker
+                if (column.type === "date" || column.type === "dateTime") {
                   return (
                     <CustomDateRangePicker
                       key={column.key}
                       label={column.title}
                       ResourcePage={column?.ResourcePage}
-                      value={values[column.key]}
+                      value={values?.[column.key]}
                       onChange={(dateRange) =>
                         setFieldValue(column.key, dateRange)
                       }
@@ -154,18 +156,24 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
                   );
                 }
               
+                // Select dropdown for:
+                // 1. Explicitly marked as filter select
+                // 2. Has lookupName (for lookup data)
+                // 3. Has generallist (for enum/status types)
+                // 4. Status type columns (should use select even without generallist)
                 if (
                   column.isFilterSelect ||
                   column.lookupName ||
-                  column.generallist
+                  column.generallist ||
+                  column.type === "status"
                 ) {
                   return (
                     <CustomeSelect
-                      key={`mega_${column.key}`}
+                      key={`filter_select_${column.key}`}
                       label={column.title}
                       isMulti={column.lookupName ? true : false}
                       titleGenerallist={column.generallist ? true : false}
-                      value={values[column.key] || []}
+                      value={values?.[column.key] || (column.lookupName ? [] : null)}
                       ResourcePage={column?.ResourcePage || column?.generallist}
                       options={
                         dropdownLists[
@@ -178,17 +186,18 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
                   );
                 }
                
-                return (column?.key &&
+                // Default: Text input (supports number, percent, text types)
+                return (
                   <CustomInput
-                    key={column.key}
+                    key={`filter_input_${column.key}`}
                     label={column.title}
                     autoComplete={column.key}
                     ResourcePage={column?.ResourcePage}
                     name={column.key}
-                    isNumber={column?.type == "number"}
-                    type={column?.type == "percent" ? "percent" : "text"}
-                    value={values[column?.key] || ""}
-                    onChange={handleChange(column?.key)}
+                    isNumber={column.type === "number"}
+                    type={column.type === "percent" ? "percent" : "text"}
+                    value={values?.[column.key] || ""}
+                    onChange={handleChange(column.key)}
                   />
                 );
               })}

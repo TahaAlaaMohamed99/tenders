@@ -30,25 +30,21 @@
 
 .input_Search_Grid.form-group_iconSearch {
   input {
-    @apply border-0 min-h-10 rounded-lg ;
+    @apply border-0 min-h-10 rounded-lg;
   }
 }
+
 /* ===== Main Component ===== */
-
-.Mega_Grid {
+.Tender_Grid {
   @apply overflow-hidden;
-  /* ===== Header actions ===== */
-
-  .header_actions_Grid {
-    @apply grid grid-cols-2 gap-4 min-h-12 h-12;
-  }
 
   .grid_footer {
-    @apply flex w-full flex-nowrap rounded-lg;
+    @apply flex w-full flex-nowrap rounded-md;
   }
+
   /* ====   Normal Data Grid ==== */
   .data_Grid {
-    @apply h-[20rem]   xl:h-[26rem] 2xl:h-[28.5rem]  overflow-hidden overflow-y-auto;
+    @apply h-[22rem] xl:h-[28rem] 2xl:h-[32rem] overflow-hidden overflow-y-auto;
 
     .not_Data {
       @extend %not_Data;
@@ -67,7 +63,7 @@
 
   /* ====   Selector Grid ==== */
   .data_Grid_Selector {
-    @apply h-[calc(100vh-350px)] overflow-hidden overflow-y-auto;
+    @apply h-[calc(100vh-300px)] overflow-hidden overflow-y-auto;
   }
 
   /* ====  Custom Grid ==== */
@@ -77,12 +73,13 @@
 
   /* ===== Header ===== */
   .header_Grid {
+    @apply mb-0.5;
     .container_Header_Grid {
-      @apply flex flex-nowrap   bg-bgWhite    dark:bg-bgWhiteDark rounded-lg;
+      @apply flex flex-nowrap bg-bgWhite dark:bg-bgWhiteDark rounded-md;
     }
 
     .scrollable_container {
-      @apply w-full  overflow-hidden    relative;
+      @apply w-full overflow-hidden relative;
     }
 
     .default_Columns {
@@ -91,18 +88,22 @@
   }
 
   .header_Item {
-    @apply h-10 w-10 cursor-pointer;
+    @apply h-9 w-9 cursor-pointer transition-colors rounded-sm;
+    &:hover {
+      @apply bg-bgColor/30 dark:bg-bgColorDark/30;
+    }
   }
   .row_Card_action_list,
   .header_Item,
   .row_Item {
-    @apply h-11;
+    @apply h-9;
   }
+
   /* ===== Row + Header Items ===== */
   .header_Item,
   .row_Item {
     @extend .flex_center;
-    @apply flex-nowrap px-2;
+    @apply flex-nowrap px-1.5;
     &.justify_start {
       @apply justify-start;
     }
@@ -111,13 +112,13 @@
     }
 
     .title_header {
-      @apply text-textColor dark:text-textColorDark font-medium text-sm;
+      @apply text-textColor dark:text-textColorDark font-medium text-xs;
     }
 
     .text_row {
-      @apply text-titleColor dark:text-titleColorDark text-ellipsis line-clamp-1 text-center  text-sm;
+      @apply text-titleColor dark:text-titleColorDark text-ellipsis line-clamp-1 text-center text-xs;
       .link_Icon {
-        @apply flex items-center gap-2 font-medium;
+        @apply flex items-center gap-1.5 font-medium;
         &:hover {
           @apply text-primary dark:text-primaryDark;
           .icon_data {
@@ -127,21 +128,29 @@
       }
 
       .icon_data {
-        @apply w-4 h-4  text-textColor dark:text-textColorDark;
+        @apply w-3.5 h-3.5 text-textColor dark:text-textColorDark;
         svg {
           @apply w-full h-full;
         }
       }
     }
   }
+
   .row_Card_action_list {
-    @apply flex justify-end px-4 py-2 bg-bgWhite dark:bg-bgWhiteDark rounded-e-lg mb-3 relative;
+    @apply flex justify-end px-2 py-1 bg-bgWhite dark:bg-bgWhiteDark rounded-e-md mb-1 relative transition-colors;
     &.selected {
-      @apply bg-primary dark:bg-primaryDark bg-opacity-25 dark:bg-opacity-25;
+      @apply bg-primary dark:bg-primaryDark bg-opacity-20 dark:bg-opacity-20;
+    }
+    &:hover:not(.selected) {
+      @apply bg-bgColor/50 dark:bg-bgColorDark/50;
     }
   }
+
   .row_Grid {
-    @apply flex bg-bgWhite dark:bg-bgWhiteDark  mb-3;
+    @apply flex bg-bgWhite dark:bg-bgWhiteDark mb-1 transition-colors;
+    &:hover {
+      @apply bg-bgColor/30 dark:bg-bgColorDark/30;
+    }
     .link_Icon {
       @apply flex gap-1.5 font-medium items-center text-titleColor dark:text-titleColorDark;
       .icon {
@@ -158,23 +167,23 @@
       }
     }
     .cell-avatar {
-      @apply flex items-center  gap-3;
+      @apply flex items-center gap-2;
       .cell-avatar__image {
-        @apply w-8 h-8 bg-bgColor dark:bg-bgColorDark flex items-center justify-center rounded-full overflow-hidden p-1;
+        @apply w-7 h-7 bg-bgColor dark:bg-bgColorDark flex items-center justify-center rounded-full overflow-hidden p-0.5;
         .cell-avatar__fallback {
-          @apply w-full h-full rounded-full   flex items-center justify-center;
+          @apply w-full h-full rounded-full flex items-center justify-center;
           .cell-avatar__initials {
-            @apply text-xs font-semibold text-titleColor dark:text-titleColorDark;
+            @apply text-[10px] font-semibold text-titleColor dark:text-titleColorDark;
           }
         }
       }
       .cell-avatar__content {
-        @apply flex w-[calc(100%-44px)] flex-col items-start;
+        @apply flex w-[calc(100%-36px)] flex-col items-start;
         .cell-avatar__title {
-          @apply font-semibold text-titleColor text-sm dark:text-titleColorDark;
+          @apply font-semibold text-titleColor text-xs dark:text-titleColorDark leading-tight;
         }
         .cell-avatar__subtitle {
-          @apply text-textColor text-xs dark:text-textColorDark font-medium;
+          @apply text-textColor text-[10px] dark:text-textColorDark font-medium leading-tight;
         }
       }
       &:hover {
@@ -183,17 +192,18 @@
             @apply text-primary dark:text-primaryDark;
           }
           .cell-avatar__subtitle {
-            @apply text-titleColor  dark:text-titleColorDark;
+            @apply text-titleColor dark:text-titleColorDark;
           }
         }
       }
     }
+
     /* ===== Open New Tab Icon ===== */
     .icon_action_row {
-      @apply flex w-10 justify-center items-center;
+      @apply flex w-8 justify-center items-center;
 
       svg {
-        @apply w-5 h-5 text-textColor dark:text-textColorDark hover:text-primary dark:hover:text-primaryDark;
+        @apply w-4 h-4 text-textColor dark:text-textColorDark hover:text-primary dark:hover:text-primaryDark;
       }
 
       &.active svg {
@@ -208,10 +218,10 @@
   /* ===== Status Grid ===== */
   .status_Grid {
     @extend .flex_center;
-    @apply rounded bg-opacity-10 bg-gray-400 px-3.5 py-1.5;
+    @apply rounded bg-opacity-10 bg-gray-400 px-2 py-0.5;
 
     .status_text {
-      @apply text-gray-400 leading-normal text-xs font-semibold uppercase
+      @apply text-gray-400 leading-normal text-[10px] font-semibold uppercase
              text-ellipsis line-clamp-1 max-w-full text-center;
     }
 
@@ -250,17 +260,18 @@
       }
     }
   }
-  /* ===== Status Grid ===== */
+
+  /* ===== Status Grid Point ===== */
   .status_Grid_point {
     @extend .flex_center;
-    @apply gap-1;
+    @apply gap-0.5;
 
     .status_text {
-      @apply text-gray-400 leading-normal text-xs font-bold uppercase
+      @apply text-gray-400 leading-normal text-[10px] font-bold uppercase
              text-ellipsis line-clamp-1 max-w-full text-center;
     }
     .status_point {
-      @apply bg-gray-400 w-2 h-2 rounded-full;
+      @apply bg-gray-400 w-2 h-2 rounded-full hidden;
     }
 
     &.state_Success {
@@ -322,7 +333,7 @@
       .MenuItem_Dropdown_Grid {
         @apply flex items-center rounded w-full font-normal px-3 py-1.5 text-sm
                text-titleColor hover:bg-bgColor  
-               dark:text-titleColorDark   dark:hover:text-titleColorDark capitalize;
+               dark:text-titleColorDark dark:hover:text-titleColorDark capitalize;
 
         .icon {
           @apply w-4 h-4 me-2 text-center;
@@ -337,8 +348,8 @@
 
   /* ===== Selected Actions ===== */
   .Selected_actions {
-    @apply p-2 gap-1.5 min-w-20 min-h-10  rounded-[0.35rem]    text-titleColor bg-bgWhite dark:bg-bgWhiteDark
-             dark:text-titleColorDark;
+    @apply p-2 gap-1.5 min-w-20 min-h-10 rounded-[0.35rem] text-titleColor bg-bgWhite dark:bg-bgWhiteDark
+           dark:text-titleColorDark;
 
     .total {
       @extend .flex_center;
@@ -388,50 +399,53 @@
       }
     }
   }
-  /* ===== Pagination  Grid ===== */
+
+  /* ===== Pagination Grid ===== */
   .Pagination_gird {
-    @apply flex  md:flex-row flex-col md:gap-0 gap-4 items-center justify-between  space-x-2 rtl:space-x-reverse;
+    @apply flex md:flex-row flex-col md:gap-2 gap-2 items-center justify-between;
+    
+    &.footer_Pagination {
+      @apply bg-bgWhite dark:bg-bgWhiteDark rounded-md px-3 h-9 flex items-center;
+    }
+    
     .container_pagination {
-      @apply text-start text-sm;
+      @apply text-start text-[11px] leading-none flex items-center h-9;
       .total_pages {
         @apply flex items-center gap-0.5;
       }
     }
-    &.footer_Pagination {
-      .container_pagination {
-        @apply bg-bgWhite dark:bg-bgWhiteDark  rounded-lg p-2 min-h-10 flex items-center;
-      }
-    }
+    
     .arrow_Pagination {
-      @apply hover:text-primary rtl:rotate-180 dark:hover:text-primaryDark text-titleColor dark:text-titleColorDark;
+      @apply hover:text-primary rtl:rotate-180 dark:hover:text-primaryDark text-titleColor dark:text-titleColorDark flex items-center justify-center h-7 w-7 rounded hover:bg-bgColor dark:hover:bg-bgColorDark transition-colors;
       &.disabled {
-        @apply disabled:text-textColor dark:text-textColorDark dark:disabled:text-opacity-70 disabled:text-opacity-70;
+        @apply opacity-40 cursor-not-allowed hover:bg-transparent;
       }
     }
 
     &.card_Pagination {
-      @apply bg-bgWhite dark:bg-bgWhiteDark  rounded-lg p-2 min-h-10;
+      @apply bg-bgWhite dark:bg-bgWhiteDark rounded-md px-2 py-1 h-8;
       .container_pagination {
         @apply text-[9px];
         line-height: normal;
         .total_pages {
-          @apply flex-col;
+          @apply flex-col h-6;
         }
       }
       .arrow_Pagination {
-        @apply flex justify-center items-center;
+        @apply flex justify-center items-center h-6 w-6;
         svg {
-          @apply bg-bgColor dark:bg-bgColorDark p-1  rounded-md w-6 h-6;
+          @apply bg-bgColor dark:bg-bgColorDark p-1 rounded-md w-5 h-5;
         }
         &.disabled {
           svg {
-            @apply bg-bgColor/60 dark:bg-bgColorDark/60  cursor-not-allowed;
+            @apply bg-bgColor/60 dark:bg-bgColorDark/60 cursor-not-allowed;
           }
         }
       }
     }
   }
-  /* =====  Scroll  Grid ===== */
+
+  /* ===== Scroll Grid ===== */
   .Scroll_Grid {
     @apply h-4 mb-2 overflow-hidden overflow-x-auto;
   }

@@ -27,6 +27,7 @@ const ExcelExportButton = ({
   fileName = "exported_data.xls",
   currentLanguage,
    ResourcePage,
+   showText, // Added showText
 }) => {
   const visibleColumns = columns.filter((column) => !column.hidden);
   const isRTL = currentLanguage == "ar";
@@ -228,29 +229,23 @@ const ExcelExportButton = ({
     <>
       <button
         type="button"
-        className={deviceType !== "mobile" ? " btn_icon_action" : "btn_action"}
+        className={showText ? "btn_text_icon" : (deviceType !== "mobile" ? " btn_icon_action" : "btn_action")}
 
         onClick={exportToExcel}
-        data-tooltip-content={useTranslationText({
-          page: "Grid",
-          title: "exportToExcel",
-          lang: currentLanguage,
-         })}
-        data-tooltip-id="exportToExcel"
+        data-tooltip-content="exportToExcel"
+        data-resource-page="Grid"
+        data-tooltip-id="global-tooltip"
+        data-tooltip-place="bottom"
 
       >
         <IconXsl />
-        {deviceType == "mobile" && (
+        {(deviceType == "mobile" || showText) && (
           <span className="title_action">
-            <TranslationText title="exportToExcel" page="Grid" />
+            <TranslationText title="Export" page="Grid" />
           </span>
         )}
       </button>
-      <Tooltip
-        className="tooltip_Mega"
-        id="exportToExcel"
-        place="bottom"
-      />
+
     </>
 
   );

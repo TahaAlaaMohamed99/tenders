@@ -8,6 +8,8 @@ import { memo } from "react";
 import { useFormatDate } from "./useFormatDate";
 import useFormatNumber from "./useFormatNumber";
 import useFormatTime from "./useFormatTime";
+import Resources from "../ConfigData/resources.json";
+import Generallists from "../ConfigData/Generallist.json";
 
 /**
  * Builds route for add/edit pages
@@ -162,7 +164,18 @@ export const useformatDataGrid = (
         ? column.StatusList[row[column.secondKey]]
         : column.className || "status_Card";
 
-      return <StatusCell statusClass={statusClass} value={value} />;
+      // Get translated value if generallist is provided
+      let displayValue = value;
+      if (column.generallist) {
+        // Find the label from Generallist.json by value
+        const listItem = Generallists[column.generallist]?.find(item => item.value === value);
+        if (listItem) {
+          // Look up translation using existing pattern: [generallist].values.[label].[lang]
+          displayValue = Resources?.[column.generallist]?.values?.[listItem.label]?.[currentLanguage] || listItem.label;
+        }
+      }
+
+      return <StatusCell statusClass={statusClass} value={displayValue} />;
     }
 
     case "openPage": {

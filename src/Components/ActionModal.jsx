@@ -73,8 +73,8 @@ export default function ActionModal({
 
       const style = {
         position: "fixed",
-        top: rect.bottom + 8, // 8px gap
-        zIndex: 9999,
+        top: rect.bottom - 5.5, // Shift up slightly to overlap
+        zIndex: 999999,
       };
 
       // Helper: Align Left Edge

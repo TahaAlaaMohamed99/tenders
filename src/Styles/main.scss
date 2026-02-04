@@ -207,12 +207,13 @@
   }
 
   .input-field-base {
-    @apply w-full px-4 py-3 rounded-xl text-base 
-    bg-bgWhite dark:bg-bgWhiteDark 
-    text-titleColor dark:text-titleColorDark 
-    placeholder:text-textColor dark:placeholder:text-textColorDark 
-    border 
+    @apply w-full px-4 pt-4 pb-2 rounded-xl text-sm
+    bg-bgWhite dark:bg-bgWhiteDark
+    text-titleColor dark:text-titleColorDark
+    placeholder:text-textColor dark:placeholder:text-textColorDark
+    border
     focus:outline-none;
+    height: 2.8125rem; /* 45px - matches select height */
   }
 
   .input-error-msg {
@@ -224,6 +225,16 @@
     bg-bgWhite dark:bg-bgWhiteDark
     text-titleColor dark:text-titleColorDark
     border focus:outline-none transition-all duration-200;
+  }
+  .btn_text_icon {
+     @apply flex items-center justify-center gap-2 px-4 h-[38px] rounded-full text-sm font-medium 
+     text-titleColor dark:text-titleColorDark 
+     bg-bgWhite dark:bg-bgWhiteDark 
+     hover:bg-bgColor dark:hover:bg-bgColorDark 
+     transition-all duration-200;
+     svg {
+       @apply w-4 h-4 flex-shrink-0;
+     }
   }
 }
 .css-hlgwow,

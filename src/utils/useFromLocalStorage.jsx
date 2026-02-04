@@ -51,3 +51,69 @@ export const getLocalStorageAll= () => {
     Object.entries(localStorage).filter(([key]) => key !== 'theme' && key !== 'language')
   );
 };
+
+// ==================== Auth Storage Utilities ====================
+
+export const AUTH_STORAGE_KEY = 'AuthData';
+
+/**
+ * Store authentication data securely in localStorage
+ * @param {string} token - JWT token
+ * @param {Object} user - Parsed user data from token
+ * @param {string} expiration - Token expiration datetime
+ */
+export const setAuthStorage = (token, user, expiration) => {
+  setLocalStorageBtoa(AUTH_STORAGE_KEY, { token, user, expiration });
+};
+
+/**
+ * Retrieve authentication data from localStorage
+ * @returns {Object|null} Auth data { token, user, expiration } or null
+ */
+export const getAuthStorage = () => {
+  return getLocalStorageAtob(AUTH_STORAGE_KEY, null);
+};
+
+/**
+ * Clear all authentication data from localStorage
+ */
+export const clearAuthStorage = () => {
+  localStorage.removeItem(AUTH_STORAGE_KEY);
+  localStorage.removeItem('isAuthenticated');
+};
+
+/**
+ * Check if the stored token is expired
+ * @returns {boolean} True if token is expired or not found
+ */
+export const isTokenExpired = () => {
+  const authData = getAuthStorage();
+  if (!authData?.expiration) return true;
+  
+  const expirationDate = new Date(authData.expiration);
+  return expirationDate <= new Date();
+};
+
+/**
+ * Parse JWT token and extract payload
+ * @param {string} token - JWT token string
+ * @returns {Object} Decoded token payload
+ */
+export const parseJwtToken = (token) => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(base64));
+    
+    return {
+      userId: payload.UserId,
+      userName: payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"],
+      permissions: payload.Permissions?.split(',').map(Number) || [],
+      exp: payload.exp,
+      jti: payload.jti
+    };
+  } catch (error) {
+    console.error('Failed to parse JWT token:', error);
+    return null;
+  }
+};

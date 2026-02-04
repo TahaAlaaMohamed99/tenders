@@ -82,12 +82,10 @@ const PrintComponent = ({
         className={
           deviceType !== "mobile" ? " btn_icon_action" : "btn_action"
         }
-        data-tooltip-id={deviceType !== "mobile" ? "print" : ""}
-        data-tooltip-content={useTranslationText({
-          page: "Grid",
-          title: "Print",
-          lang: currentLanguage,
-         })}
+        data-tooltip-id={deviceType !== "mobile" ? "global-tooltip" : ""}
+        data-resource-page="Grid"
+        data-tooltip-content="Print"
+        data-tooltip-place="bottom"
         type="button"
         onClick={handlePrint}
       >
@@ -98,7 +96,7 @@ const PrintComponent = ({
           </span>
         )}
       </button>
-      <Tooltip className="tooltip_Mega" id="print" place="bottom" />
+
 
       <div
         className="print-area h-svh "

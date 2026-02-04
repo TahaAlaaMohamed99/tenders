@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import TranslationText from "./TranslationText";
 import {
   Approved,
   IconActiveBookmark,
-  IconAdd,
+  IconAddDoc,
   IconBookmark,
   IconCalculate,
   IconColsed,
+  IconBack,
   IconDocumentView,
   IconEdit,
   IconNewTab,
@@ -116,15 +117,16 @@ export default function HeaderPageAddEdit({
   const currentLanguage = useSelector(
     (state) => state.themeSlice.currentLanguage
   );
-  const ReduxResources = useSelector(
-    (state) => state.resourcesSlice.ReduxResources
+  const resourcesFromRedux = useSelector(
+    (state) => state.resourcesSlice?.ReduxResources
   );
+  const ReduxResources = useMemo(() => resourcesFromRedux || {}, [resourcesFromRedux]);
   const { handleSubmitFormPost } = useHandleSubmit();
 
   // Initialize the useDispatch hook to dispatch Redux actions.
   const dispatch = useDispatch();
-  // Filters the status name based on the statusId
-  const statusName = Generallist.WorkflowStatus.find(
+  // Filters the status name based on the statusId (safe access)
+  const statusName = Generallist?.WorkflowStatus?.find(
     (status) => status.value == statusId
   );
 
@@ -600,20 +602,30 @@ export default function HeaderPageAddEdit({
       icon: viewContract ? <IconDocumentView /> : <SearchDocumentIcon />,
     });
   }
+  // Sort actions: Delete first, Save second, others after
+  const getSortOrder = (tooltip) => {
+    if (tooltip === "delete") return 1;
+    if (tooltip === "save") return 2;
+    return 3;
+  };
+  
+  const sortedActionsList = [...renderActionsList].sort((a, b) => 
+    getSortOrder(a.tooltip) - getSortOrder(b.tooltip)
+  );
+
   const renderActions = () => (
     <>
-      {renderActionsList.map((btn, index) => (
+      {sortedActionsList.map((btn, index) => (
         <CustomBtn
           key={index}
-          isLoading={btn.isLoading}
-          tooltip={btn.tooltip}
           type="button"
-          ResourcePage={btn?.Resource || "General"}
-          size="btn_icon"
-          icon={btn.icon}
           disabled={btn.disabled}
+          isLoading={btn.isLoading}
           onClick={btn.onClick}
-          className={`  ${btn?.activeClassName || "btn-default"}`}
+          className={`btn_text_icon ${btn.className || ''} ${btn?.activeClassName || ''}`}
+          icon={btn.icon}
+          title={btn.tooltip}
+          ResourcePage={btn?.Resource || "General"}
         />
       ))}
     </>
@@ -643,7 +655,7 @@ export default function HeaderPageAddEdit({
                 ) : errorListPage ? (
                   ""
                 ) : (
-                  <IconAdd />
+                  <IconAddDoc />
                 )}
               </div>
             )}
@@ -653,9 +665,9 @@ export default function HeaderPageAddEdit({
                 title={option === "edit" && id > 0 ? titleEdit : titleAdd}
               />
             </h3>
-            {statusId && (
+            {statusId && statusName && (
               <div
-                className={`state_rec ${StatusList.WorkflowStatus[statusId]}`}
+                className={`state_rec ${StatusList?.WorkflowStatus?.[statusId] || ''}`}
               >
                 <p className="status_text text_ellipsis">
                   <TranslationText
@@ -714,18 +726,16 @@ export default function HeaderPageAddEdit({
               renderActions()
             )}
 
-            <button
-              data-tooltip-content="close"
-              data-tooltip-id="global-tooltip"
-              data-resource-page="General"
+            <CustomBtn
               type="button"
-              className="btn_Header_End"
+              className="btn_text_icon"
               onClick={() =>
                 goBackPrev != null ? goBackPrev() : goBackInChain()
               }
-            >
-              <IconColsed />
-            </button>
+              icon={<IconBack />}
+              title="back"
+              ResourcePage="General"
+            />
           </div>
         </div>
         {/* Viewer Record Component */}

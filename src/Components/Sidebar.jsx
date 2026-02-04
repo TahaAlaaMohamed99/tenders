@@ -179,7 +179,7 @@ const SidebarItem = memo(({
   const itemId = `${module.keyModule || module.keyPage}-${index}`;
 
   const itemBaseClass = `
-        flex items-center transition-all duration-200 border-none font-medium text-sm
+        flex items-center transition-all duration-300 ease-in-out border-none font-medium text-sm
         ${
           isCollapsed
             ? "justify-center px-0 w-10 h-10 mx-auto rounded-xl sm:min-w-0"
@@ -688,7 +688,7 @@ export default function Sidebar() {
       <aside
         className={`
                 m-2 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[calc(100vh-16px)] flex flex-col font-sans rounded-2xl border-borderColor sticky top-2
-                relative
+                relative transition-all duration-300 ease-in-out
                 ${isCollapsed ? "w-16 px-2" : "w-64 px-2"} 
                 z-40
             `}
@@ -710,12 +710,14 @@ export default function Sidebar() {
 
         {/* Logo Section */}
         <div
-          className={`flex items-center gap-2 mt-4 mb-4 ${
+          className={`flex items-center gap-2 mt-4 mb-4 transition-all duration-300 ease-in-out ${
             isCollapsed ? "justify-center" : "justify-start ps-4"
-          } overflow-visible`}
+          } overflow-hidden`}
         >
-          <LogoIcon className="w-8 h-8 shrink-0 text-primary" />
-          {!isCollapsed && <LogoText className="h-6" />}
+          <LogoIcon className="w-8 h-8 shrink-0 text-primary transition-transform duration-300" />
+          <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isCollapsed ? "w-0 opacity-0" : "w-auto opacity-100"}`}>
+            <LogoText className="h-6 whitespace-nowrap" />
+          </div>
         </div>
 
         {/* Separator */}

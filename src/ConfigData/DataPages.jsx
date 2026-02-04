@@ -1,35 +1,47 @@
-import Vendors from "../Pages/Vendors";
-import VendorsAddEdit from "../Pages/VendorsAddEdit";
-import PlaceholderPage from "../Components/PlaceholderPage";
-import { VendorsGrid } from "./GridSchemas";
+import GenericGridPage from "../Components/GenericGridPage";
+import GenericAddEditPage from "../Components/GenericAddEditPage";
+import { VendorsGrid, VendorGroupsGrid, CurrenciesGrid, DepartmentsGrid, ItemsGrid, SubmissionDocumentsGrid } from "./GridSchemas";
 import { VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
-import { VendorsForm } from "./FormSchemas";
+import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
+
+// Default/Fallback Schemas for pages that don't have specific ones yet
+const DefaultGrid = { columns: [{ key: "id", title: "ID", width: 100 }] };
+const DefaultForm = { sections: [{ title: "Info", fields: [] }] };
 
 export const DataPages = {
     Dashboard: {
         Api: "dashboard",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
         keyId: "id",
         isSelected: false,
+        ...DefaultGrid,
+        formSchema: DefaultForm
     },
     Journal: {
         Api: "Journal",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
         keyId: "id",
+        ...DefaultGrid,
+        formSchema: DefaultForm
     },
     SubmissionDocuments: {
-        Api: "SubmissionDocuments",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
-        keyId: "id",
+        Api: "SubmissionDocument",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        ...SubmissionDocumentsGrid,
+        formSchema: SubmissionDocumentsForm
     },
     Reports: {
         Api: "Reports",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
         keyId: "id",
         columns: [
             {
@@ -41,53 +53,81 @@ export const DataPages = {
                 isFilter: true,
                 fixed: true,
             }
-        ]
+        ],
+        formSchema: DefaultForm
     },
     Setup: {
         Api: "Setup",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
         keyId: "id",
+        ...DefaultGrid,
+        formSchema: DefaultForm
     },
     VendorGroups: {
         Api: "VendorGroups",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
-        keyId: "id",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "vendorGroupId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        ...VendorGroupsGrid,
+        formSchema: VendorGroupsForm
     },
     Currencies: {
         Api: "Currencies",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
-        keyId: "id",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        ...CurrenciesGrid,
+        formSchema: CurrenciesForm
     },
     Items: {
-        Api: "Items",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
-        keyId: "id",
+        Api: "Item",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        ...ItemsGrid,
+        formSchema: ItemsForm
     },
     Departments: {
-        Api: "Departments",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
-        keyId: "id",
+        Api: "Department",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        ...DepartmentsGrid,
+        formSchema: DepartmentsForm
     },
     Settings: {
         Api: "Settings",
-        componentViwe: PlaceholderPage,
-        componentAddEdit: PlaceholderPage,
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
         keyId: "id",
+         ...DefaultGrid,
+        formSchema: DefaultForm
     },
     Vendors: {
         Api: "Vendors",
-        componentViwe: Vendors,
-        componentAddEdit: VendorsAddEdit,
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
         keyId: "recId",
         isSelected: true,
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
         ...VendorsGrid,
         ...VendorsFilter,
         ...VendorsActions,
-        formSchema: VendorsForm // <--- Added Form Schema
+        formSchema: VendorsForm 
     }
 };

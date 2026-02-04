@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect, useRef } from "react";
 import { TendersGridContext } from "./TendersGridContext";
 import TranslationText from "../TranslationText";
-import { IconRowActions } from "../../assets/Icons";
+import { IconRowActions, IconArrowDown } from "../../assets/Icons";
 
 const DropdownGrid = ({
   menuItems,
@@ -9,12 +9,14 @@ const DropdownGrid = ({
   title = "",
   classNameMenu,
   icon = (
-    <IconRowActions className="text-textColor dark:textColorDark text-opacity-50" />
+    <IconArrowDown className="text-gray-400 w-4 h-4" />
   ),
+  startIcon,
   ResourcePage = "",
   row,
   isRowAction = false,
   position = "absolute",
+  tooltip,
 }) => {
   const { selectedRows, isSelectedAll, handleSelectAll, setRowTransaction, currentLanguage } =
     useContext(TendersGridContext);
@@ -87,13 +89,19 @@ const DropdownGrid = ({
     <div className="Dropdown_Grid    relative">
       <button
         ref={buttonRef}
-        className={`btn_Dropdown_Grid ${className}`}
+        className={`btn_Dropdown_Grid ${className} ${isOpen && !isRowAction ? "!bg-titleColor !text-white !border-titleColor" : ""}`}
         onClick={toggleDropdown}
         type="button"
+        data-tooltip-content={tooltip}
+        data-resource-page={ResourcePage}
+        data-tooltip-id={tooltip ? "global-tooltip" : undefined}
       >
         {!isRowAction && selectedRows.length > 0 && (
           <span className="total">{selectedRows.length}</span>
         )}
+        
+        {startIcon && <span className="icon-start">{startIcon}</span>}
+        
         <TranslationText page={ResourcePage} title={title} />
         <span
           className={`icon transition-transform ${isOpen && !isRowAction ? "rotate-180" : ""

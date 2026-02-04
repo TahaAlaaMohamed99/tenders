@@ -38,6 +38,8 @@ export default function PopupModalSlide({
   bookMarkMode = false,
   subTitle = null,
   isSelector,
+  hideCancel = false,
+  hideSubmit = false,
 }) {
   const [isFullView, setIsfullView] = useState(false);
   const currentLanguage = useSelector(
@@ -84,20 +86,13 @@ export default function PopupModalSlide({
                 <button
                   type="button"
                   onClick={() => setIsfullView(!isFullView)}
-                  data-tooltip-content={useTranslationText({
-                    page: "General",
-                    title: `${!isFullView ? "maximizeWidth" : "minimizeWidth"}`,
-                    lang: currentLanguage,
-                   })}
-                  data-tooltip-id="tooltip"
+                  data-tooltip-content={!isFullView ? "maximizeWidth" : "minimizeWidth"}
+                  data-resource-page="General"
+                  data-tooltip-id="global-tooltip"
                 >
                   {!isFullView ? <IconMaximize /> : <IconMinimize />}
                 </button>
-                <Tooltip
-                  className="tooltip_Mega"
-                  id="tooltip"
-                  place="bottom-start"
-                />
+
               </div>
             ) : (
               ""
@@ -133,32 +128,34 @@ export default function PopupModalSlide({
           </div>
         </div>
         {isfooter && (!isViewer || notShowenButtons || isSelector) && (
-          <div
-            className={"modal_footer "}
-          >
-            <CustomBtn
-              type="button"
-              title={titleCancel ? titleCancel : "cancel"}
-              className={`btn-border-secondary ${isSelector ? "w-[250px]" : ""
-                }`}
-              ResourcePage={ResourceBtns ? ResourceBtns : "General"}
-              onClick={CancelClick ? CancelClick : toggleClick}
-            />
-            <CustomBtn
-              title={titleSubmitBtn}
-              className={`btn-secondary ${isSelector ? "w-[250px]" : ""}`}
-              type="button"
-              isLoading={isLoadingSubmit}
-              ResourcePage={
-                ResourceBtns
-                  ? ResourceBtns
-                  : ResourceSubmitBtn
-                    ? ResourceSubmitBtn
-                    : "General"
-              }
-              disabled={viewOnly || disabledSubmitBtn}
-              onClick={submitClick}
-            />
+          <div className="modal_footer justify-center gap-2">
+            {!hideSubmit && (
+              <CustomBtn
+                title={titleSubmitBtn}
+                className={`btn-primary ${isSelector ? "w-[250px]" : ""}`}
+                type="button"
+                isLoading={isLoadingSubmit}
+                ResourcePage={
+                  ResourceBtns
+                    ? ResourceBtns
+                    : ResourceSubmitBtn
+                      ? ResourceSubmitBtn
+                      : "General"
+                }
+                disabled={viewOnly || disabledSubmitBtn}
+                onClick={submitClick}
+              />
+            )}
+            {!hideCancel && (
+              <CustomBtn
+                type="button"
+                title={titleCancel ? titleCancel : "cancel"}
+                className={`btn-border-secondary-filled ${isSelector ? "w-[250px]" : ""
+                  }`}
+                ResourcePage={ResourceBtns ? ResourceBtns : "General"}
+                onClick={CancelClick ? CancelClick : toggleClick}
+              />
+            )}
           </div>
         )}
       </div>

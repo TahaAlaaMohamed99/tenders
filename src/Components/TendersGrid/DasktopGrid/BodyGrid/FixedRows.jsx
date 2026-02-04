@@ -11,7 +11,7 @@ import { TendersGridContext } from "../../TendersGridContext";
 import { useContext } from "react";
 import useTranslationText from "../../../../Hooks/useTranslationText";
 import SharedRows from "../sharedRows";
-import { Tooltip } from "react-tooltip";
+
 
 export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
   const {
@@ -48,43 +48,13 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
           />
         </div>
       )}
-      {onClickRow && (
-        <>
-          <div
-            className="icon_action_row"
-            onClick={(e) => {
-              if (onClickRow && e.target.type !== "checkbox") {
-                onClickRow(row);
-              }
-            }}
-            data-tooltip-content={useTranslationText({
-              page: "General",
-              title: "edit",
-              lang: currentLanguage,
-             })}
-            data-tooltip-id="Edit"
-
-          >
-            <IconEdit />
-          </div>
-          <Tooltip
-            className="tooltip_Mega"
-            id="Edit"
-            place="bottom"
-          />
-        </>
-
-      )}
+      {/* IconEdit action removed as per user request */}
 
       {isOpenInNewTab && (
-        <>
-          <Link
-            data-tooltip-content={useTranslationText({
-              page: "GeneralField",
-              title: "openInNewTab",
-              lang: currentLanguage,
-             })}
-            data-tooltip-id="openInNewTab"
+        <Link
+            data-tooltip-content="openInNewTab"
+            data-resource-page="GeneralField"
+            data-tooltip-id="global-tooltip"
 
             className="icon_action_row "
             onClick={(e) => e.stopPropagation()}
@@ -94,16 +64,9 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
           >
             <IconNewTab />
           </Link>
-          <Tooltip
-            className="tooltip_Mega"
-            id="openInNewTab"
-            place="bottom"
-          />
-        </>
 
       )}
       {isOpenChildGrid && (
-        <>
           <button
             type="button"
             className={
@@ -120,23 +83,13 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
                 setOpenedChildGrid(null);
               }
             }}
-            data-tooltip-content={useTranslationText({
-              title: `${openedChildGrid == row ? "closedChild" : "openedChild"}`,
-              lang: currentLanguage,
-               page: "Grid",
-            })}
-            data-tooltip-id="tooltipChild"
+            data-tooltip-content={openedChildGrid == row ? "closedChild" : "openedChild"}
+            data-resource-page="Grid"
+            data-tooltip-id="global-tooltip"
 
           >
             {openedChildGrid == row ? <IconBookOpen /> : <IconBook />}
           </button>
-          <Tooltip
-            className="tooltip_Mega"
-            id="tooltipChild"
-            place="bottom"
-          />
-        </>
-
       )}
       {isTree && (
         <button
@@ -148,6 +101,9 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
               toggleRow(row.recId, row.children);
             }
           }}
+          data-tooltip-content={isOpen ? "collapse" : "expand"}
+          data-resource-page="Grid"
+          data-tooltip-id="global-tooltip"
         >
           {row.children && row.children.length > 0 && <IconTreeView />}
         </button>

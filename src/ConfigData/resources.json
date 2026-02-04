@@ -55,6 +55,10 @@
     "en": "Sign in",
     "ar": "تسجيل الدخول"
   },
+  "remember_me": {
+    "en": "Remember me",
+    "ar": "تذكرني"
+  },
   "General": {
     "logout": {
       "en": "Logout",
@@ -74,24 +78,156 @@
     }
   },
  "Gender": {
-      "title": {
-        "en": "Gender",
-        "ar": "الجنس"
-      },
-      "titleGrid": {
-        "en": "Employee Gender",
-        "ar": "جنس الموظف"
-      },
+      "title": { "en": "Gender", "ar": "الجنس" },
+      "titleGrid": { "en": "Employee Gender", "ar": "جنس الموظف" },
       "values": {
-        "male": {
-          "en": "Male",
-          "ar": "ذكر"
-        },
-        "female": {
-          "en": "Female",
-          "ar": "أنثى"
-        }
+        "male": { "en": "Male", "ar": "ذكر" },
+        "female": { "en": "Female", "ar": "أنثى" }
       }
+    },
+    "NoYes": {
+      "title": { "en": "Yes/No", "ar": "نعم/لا" },
+      "values": {
+        "no": { "en": "No", "ar": "لا" },
+        "yes": { "en": "Yes", "ar": "نعم" }
+      }
+    },
+    "IsActive": {
+      "title": { "en": "Status", "ar": "الحالة" },
+      "values": {
+        "active": { "en": "Active", "ar": "نشط" },
+        "inactive": { "en": "Inactive", "ar": "غير نشط" }
+      }
+    },
+    "BiddingType": {
+      "title": { "en": "Bidding Type", "ar": "نوع المناقصة" },
+      "titleGrid": { "en": "Bidding Type", "ar": "نوع المناقصة" },
+      "values": {
+        "tender": { "en": "Tender", "ar": "مناقصة" },
+        "auction": { "en": "Auction", "ar": "مزاد" },
+        "practice": { "en": "Practice", "ar": "ممارسة" },
+        "directAttribution": { "en": "Direct Attribution", "ar": "إسناد مباشر" }
+      }
+    },
+    "WorkflowStatus": {
+      "title": { "en": "Status", "ar": "الحالة" },
+      "titleGrid": { "en": "Status", "ar": "الحالة" },
+      "values": {
+        "new": { "en": "New", "ar": "جديد" },
+        "submitted": { "en": "Submitted", "ar": "مُقدم" },
+        "fullyApproved": { "en": "Fully Approved", "ar": "موافق عليه بالكامل" },
+        "rejected": { "en": "Rejected", "ar": "مرفوض" },
+        "calculating": { "en": "Calculating", "ar": "جاري الحساب" },
+        "faildCalculate": { "en": "Failed to Calculate", "ar": "فشل الحساب" },
+        "calculated": { "en": "Calculated", "ar": "تم الحساب" },
+        "posting": { "en": "Posting", "ar": "جاري الترحيل" },
+        "faildPost": { "en": "Failed to Post", "ar": "فشل الترحيل" },
+        "posted": { "en": "Posted", "ar": "مرحل" }
+      }
+    },
+    "ApprovalStatus": {
+      "title": { "en": "Approval Status", "ar": "حالة الموافقة" },
+      "values": {
+        "approved": { "en": "Approved", "ar": "موافق عليه" },
+        "rejected": { "en": "Rejected", "ar": "مرفوض" }
+      }
+    },
+    "ProductType": {
+      "title": { "en": "Product Type", "ar": "نوع المنتج" },
+      "titleGrid": { "en": "Product Type", "ar": "نوع المنتج" },
+      "values": {
+        "item": { "en": "Item", "ar": "صنف" },
+        "service": { "en": "Service", "ar": "خدمة" }
+      }
+    },
+    "SerialNumberSequencType": {
+      "title": { "en": "Sequence Type", "ar": "نوع التسلسل" },
+      "values": {
+        "auto": { "en": "Auto", "ar": "تلقائي" },
+        "manual": { "en": "Manual", "ar": "يدوي" }
+      }
+    },
+    "SerialNumberResetType": {
+      "title": { "en": "Reset Type", "ar": "نوع إعادة التعيين" },
+      "values": {
+        "never": { "en": "Never", "ar": "أبداً" },
+        "monthly": { "en": "Monthly", "ar": "شهري" },
+        "yearly": { "en": "Yearly", "ar": "سنوي" }
+      }
+    },
+    "TransactionName": {
+      "title": { "en": "Transaction", "ar": "المعاملة" },
+      "values": {
+        "submissionDocument": { "en": "Submission Document", "ar": "وثيقة تقديم" }
+      }
+    },
+    "Department": {
+      "departmentName": { "en": "Department Name", "ar": "اسم القسم" },
+      "manager": { "en": "Manager", "ar": "المدير" }
+    },
+    "Vendors": {
+      "code": { "en": "Code", "ar": "الكود" },
+      "name": { "en": "Name", "ar": "الاسم" },
+      "vendorAccountNumber": { "en": "Account Number", "ar": "رقم الحساب" },
+      "vendorGroupId": { "en": "Vendor Group", "ar": "مجموعة المورد" },
+      "currencyCode": { "en": "Currency", "ar": "العملة" },
+      "dataAreaId": { "en": "Data Area", "ar": "منطقة البيانات" },
+      "vendorPartyType": { "en": "Party Type", "ar": "نوع الطرف" },
+      "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
+      "enterName": { "en": "Enter vendor name", "ar": "أدخل اسم المورد" },
+      "enterCode": { "en": "Enter vendor code", "ar": "أدخل كود المورد" },
+      "enterVendorAccountNumber": { "en": "Enter account number", "ar": "أدخل رقم الحساب" },
+      "selectVendorGroup": { "en": "Select vendor group", "ar": "اختر مجموعة المورد" },
+      "selectCurrency": { "en": "Select currency", "ar": "اختر العملة" },
+      "selectDataArea": { "en": "Select data area", "ar": "اختر منطقة البيانات" }
+    },
+    "VendorGroups": {
+        "vendorGroupId": { "en": "Group ID", "ar": "رقم المجموعة" },
+        "description": { "en": "Description", "ar": "الوصف" },
+        "dataAreaId": { "en": "Data Area ID", "ar": "معرف منطقة البيانات" }
+    },
+    "Currencies": {
+        "currencyCode": { "en": "Currency Code", "ar": "رمز العملة" },
+        "name": { "en": "Name", "ar": "الاسم" },
+        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+    },
+    "Items": {
+        "itemNumber": { "en": "Item Number", "ar": "رقم الصنف" },
+        "searchName": { "en": "Search Name", "ar": "اسم البحث" },
+        "dataAreaId": { "en": "Data Area", "ar": "منطقة البيانات" },
+        "inventoryUnitSymbol": { "en": "Unit Symbol", "ar": "رمز الوحدة" },
+        "productType": { "en": "Product Type", "ar": "نوع المنتج" },
+        "code": { "en": "Code", "ar": "الكود" },
+        "name": { "en": "Name", "ar": "الاسم" },
+        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+    },
+    "Departments": {
+        "operatingUnitNumber": { "en": "Unit Number", "ar": "رقم الوحدة" },
+        "operatingUnitType": { "en": "Unit Type", "ar": "نوع الوحدة" },
+        "code": { "en": "Code", "ar": "الكود" },
+        "name": { "en": "Name", "ar": "الاسم" },
+        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+    },
+    "SubmissionDocuments": {
+        "code": { "en": "Code", "ar": "الكود" },
+        "name": { "en": "Name", "ar": "الاسم" },
+        "description": { "en": "Description", "ar": "الوصف" },
+        "biddingType": { "en": "Bidding Type", "ar": "نوع المناقصة" },
+        "status": { "en": "Status", "ar": "الحالة" },
+        "transDate": { "en": "Transaction Date", "ar": "تاريخ المعاملة" },
+        "executionDate": { "en": "Execution Date", "ar": "تاريخ التنفيذ" },
+        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
+        "isVoid": { "en": "Is Void", "ar": "ملغي" },
+        "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
+        "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" },
+        "selectBiddingType": { "en": "Select bidding type", "ar": "اختر نوع المناقصة" },
+        "selectTransDate": { "en": "Select transaction date", "ar": "اختر تاريخ المعاملة" },
+        "selectExecutionDate": { "en": "Select execution date", "ar": "اختر تاريخ التنفيذ" },
+        "selectStatus": { "en": "Select status", "ar": "اختر الحالة" },
+        "addedSuccessfully": { "en": "Document added successfully", "ar": "تمت إضافة الوثيقة بنجاح" },
+        "editSuccessfully": { "en": "Document updated successfully", "ar": "تم تحديث الوثيقة بنجاح" },
+        "addFailed": { "en": "Failed to add document", "ar": "فشل في إضافة الوثيقة" },
+        "editFailed": { "en": "Failed to update document", "ar": "فشل في تحديث الوثيقة" }
     },
     "Sidebar": {
       "Dashboard": {
@@ -146,5 +282,55 @@
          "en": "Logout Account",
          "ar": "تسجيل خروج" 
       }
+    },
+    "Grid": {
+      "New": { "en": "New", "ar": "جديد" },
+      "Delete": { "en": "Delete", "ar": "حذف" },
+      "filter": { "en": "Filter", "ar": "تصفية" },
+      "Filter": { "en": "Filter", "ar": "تصفية" },
+      "Actions": { "en": "Actions", "ar": "إجراءات" },
+      "Export": { "en": "Export", "ar": "تصدير" },
+      "exportToExcel": { "en": "Export to Excel", "ar": "تصدير إلى إكسل" },
+      "Print": { "en": "Print", "ar": "طباعة" },
+      "customizeColumns": { "en": "Customize Columns", "ar": "تخصيص الأعمدة" },
+      "CustomPicker": { "en": "Custom Picker", "ar": "محدد مخصص" },
+      "calculate": { "en": "Calculate", "ar": "حساب" },
+      "switchToGridView": { "en": "Grid View", "ar": "عرض شبكي" },
+      "switchToListView": { "en": "List View", "ar": "عرض قائمة" },
+      "hiddenMobile": { "en": "Hidden on Mobile", "ar": "مخفي على الجوال" },
+      "showMobile": { "en": "Show on Mobile", "ar": "إظهار على الجوال" },
+      "hidden": { "en": "Hidden", "ar": "مخفي" },
+      "show": { "en": "Show", "ar": "إظهار" },
+      "previous": { "en": "Previous", "ar": "السابق" },
+      "next": { "en": "Next", "ar": "التالي" },
+      "showing": { "en": "Showing", "ar": "عرض" },
+      "to": { "en": "To", "ar": "إلى" },
+      "of": { "en": "Of", "ar": "من" },
+      "entries": { "en": "Entries", "ar": "إدخالات" },
+      "expand": { "en": "Expand", "ar": "توسيع" },
+      "collapse": { "en": "Collapse", "ar": "طي" },
+      "openedChild": { "en": "Opened Child", "ar": "فرع مفتوح" },
+      "closedChild": { "en": "Closed Child", "ar": "فرع مغلق" },
+      "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" },
+      "maximizeWidth": { "en": "Maximize", "ar": "تكبير" },
+      "minimizeWidth": { "en": "Minimize", "ar": "تصغير" },
+      "close": { "en": "Close", "ar": "إغلاق" },
+      "importExcel": { "en": "Import Excel", "ar": "استيراد إكسل" },
+      "add": { "en": "Add", "ar": "إضافة" },
+      "insert": { "en": "Insert", "ar": "إدراج" },
+      "saveChange": { "en": "Save Changes", "ar": "حفظ التغييرات" },
+      "Search": { "en": "Search", "ar": "بحث" },
+      "sortAsc": { "en": "Sort A to Z", "ar": "ترتيب تصاعدي" },
+      "sortDesc": { "en": "Sort Z to A", "ar": "ترتيب تنازلي" },
+      "Apply": { "en": "Apply", "ar": "تطبيق" },
+      "Clear": { "en": "Clear", "ar": "مسح" },
+      "Select": { "en": "Select", "ar": "اختر" },
+      "Type": { "en": "Type", "ar": "اكتب" },
+      "noData": { "en": "No Data Found", "ar": "لا توجد بيانات" }
+    },
+    "GeneralField": {
+      "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" },
+      "fromDate": { "en": "From Date", "ar": "من تاريخ" },
+      "toDate": { "en": "To Date", "ar": "إلى تاريخ" }
     }
 }

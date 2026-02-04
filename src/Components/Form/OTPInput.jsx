@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Resources from "../../resources.json";
 import TranslationText from "../TranslationText";
 import { useSafeSelector } from "../../Hooks/useSafeSelector";
 

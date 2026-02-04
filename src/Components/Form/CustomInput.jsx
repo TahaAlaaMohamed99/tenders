@@ -48,8 +48,14 @@ const CustomInput = React.forwardRef(({
   ResourcePage = "",
   dir,
   lang,
-  labelBgColor = "bg-bgWhite dark:bg-bgWhiteDark",
+  labelBgColor = "bg-bgColor dark:bg-bgColorDark",
   forceLightMode = false,
+  isSmall = false,
+  // Filter out non-DOM props that shouldn't be spread to input
+  gridWidth,
+  lookup,
+  validation,
+  required,
   ...props // Capture any other props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -114,6 +120,7 @@ const CustomInput = React.forwardRef(({
           ref={ref} // Forwarded Ref
           className={`
             input-field-base
+            ${isSmall ? "!h-8 !py-0 !text-xs !px-3 !rounded-md" : ""}
             ${forceLightMode ? "dark:bg-bgWhite dark:text-titleColor dark:placeholder:text-textColor" : ""}
             ${touched && errors 
               ? `border-error ${!forceLightMode ? "dark:border-errorDark" : ""}` 

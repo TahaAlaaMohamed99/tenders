@@ -13,7 +13,11 @@ export default function DefaultRows({ row, level = 0, rowsLength }) {
   return (
     <div
       className={"row_Grid  " + (onClickRow ? "cursor-pointer " : "") + (selectedRows.some(r => r.recId == row.recId) ? "selected" : "")}
-      onClick={() => onClickRow && onClickRow(row)}
+      onClick={(e) => {
+        if (onClickRow && e.target.type !== "checkbox") {
+          onClickRow(row); 
+        }
+      }}
     >
       {isTree && (
         <div

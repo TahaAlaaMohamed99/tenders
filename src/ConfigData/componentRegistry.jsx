@@ -63,6 +63,7 @@ import OTPInput from '../Components/Form/OTPInput';
 import CustomeSelect from '../Components/Form/CustomSelect';
 import RadioGroup from '../Components/Form/RadioGroup';
 import CardRadio from '../Components/Form/CardRadio';
+import AsyncSelectWrapper from '../Components/Form/AsyncSelectWrapper';
 
 // =============================================
 // BOOLEAN/CHECKBOX COMPONENTS
@@ -147,6 +148,12 @@ export const componentRegistry = {
    * @see CustomeSelect
    */
   select: CustomeSelect,
+
+  /**
+   * Async Select for server-side filtering/loading
+   * @see AsyncSelectWrapper
+   */
+  'async-select': AsyncSelectWrapper,
   
   /**
    * Radio button group for mutually exclusive options
