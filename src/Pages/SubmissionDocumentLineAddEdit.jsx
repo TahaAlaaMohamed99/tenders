@@ -122,6 +122,7 @@ export const SubmissionDocumentLineAddEdit = ({ DataPage, ResourcePage, ...props
                                 <AsyncSelectWrapper
                                     name="itemRecId"
                                     label="Item"
+                                    required
                                     value={values.itemRecId}
                                     onChange={(val) => setFieldValue('itemRecId', val)}
                                     lookup={{
@@ -145,6 +146,7 @@ export const SubmissionDocumentLineAddEdit = ({ DataPage, ResourcePage, ...props
                                 <CustomInput
                                     name="purchaceQuantity"
                                     label="Purchace Quantity"
+                                    type="number"
                                     value={values.purchaceQuantity}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -155,6 +157,7 @@ export const SubmissionDocumentLineAddEdit = ({ DataPage, ResourcePage, ...props
                                 <AsyncSelectWrapper
                                     name="departmentRecId"
                                     label="Department"
+                                    required
                                     value={values.departmentRecId}
                                     onChange={(val) => setFieldValue('departmentRecId', val)}
                                     lookup={{
