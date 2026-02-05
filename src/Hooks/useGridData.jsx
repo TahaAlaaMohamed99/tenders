@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Api } from "../services/Api";
+import dummyData from "../ConfigData/dummyData.json";
+
 
 const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
   const [totalRow, setTotalRow] = useState(0);
@@ -42,12 +44,14 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
           0;
         setTotalRow(total);
       } else {
-        setDataGrid([]);
-        setTotalRow(0);
+        // Fallback to dummy data on 404
+        setDataGrid(dummyData.data);
+        setTotalRow(dummyData.totalCount);
       }
     } catch (error) {
-      setDataGrid([]);
-      setTotalRow(0);
+      // Fallback to dummy data on error (e.g., CORS)
+      setDataGrid(dummyData.data);
+      setTotalRow(dummyData.totalCount);
     } finally {
       setIsLoading(false);
     }

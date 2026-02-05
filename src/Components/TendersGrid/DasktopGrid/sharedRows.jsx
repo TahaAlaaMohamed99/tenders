@@ -221,7 +221,7 @@ const GridCell = memo(({
         key={`mega_${column.key}`}
         className="input_row_Grid"
         value={row[column.key]}
-        isisNumber={column?.type === "number"}
+        isNumber={column?.type === "number"}
         onChange={handleInputChange}
       />
     );

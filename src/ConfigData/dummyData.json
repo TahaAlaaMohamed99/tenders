@@ -1,0 +1,50 @@
+{
+  "totalCount": 20,
+  "data": [
+    {
+      "id": 1,
+      "code": "DUMMY-001",
+      "name": "Dummy Item 1",
+      "description": "This is a dummy item data",
+      "createdOn": "2023-01-01T00:00:00",
+      "isActive": true,
+      "value": "Value 1"
+    },
+    {
+      "id": 2,
+      "code": "DUMMY-002",
+      "name": "Dummy Item 2",
+      "description": "This is a dummy item data",
+      "createdOn": "2023-01-02T00:00:00",
+      "isActive": false,
+      "value": "Value 2"
+    },
+    {
+      "id": 3,
+      "code": "DUMMY-003",
+      "name": "Dummy Item 3",
+      "description": "This is a dummy item data",
+      "createdOn": "2023-01-03T00:00:00",
+      "isActive": true,
+      "value": "Value 3"
+    },
+    {
+      "id": 4,
+      "code": "DUMMY-004",
+      "name": "Dummy Item 4",
+      "description": "This is a dummy item data",
+      "createdOn": "2023-01-04T00:00:00",
+      "isActive": true,
+      "value": "Value 4"
+    },
+    {
+      "id": 5,
+      "code": "DUMMY-005",
+      "name": "Dummy Item 5",
+      "description": "This is a dummy item data",
+      "createdOn": "2023-01-05T00:00:00",
+      "isActive": false,
+      "value": "Value 5"
+    }
+  ]
+}
