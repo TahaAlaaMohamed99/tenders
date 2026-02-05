@@ -91,8 +91,8 @@ const GenericAddEditPage = ({ DataPage, ResourcePage, ...props }) => {
                 option={isEdit ? "edit" : "add"}
                 id={id}
                 ResourcePage={ResourcePage}
-                titleAdd={`${ResourcePage} Info`}
-                titleEdit={`${ResourcePage} Info`}
+                titleAdd={DataPage?.titleAdd || "add"}
+                titleEdit={DataPage?.titleEdit || "edit"}
                 goBackPrev={handleBack}
                 onSubmit={() => {
                     if (formRef.current) {

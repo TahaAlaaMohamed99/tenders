@@ -95,6 +95,7 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
             ref={ref}
             options={options}
             isLoading={isLoading}
+            ResourcePage={props.ResourcePage || lookup?.ResourcePage}
             value={selectedValue}
             onChange={handleChange}
         />

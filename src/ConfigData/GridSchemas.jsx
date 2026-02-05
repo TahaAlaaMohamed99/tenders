@@ -308,3 +308,46 @@ export const SubmissionDocumentsGrid = {
         }
     ]
 };
+
+export const SubmissionDocumentLinesGrid = {
+    columns: [
+        {
+            key: "itemNumber",
+            title: "itemNumber",
+            fixed: true,
+            width: 150,
+            maxWidth: 180,
+            minWidth: 100,
+            isFilter: true
+        },
+        {
+            key: "itemName",
+            title: "itemName",
+            width: 200,
+            maxWidth: 280,
+            isFilter: true
+        },
+        {
+            key: "purchaseQuantity",
+            title: "purchaseQuantity",
+            width: 150,
+            maxWidth: 200,
+            isFilter: true
+        },
+        {
+            key: "departmentName",
+            title: "departmentName",
+            width: 150,
+            maxWidth: 200,
+            isFilter: true
+        },
+        {
+            key: "createdOn",
+            title: "createdOn",
+            hiddenMobile: true,
+            width: 180,
+            maxWidth: 220,
+            type: "date"
+        }
+    ]
+};

@@ -22,6 +22,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
   const {
     columnState,
     GridKey,
+    ResourcePage, // Destructure ResourcePage
     valuesFilter,
     handleFilterGrid,
     handleClearFilter,
@@ -147,7 +148,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
                     <CustomDateRangePicker
                       key={column.key}
                       label={column.title}
-                      ResourcePage={column?.ResourcePage}
+                      ResourcePage={column?.ResourcePage || ResourcePage}
                       value={values?.[column.key]}
                       onChange={(dateRange) =>
                         setFieldValue(column.key, dateRange)
@@ -174,7 +175,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
                       isMulti={column.lookupName ? true : false}
                       titleGenerallist={column.generallist ? true : false}
                       value={values?.[column.key] || (column.lookupName ? [] : null)}
-                      ResourcePage={column?.ResourcePage || column?.generallist}
+                      ResourcePage={column?.ResourcePage || column?.generallist || ResourcePage}
                       options={
                         dropdownLists[
                         column.generallist || column.lookupName
@@ -192,7 +193,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
                     key={`filter_input_${column.key}`}
                     label={column.title}
                     autoComplete={column.key}
-                    ResourcePage={column?.ResourcePage}
+                    ResourcePage={column?.ResourcePage || ResourcePage}
                     name={column.key}
                     isNumber={column.type === "number"}
                     type={column.type === "percent" ? "percent" : "text"}

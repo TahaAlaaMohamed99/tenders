@@ -26,7 +26,9 @@ export const DataPages = {
         componentAddEdit: GenericAddEditPage,
         keyId: "id",
         ...DefaultGrid,
-        formSchema: DefaultForm
+        formSchema: DefaultForm,
+        titleAdd: "addJournal",
+        titleEdit: "editJournal"
     },
     SubmissionDocuments: {
         Api: "SubmissionDocument",
@@ -37,7 +39,9 @@ export const DataPages = {
         isSearch: true,
         isFilterGrid: true,
         ...SubmissionDocumentsGrid,
-        formSchema: SubmissionDocumentsForm
+        formSchema: SubmissionDocumentsForm,
+        titleAdd: "addSubmissionDocument",
+        titleEdit: "editSubmissionDocument"
     },
     Reports: {
         Api: "Reports",
@@ -55,7 +59,9 @@ export const DataPages = {
                 fixed: true,
             }
         ],
-        formSchema: DefaultForm
+        formSchema: DefaultForm,
+        titleAdd: "addReport",
+        titleEdit: "editReport"
     },
     Setup: {
         Api: "Setup",
@@ -63,7 +69,9 @@ export const DataPages = {
         componentAddEdit: GenericAddEditPage,
         keyId: "id",
         ...DefaultGrid,
-        formSchema: DefaultForm
+        formSchema: DefaultForm,
+        titleAdd: "addSetup",
+        titleEdit: "editSetup"
     },
     VendorGroups: {
         Api: "VendorGroups",
@@ -74,7 +82,9 @@ export const DataPages = {
         isSearch: true,
         isFilterGrid: true,
         ...VendorGroupsGrid,
-        formSchema: VendorGroupsForm
+        formSchema: VendorGroupsForm,
+        titleAdd: "addVendorGroup",
+        titleEdit: "editVendorGroup"
     },
     Currencies: {
         Api: "Currencies",
@@ -85,7 +95,9 @@ export const DataPages = {
         isSearch: true,
         isFilterGrid: true,
         ...CurrenciesGrid,
-        formSchema: CurrenciesForm
+        formSchema: CurrenciesForm,
+        titleAdd: "addCurrency",
+        titleEdit: "editCurrency"
     },
     Items: {
         Api: "Item",
@@ -96,7 +108,9 @@ export const DataPages = {
         isSearch: true,
         isFilterGrid: true,
         ...ItemsGrid,
-        formSchema: ItemsForm
+        formSchema: ItemsForm,
+        titleAdd: "addItem",
+        titleEdit: "editItem"
     },
     Departments: {
         Api: "Department",
@@ -107,7 +121,9 @@ export const DataPages = {
         isSearch: true,
         isFilterGrid: true,
         ...DepartmentsGrid,
-        formSchema: DepartmentsForm
+        formSchema: DepartmentsForm,
+        titleAdd: "addDepartment",
+        titleEdit: "editDepartment"
     },
     Settings: {
         Api: "Settings",
@@ -115,7 +131,9 @@ export const DataPages = {
         componentAddEdit: GenericAddEditPage,
         keyId: "id",
          ...DefaultGrid,
-        formSchema: DefaultForm
+        formSchema: DefaultForm,
+        titleAdd: "addSetting",
+        titleEdit: "editSetting"
     },
     Vendors: {
         Api: "Vendors",
@@ -129,6 +147,8 @@ export const DataPages = {
         ...VendorsGrid,
         ...VendorsFilter,
         ...VendorsActions,
-        formSchema: VendorsForm 
+        formSchema: VendorsForm,
+        titleAdd: "addVendor",
+        titleEdit: "editVendor"
     }
 };

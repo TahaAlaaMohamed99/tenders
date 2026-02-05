@@ -37,14 +37,14 @@ export default function Login() {
       const result = await login(values.userName, values.password, values.rememberMe);
 
       if (result.success) {
-        toast.success("Login successful!");
+        toast.success(<TranslationText title="loginSuccessful" />);
         // Navigate to the originally requested page or dashboard
         navigate(from, { replace: true });
       } else {
-        toast.error(result.error || "Login failed!");
+        toast.error(result.error || <TranslationText title="loginFailed" />);
       }
     } catch (error) {
-      toast.error("An unexpected error occurred. Please try again.");
+      toast.error(<TranslationText title="genericError" />);
       console.error("Login error:", error);
     } finally {
       setIsLoading(false);

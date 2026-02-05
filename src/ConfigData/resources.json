@@ -59,7 +59,7 @@
     "en": "Remember me",
     "ar": "تذكرني"
   },
-  "General": {
+    "General": {
     "logout": {
       "en": "Logout",
       "ar": "تسجيل خروج"
@@ -68,14 +68,116 @@
       "en": "Cancel",
       "ar": "إلغاء"
     },
+    "add": {
+      "en": "Add",
+      "ar": "إضافة"
+    },
+    "edit": {
+      "en": "Edit",
+      "ar": "تعديل"
+    },
+    "save": {
+      "en": "Save",
+      "ar": "حفظ"
+    },
+    "delete": {
+      "en": "Delete",
+      "ar": "حذف"
+    },
+    "submit": {
+      "en": "Submit",
+      "ar": "إرسال"
+    },
+    "reCall": {
+      "en": "Recall",
+      "ar": "استدعاء"
+    },
+    "approval": {
+      "en": "Approve",
+      "ar": "موافقة"
+    },
+    "rejecte": {
+      "en": "Reject",
+      "ar": "رفض"
+    },
+    "Post": {
+      "en": "Post",
+      "ar": "ترحيل"
+    },
+    "UnPost": {
+      "en": "Unpost",
+      "ar": "إلغاء الترحيل"
+    },
     "areYouSureYouWantToLogout": {
       "en": "Are you sure you want to logout?",
       "ar": "هل أنت متأكد أنك تريد تسجيل الخروج؟"
     },
-    "AccountSettings": {
-      "en": "Account Settings",
-      "ar": "إعدادات الحساب"
-    }
+    "back": {
+      "en": "Back",
+      "ar": "رجوع"
+    },
+    "calculate": {
+      "en": "Calculate",
+      "ar": "احتساب"
+    },
+    "fill": {
+      "en": "Fill",
+      "ar": "تعبئة"
+    },
+    "validatePost": {
+      "en": "Validate Post",
+      "ar": "التحقق من الترحيل"
+    },
+    "validateUnPost": {
+      "en": "Validate Unpost",
+      "ar": "التحقق من إلغاء الترحيل"
+    },
+    "hierarchyAll": {
+      "en": "Hierarchy",
+      "ar": "التسلسل الهرمي"
+    },
+    "parentEntityRoutes": {
+      "en": "Parent Entity",
+      "ar": "الكيان الرئيسي"
+    },
+    "Contract": {
+      "en": "Contract",
+      "ar": "العقد"
+    },
+    "Contract Document": {
+      "en": "Contract Document",
+      "ar": "وثيقة العقد"
+    },
+    "addJournal": { "en": "Add Journal", "ar": "إضافة قيد" },
+    "editJournal": { "en": "Edit Journal", "ar": "تعديل قيد" },
+    "addSubmissionDocument": { "en": "Add Submission Document", "ar": "إضافة وثيقة تقديم" },
+    "editSubmissionDocument": { "en": "Edit Submission Document", "ar": "تعديل وثيقة تقديم" },
+    "addReport": { "en": "Add Report", "ar": "إضافة تقرير" },
+    "editReport": { "en": "Edit Report", "ar": "تعديل تقرير" },
+    "addSetup": { "en": "Add Setup", "ar": "إضافة إعدادات" },
+    "editSetup": { "en": "Edit Setup", "ar": "تعديل إعدادات" },
+    "addVendorGroup": { "en": "Add Vendor Group", "ar": "إضافة مجموعة موردين" },
+    "editVendorGroup": { "en": "Edit Vendor Group", "ar": "تعديل مجموعة موردين" },
+    "addCurrency": { "en": "Add Currency", "ar": "إضافة عملة" },
+    "editCurrency": { "en": "Edit Currency", "ar": "تعديل عملة" },
+    "addItem": { "en": "Add Item", "ar": "إضافة صنف" },
+    "editItem": { "en": "Edit Item", "ar": "تعديل صنف" },
+    "addDepartment": { "en": "Add Department", "ar": "إضافة قسم" },
+    "editDepartment": { "en": "Edit Department", "ar": "تعديل قسم" },
+    "addSetting": { "en": "Add Setting", "ar": "إضافة إعداد" },
+    "editSetting": { "en": "Edit Setting", "ar": "تعديل إعداد" },
+    "addVendor": { "en": "Add Vendor", "ar": "إضافة مورد" },
+    "editVendor": { "en": "Edit Vendor", "ar": "تعديل مورد" },
+    "addedSuccessfully": { "en": "Added successfully", "ar": "تم الإضافة بنجاح" },
+    "editSuccessfully": { "en": "Updated successfully", "ar": "تم التعديل بنجاح" },
+    "addFailed": { "en": "Failed to add", "ar": "فشل الإطافة" },
+    "editFailed": { "en": "Failed to update", "ar": "فشل التعديل" },
+    "deleteSuccessfully": { "en": "Deleted successfully", "ar": "تم الحذف بنجاح" },
+    "deleteFailed": { "en": "Failed to delete", "ar": "فشل الحذف" },
+    "deleteConstraintError": { "en": "Cannot delete record used by other data", "ar": "لا يمكن حذف السجل لارتباطه ببيانات أخرى" },
+    "loginSuccessful": { "en": "Login successful!", "ar": "تم تسجيل الدخول بنجاح!" },
+    "loginFailed": { "en": "Login failed!", "ar": "فشل تسجيل الدخول!" },
+    "genericError": { "en": "An unexpected error occurred. Please try again.", "ar": "حدث خطأ غير متوقع. حاول مرة اخرى." }
   },
  "Gender": {
       "title": { "en": "Gender", "ar": "الجنس" },
@@ -184,52 +286,129 @@
     "VendorGroups": {
         "vendorGroupId": { "en": "Group ID", "ar": "رقم المجموعة" },
         "description": { "en": "Description", "ar": "الوصف" },
-        "dataAreaId": { "en": "Data Area ID", "ar": "معرف منطقة البيانات" }
+        "dataAreaId": { "en": "Data Area ID", "ar": "معرف منطقة البيانات" },
+        "enterVendorGroupId": { "en": "Enter group ID", "ar": "أدخل رقم المجموعة" },
+        "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" }
     },
     "Currencies": {
         "currencyCode": { "en": "Currency Code", "ar": "رمز العملة" },
         "name": { "en": "Name", "ar": "الاسم" },
+        "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
+        "USD": { "en": "USD", "ar": "دولار أمريكي" },
         "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
     },
     "Items": {
-        "itemNumber": { "en": "Item Number", "ar": "رقم الصنف" },
-        "searchName": { "en": "Search Name", "ar": "اسم البحث" },
-        "dataAreaId": { "en": "Data Area", "ar": "منطقة البيانات" },
-        "inventoryUnitSymbol": { "en": "Unit Symbol", "ar": "رمز الوحدة" },
-        "productType": { "en": "Product Type", "ar": "نوع المنتج" },
-        "code": { "en": "Code", "ar": "الكود" },
-        "name": { "en": "Name", "ar": "الاسم" },
-        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+    "itemNumber": {
+      "en": "Item Number",
+      "ar": "رقم الصنف"
     },
-    "Departments": {
-        "operatingUnitNumber": { "en": "Unit Number", "ar": "رقم الوحدة" },
-        "operatingUnitType": { "en": "Unit Type", "ar": "نوع الوحدة" },
-        "code": { "en": "Code", "ar": "الكود" },
-        "name": { "en": "Name", "ar": "الاسم" },
-        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+    "enterItemNumber": {
+      "en": "Enter item number",
+      "ar": "أدخل رقم الصنف"
     },
-    "SubmissionDocuments": {
-        "code": { "en": "Code", "ar": "الكود" },
-        "name": { "en": "Name", "ar": "الاسم" },
-        "description": { "en": "Description", "ar": "الوصف" },
-        "biddingType": { "en": "Bidding Type", "ar": "نوع المناقصة" },
-        "status": { "en": "Status", "ar": "الحالة" },
-        "transDate": { "en": "Transaction Date", "ar": "تاريخ المعاملة" },
-        "executionDate": { "en": "Execution Date", "ar": "تاريخ التنفيذ" },
-        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
-        "isVoid": { "en": "Is Void", "ar": "ملغي" },
-        "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
-        "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" },
-        "selectBiddingType": { "en": "Select bidding type", "ar": "اختر نوع المناقصة" },
-        "selectTransDate": { "en": "Select transaction date", "ar": "اختر تاريخ المعاملة" },
-        "selectExecutionDate": { "en": "Select execution date", "ar": "اختر تاريخ التنفيذ" },
-        "selectStatus": { "en": "Select status", "ar": "اختر الحالة" },
-        "addedSuccessfully": { "en": "Document added successfully", "ar": "تمت إضافة الوثيقة بنجاح" },
-        "editSuccessfully": { "en": "Document updated successfully", "ar": "تم تحديث الوثيقة بنجاح" },
-        "addFailed": { "en": "Failed to add document", "ar": "فشل في إضافة الوثيقة" },
-        "editFailed": { "en": "Failed to update document", "ar": "فشل في تحديث الوثيقة" }
+    "searchName": { 
+      "en": "Search Name",
+      "ar": "اسم البحث" 
     },
-    "Sidebar": {
+    "enterSearchName": { 
+      "en": "Enter search name",
+      "ar": "أدخل اسم البحث" },
+    "dataAreaId": {
+      "en": "Data Area",
+      "ar": "منطقة البيانات" 
+    },
+    "enterDataArea": {
+     "en": "Enter data area",
+     "ar": "أدخل منطقة البيانات"
+    },
+    "inventoryUnitSymbol": {
+      "en": "Unit Symbol",
+      "ar": "رمز الوحدة"
+    },
+    "enterUnitSymbol": {
+      "en": "Enter unit symbol",
+      "ar": "أدخل رمز الوحدة"
+    },
+    "productType": {
+      "en": "Product Type",
+      "ar": "نوع المنتج"
+    },
+    "enterProductType": {
+      "en": "Enter product type",
+      "ar": "أدخل نوع المنتج"
+    },
+    "code": {
+      "en": "Code",
+      "ar": "الكود"
+    },
+    "name": {
+      "en": "Name",
+      "ar": "الاسم"
+    },
+    "createdOn": {
+      "en": "Created On",
+      "ar": "تاريخ الإنشاء"
+    },
+    "item": {
+    "en": "Item",
+    "ar": "الصنف"
+    },
+    "unit": {
+      "en": "Unit",
+      "ar": "الوحدة"
+    },
+    "purchaseQuantity": {
+      "en": "Quantity",
+      "ar": "الكمية"
+    },
+    "department": {
+      "en": "Department",
+      "ar": "القسم"
+    },
+    "unknownUnit": {
+      "en": "Unknown Unit",
+      "ar": "وحدة غير معروفة"
+    }
+  },
+  "Departments": {
+      "operatingUnitNumber": {
+        "en": "Unit Number",
+        "ar": "رقم الوحدة" 
+      },
+      "enterUnitNumber": { "en": "Enter unit number", "ar": "أدخل رقم الوحدة" },
+      "operatingUnitType": { "en": "Unit Type", "ar": "نوع الوحدة" },
+      "enterUnitType": { "en": "Enter unit type", "ar": "أدخل نوع الوحدة" },
+      "code": { "en": "Code", "ar": "الكود" },
+      "name": { "en": "Name", "ar": "الاسم" },
+      "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+    },
+  "SubmissionDocuments": {
+      "code": { "en": "Code", "ar": "الكود" },
+      "name": { "en": "Name", "ar": "الاسم" },
+      "description": { "en": "Description", "ar": "الوصف" },
+      "biddingType": { "en": "Bidding Type", "ar": "نوع المناقصة" },
+      "status": { "en": "Status", "ar": "الحالة" },
+      "transDate": { "en": "Transaction Date", "ar": "تاريخ المعاملة" },
+      "executionDate": { "en": "Execution Date", "ar": "تاريخ التنفيذ" },
+      "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
+      "isVoid": { "en": "Is Void", "ar": "ملغي" },
+      "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
+      "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" },
+      "selectBiddingType": { "en": "Select bidding type", "ar": "اختر نوع المناقصة" },
+      "selectTransDate": { "en": "Select transaction date", "ar": "اختر تاريخ المعاملة" },
+      "selectExecutionDate": { "en": "Select execution date", "ar": "اختر تاريخ التنفيذ" },
+      "selectStatus": { "en": "Select status", "ar": "اختر الحالة" },
+      "addedSuccessfully": { "en": "Document added successfully", "ar": "تمت إضافة الوثيقة بنجاح" },
+      "editSuccessfully": { "en": "Document updated successfully", "ar": "تم تحديث الوثيقة بنجاح" },
+      "addFailed": { "en": "Failed to add document", "ar": "فشل في إضافة الوثيقة" },
+      "item": { "en": "Item", "ar": "الصنف" },
+      "unit": { "en": "Unit", "ar": "الوحدة" },
+      "purchaseQuantity": { "en": "Purchase Quantity", "ar": "كمية الشراء" },
+      "department": { "en": "Department", "ar": "القسم" },
+      "unknownUnit": { "en": "UNKNOWN UNIT", "ar": "وحدة غير معروفة" },
+      "editFailed": { "en": "Failed to update document", "ar": "فشل في تحديث الوثيقة" }
+    },
+  "Sidebar": {
       "Dashboard": {
          "en": "Dashboard",
          "ar": "لوحة التحكم" 

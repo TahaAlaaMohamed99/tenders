@@ -119,8 +119,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                     id={id}
                     apiKey={DataPage.Api}
                     ResourcePage={ResourcePage}
-                    titleAdd={`${ResourcePage} Info`}
-                    titleEdit={`${ResourcePage} Info`}
+                    titleAdd={DataPage?.titleAdd || "add"}
+                    titleEdit={DataPage?.titleEdit || "edit"}
                     goBackPrev={handleBack}
                     onSubmit={() => {
                         if (formRef.current) {
@@ -166,8 +166,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                 <CustomInput
                                     label="name"
                                     type="text"
-                                    placeholder="pleaseEnterName"
-                                    ResourcePage="GeneralField"
+                                    placeholder="enterName"
+                                    ResourcePage={ResourcePage}
                                     value={values.name}
                                     onChange={handleChange("name")}
                                     onBlur={handleBlur("name")}
@@ -181,13 +181,13 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     label="biddingType"
                                     options={biddingTypeList}
                                     Required={true}
-                                    ResourcePage="biddingType"
+                                    ResourcePage={ResourcePage}
                                     onChange={(e) => {
                                         setFieldValue("biddingType", e);
 
                                     }}
                                     value={values?.biddingType}
-                                    placeholder="pleaseSelectBiddingType"
+                                    placeholder="selectBiddingType"
                                     errors={errors.biddingType}
                                     touched={touched.biddingType}
                                     onBlur={handleBlur("biddingType")}
@@ -195,7 +195,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                 <CustomDatePicker
                                     label="transDate"
                                     className="cw_p"
-                                    ResourcePage="GeneralField"
+                                    ResourcePage={ResourcePage}
                                     Required={true}
                                     onChange={(date) => {
                                         setFieldValue("transDate", date);
@@ -207,7 +207,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                 <CustomDatePicker
                                     label="executionDate"
                                     className="cw_p"
-                                    ResourcePage="GeneralField"
+                                    ResourcePage={ResourcePage}
                                     Required={true}
                                     onChange={(date) => setFieldValue("executionDate", date)}
                                     value={values.executionDate}
@@ -217,8 +217,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                 <CustomTextarea
                                     label="description"
                                     type="text"
-                                    placeholder="pleaseEnterDescription"
-                                    ResourcePage="GeneralField"
+                                    placeholder="enterDescription"
+                                    ResourcePage={ResourcePage}
                                     value={values.description}
                                     onChange={handleChange("description")}
                                     onBlur={handleBlur("description")}
@@ -248,8 +248,10 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                     setShowmodalLine(false);
                     setRecIdLine(0);
                 }}
-                parentId={id}
+                parentRecId={id}
                 recId={recIdLine}
+                ResourcePage={ResourcePage}
+                ApiPage={DataPagesLine.SubmissionDocumentLine.Api}
             />
         </>
 

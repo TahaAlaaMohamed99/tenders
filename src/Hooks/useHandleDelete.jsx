@@ -53,7 +53,7 @@ export default function useHandleDelete() {
         />
       );
     } catch (error) {
-      const backendMessage = "Can not delete record while it's in use or linked to other records."//error?.details || error?.message || error || "deleteFailed";
+      const backendMessage = "deleteConstraintError";//error?.details || error?.message || error || "deleteFailed";
 
       toast.error(
         <TranslationText title={backendMessage} ResourcePage={resourcePage} />

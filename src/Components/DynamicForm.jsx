@@ -189,7 +189,7 @@ const DynamicForm = React.memo(React.forwardRef(({
                 errors={formik.errors[field.name]}
                 touched={formik.touched[field.name]}
                 titleGenerallist={!!field.generallist}
-                ResourcePage={field.generallist || field.ResourcePage}
+                ResourcePage={field.generallist || field.ResourcePage || ResourcePage}
                 isLoading={field.generallist ? isLoadingOptions : false}
                 className="mb-4"
             />

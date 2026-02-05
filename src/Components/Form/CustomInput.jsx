@@ -104,7 +104,7 @@ const CustomInput = React.forwardRef(({
               ${touched && errors ? `text-error ${!forceLightMode ? "dark:text-errorDark" : ""}` : ""}
             `}
           >
-            <TranslationText title={label}  />
+            <TranslationText title={label} page={ResourcePage} />
             {Required && (
               <span className="icon_Required ml-0.5">*</span>
             )}

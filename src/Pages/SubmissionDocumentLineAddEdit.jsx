@@ -7,6 +7,8 @@ import CustomInput from "../Components/Form/CustomInput";
 import AsyncSelectWrapper from "../Components/Form/AsyncSelectWrapper";
 import useHandleSubmit from "../Hooks/useHandleSubmit";
 import Config from "../utils/Config";
+import { useSafeSelector } from "../Hooks/useSafeSelector";
+import useTranslationText from "../Hooks/useTranslationText";
 
 /**
  * SubmissionDocumentLineAddEdit
@@ -45,6 +47,7 @@ export default function SubmissionDocumentLineAddEdit({
   fetchGridData,
   ResourcePage,
   ConfiMainPage,
+  parentRecId,
 }) {
   const formikRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
@@ -52,6 +55,13 @@ export default function SubmissionDocumentLineAddEdit({
   const [data, setData] = useState({});
   const [unit, setUnit] = useState("");
   const isAllowedModify = Config.isAllow("Modify", ConfiMainPage);
+  const { currentLanguage } = useSafeSelector((state) => state.themeSlice);
+
+  const unknownUnitText = useTranslationText({
+    title: "unknownUnit",
+    page: ResourcePage,
+    lang: currentLanguage,
+  });
 
   const fetchData = useGetById(
     `${ApiPage}`,
@@ -74,8 +84,8 @@ export default function SubmissionDocumentLineAddEdit({
   const handleSubmit = (values) => {
     setIsLoadingSubmit(true);
     const sendData = {
-        parentRecId: values.parentRecId,
-        purchaceQuantity: values.purchaceQuantity,
+        parentRecId: Number(values.parentRecId),
+        purchaseQuantity: values.purchaseQuantity,
         itemRecId: values.itemRecId,
         departmentRecId: values.departmentRecId,
     };
@@ -115,8 +125,8 @@ export default function SubmissionDocumentLineAddEdit({
       <Formik
         innerRef={formikRef}
         initialValues={{
-          parentRecId: data?.parentRecId || "",
-          purchaceQuantity: data?.purchaceQuantity || "",
+          parentRecId: data?.parentRecId || parentRecId || "",
+          purchaseQuantity: data?.purchaseQuantity || "",
           itemRecId: data?.itemRecId || "",
           departmentRecId: data?.departmentRecId || "",
         }}
@@ -141,7 +151,7 @@ export default function SubmissionDocumentLineAddEdit({
             <fieldset disabled={!isAllowedModify} className="grid grid-cols-1 gap-8">
               <AsyncSelectWrapper
                 name="itemRecId"
-                label="Item"
+                label="item"
                 required
                 value={values.itemRecId}
                 onChange={(val) => setFieldValue('itemRecId', val)}
@@ -151,35 +161,38 @@ export default function SubmissionDocumentLineAddEdit({
                     labelKey: 'itemNumber'
                 }}
                 onSelectionChange={(selected) => {
-                    setUnit(selected?.original?.inventoryUnitSymbol || "UNKNOWN UNIT");
+                    setUnit(selected?.original?.inventoryUnitSymbol || unknownUnitText);
                 }}
                 errors={errors.itemRecId}
                 touched={touched.itemRecId}
                 labelBgColor="bg-white dark:bg-whiteDark"
+                ResourcePage={ResourcePage}
               />
               <CustomInput
                 name="unit"
-                label="Unit"
+                label="unit"
                 value={unit}
                 readOnly={true}
                 disabled={true}
                 labelBgColor="bg-white dark:bg-whiteDark"
+                ResourcePage={ResourcePage}
               />
               <CustomInput
-                name="purchaceQuantity"
-                label="Purchace Quantity"
+                name="purchaseQuantity"
+                label="purchaseQuantity"
                 type="number"
-                value={values.purchaceQuantity}
+                value={values.purchaseQuantity}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                errors={errors.purchaceQuantity}
-                touched={touched.purchaceQuantity}
+                errors={errors.purchaseQuantity}
+                touched={touched.purchaseQuantity}
                 labelBgColor="bg-white dark:bg-whiteDark"
                 required
+                ResourcePage={ResourcePage}
               />
               <AsyncSelectWrapper
                 name="departmentRecId"
-                label="Department"
+                label="department"
                 required
                 value={values.departmentRecId}
                 onChange={(val) => setFieldValue('departmentRecId', val)}
@@ -191,6 +204,7 @@ export default function SubmissionDocumentLineAddEdit({
                 labelBgColor="bg-white dark:bg-whiteDark"
                 errors={errors.departmentRecId}
                 touched={touched.departmentRecId}
+                ResourcePage={ResourcePage}
               />
             </fieldset>
           </Form>

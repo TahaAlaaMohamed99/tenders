@@ -153,9 +153,9 @@ const ResizableColumn = ({
             }
             <div className="title_header truncate px-2  ">
                 <TranslationText
-                page={column.generallist ? column?.generallist : column?.ResourcePage || ResourcePage}
-                titleGenerallist={column.generallist ? true : false}
-                title={column.generallist ? column.title : column.title}
+                page={column?.ResourcePage || ResourcePage || GridKey}
+                titleGenerallist={false}
+                title={column.title}
                 />
             </div>
             
@@ -217,7 +217,7 @@ const ResizableColumn = ({
                             onChange={(e) => setFilterValue(e)}
                             isLoading={isLoading}
                             isClearable
-                            placeholder={useTranslationText({ page: "Grid", title: `Select`, lang: currentLanguage }) + ` ${useTranslationText({ page: column.generallist ? column.generallist : column.ResourcePage || ResourcePage, title: column.title, lang: currentLanguage })}`}
+                            placeholder={useTranslationText({ page: "Grid", title: `Select`, lang: currentLanguage }) + ` ${useTranslationText({ page: column.ResourcePage || ResourcePage || GridKey, title: column.title, lang: currentLanguage })}`}
                             isSmall
                         />
                     ) : (column.type === "date" || column.type === "dateTime") ? (
@@ -232,7 +232,7 @@ const ResizableColumn = ({
                             type={column.type === "number" ? "number" : "text"}
                             value={filterValue}
                             onChange={(e) => setFilterValue(e.target.value)}
-                            placeholder={useTranslationText({ page: "Grid", title: `Type`, lang: currentLanguage }) + ` ${useTranslationText({ page: column.generallist ? column.generallist : column.ResourcePage || ResourcePage, title: column.title, lang: currentLanguage })}`}
+                            placeholder={useTranslationText({ page: "Grid", title: `Type`, lang: currentLanguage }) + ` ${useTranslationText({ page: column.ResourcePage || ResourcePage || GridKey, title: column.title, lang: currentLanguage })}`}
                             isSmall
                         />
                     )}

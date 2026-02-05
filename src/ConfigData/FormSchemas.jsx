@@ -270,3 +270,54 @@ export const SubmissionDocumentsForm = {
         }
     ]
 };
+
+export const SubmissionDocumentLinesForm = {
+    sections: [
+        {
+            title: "Document Line Info",
+            fields: [
+                {
+                    name: "name",
+                    label: "name",
+                    type: "text",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "enterName"
+                },
+                {
+                    name: "biddingType",
+                    label: "biddingType",
+                    type: "select",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "selectBiddingType",
+                    generallist: "BiddingType"
+                },
+                {
+                    name: "transDate",
+                    label: "transDate",
+                    type: "datetime",
+                    required: false,
+                    gridWidth: "col-span-6",
+                    placeholder: "selectTransDate"
+                },
+                {
+                    name: "executionDate",
+                    label: "executionDate",
+                    type: "datetime",
+                    required: false,
+                    gridWidth: "col-span-6",
+                    placeholder: "selectExecutionDate"
+                },
+                {
+                    name: "description",
+                    label: "description",
+                    type: "textarea",
+                    required: false,
+                    gridWidth: "col-span-12",
+                    placeholder: "enterDescription"
+                }
+            ]
+        }
+    ]
+};
