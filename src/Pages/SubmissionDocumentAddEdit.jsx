@@ -44,6 +44,9 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [biddingTypeList, setBiddingTypeList] = useState([]);
+    const [showmodalLine, setShowmodalLine] = useState(false);
+    const [recIdLine, setRecIdLine] = useState(0);
+
     const [data, setData] = useState({});
 
     // Ref to access DynamicForm's submit method
@@ -231,7 +234,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                             ApiGetAllLines={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
                             DataPage={DataPagesLine.SubmissionDocumentLine}
                             onCilckRow={(row) => {
-                                console.log("row clicked", row);
+                                setShowmodalLine(true);
+                                setRecIdLine(row.id);
                             }}
                         />
                     </div>
