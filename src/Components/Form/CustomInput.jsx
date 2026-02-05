@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { preventInvalidNumberInput } from "../../utils/validation";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
 import { useSafeSelector } from "../../Hooks/useSafeSelector";
@@ -77,6 +78,12 @@ const CustomInput = React.forwardRef(({
     setIsFocused(false);
     if (onBlur) onBlur(event);
   };
+  const handleKeyDown = (e) => {
+    if (type === "number") {
+      preventInvalidNumberInput(e);
+    }
+  }
+
   const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: effectiveLang });
   
   return (
@@ -114,6 +121,8 @@ const CustomInput = React.forwardRef(({
           onChange={disabled ? null : onChange}
           onFocus={disabled ? null : handleFocus}
           onBlur={disabled ? null : handleBlur}
+          onKeyDown={handleKeyDown}
+          min={type === "number" ? "0" : undefined}
           id={`arkaan_${name}`}
           autoComplete={autoComplete}
           name={name}

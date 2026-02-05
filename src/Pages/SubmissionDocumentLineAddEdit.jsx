@@ -151,9 +151,9 @@ export default function SubmissionDocumentLineAddEdit({
                     labelKey: 'itemNumber'
                 }}
                 onSelectionChange={(selected) => {
-                    setUnit(selected?.original?.inventoryUnitSymbol || "");
+                    setUnit(selected?.original?.inventoryUnitSymbol || "UNKNOWN UNIT");
                 }}
-                error={errors.itemRecId}
+                errors={errors.itemRecId}
                 touched={touched.itemRecId}
                 labelBgColor="bg-white dark:bg-whiteDark"
               />
@@ -162,7 +162,7 @@ export default function SubmissionDocumentLineAddEdit({
                 label="Unit"
                 value={unit}
                 readOnly={true}
-                disabled={ true }
+                disabled={true}
                 labelBgColor="bg-white dark:bg-whiteDark"
               />
               <CustomInput
@@ -172,11 +172,10 @@ export default function SubmissionDocumentLineAddEdit({
                 value={values.purchaceQuantity}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={errors.purchaceQuantity}
+                errors={errors.purchaceQuantity}
                 touched={touched.purchaceQuantity}
                 labelBgColor="bg-white dark:bg-whiteDark"
                 required
-                labelBgColor="bg-white dark:bg-whiteDark"
               />
               <AsyncSelectWrapper
                 name="departmentRecId"
@@ -186,11 +185,11 @@ export default function SubmissionDocumentLineAddEdit({
                 onChange={(val) => setFieldValue('departmentRecId', val)}
                 lookup={{
                     api: 'Department/GetLookup',
-                    valueKey: 'operatingUnitNumber',
+                    valueKey: 'recId',
                     labelKey: 'name'
                 } }
                 labelBgColor="bg-white dark:bg-whiteDark"
-                error={errors.departmentRecId}
+                errors={errors.departmentRecId}
                 touched={touched.departmentRecId}
               />
             </fieldset>
