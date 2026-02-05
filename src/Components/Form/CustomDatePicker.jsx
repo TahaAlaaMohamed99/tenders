@@ -118,7 +118,7 @@ const CustomDatePicker = React.forwardRef(({
                 isLoading ? (
                   <IconLoading className="text-primary dark:text-primaryDark" />
                 ) : (
-                  <IconCalendar className="w-6 h-6" />
+                  <IconCalendar className="w-5 h-5" />
                 )
               }
             />

@@ -144,7 +144,7 @@ const ResizableColumn = ({
         <div 
             ref={triggerRef}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex items-center w-full h-full cursor-pointer"
+            className="flex items-center justify-center w-full h-full cursor-pointer"
         >
             {column?.isDimension &&
                 <span className="w-4 h-4">
@@ -159,7 +159,7 @@ const ResizableColumn = ({
                 />
             </div>
             
-            <span className="Icon_sortConfig flex items-center ms-auto">
+            <span className="Icon_sortConfig flex items-center  ms-2">
                  <IconGridSort 
                     className={`w-4 transition-colors ${isMenuOpen ? "text-primary dark:text-primaryDark" : "text-gray-400 opacity-50"}`} 
                  />

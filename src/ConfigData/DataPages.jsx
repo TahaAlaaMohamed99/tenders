@@ -4,6 +4,7 @@ import { VendorsGrid, VendorGroupsGrid, CurrenciesGrid, DepartmentsGrid, ItemsGr
 import { VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
 import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
+import SubmissionDocumentAddEdit from "../Pages/SubmissionDocumentAddEdit";
 
 // Default/Fallback Schemas for pages that don't have specific ones yet
 const DefaultGrid = { columns: [{ key: "id", title: "ID", width: 100 }] };
@@ -30,7 +31,7 @@ export const DataPages = {
     SubmissionDocuments: {
         Api: "SubmissionDocument",
         componentViwe: GenericGridPage,
-        componentAddEdit: GenericAddEditPage,
+        componentAddEdit: SubmissionDocumentAddEdit,
         keyId: "recId",
         ExcelExport: true,
         isSearch: true,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Api } from "../services/Api";
 
-const useGridData = (ApiGet, setDataGrid, setIsLoading) => {
+const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
   const [totalRow, setTotalRow] = useState(0);
 
   // Current language logic
@@ -12,7 +12,7 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading) => {
     setIsLoading(true);
     try {
       const response = await Api.get(
-        `/${ApiGet}/GetAll?${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
+        `/${ApiGet}${isGetAll ? `/GetAll?` : "&"}${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
       );
       if (response !== 404) {
         const hasMetaTotal =

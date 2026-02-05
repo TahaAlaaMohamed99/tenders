@@ -1,11 +1,11 @@
 .custom-date-picker {
-  @apply min-h-[2.8125rem] max-h-[2.8125rem] focus-within:outline-none focus-visible:outline-none w-full pt-3 pb-1.5 px-3 border-borderColor dark:border-borderColorDark rounded-xl border-[1.2px] focus-within:ring-primary dark:focus-within:ring-primaryDark bg-bgWhite dark:bg-bgWhiteDark;
+  @apply min-h-[2.8125rem] max-h-[2.8125rem] focus-within:outline-none focus-visible:outline-none w-full px-1.5 border-borderColor dark:border-borderColorDark rounded-xl border-[1.2px] focus-within:ring-primary dark:focus-within:ring-primaryDark bg-bgWhite dark:bg-bgWhiteDark;
 }
 .custom-date-picker .react-calendar__navigation {
   @apply text-center;
 }
 .custom-date-picker .react-datetime-picker__inputGroup__amPm {
-  @apply text-titleColor text-sm rounded-lg focus:ring-primary dark:focus:ring-primaryDark focus:border-primary dark:focus:border-primaryDark  bg-bgWhite dark:bg-bgWhiteDark dark:border-gray-600  dark:text-titleColorDark;
+  @apply text-titleColor text-sm rounded-lg focus:ring-primary dark:focus:ring-primaryDark focus:border-primary dark:focus:border-primaryDark bg-bgWhite dark:bg-bgWhiteDark dark:border-gray-600 dark:text-titleColorDark;
 }
 .custom-date-picker .react-daterange-picker__range-divider {
   @apply text-titleColor dark:text-titleColorDark;
@@ -75,7 +75,7 @@
   @apply stroke-primary dark:stroke-primaryDark;
 }
 .custom-date-picker .react-calendar {
-  @apply p-1.5 ltr:font-sans rtl:font-cairo  border-[1.2px] bg-white dark:bg-bgWhiteDark rounded-lg mt-1 overflow-hidden;
+  @apply p-1.5 ltr:font-sans rtl:font-cairo border-[1.2px] bg-white dark:bg-bgWhiteDark rounded-lg mt-1 overflow-hidden;
 }
 .custom-date-picker .react-calendar .react-calendar__tile {
   @apply text-titleColor dark:text-titleColorDark;
@@ -110,7 +110,7 @@
   border-bottom-right-radius: 0.375rem;
 }
 .custom-date-picker:focus, .custom-date-picker:focus-within, .custom-date-picker:hover {
-  @apply border-primary dark:border-primaryDark    shadow-custom dark:shadow-customDark;
+  @apply border-primary dark:border-primaryDark shadow-custom dark:shadow-customDark;
 }
 .custom-date-picker:disabled:focus, .custom-date-picker:disabled:focus-within, .custom-date-picker:disabled:active {
   @apply border-borderColor dark:border-borderColorDark shadow-none;
@@ -128,7 +128,7 @@
   @apply dark:bg-titleColor bg-titleColorDark;
 }
 .custom-date-picker.react-datetime-picker--disabled {
-  @apply bg-white  dark:bg-bgWhiteDark;
+  @apply bg-white dark:bg-bgWhiteDark;
 }
 .custom-date-picker.react-datetime-picker--disabled:hover {
   @apply shadow-none border-borderColor dark:border-borderColorDark;

@@ -20,7 +20,7 @@ export default function useGetSelected(list, value = null, label = null, extraLa
             }
             if (value !== null) {
                 const matchedItem = list.filter((item) => item?.value == value);
-                return matchedItem[0] || null;
+                 return matchedItem[0] || null;
             }
         }
         return null;

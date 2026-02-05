@@ -30,63 +30,42 @@
   @apply border-0 min-h-10 rounded-lg;
 }
 
-.input_Search_Grid_Central.form-group_iconSearch input {
-  @apply border border-gray-200 dark:border-gray-700 min-h-10 rounded-lg bg-gray-50 dark:bg-gray-800 focus:bg-white dark:focus:bg-gray-900 transition-colors w-full;
-}
-
-.btn_text_icon {
-   @apply flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium
-          text-titleColor dark:text-titleColorDark
-          bg-transparent hover:bg-bgColor dark:hover:bg-bgColorDark
-          transition-colors;
-}
-.btn_text_icon svg {
-   @apply w-5 h-5 flex-shrink-0;
-}
-.btn_text_icon.primary {
-   @apply bg-primary text-white hover:bg-primary/90;
-}
-.btn_text_icon.danger {
-  @apply text-error hover:bg-error/10; 
-}
-
 /* ===== Main Component ===== */
 .Tender_Grid {
   @apply overflow-hidden;
-  /* ===== Header actions ===== */
   /* ====   Normal Data Grid ==== */
   /* ====   Selector Grid ==== */
   /* ====  Custom Grid ==== */
   /* ===== Header ===== */
   /* ===== Row + Header Items ===== */
   /* ===== Status Grid ===== */
-  /* ===== Status Grid ===== */
+  /* ===== Status Grid Point ===== */
   /* ===== Dropdown ===== */
   /* ===== Selected Actions ===== */
   /* ===== Mobile Grid ===== */
-  /* ===== Pagination  Grid ===== */
-  /* =====  Scroll  Grid ===== */
-}
-.Tender_Grid .header_actions_Grid {
-  @apply grid grid-cols-2 gap-4 min-h-12 h-12 bg-bgWhite dark:bg-bgWhiteDark rounded-lg px-2 items-center;
+  /* ===== Pagination Grid ===== */
+  /* ===== Scroll Grid ===== */
 }
 .Tender_Grid .grid_footer {
-  @apply flex w-full flex-nowrap rounded-lg;
+  @apply flex w-full flex-nowrap rounded-md;
 }
 .Tender_Grid .data_Grid {
-  @apply h-[20rem] xl:h-[26rem] 2xl:h-[28.5rem] overflow-hidden overflow-y-auto;
+  @apply h-[22rem] xl:h-[28rem] 2xl:h-[32rem] overflow-hidden overflow-y-auto;
 }
 .Tender_Grid .data_Grid .default_Data {
   @apply min-w-full;
 }
 .Tender_Grid .data_Grid_Selector {
-  @apply h-[calc(100vh-260px)] overflow-hidden overflow-y-auto;
+  @apply h-[calc(100vh-300px)] overflow-hidden overflow-y-auto;
 }
 .Tender_Grid .data_Grid_custom {
   @apply h-[14.125rem] overflow-hidden overflow-y-auto;
 }
+.Tender_Grid .header_Grid {
+  @apply mb-0.5;
+}
 .Tender_Grid .header_Grid .container_Header_Grid {
-  @apply flex flex-nowrap bg-bgWhite dark:bg-bgWhiteDark rounded-lg;
+  @apply flex flex-nowrap bg-bgWhite dark:bg-bgWhiteDark rounded-md;
 }
 .Tender_Grid .header_Grid .scrollable_container {
   @apply w-full overflow-hidden relative;
@@ -95,16 +74,19 @@
   @apply flex min-w-full;
 }
 .Tender_Grid .header_Item {
-  @apply h-10 w-10 cursor-pointer;
+  @apply h-9 w-9 cursor-pointer transition-colors rounded-sm;
+}
+.Tender_Grid .header_Item:hover {
+  @apply bg-bgColor/30 dark:bg-bgColorDark/30;
 }
 .Tender_Grid .row_Card_action_list,
 .Tender_Grid .header_Item,
 .Tender_Grid .row_Item {
-  @apply h-11;
+  @apply h-9;
 }
 .Tender_Grid .header_Item,
 .Tender_Grid .row_Item {
-  @apply flex-nowrap px-2;
+  @apply flex-nowrap px-1.5;
 }
 .Tender_Grid .header_Item.justify_start,
 .Tender_Grid .row_Item.justify_start {
@@ -116,15 +98,15 @@
 }
 .Tender_Grid .header_Item .title_header,
 .Tender_Grid .row_Item .title_header {
-  @apply text-textColor dark:text-textColorDark font-medium text-sm;
+  @apply text-textColor dark:text-textColorDark font-medium text-xs;
 }
 .Tender_Grid .header_Item .text_row,
 .Tender_Grid .row_Item .text_row {
-  @apply text-titleColor dark:text-titleColorDark text-ellipsis line-clamp-1 text-center text-sm;
+  @apply text-titleColor dark:text-titleColorDark text-ellipsis line-clamp-1 text-center text-xs;
 }
 .Tender_Grid .header_Item .text_row .link_Icon,
 .Tender_Grid .row_Item .text_row .link_Icon {
-  @apply flex items-center gap-2 font-medium;
+  @apply flex items-center gap-1.5 font-medium;
 }
 .Tender_Grid .header_Item .text_row .link_Icon:hover,
 .Tender_Grid .row_Item .text_row .link_Icon:hover {
@@ -136,21 +118,27 @@
 }
 .Tender_Grid .header_Item .text_row .icon_data,
 .Tender_Grid .row_Item .text_row .icon_data {
-  @apply w-4 h-4 text-textColor dark:text-textColorDark;
+  @apply w-3.5 h-3.5 text-textColor dark:text-textColorDark;
 }
 .Tender_Grid .header_Item .text_row .icon_data svg,
 .Tender_Grid .row_Item .text_row .icon_data svg {
   @apply w-full h-full;
 }
 .Tender_Grid .row_Card_action_list {
-  @apply flex justify-end px-4 py-2 bg-bgWhite dark:bg-bgWhiteDark rounded-e-lg mb-1 relative;
+  @apply flex justify-end px-2 py-1 bg-bgWhite dark:bg-bgWhiteDark rounded-e-md mb-1 relative transition-colors;
 }
 .Tender_Grid .row_Card_action_list.selected {
-  @apply bg-primary dark:bg-primaryDark bg-opacity-25 dark:bg-opacity-25;
+  @apply bg-primary dark:bg-primaryDark bg-opacity-20 dark:bg-opacity-20;
+}
+.Tender_Grid .row_Card_action_list:hover:not(.selected) {
+  @apply bg-bgColor/50 dark:bg-bgColorDark/50;
 }
 .Tender_Grid .row_Grid {
-  @apply flex bg-bgWhite dark:bg-bgWhiteDark mb-1;
+  @apply flex bg-bgWhite dark:bg-bgWhiteDark mb-1 transition-colors;
   /* ===== Open New Tab Icon ===== */
+}
+.Tender_Grid .row_Grid:hover {
+  @apply bg-bgColor/30 dark:bg-bgColorDark/30;
 }
 .Tender_Grid .row_Grid .link_Icon {
   @apply flex gap-1.5 font-medium items-center text-titleColor dark:text-titleColorDark;
@@ -168,25 +156,25 @@
   @apply text-titleColor dark:text-titleColorDark;
 }
 .Tender_Grid .row_Grid .cell-avatar {
-  @apply flex items-center gap-3;
+  @apply flex items-center gap-2;
 }
 .Tender_Grid .row_Grid .cell-avatar .cell-avatar__image {
-  @apply w-8 h-8 bg-bgColor dark:bg-bgColorDark flex items-center justify-center rounded-full overflow-hidden p-1;
+  @apply w-7 h-7 bg-bgColor dark:bg-bgColorDark flex items-center justify-center rounded-full overflow-hidden p-0.5;
 }
 .Tender_Grid .row_Grid .cell-avatar .cell-avatar__image .cell-avatar__fallback {
   @apply w-full h-full rounded-full flex items-center justify-center;
 }
 .Tender_Grid .row_Grid .cell-avatar .cell-avatar__image .cell-avatar__fallback .cell-avatar__initials {
-  @apply text-xs font-semibold text-titleColor dark:text-titleColorDark;
+  @apply text-[10px] font-semibold text-titleColor dark:text-titleColorDark;
 }
 .Tender_Grid .row_Grid .cell-avatar .cell-avatar__content {
-  @apply flex w-[calc(100%-44px)] flex-col items-start;
+  @apply flex w-[calc(100%-36px)] flex-col items-start;
 }
 .Tender_Grid .row_Grid .cell-avatar .cell-avatar__content .cell-avatar__title {
-  @apply font-semibold text-titleColor text-sm dark:text-titleColorDark;
+  @apply font-semibold text-titleColor text-xs dark:text-titleColorDark leading-tight;
 }
 .Tender_Grid .row_Grid .cell-avatar .cell-avatar__content .cell-avatar__subtitle {
-  @apply text-textColor text-xs dark:text-textColorDark font-medium;
+  @apply text-textColor text-[10px] dark:text-textColorDark font-medium leading-tight;
 }
 .Tender_Grid .row_Grid .cell-avatar:hover .cell-avatar__content .cell-avatar__title {
   @apply text-primary dark:text-primaryDark;
@@ -195,10 +183,10 @@
   @apply text-titleColor dark:text-titleColorDark;
 }
 .Tender_Grid .row_Grid .icon_action_row {
-  @apply flex w-10 justify-center items-center;
+  @apply flex w-8 justify-center items-center;
 }
 .Tender_Grid .row_Grid .icon_action_row svg {
-  @apply w-5 h-5 text-textColor dark:text-textColorDark hover:text-primary dark:hover:text-primaryDark;
+  @apply w-4 h-4 text-textColor dark:text-textColorDark hover:text-primary dark:hover:text-primaryDark;
 }
 .Tender_Grid .row_Grid .icon_action_row.active svg {
   @apply text-primary dark:text-primaryDark;
@@ -207,10 +195,10 @@
   @apply bg-primary dark:bg-primaryDark bg-opacity-25 dark:bg-opacity-25;
 }
 .Tender_Grid .status_Grid {
-  @apply rounded bg-opacity-10 bg-gray-400 px-3.5 py-1.5;
+  @apply rounded bg-opacity-10 bg-gray-400 px-2 py-0.5;
 }
 .Tender_Grid .status_Grid .status_text {
-  @apply text-gray-400 leading-normal text-xs font-semibold uppercase
+  @apply text-gray-400 leading-normal text-[10px] font-semibold uppercase
              text-ellipsis line-clamp-1 max-w-full text-center;
 }
 .Tender_Grid .status_Grid.state_Success {
@@ -244,10 +232,10 @@
   @apply text-bgColor;
 }
 .Tender_Grid .status_Grid_point {
-  @apply gap-1;
+  @apply gap-0.5;
 }
 .Tender_Grid .status_Grid_point .status_text {
-  @apply text-gray-400 leading-normal text-xs font-bold uppercase
+  @apply text-gray-400 leading-normal text-[10px] font-bold uppercase
              text-ellipsis line-clamp-1 max-w-full text-center;
 }
 .Tender_Grid .status_Grid_point .status_point {
@@ -304,7 +292,7 @@
 }
 .Tender_Grid .Selected_actions {
   @apply p-2 gap-1.5 min-w-20 min-h-10 rounded-[0.35rem] text-titleColor bg-bgWhite dark:bg-bgWhiteDark
-             dark:text-titleColorDark;
+           dark:text-titleColorDark;
 }
 .Tender_Grid .Selected_actions .total {
   @apply bg-titleColor text-bgColor dark:bg-titleColorDark dark:text-bgColorDark
@@ -342,48 +330,41 @@
   @apply text-primary dark:text-primaryDark font-semibold;
 }
 .Tender_Grid .Pagination_gird {
-  @apply flex flex-row flex-nowrap items-center justify-between gap-4 mb-3;
+  @apply flex md:flex-row flex-col md:gap-2 gap-2 items-center justify-between;
 }
 .Tender_Grid .Pagination_gird.footer_Pagination {
-  @apply bg-bgWhite dark:bg-bgWhiteDark rounded-lg px-4 py-2 min-h-10;
+  @apply bg-bgWhite dark:bg-bgWhiteDark rounded-md px-3 h-9 flex items-center;
 }
 .Tender_Grid .Pagination_gird .container_pagination {
-  @apply text-start text-sm flex-shrink-0;
+  @apply text-start text-[11px] leading-none flex items-center h-9;
 }
 .Tender_Grid .Pagination_gird .container_pagination .total_pages {
   @apply flex items-center gap-0.5;
 }
 .Tender_Grid .Pagination_gird .arrow_Pagination {
-  @apply hover:text-primary rtl:rotate-180 dark:hover:text-primaryDark text-titleColor dark:text-titleColorDark;
+  @apply hover:text-primary rtl:rotate-180 dark:hover:text-primaryDark text-titleColor dark:text-titleColorDark flex items-center justify-center h-7 w-7 rounded hover:bg-bgColor dark:hover:bg-bgColorDark transition-colors;
 }
 .Tender_Grid .Pagination_gird .arrow_Pagination.disabled {
-  @apply disabled:text-textColor dark:text-textColorDark dark:disabled:text-opacity-70 disabled:text-opacity-70;
+  @apply opacity-40 cursor-not-allowed hover:bg-transparent;
 }
 .Tender_Grid .Pagination_gird.card_Pagination {
-  @apply bg-bgWhite dark:bg-bgWhiteDark rounded-lg p-2 min-h-10;
+  @apply bg-bgWhite dark:bg-bgWhiteDark rounded-md px-2 py-1 h-8;
 }
 .Tender_Grid .Pagination_gird.card_Pagination .container_pagination {
   @apply text-[9px];
   line-height: normal;
 }
 .Tender_Grid .Pagination_gird.card_Pagination .container_pagination .total_pages {
-  @apply flex-col;
+  @apply flex-col h-6;
 }
 .Tender_Grid .Pagination_gird.card_Pagination .arrow_Pagination {
-  @apply flex justify-center items-center;
+  @apply flex justify-center items-center h-6 w-6;
 }
 .Tender_Grid .Pagination_gird.card_Pagination .arrow_Pagination svg {
-  @apply bg-bgColor dark:bg-bgColorDark p-1 rounded-md w-6 h-6;
+  @apply bg-bgColor dark:bg-bgColorDark p-1 rounded-md w-5 h-5;
 }
 .Tender_Grid .Pagination_gird.card_Pagination .arrow_Pagination.disabled svg {
   @apply bg-bgColor/60 dark:bg-bgColorDark/60 cursor-not-allowed;
-}
-
-/* Page size select - ensure single row */
-.Tender_Grid .Pagination_gird [class*="-control"] {
-  flex-wrap: nowrap !important;
-  min-height: 2rem !important;
-  height: 2rem !important;
 }
 .Tender_Grid .Scroll_Grid {
   @apply h-4 mb-2 overflow-hidden overflow-x-auto;
