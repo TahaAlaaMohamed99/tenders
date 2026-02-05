@@ -17,6 +17,7 @@ import CustomTextarea from '../Components/Form/CustomTextarea';
 import useGetSelected from '../Hooks/useGetSelected';
 import GenericGridPageLine from '../Components/GenericGridPageLine';
 import { DataPagesLine } from '../ConfigData/DataPagesLine';
+import  SubmissionDocumentLineAddEdit  from './SubmissionDocumentLineAddEdit';
 
 /**
  * SubmissionDocumentAddEdit
@@ -242,6 +243,15 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
 
                 </div>
             </div>
+            <SubmissionDocumentLineAddEdit
+                isVisible={showmodalLine}
+                onClose={() => {
+                    setShowmodalLine(false);
+                    setRecIdLine(0);
+                }}
+                parentId={id}
+                recId={recIdLine}
+            />
         </>
 
     );
