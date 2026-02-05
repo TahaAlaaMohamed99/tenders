@@ -3,7 +3,7 @@
  * 
  * Returns the full route chain for breadcrumb building.
  * 
- * @module hooks/useFullRouteChain
+ * @module Hooks/useFullRouteChain
  */
 
 import { useLocation } from "react-router-dom";

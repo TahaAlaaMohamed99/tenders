@@ -17,7 +17,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import TranslationText from "./TranslationText";
 
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 
 /**
  * Header Component

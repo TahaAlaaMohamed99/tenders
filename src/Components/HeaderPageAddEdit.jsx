@@ -41,7 +41,7 @@ import HierarchyAll from "./HierarchyAll";
 import { DataPagesHierarchyGrid } from "../ConfigData/DataPagesHierarchyGrid";
 import ColumnsHeaderPage from "../ConfigData/ColumnsHeaderPage.json";
 import useTranslationText from "../Hooks/useTranslationText";
-import useFullRouteChain from "../hooks/useFullRouteChain";
+import useFullRouteChain from "../Hooks/useFullRouteChain";
 import Config from "../utils/Config";
 import useHandleSubmit from "../Hooks/useHandleSubmit";
 import { isActionWorkflow } from "../utils/isActionWorkflow";

@@ -9,7 +9,7 @@ import {
   IconSuccess,
   IconWarning,
 } from "./assets/Icons";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./Context/AuthContext";
 import PrivateRoute from "./Routes/PrivateRoute";
 import Login from "./Pages/Login";
 import DynamicRouter from "./Routes/DynamicRouter";

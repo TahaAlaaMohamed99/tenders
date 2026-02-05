@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, memo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux"; // Redux hooks
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { useProcessMenu } from "../Hooks/useProcessMenu";
 import CustomBtn from "./CustomBtn";
 import { LogoText, IconArrowDown, IconHelp, IconLogout, IconArrowLeft, LogoIcon, IconTreeView } from "../assets/Icons"; 

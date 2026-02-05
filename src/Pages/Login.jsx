@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../Context/AuthContext";
 import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
 import { loginSchema } from "../utils/validation";
