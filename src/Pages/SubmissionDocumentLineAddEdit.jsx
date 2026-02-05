@@ -138,7 +138,7 @@ export default function SubmissionDocumentLineAddEdit({
             onSubmit={handleSubmit}
             className="grid grid-cols-1 gap-4"
           >
-            <fieldset disabled={!isAllowedModify} className="grid grid-cols-1 gap-4">
+            <fieldset disabled={!isAllowedModify} className="grid grid-cols-1 gap-8">
               <AsyncSelectWrapper
                 name="itemRecId"
                 label="Item"
@@ -151,17 +151,19 @@ export default function SubmissionDocumentLineAddEdit({
                     labelKey: 'itemNumber'
                 }}
                 onSelectionChange={(selected) => {
-                    setUnit(selected?.original?.inventoryUnitSymbol || "UNKNOWN");
+                    setUnit(selected?.original?.inventoryUnitSymbol || "");
                 }}
                 error={errors.itemRecId}
                 touched={touched.itemRecId}
+                labelBgColor="bg-white dark:bg-whiteDark"
               />
               <CustomInput
                 name="unit"
                 label="Unit"
                 value={unit}
                 readOnly={true}
-                disabled={true}
+                disabled={ true }
+                labelBgColor="bg-white dark:bg-whiteDark"
               />
               <CustomInput
                 name="purchaceQuantity"
@@ -172,7 +174,9 @@ export default function SubmissionDocumentLineAddEdit({
                 onBlur={handleBlur}
                 error={errors.purchaceQuantity}
                 touched={touched.purchaceQuantity}
+                labelBgColor="bg-white dark:bg-whiteDark"
                 required
+                labelBgColor="bg-white dark:bg-whiteDark"
               />
               <AsyncSelectWrapper
                 name="departmentRecId"
@@ -184,7 +188,8 @@ export default function SubmissionDocumentLineAddEdit({
                     api: 'Department/GetLookup',
                     valueKey: 'operatingUnitNumber',
                     labelKey: 'name'
-                }}
+                } }
+                labelBgColor="bg-white dark:bg-whiteDark"
                 error={errors.departmentRecId}
                 touched={touched.departmentRecId}
               />
