@@ -41,7 +41,7 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
           response?.totalCount ??
           response?.total ??
           response?.totalRows ??
-          0;
+          (Array.isArray(updatedData) ? updatedData.length : 0);
         setTotalRow(total);
       } else {
         // Fallback to dummy data on 404

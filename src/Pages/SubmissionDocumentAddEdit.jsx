@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import DynamicForm from '../Components/DynamicForm';
 import HeaderPageAddEdit from '../Components/HeaderPageAddEdit';
 import useHandleSubmit from '../Hooks/useHandleSubmit';
 import useGetById from '../Hooks/useGetById';
 import useLayout from '../Hooks/useLayout';
 import Loading from '../Components/loader';
-import componentRegistry from '../ConfigData/componentRegistry';
 import { name } from 'dayjs/locale/ar';
 import { Form, Formik } from 'formik';
 import CustomInput from '../Components/Form/CustomInput';
@@ -234,6 +232,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                         <GenericGridPageLine
                             ApiGetAllLines={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
                             DataPage={DataPagesLine.SubmissionDocumentLine}
+                            ResourcePage={ResourcePage}
                             onCilckRow={(row) => {
                                 setShowmodalLine(true);
                                 setRecIdLine(row.id);

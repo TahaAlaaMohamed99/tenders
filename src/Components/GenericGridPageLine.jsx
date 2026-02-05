@@ -12,7 +12,7 @@ import Loading from './loader';
  * Connects configuration from DataPages to the TendersGrid component.
  * Handles:
  * - Data Fetching (useGridData)
- * - Pagination State
+ * - Pagination Stateg
  * - Navigation (Add / Edit)
  * - Loading States
  * 
@@ -42,7 +42,8 @@ const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onCilckRo
         setDataGrid([]);
         setPageNumber(1);
         setIsLoading(true);
-    }, [DataPage.Api]);
+        fetchGridData(1, pageSize);
+    }, [DataPage.Api, ApiGetAllLines]);
 
     useEffect(() => {
         fetchGridData(PageNumber, pageSize);
