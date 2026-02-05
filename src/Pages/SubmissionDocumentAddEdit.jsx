@@ -172,7 +172,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     onChange={handleChange("name")}
                                     onBlur={handleBlur("name")}
                                     name="name_Thender"
-                                    trargetId="name"
+                                    // trargetId="name"
                                     errors={errors.name}
                                     touched={touched.name}
                                     required
@@ -201,7 +201,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                         setFieldValue("transDate", date);
                                     }}
                                     value={values.transDate}
-                                    trargetId="transDate"
+                                    // trargetId="transDate"
                                 />
 
                                 <CustomDatePicker
@@ -211,7 +211,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     Required={true}
                                     onChange={(date) => setFieldValue("executionDate", date)}
                                     value={values.executionDate}
-                                    trargetId="executionDate"
+                                    // trargetId="executionDate"
                                 />
 
                                 <CustomTextarea
@@ -223,7 +223,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     onChange={handleChange("description")}
                                     onBlur={handleBlur("description")}
                                     name="description_Thender"
-                                    trargetId="description"
+                                    // trargetId="description"
                                 />
                             </Form>
                         )}

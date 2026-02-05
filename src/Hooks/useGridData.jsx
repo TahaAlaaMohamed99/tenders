@@ -45,13 +45,13 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
         setTotalRow(total);
       } else {
         // Fallback to dummy data on 404
-        setDataGrid(dummyData.data);
-        setTotalRow(dummyData.totalCount);
+        setDataGrid([]);
+        setTotalRow(0);
       }
     } catch (error) {
       // Fallback to dummy data on error (e.g., CORS)
-      setDataGrid(dummyData.data);
-      setTotalRow(dummyData.totalCount);
+      setDataGrid([]);
+      setTotalRow(0);
     } finally {
       setIsLoading(false);
     }
