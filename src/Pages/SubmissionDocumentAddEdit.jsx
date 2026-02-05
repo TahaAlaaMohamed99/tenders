@@ -245,7 +245,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
             </div>
             <SubmissionDocumentLineAddEdit
                 isVisible={showmodalLine}
-                onClose={() => {
+                toggleClick={() => {
                     setShowmodalLine(false);
                     setRecIdLine(0);
                 }}
