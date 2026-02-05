@@ -41,7 +41,8 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
                 if (Array.isArray(data)) {
                     const mapped = data.map(item => ({
                         value: item[lookup.valueKey || 'id'],
-                        label: item[lookup.labelKey || 'name']
+                        label: item[lookup.labelKey || 'name'],
+                        original: item
                     }));
                     setOptions(mapped);
                 } else {
@@ -83,6 +84,9 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
         // Pass the value string to the form, not the whole object
         const newValue = selected ? selected.value : '';
         onChange(newValue);
+        if (props.onSelectionChange) {
+            props.onSelectionChange(selected);
+        }
     };
 
     return (
