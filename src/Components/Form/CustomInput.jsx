@@ -57,6 +57,7 @@ const CustomInput = React.forwardRef(({
   lookup,
   validation,
   required,
+  isNumber, // Filter out isNumber
   ...props // Capture any other props
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);

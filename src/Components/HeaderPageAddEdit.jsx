@@ -44,6 +44,7 @@ import useTranslationText from "../Hooks/useTranslationText";
 import useFullRouteChain from "../Hooks/useFullRouteChain";
 import Config from "../utils/Config";
 import useHandleSubmit from "../Hooks/useHandleSubmit";
+import useHandleDelete from "../Hooks/useHandleDelete";
 import { isActionWorkflow } from "../utils/isActionWorkflow";
 import CustomTextarea from "./Form/CustomTextarea";
 import ConfettiExplosion from "react-confetti-explosion";
@@ -122,6 +123,7 @@ export default function HeaderPageAddEdit({
   );
   const ReduxResources = useMemo(() => resourcesFromRedux || {}, [resourcesFromRedux]);
   const { handleSubmitFormPost } = useHandleSubmit();
+  const { handleDelete } = useHandleDelete();
 
   // Initialize the useDispatch hook to dispatch Redux actions.
   const dispatch = useDispatch();
@@ -348,27 +350,15 @@ export default function HeaderPageAddEdit({
         );
       });
   };
-  const ConfirmDelete = () => {
-    Api.delete(`/${apiKey}/DeleteById?id=${id}`)
-      .then((res) => {
-        if (res.data.message == 200) {
-          toast.success(
-            <TranslationText
-              page={ResourcePage}
-              title="deletedOneSuccessfully"
-            />
-          );
-          goBackInChain();
-        } else {
-          openInNewTabErrorLog("/ErrorList", {
-            errors: res?.data?.messageText,
-            prevRoute: window.location.pathname,
-            ResourcePage: ResourcePage,
-            ErrorsKeys: matchedKeys,
-          });
-        }
-      })
-      .catch((err) => {});
+  const ConfirmDelete = async () => {
+    await handleDelete({
+      apiPage: apiKey,
+      recId: id,
+      resourcePage: ResourcePage,
+      onSuccess: () => {
+        goBackInChain();
+      },
+    });
     setShowModalDelete(false);
   };
   const handleTransactionAction = ({ action, setData }) => {
@@ -672,7 +662,7 @@ export default function HeaderPageAddEdit({
                 <p className="status_text text_ellipsis">
                   <TranslationText
                     titleGenerallist={true}
-                    page="WorkflowStatus?.values"
+                    enumName="WorkflowStatus"
                     title={statusName?.label}
                   />
                 </p>

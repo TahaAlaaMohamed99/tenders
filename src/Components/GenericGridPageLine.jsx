@@ -20,7 +20,7 @@ import Loading from './loader';
  * @param {Object} props.DataPage - The full configuration object for this page
  * @param {string} props.ResourcePage - The resource key for localization/API
  */
-const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onClickRow, refreshKey, ...props }) => {
+const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onClickRow, refreshKey, isReadOnly = false, ...props }) => {
 
     // Set Page Title
     useLayout(ResourcePage);
@@ -91,7 +91,7 @@ const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onClickRo
             handlePageChange={handlePageChange}
             handlePageSize={handlePageSize}
             onClickRow={handleNavigate}
-            AddBtn={{ onClick: handleAdd }}
+            AddBtn={!isReadOnly ? { onClick: handleAdd } : null}
             isSelected={true} // Enable checkboxes for all rows
             // Spread any other props (e.g. filters from DataPage)
             {...props}

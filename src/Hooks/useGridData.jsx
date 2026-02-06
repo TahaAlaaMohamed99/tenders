@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Api } from "../services/Api";
 import dummyData from "../ConfigData/dummyData.json";
 
@@ -10,7 +10,7 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
 
 
 
-  const fetchGridData = async (PageNumber, PageSize) => {
+  const fetchGridData = useCallback(async (PageNumber, PageSize) => {
     setIsLoading(true);
     try {
       const response = await Api.get(
@@ -55,7 +55,7 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [ApiGet, isGetAll, setDataGrid, setIsLoading]);
 
   return { totalRow, fetchGridData };
 };

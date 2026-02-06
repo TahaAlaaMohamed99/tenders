@@ -26,18 +26,11 @@
       "className": "Posted"
     }
   ],
-  "WorkflowStatus": [
-    {
-      "label": "pending",
-      "value": 0
-    },
-    {
-      "label": "approved",
-      "value": 1
-    },
-    {
-      "label": "rejected",
-      "value": 2
-    }
-  ]
+  "WorkflowStatus": {
+    "1": "New",
+    "2": "Submitted",
+    "3": "FullyApproved",
+    "4": "Rejected",
+    "999": "Posted"
+  }
 }

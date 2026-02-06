@@ -5,6 +5,7 @@ import useHandleSubmit from '../Hooks/useHandleSubmit';
 import useGetById from '../Hooks/useGetById';
 import useLayout from '../Hooks/useLayout';
 import Loading from '../Components/loader';
+import useHandleDelete from '../Hooks/useHandleDelete';
 import { name } from 'dayjs/locale/ar';
 import { Form, Formik } from 'formik';
 import CustomInput from '../Components/Form/CustomInput';
@@ -16,6 +17,8 @@ import useGetSelected from '../Hooks/useGetSelected';
 import GenericGridPageLine from '../Components/GenericGridPageLine';
 import { DataPagesLine } from '../ConfigData/DataPagesLine';
 import  SubmissionDocumentLineAddEdit  from './SubmissionDocumentLineAddEdit';
+import ConfirmationModal from '../Components/ConfirmationModal';
+import { IconTrash } from '../assets/Icons';
 
 /**
  * SubmissionDocumentAddEdit
@@ -46,6 +49,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
     const [showmodalLine, setShowmodalLine] = useState(false);
     const [recIdLine, setRecIdLine] = useState(0);
     const [refreshKey, setRefreshKey] = useState(0);
+    const [selectedLines, setSelectedLines] = useState([]);
+    const [showModalDeleteLine, setShowModalDeleteLine] = useState(false);
 
     const [data, setData] = useState({});
 
@@ -53,6 +58,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
     const formRef = React.useRef();
 
     const { handleSubmitFormik } = useHandleSubmit();
+    const { handleDeleteBatch } = useHandleDelete();
 
     const fetchData = useGetById(
         DataPage.Api,
@@ -96,10 +102,25 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
         });
     };
 
-    const handleDelete = () => {
-        console.warn("Generic Delete not fully implemented in SubmissionDocumentAddEdit yet");
-        // Implement confirm modal logic here if using Generic Delete
+
+
+    const handleDeleteLines = () => {
+        setShowModalDeleteLine(true);
     };
+
+    const confirmDeleteLines = async () => {
+        await handleDeleteBatch({
+            apiPage: DataPagesLine.SubmissionDocumentLine.Api,
+            ids: selectedLines.map(line => line.recId),
+            resourcePage: ResourcePage,
+            onSuccess: () => {
+                setRefreshKey(prev => prev + 1);
+                setSelectedLines([]);
+                setShowModalDeleteLine(false);
+            }
+        });
+    };
+
     const handleBack = () => {
         navigate(-1);
     };
@@ -112,6 +133,9 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
     if (isLoading) return <Loading />;
 
     const isEdit = id && id !== "0";
+    const status = data?.status || 1; // Default to 1 (New) if missing
+    const isReadOnly = isEdit && status !== 1;
+
     return (
         <>
             <div className='flex flex-col bg-bgColor dark:bg-bgColorDark'>
@@ -130,7 +154,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                     }}
                     isLoadingSubmit={isSubmitting}
                     showBookmark={false}
-                    viewOnly={false}
+                    viewOnly={isReadOnly}
+                    statusId={status}
                 />
                 <div className="px-4 py-6">
                     <Formik
@@ -164,6 +189,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                 onSubmit={handleSubmit}
                                 className='grid grid-cols-2 gap-x-6 gap-y-6'
                             >
+                                <fieldset disabled={isReadOnly} className="contents">
                                 <CustomInput
                                     label="name"
                                     type="text"
@@ -226,6 +252,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     name="description_Thender"
                                     // trargetId="description"
                                 />
+                                </fieldset>
                             </Form>
                         )}
                     </Formik>
@@ -239,6 +266,9 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                 setShowmodalLine(true);
                                 setRecIdLine(row.recId);
                             }}
+                            handleDelete={!isReadOnly ? handleDeleteLines : null}
+                            setselectesRowInsert={setSelectedLines}
+                            isReadOnly={isReadOnly}
                         />
                     </div>
 
@@ -257,6 +287,20 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                 fetchGridData={() => setRefreshKey(prev => prev + 1)}
                 title={(recIdLine > 0 ? "edit" : "add") + "SubmissionDocument"}
                 titleSubmitBtn="save"
+                isReadOnly={isReadOnly}
+            />
+            <ConfirmationModal
+                isVisible={showModalDeleteLine}
+                ResourcePage={ResourcePage}
+                type={"delete"}
+                title={"messageRemove"}
+                description="confirmRemove"
+                icon={<IconTrash />}
+                confirmButtonLabel="delete"
+                onConfirm={confirmDeleteLines}
+                onCancel={() => {
+                    setShowModalDeleteLine(false);
+                }}
             />
         </>
 

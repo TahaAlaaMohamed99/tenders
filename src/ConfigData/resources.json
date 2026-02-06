@@ -196,7 +196,12 @@
     "failedRejected": { "en": "Failed to reject", "ar": "فشل الرفض" },
     "deletedOneSuccessfully": { "en": "Deleted successfully", "ar": "تم الحذف بنجاح" },
     "calculateSuccess": { "en": "Calculated successfully", "ar": "تم الاحتساب بنجاح" },
-    "calculateError": { "en": "Calculation error", "ar": "خطأ في الاحتساب" }
+    "calculateError": { "en": "Calculation error", "ar": "خطأ في الاحتساب" },
+    "deleteLines": { "en": "Delete Lines", "ar": "حذف الأسطر" },
+    "areYouSureYouWantToDeleteSelectedLines": { "en": "Are you sure you want to delete selected lines?", "ar": "هل أنت متأكد أنك تريد حذف الأسطر المحددة؟" },
+    "messageRemove": { "en": "Delete Records", "ar": "حذف السجلات" },
+    "confirmRemove": { "en": "Are you sure you want to delete selected records?", "ar": "هل أنت متأكد أنك تريد حذف السجلات المحددة؟" },
+    "EntityNotFound": { "en": "Entity Not Found", "ar": "العنصر غير موجود" }
   },
     "NoYes": {
       "title": { "en": "Yes/No", "ar": "نعم/لا" },

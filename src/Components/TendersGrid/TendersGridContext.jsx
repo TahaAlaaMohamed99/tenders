@@ -120,9 +120,9 @@ export const TendersGridProvider = ({ children, ...props }) => {
     const schemaMismatch = newColumns.length > 0 && (hasNewColumnsNotInSaved || hasSavedColumnsNotInNew);
     const effectiveSavedColumns = schemaMismatch ? [] : savedColumns;
 
-    if (schemaMismatch && savedColumns.length > 0) {
-      console.log(`[TendersGrid] Schema mismatch detected for ${storageKey}, resetting cached columns`);
-    }
+    // if (schemaMismatch && savedColumns.length > 0) {
+    //   console.log(`[TendersGrid] Schema mismatch detected for ${storageKey}, resetting cached columns`);
+    // }
 
     const mergedColumns = mergeColumns(
       effectiveSavedColumns,

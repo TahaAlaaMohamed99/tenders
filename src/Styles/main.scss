@@ -318,6 +318,9 @@
 .Toastify__toast--warning {
   @apply bg-warning;
 }
+.Toastify__toast-container {
+  z-index: 999999 !important;
+}
 .Toastify__toast--info {
   @apply bg-titleColor dark:bg-bgColor text-titleColorDark dark:text-titleColor;
   .Toastify__toast-icon {
@@ -425,7 +428,7 @@
 /* Tooltip Overrides */
 .app-tooltip {
   /* Use standard CSS for compatibility and heavy overrides */
-  z-index: 9999 !important;
+  z-index: 99999 !important;
   padding: 0.5rem 0.75rem !important; /* px-3 py-2 */
   background-color: theme('colors.primary') !important;
   color: white !important;

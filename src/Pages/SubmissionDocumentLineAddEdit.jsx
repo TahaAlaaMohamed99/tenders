@@ -48,13 +48,14 @@ export default function SubmissionDocumentLineAddEdit({
   ResourcePage,
   ConfiMainPage,
   parentRecId,
+  isReadOnly = false,
 }) {
   const formikRef = useRef();
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [data, setData] = useState({});
   const [unit, setUnit] = useState("");
-  const isAllowedModify = Config.isAllow("Modify", ConfiMainPage);
+  const isAllowedModify = Config.isAllow("Modify", ConfiMainPage) && !isReadOnly;
   const { currentLanguage } = useSafeSelector((state) => state.themeSlice);
 
   const unknownUnitText = useTranslationText({
