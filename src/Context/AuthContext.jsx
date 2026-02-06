@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
     try {
       // Get API base URL from config
       const config = getLocalStorageAtob('Configuration') || {};
-      const baseUrl = config?.urlApi || import.meta.env.VITE_API_URL || 'https://8fw24r3v-5050.uks1.devtunnels.ms/api/';
+      const baseUrl = config?.urlApi || import.meta.env.VITE_API_URL;
       
       const response = await axios.post(`${baseUrl}Authentication/Login`, {
         userName,

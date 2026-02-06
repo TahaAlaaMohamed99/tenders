@@ -1,8 +1,4 @@
 {
-  "Gender": [
-    { "label": "male", "value": 1 },
-    { "label": "female", "value": 2 }
-  ],
   "NoYes": [
     { "label": "no", "value": 1 },
     { "label": "yes", "value": 2 }

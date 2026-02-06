@@ -5122,20 +5122,20 @@ export const LoginImage = ( { className } ) => {
         </filter>
         <linearGradient
           id="paint0_linear_0_1"
-          x1="-nan"
-          y1="-nan"
-          x2="-nan"
-          y2="-nan"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="0"
           gradientUnits="userSpaceOnUse"
         >
           <stop offset={ 1 } stopColor="#333446" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_0_1"
-          x1="-nan"
-          y1="-nan"
-          x2="-nan"
-          y2="-nan"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="0"
           gradientUnits="userSpaceOnUse"
         >
           <stop offset={ 1 } stopColor="#333446" />
@@ -5152,10 +5152,10 @@ export const LoginImage = ( { className } ) => {
         </linearGradient>
         <linearGradient
           id="paint3_linear_0_1"
-          x1="-nan"
-          y1="-nan"
-          x2="-nan"
-          y2="-nan"
+          x1="0"
+          y1="0"
+          x2="0"
+          y2="0"
           gradientUnits="userSpaceOnUse"
         >
           <stop offset={ 1 } stopColor="#333446" />

@@ -20,8 +20,17 @@ export default function useConfig() {
     const fetchConfig = async () => {
       try {
         const response = await axios.get(`/Ip_config.json?_=${Date.now()}`);
-        setConfig(response.data); // Update state with fetched config
-        setLocalStorageBtoa("Configuration", response.data); // Save to localStorage
+        let configData = response.data;
+        if (typeof configData === 'string') {
+          try {
+            configData = JSON.parse(configData);
+          } catch (error) {
+            console.error("Failed to parse configuration JSON:", error);
+          }
+        }
+        
+        setConfig(configData); // Update state with fetched config
+        setLocalStorageBtoa("Configuration", configData); // Save to localStorage
         
         // Update API service base URL with the loaded configuration
         updateApiBaseUrl();

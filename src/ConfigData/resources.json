@@ -179,14 +179,6 @@
     "loginFailed": { "en": "Login failed!", "ar": "فشل تسجيل الدخول!" },
     "genericError": { "en": "An unexpected error occurred. Please try again.", "ar": "حدث خطأ غير متوقع. حاول مرة اخرى." }
   },
- "Gender": {
-      "title": { "en": "Gender", "ar": "الجنس" },
-      "titleGrid": { "en": "Employee Gender", "ar": "جنس الموظف" },
-      "values": {
-        "male": { "en": "Male", "ar": "ذكر" },
-        "female": { "en": "Female", "ar": "أنثى" }
-      }
-    },
     "NoYes": {
       "title": { "en": "Yes/No", "ar": "نعم/لا" },
       "values": {
