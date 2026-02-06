@@ -81,6 +81,13 @@ export default function SubmissionDocumentLineAddEdit({
     }
   }, [recId, isVisible]);
 
+  useEffect(() => {
+    if (data?.itemRecId) {
+      setUnit(data?.inventoryUnitSymbol || unknownUnitText);
+    }
+  }, [data, unknownUnitText]);
+
+
   const handleSubmit = (values) => {
     setIsLoadingSubmit(true);
     const sendData = {
@@ -125,7 +132,7 @@ export default function SubmissionDocumentLineAddEdit({
       <Formik
         innerRef={formikRef}
         initialValues={{
-          parentRecId: data?.parentRecId || parentRecId || "",
+          parentRecId: data?.parentRecId || parentRecId || parentId,
           purchaseQuantity: data?.purchaseQuantity || "",
           itemRecId: data?.itemRecId || "",
           departmentRecId: data?.departmentRecId || "",

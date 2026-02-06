@@ -99,7 +99,9 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Login failed:', error);
       
-      // Handle different error scenarios
+      // -------------------------------------------------------------
+      // 1. ORIGINAL ERROR HANDLING (For Real Server Responses)
+      // -------------------------------------------------------------
       if (error.response) {
         const status = error.response.status;
         const data = error.response.data;
@@ -117,17 +119,47 @@ export const AuthProvider = ({ children }) => {
           errorMessage = data;
         }
         
+        // If it's a validation error (Forbidden/Bad Request), show the real error.
+        // We only want Mock Login if the server is BROKEN or DOWN.
         if (status === 401 || status === 400) {
           return { success: false, error: errorMessage };
         }
-        return { success: false, error: errorMessage };
+        
+        // For other status codes (like 404 or 500), we might want to fall through to Mock Mode
+        // if we are in this specific "Offline/Dev" scenario.
+        // If you want strictly real errors for everything except Network Error, uncomment the next line:
+        // return { success: false, error: errorMessage };
       }
-      
+
+      // -------------------------------------------------------------
+      // ORIGINAL NETWORK/GENERIC ERROR HANDLING (Uncomment for Production)
+      // -------------------------------------------------------------
       if (error.code === 'ERR_NETWORK') {
         return { success: false, error: 'Network error. Please check your connection.' };
       }
       
       return { success: false, error: 'An unexpected error occurred' };
+
+      // -------------------------------------------------------------
+      // 2. MOCK LOGIN FALLBACK (For Offline/Dev Mode/Network Error)
+      // -------------------------------------------------------------
+      // console.warn("Backend unavailable (Network Error or Server Error). Enabling MOCK LOGIN mode.");
+      
+      // const mockUser = {
+      //   name: "Mock Admin",
+      //   sub: "mock_user",
+      //   permissions: Array.from({length: 100}, (_, i) => i + 1) 
+      // };
+      
+      // const mockToken = "mock_jwt_token_" + Date.now();
+      // const mockExpiration = new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString();
+
+      // setAuthStorage(mockToken, mockUser, mockExpiration);
+      // setToken(mockToken);
+      // setUser(mockUser);
+      // setIsAuthenticated(true);
+
+      // return { success: true };
     }
   }, []);
 

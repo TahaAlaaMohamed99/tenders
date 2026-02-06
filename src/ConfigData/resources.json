@@ -398,7 +398,10 @@
       "purchaseQuantity": { "en": "Purchase Quantity", "ar": "كمية الشراء" },
       "department": { "en": "Department", "ar": "القسم" },
       "unknownUnit": { "en": "UNKNOWN UNIT", "ar": "وحدة غير معروفة" },
-      "editFailed": { "en": "Failed to update document", "ar": "فشل في تحديث الوثيقة" }
+      "editFailed": { "en": "Failed to update document", "ar": "فشل في تحديث الوثيقة" },
+      "itemNumber": { "en": "Item Number", "ar": "رقم الصنف" },
+      "itemName": { "en": "Item Name", "ar": "اسم الصنف" },
+      "departmentName": { "en": "Department Name", "ar": "اسم القسم" }
     },
   "Sidebar": {
       "Dashboard": {

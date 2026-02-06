@@ -132,7 +132,7 @@ export default function PopupModalSlide({
             {!hideSubmit && (
               <CustomBtn
                 title={titleSubmitBtn}
-                className={`btn-primary ${isSelector ? "w-[250px]" : ""}`}
+                className={`btn-primary btn-force-white ${isSelector ? "w-[250px]" : ""}`}
                 type="button"
                 isLoading={isLoadingSubmit}
                 ResourcePage={

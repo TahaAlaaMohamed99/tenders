@@ -20,7 +20,8 @@ import Loading from './loader';
  * @param {Object} props.DataPage - The full configuration object for this page
  * @param {string} props.ResourcePage - The resource key for localization/API
  */
-const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onCilckRow, ...props }) => {
+const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onClickRow, refreshKey, ...props }) => {
+
     // Set Page Title
     useLayout(ResourcePage);
 
@@ -47,7 +48,7 @@ const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onCilckRo
 
     useEffect(() => {
         fetchGridData(PageNumber, pageSize);
-    }, [PageNumber, pageSize, DataPage.Api]);
+    }, [PageNumber, pageSize, DataPage.Api, refreshKey]);
 
     // -- Handlers --
     const handlePageChange = useCallback((newPage) => {
@@ -60,12 +61,12 @@ const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onCilckRo
     }, []);
 
     const handleNavigate = useCallback((row) => {
-        onCilckRow && onCilckRow(row);
+        onClickRow && onClickRow(row);
 
     }, []);
 
     const handleAdd = useCallback(() => {
-        onCilckRow && onCilckRow(null);
+        onClickRow && onClickRow(null);
     }, []);
 
     // -- Render --
@@ -89,7 +90,7 @@ const GenericGridPageLine = ({ DataPage, ApiGetAllLines, ResourcePage, onCilckRo
             // Actions
             handlePageChange={handlePageChange}
             handlePageSize={handlePageSize}
-            onCilckRow={handleNavigate}
+            onClickRow={handleNavigate}
             AddBtn={{ onClick: handleAdd }}
             isSelected={true} // Enable checkboxes for all rows
             // Spread any other props (e.g. filters from DataPage)

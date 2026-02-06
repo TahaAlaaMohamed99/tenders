@@ -45,6 +45,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
     const [biddingTypeList, setBiddingTypeList] = useState([]);
     const [showmodalLine, setShowmodalLine] = useState(false);
     const [recIdLine, setRecIdLine] = useState(0);
+    const [refreshKey, setRefreshKey] = useState(0);
 
     const [data, setData] = useState({});
 
@@ -233,9 +234,10 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                             ApiGetAllLines={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
                             DataPage={DataPagesLine.SubmissionDocumentLine}
                             ResourcePage={ResourcePage}
-                            onCilckRow={(row) => {
+                            refreshKey={refreshKey}
+                            onClickRow={(row) => {
                                 setShowmodalLine(true);
-                                setRecIdLine(row.id);
+                                setRecIdLine(row.recId);
                             }}
                         />
                     </div>
@@ -252,6 +254,9 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                 recId={recIdLine}
                 ResourcePage={ResourcePage}
                 ApiPage={DataPagesLine.SubmissionDocumentLine.Api}
+                fetchGridData={() => setRefreshKey(prev => prev + 1)}
+                title={(recIdLine > 0 ? "edit" : "add") + "SubmissionDocument"}
+                titleSubmitBtn="save"
             />
         </>
 
