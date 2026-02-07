@@ -116,5 +116,83 @@ export default function useHandleSubmit() {
     }
   };
 
-  return { handleSubmitFormik };
+  const handleSubmitFormPost = async (
+    ApiPage,
+    key,
+    id,
+    ResourcePage,
+    setIsLoadingSubmit,
+    data,
+    ErrorsKeys,
+    setData,
+    fetchGridData
+  ) => {
+    const matchedKeys = {};
+
+    Object.entries(data).forEach(([dataKey, value]) => {
+      Object.keys(ErrorsKeys).forEach((k) => {
+        if (ErrorsKeys[k] === dataKey) {
+          matchedKeys[k] = value;
+        }
+      });
+    });
+    if (setIsLoadingSubmit) {
+      setIsLoadingSubmit(true);
+    }
+
+    try {
+      const res = await Api.post(`${ApiPage}/${key}?RecId=${id}`);
+      if (setData && (key === "Post" || key === "UnPost")) {
+        setData({ ...data, status: res?.data });
+
+      } else if (setData) {
+        setData(data);
+      }
+
+      if (fetchGridData) {
+        fetchGridData();
+      }
+
+      const successKeys = {
+        Post: "postSuccessfully",
+        ValidatePost: "validatePostSuccessfully",
+        UnPost: "unPostSuccessfully",
+        ValidateUnPost: "validateUnPostSuccessfully",
+      };
+
+      if (successKeys[key]) {
+        toast.success(
+          <TranslationText page={ResourcePage} title={successKeys[key]} />
+        );
+      }
+    } catch (error) {
+      const errorKeys = {
+        Post: "postFailed",
+        ValidatePost: "validatePostFailed",
+        UnPost: "unPostFailed",
+        ValidateUnPost: "validateUnPostFailed",
+      };
+
+      if (errorKeys[key]) {
+        toast.error(
+          <TranslationText page={ResourcePage} title={errorKeys[key]} />
+        );
+      }
+
+      if (error?.details?.errorMessage) {
+        openInNewTab("/ErrorList", {
+          errors: error.details.errorMessage,
+          prevRoute: window.location.pathname,
+          ResourcePage,
+          ErrorsKeys: matchedKeys,
+        });
+      }
+    } finally {
+      if (setIsLoadingSubmit) {
+        setIsLoadingSubmit(false);
+      }
+    }
+  };
+
+  return { handleSubmitFormik, handleSubmitFormPost };
 }

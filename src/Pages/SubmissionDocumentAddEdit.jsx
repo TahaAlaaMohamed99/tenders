@@ -143,6 +143,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                     option={isEdit ? "edit" : "add"}
                     id={id}
                     apiKey={DataPage.Api}
+                    confiPage={DataPage}
                     ResourcePage={ResourcePage}
                     titleAdd={DataPage?.titleAdd || "add"}
                     titleEdit={DataPage?.titleEdit || "edit"}
@@ -153,7 +154,10 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                         }
                     }}
                     isLoadingSubmit={isSubmitting}
-                    showBookmark={false}
+                    fetchData={fetchData}
+                    setData={ setData }
+                    data={data}
+                    showBookmark={ false }
                     viewOnly={isReadOnly}
                     statusId={status}
                 />

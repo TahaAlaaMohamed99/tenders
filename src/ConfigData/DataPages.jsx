@@ -42,7 +42,11 @@ export const DataPages = {
         ...SubmissionDocumentsGrid,
         formSchema: SubmissionDocumentsForm,
         titleAdd: "addSubmissionDocument",
-        titleEdit: "editSubmissionDocument"
+        formSchema: SubmissionDocumentsForm,
+        titleAdd: "addSubmissionDocument",
+        titleEdit: "editSubmissionDocument",
+        subModule: "Transaction",
+        keyPage: "SubmissionDocuments"
     },
     Reports: {
         Api: "Reports",

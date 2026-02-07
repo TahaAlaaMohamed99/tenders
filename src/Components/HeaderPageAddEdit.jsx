@@ -373,7 +373,7 @@ export default function HeaderPageAddEdit({
       data,
       (ErrorsKeys = matchedKeys),
       setData ? setData : null,
-      action == "Post" ? fetchData : null
+      action == "Post" || action == "UnPost" ? fetchData : null
     );
   };
   const handleOpenSheet = (item) => {
@@ -496,31 +496,31 @@ export default function HeaderPageAddEdit({
       icon: <IconUnPost className="w-full h-full" />,
     });
   }
-  if (id > 0 && statusId != "999" && statusId > 0) {
-    renderActionsList.push({
-      tooltip: "validatePost",
-      onClick: () =>
-        !isLoadingValidate &&
-        !isEdited &&
-        handleTransactionAction({ action: "ValidatePost" }),
-      className: "",
-      disabled: isEdited,
-      isLoading: isLoadingValidate,
-      icon: <IconValidatePost className="w-full h-full" />,
-    });
-  }
-  if (id > 0 && statusId == "999" && statusId > 0) {
-    renderActionsList.push({
-      tooltip: "validateUnPost",
-      onClick: () =>
-        !isLoadingValidate &&
-        handleTransactionAction({ action: "ValidateUnPost" }),
-      className: "btn-secondary",
-      disabled: isEdited,
-      isLoading: isLoadingValidate,
-      icon: <IconValidateUnpost className="w-full h-full" />,
-    });
-  }
+  // if (id > 0 && statusId != "999" && statusId > 0) {
+  //   renderActionsList.push({
+  //     tooltip: "validatePost",
+  //     onClick: () =>
+  //       !isLoadingValidate &&
+  //       !isEdited &&
+  //       handleTransactionAction({ action: "ValidatePost" }),
+  //     className: "",
+  //     disabled: isEdited,
+  //     isLoading: isLoadingValidate,
+  //     icon: <IconValidatePost className="w-full h-full" />,
+  //   });
+  // }
+  // if (id > 0 && statusId == "999" && statusId > 0) {
+  //   renderActionsList.push({
+  //     tooltip: "validateUnPost",
+  //     onClick: () =>
+  //       !isLoadingValidate &&
+  //       handleTransactionAction({ action: "ValidateUnPost" }),
+  //     className: "btn-secondary",
+  //     disabled: isEdited,
+  //     isLoading: isLoadingValidate,
+  //     icon: <IconValidateUnpost className="w-full h-full" />,
+  //   });
+  // }
   if (option === "edit" && id > 0 && showBookmark) {
     renderActionsList.push({
       tooltip: isBookmarkedEdit ? "removeBookmark" : "addBookmark",

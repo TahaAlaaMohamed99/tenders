@@ -43,6 +43,6 @@
     { "label": "yearly", "value": 3 }
   ],
   "TransactionName": [
-    { "label": "submissionDocument", "value": 1 }
+    { "label": "SubmissionDocuments", "value": 1 }
   ]
 }
