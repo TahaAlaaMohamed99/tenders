@@ -5,6 +5,7 @@ import { VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
 import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
 import SubmissionDocumentAddEdit from "../Pages/SubmissionDocumentAddEdit";
+import DashboardPage from "../Pages/DashboardPage";
 
 // Default/Fallback Schemas for pages that don't have specific ones yet
 const DefaultGrid = { columns: [{ key: "id", title: "ID", width: 100 }] };
@@ -13,7 +14,7 @@ const DefaultForm = { sections: [{ title: "Info", fields: [] }] };
 export const DataPages = {
     Dashboard: {
         Api: "dashboard",
-        componentViwe: GenericGridPage,
+        componentViwe: DashboardPage,
         componentAddEdit: GenericAddEditPage,
         keyId: "id",
         isSelected: false,
