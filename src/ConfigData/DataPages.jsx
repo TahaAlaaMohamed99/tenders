@@ -42,8 +42,6 @@ export const DataPages = {
         ...SubmissionDocumentsGrid,
         formSchema: SubmissionDocumentsForm,
         titleAdd: "addSubmissionDocument",
-        formSchema: SubmissionDocumentsForm,
-        titleAdd: "addSubmissionDocument",
         titleEdit: "editSubmissionDocument",
         subModule: "Transaction",
         keyPage: "SubmissionDocuments"
