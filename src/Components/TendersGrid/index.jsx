@@ -36,10 +36,6 @@ const ActionButton = memo(({
     type="button"
     onClick={onClick}
     disabled={disabled}
-    data-tooltip-content={tooltip}
-    data-resource-page="Grid"
-    data-tooltip-id="global-tooltip"
-    data-tooltip-place="bottom"
   >
     <div className="relative">
       {icon}

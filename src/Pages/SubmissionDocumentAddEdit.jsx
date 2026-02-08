@@ -207,6 +207,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     errors={errors.name}
                                     touched={touched.name}
                                     required
+                                    disabled={isReadOnly}
                                 />
                                 <CustomeSelect
                                     label="biddingType"
@@ -222,6 +223,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     errors={errors.biddingType}
                                     touched={touched.biddingType}
                                     onBlur={handleBlur("biddingType")}
+                                    disabled={isReadOnly}
                                 />
                                 <CustomDatePicker
                                     label="transDate"
@@ -233,6 +235,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     }}
                                     value={values.transDate}
                                     // trargetId="transDate"
+                                    disabled={isReadOnly}
                                 />
 
                                 <CustomDatePicker
@@ -243,6 +246,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     onChange={(date) => setFieldValue("executionDate", date)}
                                     value={values.executionDate}
                                     // trargetId="executionDate"
+                                    disabled={isReadOnly}
                                 />
 
                                 <CustomTextarea
@@ -255,6 +259,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                                     onBlur={handleBlur("description")}
                                     name="description_Thender"
                                     // trargetId="description"
+                                    disabled={isReadOnly}
                                 />
                                 </fieldset>
                             </Form>

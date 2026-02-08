@@ -43,7 +43,7 @@
   @apply p-4 overflow-auto;
 }
 .popupModalSlide .modal_footer {
-  @apply p-4 bg-white dark:bg-bgWhiteDark justify-between min-h-14 z-30 absolute w-full bottom-0 items-center grid grid-cols-2 gap-2;
+  @apply p-4 bg-white dark:bg-bgWhiteDark justify-between min-h-14 z-30 absolute w-full bottom-0 items-center flex;
 }
 
 .modal_md {

@@ -79,9 +79,9 @@
   @apply bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800;
 }
 
-/* Posted - Primary/Purple */
+/* Posted - Primary */
 .state_rec.Posted {
-  @apply bg-purple-50 text-purple-700 border border-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-800;
+  @apply bg-primary text-bgColor border-primary dark:bg-primaryDark dark:text-bgColorDark dark:border-primaryDark;
 }
 
 /* =========================================
@@ -107,8 +107,12 @@
   @apply text-primary dark:text-primaryDark;
 }
 
-.btn_Header_End.delete_icon {
-  @apply text-error dark:text-errorDark hover:bg-error hover:bg-opacity-10;
+.btn_Header_End.delete_icon,
+.btn_text_icon.delete_icon {
+  @apply text-primary dark:text-primaryDark hover:bg-error hover:text-white dark:hover:bg-errorDark dark:hover:text-white;
+  &:hover svg {
+    @apply text-white dark:text-white;
+  }
 }
 
 /* =========================================

@@ -128,7 +128,7 @@
   @apply dark:bg-titleColor bg-titleColorDark;
 }
 .custom-date-picker.react-datetime-picker--disabled {
-  @apply bg-white dark:bg-bgWhiteDark;
+  @apply bg-disabled dark:bg-bgColorDark opacity-60 cursor-not-allowed;
 }
 .custom-date-picker.react-datetime-picker--disabled:hover {
   @apply shadow-none border-borderColor dark:border-borderColorDark;

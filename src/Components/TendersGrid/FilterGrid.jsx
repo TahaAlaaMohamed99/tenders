@@ -175,7 +175,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
                       isMulti={column.lookupName ? true : false}
                       titleGenerallist={column.generallist ? true : false}
                       value={values?.[column.key] || (column.lookupName ? [] : null)}
-                      ResourcePage={column?.ResourcePage || column?.generallist || ResourcePage}
+                      ResourcePage={column?.ResourcePage || ResourcePage}
                       options={
                         dropdownLists[
                         column.generallist || column.lookupName

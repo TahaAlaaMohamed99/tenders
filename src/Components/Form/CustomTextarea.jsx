@@ -69,7 +69,7 @@ const CustomTextarea = React.forwardRef(({
           <label 
             htmlFor={`arkaan_${name}`}
             className={`
-              input-label-floating
+              input-label-floating z-10
               ${labelBgColor}
               ${isFocused 
                 ? "text-primary dark:text-primaryDark" 

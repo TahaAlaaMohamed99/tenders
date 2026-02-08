@@ -175,6 +175,7 @@ export default function SubmissionDocumentLineAddEdit({
                 touched={touched.itemRecId}
                 labelBgColor="bg-white dark:bg-whiteDark"
                 ResourcePage={ResourcePage}
+                disabled={!isAllowedModify}
               />
               <CustomInput
                 name="unit"
@@ -197,6 +198,7 @@ export default function SubmissionDocumentLineAddEdit({
                 labelBgColor="bg-white dark:bg-whiteDark"
                 required
                 ResourcePage={ResourcePage}
+                disabled={!isAllowedModify}
               />
               <AsyncSelectWrapper
                 name="departmentRecId"
@@ -213,6 +215,7 @@ export default function SubmissionDocumentLineAddEdit({
                 errors={errors.departmentRecId}
                 touched={touched.departmentRecId}
                 ResourcePage={ResourcePage}
+                disabled={!isAllowedModify}
               />
             </fieldset>
           </Form>

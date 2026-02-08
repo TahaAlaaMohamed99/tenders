@@ -232,10 +232,7 @@ const ExcelExportButton = ({
         className={showText ? "btn_text_icon" : (deviceType !== "mobile" ? " btn_icon_action" : "btn_action")}
 
         onClick={exportToExcel}
-        data-tooltip-content="exportToExcel"
-        data-resource-page="Grid"
-        data-tooltip-id="global-tooltip"
-        data-tooltip-place="bottom"
+
 
       >
         <IconXsl />

@@ -148,9 +148,7 @@
 
   .row_Grid {
     @apply flex bg-bgWhite dark:bg-bgWhiteDark mb-1 transition-colors;
-    &:hover {
-      @apply bg-bgColor/30 dark:bg-bgColorDark/30;
-    }
+
     .link_Icon {
       @apply flex gap-1.5 font-medium items-center text-titleColor dark:text-titleColorDark;
       .icon {

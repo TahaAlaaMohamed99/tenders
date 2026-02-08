@@ -94,11 +94,8 @@ const CustomizeColumn = ({ showText }) => {
       {/* Settings button to open the column customization modal */}
       <button
         className={showText ? "btn_text_icon" : "btn_icon_action"}
-        data-tooltip-content="customizeColumns"
-        data-resource-page="Grid"
-        data-tooltip-id="global-tooltip"
-        data-tooltip-place="bottom"
         type="button"
+
         onClick={() => setIsOpen(!isOpen)}
       >
         <IconColumnSettings bgCircle="bg-white dark:bg-bgWhiteDark" />
@@ -190,9 +187,7 @@ const SortableItem = ({ column, handleVisibilityChange, ResourcePage }) => {
         <p className="text-sm text-titleColor dark:text-titleColorDark">
           <TranslationText
             page={
-              column.generallist
-                ? column.generallist
-                : column.ResourcePage || ResourcePage
+              column.ResourcePage || ResourcePage
             }
             titleGenerallist={column.generallist ? true : false}
             title={column.generallist ? column.title : column.title}

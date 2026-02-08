@@ -137,9 +137,7 @@
   @apply flex bg-bgWhite dark:bg-bgWhiteDark mb-1 transition-colors;
   /* ===== Open New Tab Icon ===== */
 }
-.Tender_Grid .row_Grid:hover {
-  @apply bg-bgColor/30 dark:bg-bgColorDark/30;
-}
+
 .Tender_Grid .row_Grid .link_Icon {
   @apply flex gap-1.5 font-medium items-center text-titleColor dark:text-titleColorDark;
 }

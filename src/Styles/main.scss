@@ -230,10 +230,15 @@
      @apply flex items-center justify-center gap-2 px-4 h-[38px] rounded-full text-sm font-medium 
      text-titleColor dark:text-titleColorDark 
      bg-bgWhite dark:bg-bgWhiteDark 
-     hover:bg-bgColor dark:hover:bg-bgColorDark 
+     bg-bgWhite dark:bg-bgWhiteDark 
+     hover:bg-primary dark:hover:bg-primaryDark
+     hover:text-bgColor dark:hover:text-bgColorDark
      transition-all duration-200;
      svg {
        @apply w-4 h-4 flex-shrink-0;
+     }
+     &:hover svg {
+       @apply text-bgColor dark:text-bgColorDark;
      }
   }
 }
@@ -310,10 +315,10 @@
   @apply text-titleColorDark min-h-14 font-medium rounded-xl  flex items-center;
 }
 .Toastify__toast--error {
-  @apply bg-errorDark;
+  @apply bg-bgWhite dark:bg-bgWhiteDark text-error dark:text-errorDark;
 }
 .Toastify__toast--success {
-  @apply bg-bgColor text-primary;
+  @apply bg-bgWhite dark:bg-bgWhiteDark text-primary dark:text-primaryDark;
 }
 .Toastify__toast--warning {
   @apply bg-warning;

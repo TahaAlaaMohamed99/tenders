@@ -21,7 +21,7 @@ const CustomStyles = (errors, touched, isFocused, isSmall = false, isNoBorder = 
   const colors = getColors();
   
   return {
-    control: (provided) => ({
+    control: (provided, state) => ({
       ...provided,
       border: isNoBorder
         ? "none"
@@ -38,15 +38,18 @@ const CustomStyles = (errors, touched, isFocused, isSmall = false, isNoBorder = 
       margin: 0,
       height: isSmall ? "2rem" : "2.8125rem",
       minHeight: isSmall ? "2rem" : "2.8125rem",
-      backgroundColor: colors.bgWhite,
+      backgroundColor: state.isDisabled ? colors.disabled : colors.bgWhite,
       borderRadius: isSmall ? "0.375rem" : "0.75rem",
+      opacity: state.isDisabled ? 0.6 : 1,
+      cursor: state.isDisabled ? "not-allowed" : "default",
     }),
-    placeholder: (provided) => ({
+    placeholder: (provided, state) => ({
       ...provided,
       color: colors.textColor,
       fontSize: "0.875rem",
       fontWeight: "300",
       margin: "0",
+      opacity: state.isDisabled ? 0.5 : 1,
     }),
     option: (provided, state) => ({
       ...provided,
@@ -109,11 +112,12 @@ const CustomStyles = (errors, touched, isFocused, isSmall = false, isNoBorder = 
       ...provided,
       padding: "0.25rem",
     }),
-    singleValue: (provided) => ({
+    singleValue: (provided, state) => ({
       ...provided,
       color: colors.titleColor,
       fontWeight: "500",
       fontSize: "0.875rem",
+      opacity: state.isDisabled ? 0.5 : 1,
     }),
     multiValue: (provided) => ({
       ...provided,

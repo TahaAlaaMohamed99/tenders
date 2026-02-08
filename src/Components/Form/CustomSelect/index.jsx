@@ -61,7 +61,7 @@ const CustomDropdownIndicator = (props) => {
 const CustomeSelect = React.forwardRef(({
   isMulti,
   options,
-  isDisabled = false,
+  disabled = false,
   placeholder,
   onChange,
   value,
@@ -125,7 +125,7 @@ const CustomeSelect = React.forwardRef(({
               ${
                 isFocused
                   ? "text-primary dark:text-primaryDark"
-                  : isDisabled
+                  : disabled
                     ? "text-textColor dark:text-textColorDark opacity-60"
                     : "text-titleColor dark:text-titleColorDark"
               }
@@ -165,7 +165,7 @@ const CustomeSelect = React.forwardRef(({
               onChange(e); // Pass the selected value to the onChange callback
               setIsFocused(false); // Reset the focus state after change
             }}
-            isDisabled={isDisabled}
+            isDisabled={disabled}
             className={routeAddLookup != null ? "flex-1" : "w-full"}
             value={value} // Set the selected value
             onBlur={handleBlur} // Handle blur event
