@@ -173,6 +173,8 @@ const CustomeSelect = React.forwardRef(({
             inputId={`arkaan_${label}`} // Unique id for the input field
             menuPlacement={menuPlacement} // Position the dropdown menu
             menuPortalTarget={document.body} // Render menu in portal to avoid overflow issues
+            loadingMessage={() => <TranslationText title="loading" page="General" />}
+            noOptionsMessage={() => <TranslationText title="noResults" page="General" />}
           />
 
           {routeAddLookup != null && (
