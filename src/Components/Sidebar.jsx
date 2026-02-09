@@ -58,6 +58,7 @@ const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }
       ref={menuRef}
       style={style}
       className="bg-white border border-borderColor shadow-2xl rounded-2xl p-2 w-56 animate-in fade-in zoom-in-95 duration-200"
+      onMouseLeave={onClose}
     >
       <ul className="space-y-1">
         {/* Direct Items */}
@@ -133,7 +134,8 @@ const SidebarItem = memo(({
     toggleModule, 
     handleNavigation, 
     isActiveRoute, 
-    handleCollapsedClick,
+    // handleCollapsedClick,
+    handleCollapsedHover,
     activeFloatingMenu 
 }) => {
   
@@ -208,9 +210,21 @@ const SidebarItem = memo(({
         <div>
           <div
             className="relative"
-            onClick={(e) =>
-              isCollapsed ? handleCollapsedClick(e, module) : toggleModule(module)
-            }
+            // onClick={(e) =>
+            //   isCollapsed ? handleCollapsedClick(e, module) : toggleModule(module)
+            // }
+            onClick={(e) => {
+              if (!isCollapsed) {
+                toggleModule(module);
+              }
+              // In collapsed mode, click does nothing special - hover shows the menu
+            }}
+            onMouseEnter={(e) => {
+              if (isCollapsed && module.subMenu) {
+                const rect = e.currentTarget.getBoundingClientRect();
+                handleCollapsedHover(module, rect);
+              }
+            }}
           >
             <CustomBtn
               type="button"
@@ -641,7 +655,16 @@ export default function Sidebar() {
   //   }
   };
 
-  // --- Handlers for Hover/Click in Collapsed Mode ---
+  // --- Handlers for Hover in Collapsed Mode ---
+  const handleCollapsedHover = (module, rect) => {
+    if (!isCollapsed) return;
+    setActiveFloatingMenu({ module, rect });
+  };
+
+  const handleCollapsedLeave = () => {
+    if (!isCollapsed) return;
+    setActiveFloatingMenu(null);
+  };
 
   const handleCollapsedClick = (e, module) => {
     if (!isCollapsed) return;
@@ -741,6 +764,7 @@ export default function Sidebar() {
                     handleNavigation={handleNavigation}
                     isActiveRoute={isActiveRoute}
                     handleCollapsedClick={handleCollapsedClick}
+                    handleCollapsedHover={handleCollapsedHover}
                     activeFloatingMenu={activeFloatingMenu}
                   />
                 ))}
@@ -767,6 +791,7 @@ export default function Sidebar() {
                       handleNavigation={handleNavigation}
                       isActiveRoute={isActiveRoute}
                       handleCollapsedClick={handleCollapsedClick}
+                      handleCollapsedHover={handleCollapsedHover}
                       activeFloatingMenu={activeFloatingMenu}
                     />
                   ))}
