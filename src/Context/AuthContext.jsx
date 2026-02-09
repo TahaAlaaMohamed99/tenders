@@ -6,7 +6,7 @@ import {
   clearAuthStorage,
   parseJwtToken,
   getLocalStorageAtob
-} from "../utils/useFromLocalStorage";
+} from "../utils/localStorage";
 
 const AuthContext = createContext(null);
 

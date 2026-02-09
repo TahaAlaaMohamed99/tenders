@@ -81,6 +81,23 @@ const signalRService = {
   send: (method, data) => {
     console.log("[signalRService] Stub: send called", { method, data });
   },
+
+  /**
+   * Send notification to a user (Phase 2 fix)
+   * Called by useWorkflowActions during approval cycle.
+   * @see docs/06-unused-and-gaps.md#52-signalrservicejsx
+   * @param {number} userRecId
+   * @param {number} transactionRecId
+   * @param {string} transactionName
+   * @param {string} code
+   * @param {number} type
+   */
+  sendNotification: (userRecId, transactionRecId, transactionName, code, type) => {
+    // TODO: Replace with actual SignalR hub invocation when implemented
+    console.log("[signalRService] Stub: sendNotification called", {
+      userRecId, transactionRecId, transactionName, code, type,
+    });
+  },
 };
 
 export default signalRService;

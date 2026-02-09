@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/ar";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { getLocalStorageAtob } from "./useFromLocalStorage";
+import { getLocalStorageAtob } from "./localStorage";
 
 // Enable required plugins
 dayjs.extend(utc);

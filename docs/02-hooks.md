@@ -1,8 +1,11 @@
 # Hooks Analysis
 
+> **Last Updated**: 2026-02-08  
+> **Related Docs**: [Architecture](./00-architecture-overview.md) | [Components](./01-components.md) | [SOLID Audit](./05-solid-clean-architecture.md) | [Unused Code](./06-unused-and-gaps.md)
+
 ## Overview
 
-This document analyzes all 17 custom hooks in the codebase. Each hook is evaluated for:
+This document analyzes all **16 custom hooks** + **1 safe utility** in the codebase. Each hook is evaluated for:
 - Purpose and responsibilities
 - Internal vs derived state
 - External dependencies
@@ -10,31 +13,61 @@ This document analyzes all 17 custom hooks in the codebase. Each hook is evaluat
 - Violations (business logic leakage, UI coupling)
 - Recommendation
 
+### Quick Summary
+
+| Hook | Lines | Status | Category | Key Consumers |
+|------|-------|--------|----------|---------------|
+| [useConfig](#1-useconfig) | 46 | ✅ | Initialization | `App.jsx` |
+| [useCurrencyOptions](#2-usecurrencyoptions) | 32 | ❌ Dead | API fetch | None |
+| [useDeviceType](#3-usedevicetype) | 45 | ✅ | Responsive | Header, Pagination |
+| [useFullRouteChain](#4-usefullroutechain) | 38 | ✅ Fixed | Navigation | HeaderPageAddEdit |
+| [useGetById](#5-usegetbyid) | 44 | ✅ | API fetch | GenericAddEditPage |
+| [useGetGenerallist](#6-usegetgenerallist) | 82 | ⚠️ DIP | Data lookup | DynamicForm, FilterGrid |
+| [useGetLookup](#7-usegetlookup) | 61 | ✅ Fixed | API fetch | FilterGrid, ColumnFilterPopover |
+| [useGetSelected](#8-usegetselected) | 31 | ✅ | Pure computation | (Vendor pages) |
+| [useGridData](#9-usegriddata) | 64 | ⚠️ | API fetch | GenericGridPage |
+| [useHandleDelete](#10-usehandledelete) | 68 | ✅ | API action | GenericGridPage |
+| [useHandleSubmit](#11-usehandlesubmit) | 198 | ✅ Fixed | API action | GenericAddEditPage, HeaderPageAddEdit |
+| [useLayout](#12-uselayout) | 17 | ✅ | Redux | Generic pages |
+| [useProcessMenu](#13-useprocessmenu) | 151 | ⚠️ | Computation | Sidebar |
+| [useRouteMemory](#14-useroutememory) | 110 | ✅ | Navigation | (Vendor pages) |
+| [useSafeSelector](#15-usesafeselector) | 15 | ✅ | Redux | Form components |
+| [useTheme](#16-usetheme) | 53 | ✅ | Initialization | `App.jsx` |
+| [useTranslationText](#17-usetranslationtext) | 46 | ✅ | i18n | Throughout app |
+
+**Runtime Bugs**: 3 fixed (2026-02-08), 0 remaining in hooks  
+**Dead Hooks**: 1 (`useCurrencyOptions`) — **commented out (Phase 6)**  
+**DIP Violations**: ~~1 (`useGetGenerallist`)~~ — **FIXED (Phase 2)**: replaced `store.getState()` with `useSelector`  
+**New Hooks (Phase 1)**: `useWorkflowActions.js`, `useTransactionActions.js` (extracted from HeaderPageAddEdit)
+
 ---
 
 ## 1. useConfig
 
-**Location**: `src/Hooks/useConfig.jsx` (38 lines)
+**Location**: `src/Hooks/useConfig.jsx` (46 lines)
 
 **Purpose**: Fetches `Ip_config.json` at runtime, stores in localStorage, updates API service base URL.
 
 **State**: Internal (`config`)
 
 **Dependencies**:
-- axios (HTTP client)
-- `setLocalStorageBtoa` (localStorage utility)
+- `axios` (HTTP client)
+- `setLocalStorageBtoa` (localStorage utility — see [06-unused-and-gaps.md](./06-unused-and-gaps.md#91-non-hook-functions-with-use-prefix))
 - `updateApiBaseUrl` (Api service)
 
 **Reusability**: Low (app-specific initialization)
 
 **Called By**: `App.jsx` (once on mount)
 
-**Recommendation**: Keep as-is
+**Recommendation**: Keep, add fallback for missing config
 
 **Notes**:
 - Uses cache-busting (`?_=${Date.now()}`)
 - Runs once per app load
 - Critical for API URL configuration
+- Handles string-type JSON response (parses if needed)
+- ⚠️ No fallback if `Ip_config.json` is missing (see [04-configuration.md](./04-configuration.md#4-add-fallback-for-missing-ip_configjson))
+- ⚠️ DIP violation: directly calls `updateApiBaseUrl()` (see [05-solid-clean-architecture.md](./05-solid-clean-architecture.md#-violation-2-useconfig-direct-api-service-coupling))
 
 ---
 
@@ -90,38 +123,34 @@ This document analyzes all 17 custom hooks in the codebase. Each hook is evaluat
 
 ## 4. useFullRouteChain
 
-**Location**: `src/Hooks/useFullRouteChain.jsx` (25 lines)
+**Location**: `src/Hooks/useFullRouteChain.jsx` (38 lines)
 
-**Purpose**: Splits current pathname into route segments.
+**Purpose**: Splits current pathname into route segments, provides navigation helpers.
 
 **State**: Derived only (no useState)
 
-**Dependencies**: `useLocation` (react-router-dom)
+**Dependencies**: `useLocation`, `useNavigate` (react-router-dom)
 
 **Reusability**: Medium
 
-**Returns**: Array of `{ path, label, isLast }`
+**Returns**: `{ routeChain, goBackInChain, openInNewTabErrorLog }`
+- `routeChain`: Array of `{ path, label, isLast }`
+- `goBackInChain()`: Calls `navigate(-1)`
+- `openInNewTabErrorLog(route, state)`: Navigates to error log page with state
 
-**Called By**: `HeaderPageAddEdit.jsx`
+**Called By**: [`HeaderPageAddEdit.jsx`](./01-components.md#25-headerpageaddedit)
 
-**Recommendation**: **Fix runtime bug**
+**Status**: ✅ **FIXED** (2026-02-08)
 
-**Critical Bug**: `HeaderPageAddEdit` destructures `{ goBackInChain, openInNewTabErrorLog }` from this hook, but these methods do not exist on the returned value. The hook only returns an array of path segments.
+~~**Critical Bug**: `HeaderPageAddEdit` destructures `{ goBackInChain, openInNewTabErrorLog }` from this hook, but these methods did not exist on the returned value.~~
 
-**Evidence**:
+**Current Implementation** (verified):
 ```javascript
-// HeaderPageAddEdit.jsx:48
-const { goBackInChain, openInNewTabErrorLog } = useFullRouteChain();
-
-// useFullRouteChain.jsx:15-25 (actual return)
-return pathSegments.map((segment, index) => ({
-  path: "/" + pathSegments.slice(0, index + 1).join("/"),
-  label: segment,
-  isLast: index === pathSegments.length - 1
-}));
+// src/Hooks/useFullRouteChain.jsx:37
+return { routeChain, goBackInChain, openInNewTabErrorLog };
 ```
 
-**Fix Required**: Either add the missing methods to the hook or update consumers.
+**Recommendation**: Keep as-is
 
 ---
 
@@ -175,7 +204,7 @@ return pathSegments.map((segment, index) => ({
 - `DynamicForm.jsx`
 - `FilterGrid.jsx`
 - `ResizableColumn.jsx`
-- `useformatDataGrid.jsx`
+- `formatDataGrid.jsx` *(renamed Phase 7)*
 
 **Recommendation**: Keep, but note DIP violation
 
@@ -194,7 +223,7 @@ This bypasses React's context/hook system and makes the hook untestable without 
 
 **Location**: `src/Hooks/useGetLookup.jsx` (61 lines)
 
-**Purpose**: Fetches dropdown options from API endpoints.
+**Purpose**: Fetches dropdown options from API endpoints with dynamic key mapping.
 
 **State**: None (uses setter parameters)
 
@@ -204,24 +233,26 @@ This bypasses React's context/hook system and makes the hook untestable without 
 
 **Exports**: `{ getLookup }`
 
-**Called By**:
-- `FilterGrid.jsx` (calls `getLookupFilterGrid`)
-- `ResizableColumn.jsx` (calls `getLookupFilterGrid`)
-
-**Recommendation**: **Fix runtime bug**
-
-**Critical Bug**: Consumers call `getLookupFilterGrid()` but hook only exports `getLookup()`.
-
-**Evidence**:
+**Signature**:
 ```javascript
-// FilterGrid.jsx:26
-const { getLookupFilterGrid } = useGetLookup();
-
-// useGetLookup.jsx:59
-return { getLookup };  // ← Missing getLookupFilterGrid
+getLookup(api, labelKey, extraLabelKey, valueKey, setIsLoading, setList, extraKeys, disabledList, isLookupValue)
 ```
 
-**Fix Required**: Either rename export or update consumers.
+**Called By**:
+- [`FilterGrid.jsx`](./01-components.md#315-filtergrid) — fetches lookup options for filter dropdowns
+- [`ColumnFilterPopover.jsx`](./01-components.md#37-resizablecolumn) — fetches inline column filter options *(extracted from ResizableColumn Phase 7)*
+
+**Status**: ✅ **FIXED** (2026-02-08)
+
+~~**Critical Bug**: Consumers called `getLookupFilterGrid()` but hook only exports `getLookup()`.~~
+
+**Current Implementation** (verified):
+```javascript
+// src/Components/TendersGrid/FilterGrid.jsx:43
+const { getLookup } = useGetLookup();  // ✅ Correct
+```
+
+**Recommendation**: Keep as-is
 
 ---
 
@@ -290,41 +321,52 @@ return { getLookup };  // ← Missing getLookupFilterGrid
 
 ## 11. useHandleSubmit
 
-**Location**: `src/Hooks/useHandleSubmit.jsx` (121 lines)
+**Location**: `src/Hooks/useHandleSubmit.jsx` (198 lines)
 
-**Purpose**: POST/PUT API call with toast notifications.
+**Purpose**: POST/PUT API call with toast notifications. Handles both form submission and transaction actions.
 
 **State**: None
 
 **Dependencies**:
 - `Api.post`, `Api.put`
-- `toast`
+- `toast` (react-toastify)
 - `useNavigate`
+- [`TranslationText`](./01-components.md#56-translationtext) (for toast messages)
 
 **Reusability**: Medium
 
-**Exports**: `{ handleSubmitFormik }`
+**Exports**: `{ handleSubmitFormik, handleSubmitFormPost }`
+
+**Methods**:
+1. **`handleSubmitFormik`** — Standard form submission (add/edit)
+   - Detects add vs edit based on `recId`
+   - Supports multipart/form-data
+   - Shows success/error toasts with translations
+   - Calls `onSuccess` callback, optional `navigateTo`
+2. **`handleSubmitFormPost`** — Transaction actions (Post/UnPost/Validate)
+   - Calls `Api.post(${ApiPage}/${key}?RecId=${id})`
+   - Handles Post, UnPost, ValidatePost, ValidateUnPost
+   - Opens error log page on validation errors
 
 **Called By**:
-- `GenericAddEditPage.jsx`
-- `SubmissionDocumentAddEdit.jsx`
-- `SubmissionDocumentLineAddEdit.jsx`
-- `HeaderPageAddEdit.jsx` (calls `handleSubmitFormPost`)
+- [`GenericAddEditPage.jsx`](./01-components.md#22-genericaddeditpage) — `handleSubmitFormik`
+- [`SubmissionDocumentAddEdit.jsx`](./01-components.md#62-submissiondocumentaddedit) — `handleSubmitFormik`
+- [`SubmissionDocumentLineAddEdit.jsx`](./01-components.md#63-submissiondocumentlineaddedit) — `handleSubmitFormik`
+- [`HeaderPageAddEdit.jsx`](./01-components.md#25-headerpageaddedit) — `handleSubmitFormPost`
 
-**Recommendation**: **Fix runtime bug**
+**Status**: ✅ **FIXED** (2026-02-08)
 
-**Critical Bug**: `HeaderPageAddEdit` destructures `{ handleSubmitFormPost }` but hook only exports `{ handleSubmitFormik }`.
+~~**Critical Bug**: `HeaderPageAddEdit` destructures `{ handleSubmitFormPost }` but hook only exported `{ handleSubmitFormik }`.~~
 
-**Evidence**:
+**Current Implementation** (verified):
 ```javascript
-// HeaderPageAddEdit.jsx:50
-const { handleSubmitFormPost } = useHandleSubmit();
-
-// useHandleSubmit.jsx:119
-return { handleSubmitFormik };  // ← Missing handleSubmitFormPost
+// src/Hooks/useHandleSubmit.jsx:197
+return { handleSubmitFormik, handleSubmitFormPost };  // ✅ Both exported
 ```
 
-**Fix Required**: Either add the missing export or update consumer.
+**Business Logic Note**: `handleSubmitFormik` adds `status: 1` if `transaction` flag is true — this is a business rule embedded in the hook. Consider moving to service layer in future refactor. See [02-hooks.md#business-logic-leakage](./02-hooks.md#business-logic-leakage).
+
+**Recommendation**: Keep as-is
 
 ---
 
@@ -475,11 +517,15 @@ return { handleSubmitFormik };  // ← Missing handleSubmitFormPost
 
 ## Runtime Bugs Summary
 
-| # | Hook | Issue | Impact | Consumers Affected |
-|---|------|-------|--------|-------------------|
-| 1 | `useFullRouteChain` | Missing methods: `goBackInChain()`, `openInNewTabErrorLog()` | High | `HeaderPageAddEdit.jsx` |
-| 2 | `useHandleSubmit` | Missing export: `handleSubmitFormPost` | High | `HeaderPageAddEdit.jsx` |
-| 3 | `useGetLookup` | Missing export: `getLookupFilterGrid` | Medium | `FilterGrid.jsx`, `ResizableColumn.jsx` |
+| # | Hook | Issue | Impact | Status |
+|---|------|-------|--------|--------|
+| 1 | `useFullRouteChain` | Missing methods: `goBackInChain()`, `openInNewTabErrorLog()` | High | ✅ Fixed 2026-02-08 |
+| 2 | `useHandleSubmit` | Missing export: `handleSubmitFormPost` | High | ✅ Fixed 2026-02-08 |
+| 3 | `useGetLookup` | Missing export: `getLookupFilterGrid` | Medium | ✅ Fixed 2026-02-08 |
+
+**All hook-level runtime bugs are resolved.** Remaining runtime bugs are in components:
+- `Footer.jsx` undefined `level` variable — see [07-action-plan.md](./07-action-plan.md#14-footerjsx-undefined-variable)
+- `HeaderPageAddEdit.jsx` `isActionWorkflow` parameter mismatch — see [07-action-plan.md](./07-action-plan.md#15-isactionworkflow-parameter-mismatch)
 
 ---
 
@@ -489,12 +535,12 @@ The following files in `src/utils/` are named with `use` prefix but are **NOT Re
 
 | File | Actual Type | Should Be Named |
 |------|-------------|-----------------|
-| `useFormatDate.jsx` | Pure function | `formatDate.js` |
-| `useFormatNumber.jsx` | Pure function | `formatNumber.js` |
-| `useFormatTime.jsx` | Pure function | `formatTime.js` |
-| `useFormateDataPrint.jsx` | Pure function | `formatDataPrint.js` |
-| `useformatDataGrid.jsx` | Pure function | `formatDataGrid.js` |
-| `useFromLocalStorage.jsx` | Utility exports | `storage.js` |
+| ~~`useFormatDate.jsx`~~ | Pure function | ✅ `formatDate.jsx` (Phase 7) |
+| ~~`useFormatNumber.jsx`~~ | Pure function | ✅ `formatNumber.jsx` (Phase 7) |
+| ~~`useFormatTime.jsx`~~ | Pure function | ✅ `formatTime.jsx` (Phase 7) |
+| ~~`useFormateDataPrint.jsx`~~ | Pure function | ✅ `formatDataPrint.jsx` (Phase 7) |
+| ~~`useformatDataGrid.jsx`~~ | Pure function | ✅ `formatDataGrid.jsx` (Phase 7) |
+| ~~`useFromLocalStorage.jsx`~~ | Utility exports | ✅ `localStorage.jsx` (Phase 7) |
 
 **Why This Matters**:
 - Violates React Hook naming convention
@@ -507,12 +553,12 @@ The following files in `src/utils/` are named with `use` prefix but are **NOT Re
 const formatCellData = (value, column, row) => {
   switch (column.type) {
     case "date":
-      return useFormatDate(value, currentLanguage);  // ← Looks like hook violation
+      return useFormatDate(value, currentLanguage);  // ← Was "use" prefix violation (now renamed)
   }
 }
 ```
 
-This is actually fine because `useFormatDate` is a pure function, but the naming suggests it's a hook.
+✅ **FIXED (Phase 7)**: The file has been renamed from `useFormatDate.jsx` → `formatDate.jsx`. The function is a pure utility, and the `use` prefix no longer misleads.
 
 ---
 
@@ -620,17 +666,19 @@ These hooks perform side effects (API calls, localStorage, DOM manipulation):
 
 ## Recommendations Summary
 
-| Hook | Action | Priority |
-|------|--------|----------|
-| `useFullRouteChain` | Fix missing methods or update consumers | P0 (runtime bug) |
-| `useHandleSubmit` | Add missing export or update consumers | P0 (runtime bug) |
-| `useGetLookup` | Add missing export or update consumers | P0 (runtime bug) |
-| `useCurrencyOptions` | Remove (unused) | P3 |
-| `useProcessMenu` | Remove `restructureModules` export | P3 |
-| `useRouteMemory` | Remove `getPrevRouteStatic` export | P3 |
-| `useGridData` | Remove `dummyData.json` import | P3 |
-| `useGetGenerallist` | Accept `currentLanguage` as parameter (DIP) | P4 |
-| All `use`-prefixed utils | Rename to remove `use` prefix | P3 |
+| Hook | Action | Priority | Status |
+|------|--------|----------|--------|
+| `useFullRouteChain` | ~~Fix missing methods~~ | ~~P0~~ | ✅ Fixed |
+| `useHandleSubmit` | ~~Add missing export~~ | ~~P0~~ | ✅ Fixed |
+| `useGetLookup` | ~~Update consumers~~ | ~~P0~~ | ✅ Fixed |
+| `useCurrencyOptions` | Remove (unused) | P3 | ⏳ Pending |
+| `useProcessMenu` | Remove `restructureModules` export | P3 | ⏳ Pending |
+| `useRouteMemory` | Remove `getPrevRouteStatic` export | P3 | ⏳ Pending |
+| `useGridData` | Remove `dummyData.json` import | P3 | ⏳ Pending |
+| `useGetGenerallist` | Accept `currentLanguage` as parameter (DIP) | P4 | ⏳ Pending |
+| All `use`-prefixed utils | Rename to remove `use` prefix | P3 | ⏳ Pending |
+
+**See**: [07-action-plan.md](./07-action-plan.md) for full timeline and effort estimates
 
 ---
 
@@ -705,10 +753,30 @@ useFullRouteChain
 2. ✅ **Hooks use other hooks** (composition)
 3. ✅ **useMemo/useCallback** for performance
 4. ✅ **Cleanup functions** in useEffect (event listeners)
+5. ✅ **JSDoc comments** on most hooks (added 2026-02-08)
 
 ## Best Practices Violated
 
-1. ❌ **Direct store import** in `useGetGenerallist`
+1. ❌ **Direct store import** in `useGetGenerallist` — see [05-solid-clean-architecture.md](./05-solid-clean-architecture.md#-violation-1-usegetgenerallist-direct-store-import)
 2. ❌ **DOM mutations in hooks** (`useTheme` modifies `document.documentElement`)
-3. ❌ **Non-hook functions named with `use` prefix** (utils/)
-4. ❌ **Missing exports** causing runtime bugs (3 hooks)
+3. ❌ **Non-hook functions named with `use` prefix** (utils/) — see [06-unused-and-gaps.md](./06-unused-and-gaps.md#91-non-hook-functions-with-use-prefix)
+4. ~~❌ **Missing exports** causing runtime bugs (3 hooks)~~ ✅ All fixed 2026-02-08
+
+---
+
+## Cross-Reference Index
+
+| Topic | Related Document |
+|-------|-----------------|
+| Components consuming these hooks | [01-components.md](./01-components.md) |
+| SOLID violations in hooks | [05-solid-clean-architecture.md](./05-solid-clean-architecture.md#dependency-inversion-principle-dip) |
+| Unused hooks to remove | [06-unused-and-gaps.md](./06-unused-and-gaps.md#2-unused-hooks) |
+| Refactoring plan for hooks | [07-action-plan.md](./07-action-plan.md#1-fix-runtime-bugs-in-hooks) |
+| Metadata consumed by hooks | [03-metadata-driven-ui.md](./03-metadata-driven-ui.md) |
+| Non-hook utils with `use` prefix | [06-unused-and-gaps.md](./06-unused-and-gaps.md#9-naming-convention-violations) |
+
+---
+
+**Document Version**: 2.0  
+**Last Updated**: 2026-02-08  
+**Hook Count**: 16 hooks + 1 safe utility (`useSafeSelector.js`)

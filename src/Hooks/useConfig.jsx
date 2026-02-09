@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { setLocalStorageBtoa } from "../utils/useFromLocalStorage";
+import { setLocalStorageBtoa } from "../utils/localStorage";
 import { updateApiBaseUrl } from "../services/Api";
 import axios from "axios";
 
@@ -35,7 +35,11 @@ export default function useConfig() {
         // Update API service base URL with the loaded configuration
         updateApiBaseUrl();
       } catch (error) {
-        console.error("Error fetching configuration:", error);
+        // Phase 2 fix: Add fallback so API calls don't use an empty base URL
+        // @see docs/07-action-plan.md#4-add-fallback-to-useconfig
+        console.error("Failed to load Ip_config.json, using fallback:", error);
+        const fallbackUrl = import.meta.env.VITE_API_URL || "http://localhost:5000/api/";
+        updateApiBaseUrl(fallbackUrl);
       }
     };
 

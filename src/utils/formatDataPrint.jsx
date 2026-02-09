@@ -1,7 +1,7 @@
 import React from "react";
-import { useFormatDate } from "./useFormatDate";
- import useFormatTime from "./useFormatTime";
-import useFormatNumber from "./useFormatNumber";
+import { useFormatDate } from "./formatDate";
+import useFormatTime from "./formatTime";
+import useFormatNumber from "./formatNumber";
 
 function useFormateDataPrint({
   column,

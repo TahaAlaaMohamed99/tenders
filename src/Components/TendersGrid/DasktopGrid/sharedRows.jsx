@@ -1,7 +1,7 @@
 import React, { useContext, useMemo, useCallback, memo } from "react";
 import CustomeSelect from "../../Form/CustomSelect";
 import { TendersGridContext } from "../TendersGridContext";
-import { useformatDataGrid } from "../../../utils/useformatDataGrid";
+import { useformatDataGrid } from "../../../utils/formatDataGrid";
 import CustomInput from "../../Form/CustomInput";
 import CustomCheckbox from "../../Form/CustomCheckbox";
 import CustomDatePicker from "../../Form/CustomDatePicker";

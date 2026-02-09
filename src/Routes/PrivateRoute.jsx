@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { getAuthStorage, isTokenExpired } from "../utils/useFromLocalStorage";
+import { getAuthStorage, isTokenExpired } from "../utils/localStorage";
 
 import Loading from "../Components/loader";
 

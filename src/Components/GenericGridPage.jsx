@@ -11,19 +11,39 @@ import useHandleDelete from '../Hooks/useHandleDelete';
 /**
  * GenericGridPage
  * 
- * A reusable "Smart Container" for List Pages.
- * Connects configuration from DataPages to the TendersGrid component.
- * Handles:
- * - Data Fetching (useGridData)
- * - Pagination State
- * - Navigation (Add / Edit)
- * - Loading States
+ * A reusable "Smart Container" for grid (list) pages.
+ * Handles both top-level pages and child/line-item grids.
  * 
- * @param {Object} props
- * @param {Object} props.DataPage - The full configuration object for this page
- * @param {string} props.ResourcePage - The resource key for localization/API
+ * Phase 1 refactor: Merged GenericGridPageLine into this component.
+ * When `apiOverride` is provided, data is fetched from that endpoint
+ * and row-click / add-click are delegated to the `onClickRow` callback
+ * instead of navigating via react-router.
+ * 
+ * @see docs/07-action-plan.md#8-merge-genericgridpage-and-genericgridpageline
+ * 
+ * @param {Object}   props
+ * @param {Object}   props.DataPage       - Page config from DataPages / DataPagesLine
+ * @param {string}   props.ResourcePage   - Resource key for localisation/API
+ * @param {string}   [props.apiOverride]  - If given, used instead of DataPage.Api
+ * @param {Function} [props.onClickRow]   - Custom row-click handler (line-item mode)
+ * @param {boolean}  [props.isGetAll=true] - Passed to useGridData
+ * @param {*}        [props.refreshKey]   - Changes trigger a data re-fetch
+ * @param {boolean}  [props.isReadOnly=false] - Hides Add button when true
  */
-const GenericGridPage = ({ DataPage, ResourcePage, ...props }) => {
+const GenericGridPage = ({
+    DataPage,
+    ResourcePage,
+    apiOverride = null,
+    onClickRow: onClickRowProp = null,
+    isGetAll = true,
+    refreshKey,
+    isReadOnly = false,
+    ...props
+}) => {
+    // Determine which API to fetch from
+    const api = apiOverride || DataPage.Api;
+    const isLineMode = apiOverride != null;
+
     // Set Page Title
     useLayout(ResourcePage);
 
@@ -34,25 +54,33 @@ const GenericGridPage = ({ DataPage, ResourcePage, ...props }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [dataGrid, setDataGrid] = useState([]);
     const [PageNumber, setPageNumber] = useState(1);
-    const [pageSize, setPageSize] = useState(20);
+    // Phase 3: pageSize now reads from metadata config, with 20 as fallback
+    // @see docs/03-metadata-driven-ui.md#hardcoding-that-should-be-metadata
+    const [pageSize, setPageSize] = useState(DataPage.defaultPageSize || 20);
     const [selectedRows, setSelectedRows] = useState([]);
     const [showModalDelete, setShowModalDelete] = useState(false);
 
     // -- Data Fetching --
-    // useGridData returns { totalRow, fetchGridData }
-    const { totalRow, fetchGridData } = useGridData(DataPage.Api, setDataGrid, setIsLoading);
+    const { totalRow, fetchGridData } = useGridData(api, setDataGrid, setIsLoading, isGetAll);
     const { handleDeleteBatch } = useHandleDelete();
 
-    // Reset state when API/page changes
-    useEffect(() => {
-        setDataGrid([]);
-        setPageNumber(1);
-        setIsLoading(true);
-    }, [DataPage.Api]);
+    // Track whether the API/page has changed to avoid double-fetching on mount
+    const prevApiRef = React.useRef(api);
 
+    // Reset state when API/page changes (but don't fetch — let the main effect handle it)
+    useEffect(() => {
+        if (prevApiRef.current !== api) {
+            prevApiRef.current = api;
+            setDataGrid([]);
+            setPageNumber(1);
+            setIsLoading(true);
+        }
+    }, [api]);
+
+    // Single fetch effect — fires on mount and whenever page/size/refreshKey change
     useEffect(() => {
         fetchGridData(PageNumber, pageSize);
-    }, [fetchGridData, PageNumber, pageSize]);
+    }, [PageNumber, pageSize, refreshKey, api]);
 
     // -- Handlers --
     const handlePageChange = useCallback((newPage) => {
@@ -61,23 +89,28 @@ const GenericGridPage = ({ DataPage, ResourcePage, ...props }) => {
 
     const handlePageSize = useCallback((_, newSize) => {
         setPageSize(newSize);
-        setPageNumber(1); // Reset to first page
+        setPageNumber(1);
     }, []);
 
     const handleNavigate = useCallback((row) => {
-        // Default to "id" if keyId is not specified, but DataPage usually has it
+        if (onClickRowProp) {
+            onClickRowProp(row);
+            return;
+        }
         const idKey = DataPage.keyId || 'id';
         const id = row[idKey];
-        
-        // Remove trailing slash if present to avoid double slashes
         const basePath = location.pathname.replace(/\/$/, "");
         navigate(`${basePath}/edit/${id}`);
-    }, [DataPage.keyId, location.pathname, navigate]);
+    }, [DataPage.keyId, location.pathname, navigate, onClickRowProp]);
 
     const handleAdd = useCallback(() => {
+        if (onClickRowProp) {
+            onClickRowProp(null);
+            return;
+        }
         const basePath = location.pathname.replace(/\/$/, "");
         navigate(`${basePath}/add/0`);
-    }, [location.pathname, navigate]);
+    }, [location.pathname, navigate, onClickRowProp]);
 
     const handleDelete = useCallback(() => {
         setShowModalDelete(true);
@@ -85,7 +118,7 @@ const GenericGridPage = ({ DataPage, ResourcePage, ...props }) => {
 
     const confirmDelete = async () => {
         await handleDeleteBatch({
-            apiPage: DataPage.Api,
+            apiPage: api,
             ids: selectedRows.map(row => row[DataPage.keyId || 'id']),
             resourcePage: ResourcePage,
             onSuccess: () => {
@@ -106,39 +139,37 @@ const GenericGridPage = ({ DataPage, ResourcePage, ...props }) => {
             <TendersGrid
                 GridKey={ResourcePage}
                 ResourcePage={ResourcePage}
-                // Configuration
-                {...DataPage} // Spread DataPage config (isSearch, ExcelExport, etc.)
+                {...DataPage}
                 columns={DataPage.columns}
-                // Data & State
                 data={dataGrid}
                 totalRow={totalRow}
                 PageNumber={PageNumber}
                 pageSize={pageSize}
-                isLoading={isLoading} // Pass loading state if Grid supports it, or it will just show data
-                // Actions
+                isLoading={isLoading}
                 handlePageChange={handlePageChange}
                 handlePageSize={handlePageSize}
                 onClickRow={handleNavigate}
-                AddBtn={{ onClick: handleAdd }}
-                isSelected={true} // Enable checkboxes for all rows
-                // Spread any other props (e.g. filters from DataPage)
+                AddBtn={!isReadOnly ? { onClick: handleAdd } : null}
+                isSelected={!isReadOnly}
                 {...props}
-                handleDelete={handleDelete}
-                setselectesRowInsert={setSelectedRows}
+                handleDelete={!isLineMode ? handleDelete : props.handleDelete}
+                setselectesRowInsert={!isLineMode ? setSelectedRows : props.setselectesRowInsert}
             />
-            <ConfirmationModal
-                isVisible={showModalDelete}
-                ResourcePage={ResourcePage}
-                type={"delete"}
-                title={"messageRemove"}
-                description="confirmRemove"
-                icon={<IconTrash />}
-                confirmButtonLabel="delete"
-                onConfirm={confirmDelete}
-                onCancel={() => {
-                    setShowModalDelete(false);
-                }}
-            />
+            {!isLineMode && (
+                <ConfirmationModal
+                    isVisible={showModalDelete}
+                    ResourcePage={ResourcePage}
+                    type={"delete"}
+                    title={"messageRemove"}
+                    description="confirmRemove"
+                    icon={<IconTrash />}
+                    confirmButtonLabel="delete"
+                    onConfirm={confirmDelete}
+                    onCancel={() => {
+                        setShowModalDelete(false);
+                    }}
+                />
+            )}
         </>
     );
 };

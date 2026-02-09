@@ -245,7 +245,7 @@ export const SubmissionDocumentsForm = {
                 {
                     name: "transDate",
                     label: "transDate",
-                    type: "datetime",
+                    type: "dateTime",
                     required: false,
                     gridWidth: "col-span-6",
                     placeholder: "selectTransDate"
@@ -253,7 +253,7 @@ export const SubmissionDocumentsForm = {
                 {
                     name: "executionDate",
                     label: "executionDate",
-                    type: "datetime",
+                    type: "dateTime",
                     required: false,
                     gridWidth: "col-span-6",
                     placeholder: "selectExecutionDate"
@@ -296,7 +296,7 @@ export const SubmissionDocumentLinesForm = {
                 {
                     name: "transDate",
                     label: "transDate",
-                    type: "datetime",
+                    type: "dateTime",
                     required: false,
                     gridWidth: "col-span-6",
                     placeholder: "selectTransDate"
@@ -304,7 +304,7 @@ export const SubmissionDocumentLinesForm = {
                 {
                     name: "executionDate",
                     label: "executionDate",
-                    type: "datetime",
+                    type: "dateTime",
                     required: false,
                     gridWidth: "col-span-6",
                     placeholder: "selectExecutionDate"

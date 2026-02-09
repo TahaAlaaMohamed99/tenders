@@ -1,7 +1,7 @@
 import React from "react";
 import { IconXsl } from "../assets/Icons";
-import { useFormatDate } from "../utils/useFormatDate";
-import useFormatNumber from "../utils/useFormatNumber";
+import { useFormatDate } from "../utils/formatDate";
+import useFormatNumber from "../utils/formatNumber";
 import useTranslationText from "../Hooks/useTranslationText";
 import useDeviceType from "../Hooks/useDeviceType";
 import TranslationText from "./TranslationText";

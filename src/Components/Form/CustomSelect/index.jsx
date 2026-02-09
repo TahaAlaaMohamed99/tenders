@@ -88,7 +88,7 @@ const CustomeSelect = React.forwardRef(({
   // Custom input component for the react-select's Input component
   const CustomInput = (props) => {
     return (
-      <components.Input {...props} autoComplete={`arkaan_Select${label}`} reference={ref} />
+      <components.Input {...props} autoComplete={`arkaan_Select${label}`} innerRef={ref} />
     );
   };
 

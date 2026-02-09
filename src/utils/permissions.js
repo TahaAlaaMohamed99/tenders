@@ -7,7 +7,7 @@
  * @module utils/permissions
  */
 
-import { getAuthStorage } from "./useFromLocalStorage";
+import { getAuthStorage } from "./localStorage";
 
 /**
  * Permission action types and their offsets

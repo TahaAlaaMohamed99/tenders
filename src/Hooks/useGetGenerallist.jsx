@@ -1,11 +1,15 @@
 import Generallists from "../ConfigData/Generallist.json";
-import store from "../store";
+import { useSelector } from "react-redux";
 import Resources from "../ConfigData/resources.json";
 
 /**
  * Custom hook to fetch and transform data for dropdowns or other Components.
+ * Phase 2 fix: Replaced direct store import with useSelector (DIP violation).
+ * @see docs/07-action-plan.md#7-fix-dip-violations
  */
 const useGetGenerallist = () => {
+  // Phase 2: Use React hook instead of direct store.getState() — DIP compliance
+  const currentLanguage = useSelector((state) => state.themeSlice.currentLanguage);
 
   /**
    * Fetch and transform data from `Generallist.json`.
@@ -28,7 +32,6 @@ const useGetGenerallist = () => {
     try {
       setIsLoading(true);
 
-      const currentLanguage = store.getState().themeSlice.currentLanguage;
       const response = Generallists[NameGenerallist] || [];
       const data = response.map((item) => {
         const label =

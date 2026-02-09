@@ -22,7 +22,7 @@ import {
   IconHiddenMobile,
   IconMobile,
 } from "../../assets/Icons";
-import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
+import { setLocalStorageBtoa } from "../../utils/localStorage";
 import TranslationText from "../TranslationText";
 import { TendersGridContext } from "./TendersGridContext";
 import useTranslationText from "../../Hooks/useTranslationText";

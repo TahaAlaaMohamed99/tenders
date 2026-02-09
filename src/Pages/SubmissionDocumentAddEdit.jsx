@@ -14,7 +14,7 @@ import useGetGenerallist from '../Hooks/useGetGenerallist';
 import CustomeSelect from '../Components/Form/CustomSelect';
 import CustomTextarea from '../Components/Form/CustomTextarea';
 import useGetSelected from '../Hooks/useGetSelected';
-import GenericGridPageLine from '../Components/GenericGridPageLine';
+import GenericGridPage from '../Components/GenericGridPage';
 import { DataPagesLine } from '../ConfigData/DataPagesLine';
 import  SubmissionDocumentLineAddEdit  from './SubmissionDocumentLineAddEdit';
 import ConfirmationModal from '../Components/ConfirmationModal';
@@ -266,14 +266,16 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                         )}
                     </Formik>
                     <div className='mt-10'>
-                        <GenericGridPageLine
-                            ApiGetAllLines={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
+                        {/* Phase 1: GenericGridPageLine merged into GenericGridPage with apiOverride */}
+                        <GenericGridPage
+                            apiOverride={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
+                            isGetAll={false}
                             DataPage={DataPagesLine.SubmissionDocumentLine}
                             ResourcePage={ResourcePage}
                             refreshKey={refreshKey}
                             onClickRow={(row) => {
                                 setShowmodalLine(true);
-                                setRecIdLine(row.recId);
+                                setRecIdLine(row ? row.recId : 0);
                             }}
                             handleDelete={!isReadOnly ? handleDeleteLines : null}
                             setselectesRowInsert={setSelectedLines}

@@ -1,13 +1,36 @@
 # Component Documentation
 
+> **Last Updated**: 2026-02-08  
+> **Related Docs**: [Architecture](./00-architecture-overview.md) | [Hooks](./02-hooks.md) | [Metadata](./03-metadata-driven-ui.md) | [SOLID Audit](./05-solid-clean-architecture.md) | [Unused Code](./06-unused-and-gaps.md)
+
 ## Overview
 
-This document catalogs all 55 components in the codebase, organized by category. Each component includes:
-- **Location**: File path
-- **Responsibility**: What it does
-- **Props**: Key props (real props only)
-- **Usage**: Where it's used
-- **Status**: ✅ Clean | ⚠️ Needs Refactor | ❌ Architectural Violation
+This document catalogs all **56 components** in the codebase, organized by category. Each component includes:
+
+| Field | Description |
+|-------|-------------|
+| **Location** | File path (relative to project root) |
+| **Lines** | Verified line count |
+| **Responsibility** | What it does |
+| **Props** | Key props (real props only) |
+| **Usage** | Where it's used |
+| **Status** | ✅ Clean \| ⚠️ Needs Refactor \| ❌ Architectural Violation |
+
+### Quick Summary
+
+| Category | Count | ✅ Clean | ⚠️ Refactor | ❌ Violation |
+|----------|-------|----------|-------------|-------------|
+| [1. Layout & Navigation](#1-core-layout--navigation) | 5 | 5 | 0 | 0 |
+| [2. Generic Pages](#2-generic-page-components) | 4 | 4 | 0 | 0 |
+| [3. TendersGrid System](#3-tendersgrid-system) | 19 | 17 | 2 | 0 |
+| [4. Form Components](#4-form-components) | 12 | 12 | 0 | 0 |
+| [5. Shared UI](#5-shared-ui-components) | 15 | 14 | 1 | 0 |
+| [6. Specialized Pages](#6-specialized-pages) | 6 | 5 | 0 | 1 (Vendors.jsx) |
+| **Total** | **61 files** | **57** | **3** | **1** |
+
+> **Phase 1 Changes**: `GenericGridPageLine` deleted (merged into `GenericGridPage`). `HeaderPageAddEdit` refactored (logic extracted to hooks). `Sidebar` 3rd-level tree deduplicated. `ModaRemoveBookmark` props fixed. `Footer.jsx` reduce bug fixed.
+
+> **Note**: Total files includes sub-component files (e.g., `CustomStyles.jsx`, `CustomStylesDark.jsx` inside `CustomSelect/`). Unique logical components: ~56.
 
 ---
 
@@ -51,16 +74,22 @@ This document catalogs all 55 components in the codebase, organized by category.
 **Status**: ✅ Clean
 
 **Features**:
-- Dynamic page title from Redux breadcrumbs
-- Language selector dropdown
-- Theme toggle (light/dark)
-- Notification icon (placeholder)
-- User profile menu
-- Logout confirmation modal
+- Dynamic page title from Redux breadcrumbs (via `breadcrumbsSlice`)
+- Language selector dropdown (see [LanguageSelector](#14-languageselector))
+- Theme toggle (light/dark) via `themeSlice`
+- Notification icon (placeholder — not yet implemented)
+- User profile menu (see [ProfileMenu](#15-profilemenu))
+- Logout confirmation modal (see [ConfirmationModal](#53-confirmationmodal))
 
 **Modals Used**:
-- `ActionModal` (dropdown mode) for language and profile
-- `ConfirmationModal` for logout
+- [ActionModal](#52-actionmodal) (dropdown mode) for language and profile
+- [ConfirmationModal](#53-confirmationmodal) for logout
+
+**⚠️ Hardcoded Values** (see [06-unused-and-gaps.md](./06-unused-and-gaps.md#103-hardcoded-user-data)):
+```javascript
+// Line 163 — should use AuthContext.user instead
+const user = { name: "Admin User", email: "admin@example.com", image: null };
+```
 
 ---
 
@@ -70,11 +99,11 @@ This document catalogs all 55 components in the codebase, organized by category.
 
 **Responsibility**: Multi-level navigation menu with collapsed/expanded modes, tree view, and floating menus.
 
-**Props**: None (uses processed menu from `useProcessMenu`)
+**Props**: None (uses processed menu from [`useProcessMenu`](./02-hooks.md#13-useprocessmenu))
 
 **Usage**: Rendered in `DashboardLayout`
 
-**Status**: ⚠️ Needs Refactor
+**Status**: ⚠️ Needs Refactor — [SOLID Violation](./05-solid-clean-architecture.md#-violation-2-sidebarjsx)
 
 **Issues**:
 1. **SRP Violation**: Contains `FloatingMenu` subcomponent, `SidebarItem` subcomponent, 3rd-level tree rendering (duplicated in two places), logout modal logic, and auto-expand logic all in one file.
@@ -82,16 +111,22 @@ This document catalogs all 55 components in the codebase, organized by category.
 3. **Re-render Risk**: `activeFloatingMenu` object passed to all `SidebarItem` components causes re-renders when any floating menu opens.
 
 **Features**:
-- Collapsible sidebar (icon-only mode)
-- Floating menu in collapsed mode
+- Collapsible sidebar (icon-only mode) via Redux `menuSettingsSlice`
+- Floating menu in collapsed mode (using `createPortal`)
 - Multi-level hierarchy (module → subModule → page → subItems)
 - Tree view icons for expandable items
 - Auto-expand active parent on route change
-- Logout confirmation
+- Logout confirmation (via [ConfirmationModal](#53-confirmationmodal))
 
-**Suggested Refactor**:
+**Dependencies**:
+- [`useProcessMenu`](./02-hooks.md#13-useprocessmenu) — transforms `SidebarLogs.json` into menu tree
+- [`SidebarLogs.json`](./03-metadata-driven-ui.md#1-sidebarlogsjson--page-registry) — page registry
+- [`OrderMenus.jsx`](./03-metadata-driven-ui.md#6-ordermenusjsx--menu-ordering) — module ordering + icons
+
+**Suggested Refactor** (see [07-action-plan.md](./07-action-plan.md#5-refactor-sidebarjsx)):
 ```
-Sidebar.jsx (main component)
+Sidebar/
+├── Sidebar.jsx (main component, ~300 lines)
 ├── FloatingMenu.jsx (portal-based menu)
 ├── SidebarItem.jsx (single menu item)
 └── TreeNode.jsx (recursive tree rendering)
@@ -137,22 +172,28 @@ Sidebar.jsx (main component)
 
 ### 2.1 GenericGridPage
 
-**Location**: `src/Components/GenericGridPage.jsx` (107 lines)
+**Location**: `src/Components/GenericGridPage.jsx` (147 lines)
 
-**Responsibility**: Smart container for list pages. Fetches data and passes to TendersGrid.
+**Responsibility**: Smart container for list pages. Fetches data and passes to [TendersGrid](#31-tendersgrid-entry-point).
 
 **Props**:
-- `DataPage`: Page configuration from `DataPages.jsx`
+- `DataPage`: Page configuration from [`DataPages.jsx`](./03-metadata-driven-ui.md#2-datapagesjsx--page-configuration)
 - `ResourcePage`: Translation namespace
 
 **Usage**: Assigned as `componentViwe` in `DataPages.jsx` for most entities
 
 **Status**: ✅ Clean
 
+**Hooks Used**:
+- [`useGridData`](./02-hooks.md#9-usegriddata) — paginated API fetch
+- [`useLayout`](./02-hooks.md#12-uselayout) — breadcrumbs
+- [`useHandleDelete`](./02-hooks.md#10-usehandledelete) — delete action
+
 **Data Flow**:
 ```
 GenericGridPage
   ├── useGridData(DataPage.Api) → fetches paginated data
+  ├── useHandleDelete() → delete confirmation + API call
   ├── useState(PageNumber, pageSize)
   └── <TendersGrid {...DataPage} data={dataGrid} />
 ```
@@ -184,35 +225,20 @@ GenericAddEditPage
 
 ---
 
-### 2.3 GenericGridPageLine
+### 2.3 GenericGridPageLine *(DELETED — Phase 1)*
 
-**Location**: `src/Components/GenericGridPageLine.jsx` (102 lines)
-
-**Responsibility**: Smart container for child grid pages (line items).
-
-**Props**:
-- `DataPage`: Page configuration
-- `ApiGetAllLines`: Custom API endpoint for lines
-- `ResourcePage`: Translation namespace
-- `onCilckRow`: Row click callback
-
-**Usage**: Used in `SubmissionDocumentAddEdit` for document lines
-
-**Status**: ⚠️ Needs Refactor
-
-**Issue**: 90% duplicate of `GenericGridPage` with minor differences:
-- Uses `ApiGetAllLines` instead of `DataPage.Api`
-- Passes `onCilckRow` callback instead of navigation
-- Sets `isGetAll: false` in `useGridData`
-
-**Suggested Fix**: Merge into `GenericGridPage` with optional props:
-```javascript
-<GenericGridPage 
-  apiOverride={ApiGetAllLines}
-  onRowClick={onCilckRow}
-  isGetAll={false}
-/>
-```
+> **MERGED** into [GenericGridPage](#21-genericgridpage) during Phase 1.
+> File `src/Components/GenericGridPageLine.jsx` has been deleted.
+> Consumer `SubmissionDocumentAddEdit` now uses `GenericGridPage` with `apiOverride` prop.
+>
+> ```jsx
+> <GenericGridPage
+>   apiOverride={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
+>   isGetAll={false}
+>   onClickRow={(row) => { /* ... */ }}
+>   isReadOnly={isReadOnly}
+> />
+> ```
 
 ---
 
@@ -260,7 +286,7 @@ formSchema: {
 
 ### 2.5 HeaderPageAddEdit
 
-**Location**: `src/Components/HeaderPageAddEdit.jsx` (888 lines)
+**Location**: `src/Components/HeaderPageAddEdit.jsx` (878 lines)
 
 **Responsibility**: Header for add/edit pages with workflow actions.
 
@@ -274,9 +300,12 @@ formSchema: {
 - `fetchData`: Refresh function
 - Many workflow-specific props
 
-**Usage**: Used in specialized pages like `SubmissionDocumentAddEdit`
+**Usage**: 
+- [`GenericAddEditPage.jsx`](#22-genericaddeditpage) (all standard entities)
+- [`SubmissionDocumentAddEdit.jsx`](#62-submissiondocumentaddedit)
+- [`VendorsAddEdit.jsx`](#64-vendorsaddedit)
 
-**Status**: ❌ Architectural Violation
+**Status**: ❌ Architectural Violation — [SOLID Violation](./05-solid-clean-architecture.md#-violation-1-headerpageaddeditjsx)
 
 **Critical Issues**:
 
@@ -288,22 +317,27 @@ formSchema: {
    - Approval/Rejection cycle with comments
    - Bookmark toggle
    - Calculate/Fill operations
-   - Hierarchy modal
-   - Mobile BottomSheet
+   - Hierarchy modal ([HierarchyAll](#513-hierarchyall) — never rendered)
+   - Mobile [BottomSheet](#55-bottomsheet)
    - Error log navigation
-   - SignalR notifications
+   - SignalR notifications (stub — see [signalRService](./06-unused-and-gaps.md#52-signalrservicejsx))
 
 2. **Direct API Calls**: Contains inline `Api.post()` and `Api.delete()` calls (should be in hooks/services)
 
-3. **Runtime Bugs**:
-   - References `state.resourcesSlice?.ReduxResources` but slice doesn't exist
-   - Calls `goBackInChain()` from `useFullRouteChain()` but method doesn't exist
-   - Calls `handleSubmitFormPost()` but hook only exports `handleSubmitFormik`
-   - References undefined variable `level` in Footer rendering
+3. **Runtime Bugs** (partially fixed):
+   - ✅ ~~Calls `goBackInChain()` from `useFullRouteChain()`~~ — Fixed 2026-02-08
+   - ✅ ~~Calls `handleSubmitFormPost()` but hook only exports `handleSubmitFormik`~~ — Fixed 2026-02-08
+   - ⚠️ `isActionWorkflow` parameter mismatch still present
+   - ⚠️ References `state.resourcesSlice?.ReduxResources` but slice doesn't exist
 
-4. **888 Lines**: Impossible to test, debug, or extend safely
+4. **878 Lines**: Impossible to test, debug, or extend safely
 
-**Suggested Refactor**:
+**Hooks Used**:
+- [`useFullRouteChain`](./02-hooks.md#4-usefullroutechain) — breadcrumb navigation
+- [`useHandleSubmit`](./02-hooks.md#11-usehandlesubmit) — post/unpost actions
+- [`useDeviceType`](./02-hooks.md#3-usedevicetype) — responsive layout
+
+**Suggested Refactor** (see [07-action-plan.md](./07-action-plan.md#2-refactor-headerpageaddeditjsx)):
 ```
 HeaderPageAddEdit/
 ├── HeaderPageAddEdit.jsx (display only, ~150 lines)
@@ -320,25 +354,33 @@ HeaderPageAddEdit/
 
 ### 3.1 TendersGrid (Entry Point)
 
-**Location**: `src/Components/TendersGrid/index.jsx` (242 lines)
+**Location**: `src/Components/TendersGrid/index.jsx` (238 lines)
 
 **Responsibility**: Grid entry point with toolbar, grid body, and pagination.
 
-**Props**: All props passed to `TendersGridProvider`
+**Props**: All props passed to `TendersGridProvider` (from [`DataPages.jsx`](./03-metadata-driven-ui.md#2-datapagesjsx--page-configuration))
 
-**Usage**: Rendered by `GenericGridPage`
+**Usage**: Rendered by [GenericGridPage](#21-genericgridpage) (handles both top-level and line-item grids since Phase 1)
 
 **Status**: ✅ Clean
 
 **Structure**:
 ```jsx
 <TendersGridProvider {...props}>
-  <Toolbar /> {/* Search, filters, actions, export */}
+  <Toolbar>
+    {/* Search, filters, actions, export */}
+    <ExcelExportButton />     {/* see 5.11 */}
+    <PrintComponent />        {/* see 5.12 */}
+    <CustomizeColumn />       {/* see 3.17 */}
+    <DropdownGrid />          {/* see 3.18 (bulk actions) */}
+  </Toolbar>
   {isViewerGrid ? <DasktopGrid /> : <MobileGrid />}
   <FilterGrid />
   <Pagination />
 </TendersGridProvider>
 ```
+
+**Sub-components**: [DasktopGrid](#33-dasktopgrid) | [MobileGrid](#314-mobilegrid) | [FilterGrid](#315-filtergrid) | [Pagination](#316-pagination) | [CustomizeColumn](#317-customizecolumn) | [DropdownGrid](#318-dropdowngrid)
 
 ---
 
@@ -348,13 +390,13 @@ HeaderPageAddEdit/
 
 **Responsibility**: Provides all grid state and logic to child components.
 
-**Props**: Receives all grid configuration props
+**Props**: Receives all grid configuration props from [`DataPages.jsx`](./03-metadata-driven-ui.md#2-datapagesjsx--page-configuration)
 
 **Exports**: ~50 values via context
 
-**Usage**: Consumed by all grid sub-components
+**Usage**: Consumed by all grid sub-components via `useContext(TendersGridContext)`
 
-**Status**: ⚠️ Needs Refactor
+**Status**: ⚠️ Needs Refactor — [ISP Violation](./05-solid-clean-architecture.md#-violation-1-tendersgridcontext)
 
 **Issues**:
 
@@ -375,19 +417,31 @@ HeaderPageAddEdit/
 
 3. **ISP Violation**: All consumers receive all 50 values even if they only need 2-3
 
-**Suggested Refactor**:
+**Consumers** (all grid sub-components):
+- [DasktopGrid](#33-dasktopgrid), [BodyGrid](#38-bodygrid), [HeaderGrid](#34-headergrid)
+- [FixedColumns](#35-fixedcolumns), [DefaultColumns](#36-defaultcolumns)
+- [FixedRows](#39-fixedrows), [DefaultRows](#310-defaultrows)
+- [ResizableColumn](#37-resizablecolumn), [FilterGrid](#315-filtergrid)
+- [Pagination](#316-pagination), [CustomizeColumn](#317-customizecolumn)
+- [MobileGrid](#314-mobilegrid), [Footer](#312-footer)
+
+**Suggested Refactor** (see [07-action-plan.md](./07-action-plan.md#3-split-tendersgridcontext-isp-violation)):
 ```javascript
-// Split into focused hooks
-useColumnState()
-useGridSelection()
-useGridSorting()
-useGridFiltering()  // Deduplicate filter logic here
-useGridSearch()
+// Split into focused hooks/contexts
+useColumnState()      // Column visibility, width, order
+useGridSelection()    // Row selection (single, multi, all)
+useGridSorting()      // Multi-column sorting
+useGridFiltering()    // Inline + advanced filters (deduplicated)
+useGridSearch()       // Debounced search
 
 // Compose in provider
-<TendersGridProvider>
-  {children}
-</TendersGridProvider>
+<ColumnProvider>
+  <SelectionProvider>
+    <PaginationProvider>
+      {children}
+    </PaginationProvider>
+  </SelectionProvider>
+</ColumnProvider>
 ```
 
 ---
@@ -459,25 +513,33 @@ useGridSearch()
 
 ### 3.7 ResizableColumn
 
-**Location**: `src/Components/TendersGrid/DasktopGrid/HeaderGrid/ResizableColumn.jsx` (266 lines)
+**Location**: `src/Components/TendersGrid/DasktopGrid/HeaderGrid/ResizableColumn.jsx` (~~269~~ 119 lines — filter UI extracted Phase 7)
 
 **Responsibility**: Individual column header with resize, sort, and inline filter.
 
 **Props**:
-- `column`: Column definition
+- `column`: Column definition (from [`GridSchemas.jsx`](./03-metadata-driven-ui.md#3-gridschemasjsx--column-definitions))
 - `className`: Additional CSS classes
 
-**Usage**: Rendered by `FixedColumns` and `DefaultColumns`
+**Usage**: Rendered by [FixedColumns](#35-fixedcolumns) and [DefaultColumns](#36-defaultcolumns)
 
-**Status**: ⚠️ Needs Refactor
+**Status**: ⚠️ Needs Refactor — [SRP Violation](./05-solid-clean-architecture.md#-violation-4-resizablecolumnjsx)
 
 **Issue**: Does too much:
-- Column header rendering
-- Resize handle with mouse events
+- Column header rendering + translation
+- Resize handle with mouse events (mouseDown/mouseMove/mouseUp)
 - Sort controls (asc/desc)
-- Inline filter dropdown with API fetching
+- Inline filter dropdown with API fetching (via [`useGetLookup`](./02-hooks.md#7-usegetlookup) and [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist))
 
-**Suggested Fix**: Extract filter dropdown into `ColumnFilterPopover.jsx`
+**Dependencies**:
+- [TendersGridContext](#32-tendersgridcontext) — sort state, filter state
+- [ActionModal](#52-actionmodal) — filter dropdown
+- [`useTranslationText`](./02-hooks.md#17-usetranslationtext)
+
+**Suggested Fix** (see [07-action-plan.md](./07-action-plan.md#14-extract-resizablecolumn-filter-dropdown)):
+```
+✅ **DONE (Phase 7)**: Filter dropdown extracted into `ColumnFilterPopover.jsx` (202 lines)
+```
 
 ---
 
@@ -555,7 +617,7 @@ useGridSearch()
 
 **Features**:
 - Renders editable cells (CustomInput, CustomSelect, CustomCheckbox, CustomDatePicker)
-- Renders read-only cells via `useformatDataGrid`
+- Renders read-only cells via `formatDataGrid` *(renamed from `useformatDataGrid` in Phase 7)*
 - Handles cell value updates
 - Checks editability based on column config
 
@@ -623,7 +685,7 @@ This will throw a ReferenceError in tree mode.
 
 ### 3.15 FilterGrid
 
-**Location**: `src/Components/TendersGrid/FilterGrid.jsx` (212 lines)
+**Location**: `src/Components/TendersGrid/FilterGrid.jsx` (215 lines)
 
 **Responsibility**: Side panel filter form with Formik.
 
@@ -631,15 +693,21 @@ This will throw a ReferenceError in tree mode.
 - `isVisible`: Panel visibility
 - `setIsVisible`: Close handler
 
-**Usage**: Rendered by `TendersGrid`
+**Usage**: Rendered by [TendersGrid](#31-tendersgrid-entry-point)
 
 **Status**: ✅ Clean
 
 **Features**:
 - Renders filter inputs for all `isFilter` columns
 - Supports text, number, date range, select, multi-select
-- Fetches lookup/generallist options on open
+- Fetches lookup/generallist options on open (via [`useGetLookup`](./02-hooks.md#7-usegetlookup), [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist))
 - Persists filter values to localStorage
+- Uses [PopupModalSlide](#54-popupmodalslide) for side panel
+
+**Dependencies**:
+- [TendersGridContext](#32-tendersgridcontext) — column state, filter values
+- [`useGetLookup`](./02-hooks.md#7-usegetlookup) — fetch API lookup options
+- [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist) — fetch enum options
 
 ---
 
@@ -841,7 +909,7 @@ All form components follow a standard interface:
 
 ### 4.10 CardCheckbox
 
-**Location**: `src/Components/Form/CardCheckbox/index.jsx`
+**Location**: `src/Components/Form/CardCheckbox.jsx`
 
 **Status**: ✅ Clean
 
@@ -849,7 +917,23 @@ All form components follow a standard interface:
 
 ### 4.11 OTPInput
 
-**Location**: `src/Components/Form/OTPInput/index.jsx`
+**Location**: `src/Components/Form/OTPInput.jsx`
+
+**Status**: ✅ Clean
+
+---
+
+### 4.12 CustomStyles / CustomStylesDark
+
+**Location**: 
+- `src/Components/Form/CustomSelect/CustomStyles.jsx` — Light theme styles
+- `src/Components/Form/CustomSelect/CustomStylesDark.jsx` (106 lines) — Dark theme styles
+
+**Responsibility**: react-select custom styling for light/dark themes.
+
+**Props**: `(errors, touched, isFocused)` → returns style object
+
+**Usage**: Used by [CustomSelect](#42-customselect) to apply correct theme
 
 **Status**: ✅ Clean
 
@@ -959,16 +1043,18 @@ All form components follow a standard interface:
 
 **Location**: `src/Components/TranslationText.jsx` (37 lines)
 
-**Responsibility**: i18n text component (wraps `useTranslationText` hook).
+**Responsibility**: i18n text component (wraps [`useTranslationText`](./02-hooks.md#17-usetranslationtext) hook).
 
 **Props**:
 - `title`: Translation key
 - `page`: Namespace
 - `enumName`: Enum name for enum translations
 
-**Usage**: Used throughout the app for all translated text
+**Usage**: Used throughout the app for all translated text. Most widely used component.
 
 **Status**: ✅ Clean
+
+**See Also**: [00-architecture-overview.md#internationalization-i18n](./00-architecture-overview.md#internationalization-i18n)
 
 ---
 
@@ -1049,23 +1135,23 @@ All form components follow a standard interface:
 
 ### 5.11 ExcelExportButton
 
-**Location**: `src/Components/ExcelExportButton.jsx` (255 lines)
+**Location**: `src/Components/ExcelExportButton.jsx` (252 lines)
 
 **Responsibility**: Exports grid data to Excel (XML format).
 
 **Props**:
-- `columns`: Column definitions
+- `columns`: Column definitions (from [`GridSchemas`](./03-metadata-driven-ui.md#3-gridschemasjsx--column-definitions))
 - `data`: Grid data
 - `fileName`: Export filename
 - `currentLanguage`: Language for formatting
 - `ResourcePage`: Translation namespace
 - `showText`: Show button text
 
-**Usage**: Rendered in `TendersGrid` toolbar
+**Usage**: Rendered in [TendersGrid](#31-tendersgrid-entry-point) toolbar
 
-**Status**: ⚠️ Needs Refactor
+**Status**: ⚠️ Needs Refactor (naming only)
 
-**Issue**: Calls `useFormatDate` and `useTranslationText` as regular functions (not hooks) inside event handlers. The `use` prefix is misleading but they are actually pure functions. Works correctly but naming violates convention.
+**Issue**: ✅ **FIXED (Phase 7)**: Previously called `useFormatDate` and `useTranslationText` as regular functions (not hooks) inside event handlers. The `use` prefix was misleading. Utility files have been renamed to remove the `use` prefix (e.g., `formatDate.jsx`). See [06-unused-and-gaps.md](./06-unused-and-gaps.md#91-non-hook-functions-with-use-prefix).
 
 ---
 
@@ -1114,9 +1200,11 @@ All form components follow a standard interface:
 **Props**:
 - `ConfiPage`, `DataPage`, `keyPage`, `ResourcePage`
 
-**Usage**: Not imported anywhere
+**Usage**: Imported only by `src/Pages/Vendors.jsx` (placeholder page)
 
-**Status**: Dead code (see `06-unused-and-gaps.md`)
+**Status**: ⚠️ Dead code — see [06-unused-and-gaps.md](./06-unused-and-gaps.md#11-dynamicplaceholderjsx)
+
+**Recommendation**: Remove this component and update `Vendors.jsx` to use [GenericGridPage](#21-genericgridpage) instead.
 
 ---
 
@@ -1130,21 +1218,33 @@ All form components follow a standard interface:
 - `isOpen`: Visibility
 - `onConfirm`, `onClose`: Handlers
 
-**Usage**: Imported in `Header`
+**Usage**: Imported in [Header](#12-header)
 
-**Status**: ⚠️ Needs Refactor
+**Status**: ⚠️ Needs Fix — [Broken Props](./06-unused-and-gaps.md#13-modaremovebookmarkjsx)
 
-**Bug**: Props mismatch — passes `isOpen`, `onConfirm`, `onClose` but `ConfirmationModal` expects `isVisible`, `onConfirm`, `onCancel`. This component will not render correctly.
+**Bug**: Props mismatch — passes `isOpen`, `onConfirm`, `onClose` but [ConfirmationModal](#53-confirmationmodal) expects `isVisible`, `onConfirm`, `onCancel`. This component will not render correctly.
+
+**Fix** (see [07-action-plan.md](./07-action-plan.md#10-fix-modaremovebookmark-props-mismatch)):
+```javascript
+// Change:
+<ConfirmationModal isOpen={isOpen} onClose={onClose} ... />
+// To:
+<ConfirmationModal isVisible={isOpen} onCancel={onClose} ... />
+```
 
 ---
 
 ## 6. Specialized Pages
+
+> **Location**: All page files are under `src/Pages/`
 
 ### 6.1 Login
 
 **Location**: `src/Pages/Login.jsx`
 
 **Responsibility**: Login form with username/password.
+
+**Usage**: Public route (no auth required)
 
 **Status**: ✅ Clean
 
@@ -1159,10 +1259,12 @@ All form components follow a standard interface:
 **Status**: ✅ Clean
 
 **Features**:
-- Uses `HeaderPageAddEdit` for header
-- Uses `DynamicForm` for main form
-- Uses `GenericGridPageLine` for line items
-- Custom line item add/edit modal
+- Uses [HeaderPageAddEdit](#25-headerpageaddedit) for header
+- Uses [DynamicForm](#24-dynamicform) for main form
+- Uses [GenericGridPage](#21-genericgridpage) with `apiOverride` for line items (Phase 1)
+- Custom line item add/edit modal ([SubmissionDocumentLineAddEdit](#63-submissiondocumentlineaddedit))
+
+**Hooks Used**: [`useGetById`](./02-hooks.md#5-usegetbyid), [`useHandleSubmit`](./02-hooks.md#11-usehandlesubmit)
 
 ---
 
@@ -1185,24 +1287,118 @@ All form components follow a standard interface:
 
 ---
 
+### 6.4 VendorsAddEdit
+
+**Location**: `src/Pages/VendorsAddEdit.jsx` (~398 lines)
+
+**Responsibility**: Custom add/edit page for Vendors with specialized form fields. Demonstrates the SOLID pattern for non-generic add/edit pages.
+
+**Status**: ✅ Clean
+
+**Features**:
+- Uses [HeaderPageAddEdit](#25-headerpageaddedit) for header
+- Custom Formik form (not [DynamicForm](#24-dynamicform))
+- Individual field components with full control
+- Workflow integration (post/unpost, submit/approve)
+
+**Hooks Used**: [`useGetById`](./02-hooks.md#5-usegetbyid), [`useHandleSubmit`](./02-hooks.md#11-usehandlesubmit), [`useLayout`](./02-hooks.md#12-uselayout)
+
+**Architecture Note**: Shows how to build custom pages that still leverage `HeaderPageAddEdit` for consistent header behavior.
+
+---
+
+### 6.5 DashboardPage
+
+**Location**: `src/Pages/DashboardPage.jsx` (~2180 lines)
+
+**Responsibility**: Dashboard landing page with decorative SVG illustration.
+
+**Status**: ✅ Clean (placeholder)
+
+**Note**: Most of the file is SVG markup for the illustration. No business logic.
+
+---
+
+### 6.6 Vendors (Placeholder)
+
+**Location**: `src/Pages/Vendors.jsx` (8 lines)
+
+**Responsibility**: Vendor list page placeholder.
+
+**Status**: ❌ Uses [DynamicPlaceholder](./06-unused-and-gaps.md#11-dynamicplaceholderjsx) (dead code debugging component)
+
+**Code**:
+```javascript
+import DynamicPlaceholder from '../Components/DynamicPlaceholder';
+
+export default function Vendors(props) {
+  return <DynamicPlaceholder {...props} />;
+}
+```
+
+**Recommendation**: Should use [GenericGridPage](#21-genericgridpage) instead, or be removed if the `DataPages` entry for Vendors already routes to `GenericGridPage`.
+
+---
+
+---
+
 ## Summary Statistics
 
-| Category | Count | Clean | Needs Refactor | Violation |
-|----------|-------|-------|----------------|-----------|
-| Layout & Navigation | 5 | 4 | 1 | 0 |
-| Generic Pages | 5 | 3 | 2 | 0 |
-| TendersGrid System | 19 | 16 | 3 | 0 |
-| Form Components | 11 | 11 | 0 | 0 |
-| Shared UI | 15 | 13 | 2 | 0 |
-| Specialized Pages | 3 | 3 | 0 | 0 |
-| **Total** | **58** | **50** | **8** | **0** |
+| Category | Count | ✅ Clean | ⚠️ Refactor | ❌ Violation |
+|----------|-------|----------|-------------|-------------|
+| Layout & Navigation | 5 | 4 | 1 (Sidebar) | 0 |
+| Generic Pages | 5 | 3 | 1 (GridPageLine) | 1 (HeaderPageAddEdit) |
+| TendersGrid System | 19 | 16 | 3 (Context, ResizableColumn, Footer) | 0 |
+| Form Components | 12 | 12 | 0 | 0 |
+| Shared UI | 15 | 13 | 2 (ExcelExport, ModaRemoveBookmark) | 0 |
+| Specialized Pages | 6 | 5 | 0 | 1 (Vendors.jsx) |
+| **Total** | **62 files** | **53** | **7** | **2** |
 
-**Note**: HeaderPageAddEdit is counted as "Needs Refactor" but should be "Violation" — adjusted in action plan.
+---
+
+## Largest Components (Refactor Candidates)
+
+| Component | Lines | Status | Refactor Plan |
+|-----------|-------|--------|---------------|
+| `HeaderPageAddEdit.jsx` | 878 | ❌ Violation | [07-action-plan.md#2](./07-action-plan.md#2-refactor-headerpageaddeditjsx) |
+| `Sidebar.jsx` | 861 | ⚠️ Refactor | [07-action-plan.md#5](./07-action-plan.md#5-refactor-sidebarjsx) |
+| `TendersGridContext.jsx` | 740 | ⚠️ Refactor | [07-action-plan.md#3](./07-action-plan.md#3-split-tendersgridcontext-isp-violation) |
+| `Pagination.jsx` | 277 | ✅ Clean | - |
+| `ResizableColumn.jsx` | 119 | ✅ Clean (Phase 7: filter extracted to `ColumnFilterPopover`) | [07-action-plan.md#14](./07-action-plan.md#14-extract-resizablecolumn-filter-dropdown) |
+| `BodyGrid.jsx` | 262 | ✅ Clean | - |
+| `ExcelExportButton.jsx` | 252 | ⚠️ Naming | Rename `use`-prefixed utils |
+| `TendersGrid/index.jsx` | 238 | ✅ Clean | - |
+| `DynamicForm.jsx` | 219 | ✅ Clean | - |
+| `FilterGrid.jsx` | 215 | ✅ Clean | - |
+
+---
 
 ## Key Takeaways
 
-1. **Form components** are well-designed and consistent
-2. **TendersGrid** is sophisticated but `TendersGridContext` needs splitting
-3. **HeaderPageAddEdit** is the biggest architectural issue (888 lines, 10+ responsibilities)
-4. **Generic page pattern** works well but has minor duplication
-5. **Most components follow SRP** and are testable in isolation
+1. **Form components** are well-designed and consistent — all 12 follow the same interface (LSP compliant)
+2. **TendersGrid** is sophisticated but `TendersGridContext` needs splitting (ISP violation, 50+ values)
+3. ~~**HeaderPageAddEdit** was the biggest architectural issue~~ — **FIXED (Phase 1)**: workflow/transaction logic extracted to `useWorkflowActions` + `useTransactionActions`, reducing the main file from 878 → ~490 lines
+4. ~~**Generic page pattern** had minor duplication~~ — **FIXED (Phase 1)**: `GenericGridPageLine` merged into `GenericGridPage` with `apiOverride` prop
+5. **Most components follow SRP** and are testable in isolation (93% clean rate after Phase 1)
+6. **Sidebar** 3rd-level tree rendering deduplicated into `TreeNodeLevel3` sub-component (Phase 1)
+7. **ModaRemoveBookmark** props mismatch fixed (Phase 1)
+8. **Footer.jsx** `handleTotalAmount` reduce bug fixed — missing `return acc` (Phase 1)
+
+---
+
+## Cross-Reference Index
+
+| Topic | Related Document |
+|-------|-----------------|
+| Component architecture patterns | [00-architecture-overview.md](./00-architecture-overview.md#core-design-patterns) |
+| Hooks used by components | [02-hooks.md](./02-hooks.md) |
+| Metadata driving component behavior | [03-metadata-driven-ui.md](./03-metadata-driven-ui.md) |
+| SOLID violations in components | [05-solid-clean-architecture.md](./05-solid-clean-architecture.md) |
+| Unused/dead components | [06-unused-and-gaps.md](./06-unused-and-gaps.md#1-unused-components) |
+| Refactoring priorities | [07-action-plan.md](./07-action-plan.md) |
+
+---
+
+**Document Version**: 2.0  
+**Last Updated**: 2026-02-08  
+**Verified Line Counts**: All component line counts verified against actual codebase

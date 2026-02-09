@@ -1,9 +1,8 @@
 import { useState, useCallback } from "react";
 import { Api } from "../services/Api";
-import dummyData from "../ConfigData/dummyData.json";
+// Phase 2: Removed unused dummyData import (see docs/06-unused-and-gaps.md#34-dummydatajson)
 
-
-const useGridData = (ApiGet, setDataGrid, setIsLoading,isGetAll = true) => {
+const useGridData = (ApiGet, setDataGrid, setIsLoading, isGetAll = true) => {
   const [totalRow, setTotalRow] = useState(0);
 
   // Current language logic

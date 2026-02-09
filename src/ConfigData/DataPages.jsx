@@ -1,6 +1,8 @@
 import GenericGridPage from "../Components/GenericGridPage";
 import GenericAddEditPage from "../Components/GenericAddEditPage";
 import { VendorsGrid, VendorGroupsGrid, CurrenciesGrid, DepartmentsGrid, ItemsGrid, SubmissionDocumentsGrid } from "./GridSchemas";
+// Phase 6 note: These are placeholder schemas with empty arrays.
+// They spread empty properties into Vendors config. Kept for future implementation.
 import { VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
 import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
@@ -44,7 +46,9 @@ export const DataPages = {
         titleAdd: "addSubmissionDocument",
         titleEdit: "editSubmissionDocument",
         subModule: "Transaction",
-        keyPage: "SubmissionDocuments"
+        keyPage: "SubmissionDocuments",
+        // Disable row checkbox selection for non-new documents (status !== 1)
+        disableRowSelect: (row) => row.status !== 1,
     },
     Reports: {
         Api: "Reports",

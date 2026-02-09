@@ -1,15 +1,15 @@
 import { memo } from "react";
- 
 
 /**
  * IMPORTANT: These format functions should NOT be hooks
  * They should be imported from utility files as regular functions
  */
-import { useFormatDate } from "./useFormatDate";
-import useFormatNumber from "./useFormatNumber";
-import useFormatTime from "./useFormatTime";
+import { useFormatDate } from "./formatDate";
+import useFormatNumber from "./formatNumber";
+import useFormatTime from "./formatTime";
 import Resources from "../ConfigData/resources.json";
 import Generallists from "../ConfigData/Generallist.json";
+import { hasFormatter, getFormatter } from "./cellFormatters";
 
 /**
  * Builds route for add/edit pages
@@ -212,12 +212,34 @@ export const useformatDataGrid = (
       );
 
     default: {
+      // Phase 7 (OCP): Check the formatter registry before falling back to plain text.
+      // New column types can be added via registerFormatter() in cellFormatters.js
+      // without modifying this switch statement.
+      if (hasFormatter(column.type)) {
+        const formatter = getFormatter(column.type);
+        return formatter({
+          value,
+          column,
+          row,
+          currentLanguage,
+          className,
+          routeKey,
+          helpers: {
+            formatDate: useFormatDate,
+            formatNumber: useFormatNumber,
+            formatTime: useFormatTime,
+            Resources,
+            Generallists,
+            buildRouteAddEdit,
+            stopPropagation,
+            CellAvatar,
+            StatusCell,
+          },
+        });
+      }
 
-
-      // Plain text rendering
-      const displayValue = value;
-
-      return <p className={className}>{displayValue}</p>;
+      // Plain text rendering (ultimate fallback)
+      return <p className={className}>{value}</p>;
     }
   }
 };

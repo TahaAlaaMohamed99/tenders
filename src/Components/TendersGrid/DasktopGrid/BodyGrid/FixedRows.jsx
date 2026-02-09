@@ -22,12 +22,16 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
     routeKey,
     handleRowSelect,
     isSelected,
+    disableRowSelect,
     currentLanguage,
     isOpenChildGrid,
     toggleChildGrid,
     openedChildGrid,
     setOpenedChildGrid,
    } = useContext(TendersGridContext);
+
+  // Per-row checkbox disabled check (e.g. status !== "new")
+  const isRowSelectDisabled = disableRowSelect ? disableRowSelect(row) : false;
 
   return (
     <div
@@ -45,6 +49,7 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
             value={selectedRows.some(r => r.recId == row.recId)}
             onChange={() => handleRowSelect(row)}
             aria-label={`Select row ${row.recId}`}
+            disabled={isRowSelectDisabled}
           />
         </div>
       )}

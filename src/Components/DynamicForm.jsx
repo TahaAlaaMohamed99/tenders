@@ -159,7 +159,16 @@ const DynamicForm = React.memo(React.forwardRef(({
 
     const renderField = useCallback((field) => {
         const Component = components[field.type];
-        if (!Component) return <div key={field.name}>Missing {field.type}</div>;
+        if (!Component) {
+            // Phase 3: Added console error for missing component types
+            // @see docs/06-unused-and-gaps.md#112-dynamicform-missing-component-error
+            console.error(`[DynamicForm] Missing component for field type: "${field.type}" (field: "${field.name}")`);
+            return (
+                <div key={field.name} className="text-error text-sm p-2 border border-error rounded">
+                    Unsupported field type: {field.type}
+                </div>
+            );
+        }
 
         const handleChange = (field.type === 'select' || field.type === 'async-select')
             ? (e) => formik.setFieldValue(field.name, e) 
