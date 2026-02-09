@@ -618,27 +618,27 @@ export default function Sidebar() {
     setExpandedModule(isOpening ? module.keyModule : null);
 
     // Navigate to first child if no child is currently active
-    const hasActiveChild =
-      module.subItems &&
-      module.subItems.some((item) => {
-        const fullPath = item.routeModule
-          ? `/${item.routeModule}/${item.routePage}`
-          : `/${item.routePage}`;
-        return isActiveRoute(fullPath);
-      });
+  //   const hasActiveChild =
+  //     module.subItems &&
+  //     module.subItems.some((item) => {
+  //       const fullPath = item.routeModule
+  //         ? `/${item.routeModule}/${item.routePage}`
+  //         : `/${item.routePage}`;
+  //       return isActiveRoute(fullPath);
+  //     });
 
-    if (
-      isOpening &&
-      !hasActiveChild &&
-      module.subItems &&
-      module.subItems.length > 0
-    ) {
-      const firstItem = module.subItems[0];
-      const fullPath = firstItem.routeModule
-        ? `/${firstItem.routeModule}/${firstItem.routePage}`
-        : `/${firstItem.routePage}`;
-      handleNavigation(fullPath);
-    }
+  //   if (
+  //     isOpening &&
+  //     !hasActiveChild &&
+  //     module.subItems &&
+  //     module.subItems.length > 0
+  //   ) {
+  //     const firstItem = module.subItems[0];
+  //     const fullPath = firstItem.routeModule
+  //       ? `/${firstItem.routeModule}/${firstItem.routePage}`
+  //       : `/${firstItem.routePage}`;
+  //     handleNavigation(fullPath);
+  //   }
   };
 
   // --- Handlers for Hover/Click in Collapsed Mode ---
@@ -647,27 +647,27 @@ export default function Sidebar() {
     if (!isCollapsed) return;
 
     // Navigate to first child if available and not already active
-    const hasActiveChild =
-      module.subItems &&
-      module.subItems.some((item) => {
-        const fullPath = item.routeModule
-          ? `/${item.routeModule}/${item.routePage}`
-          : `/${item.routePage}`;
-        return isActiveRoute(fullPath);
-      });
+    // const hasActiveChild =
+    //   module.subItems &&
+    //   module.subItems.some((item) => {
+    //     const fullPath = item.routeModule
+    //       ? `/${item.routeModule}/${item.routePage}`
+    //       : `/${item.routePage}`;
+    //     return isActiveRoute(fullPath);
+    //   });
 
-    if (
-      !hasActiveChild &&
-      module.subMenu &&
-      module.subItems &&
-      module.subItems.length > 0
-    ) {
-      const firstItem = module.subItems[0];
-      const fullPath = firstItem.routeModule
-        ? `/${firstItem.routeModule}/${firstItem.routePage}`
-        : `/${firstItem.routePage}`;
-      handleNavigation(fullPath);
-    }
+    // if (
+    //   !hasActiveChild &&
+    //   module.subMenu &&
+    //   module.subItems &&
+    //   module.subItems.length > 0
+    // ) {
+    //   const firstItem = module.subItems[0];
+    //   const fullPath = firstItem.routeModule
+    //     ? `/${firstItem.routeModule}/${firstItem.routePage}`
+    //     : `/${firstItem.routePage}`;
+    //   handleNavigation(fullPath);
+    // }
 
     if (module.subMenu) {
       e.preventDefault();
@@ -678,6 +678,7 @@ export default function Sidebar() {
           : { module, rect }
       );
     } else {
+      // For standalone items, navigate directly
       handleNavigation(module.routePage ? `/${module.routePage}` : "/");
     }
   };
