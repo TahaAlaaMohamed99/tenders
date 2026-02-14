@@ -99,23 +99,53 @@ const DynamicForm = React.memo(React.forwardRef(({
 
         return Yup.object().shape(
             sections.reduce((acc, section) => {
-                section.fields.forEach(field => {
+                section.fields.forEach((field) => {
                     let schema;
                     switch (field.type) {
-                        case 'number': schema = Yup.number().typeError('Must be a number'); break;
-                        case 'email': schema = Yup.string().email('Invalid email format'); break;
-                        case 'date': schema = Yup.date().nullable().typeError('Invalid date'); break;
-                        case 'checkbox': schema = Yup.boolean(); break;
-                        default: schema = Yup.string();
+                        case "number":
+                            schema = Yup.number().typeError("Must be a number");
+                            break;
+                        case "email":
+                            schema = Yup.string().email("Invalid email format");
+                            break;
+                        case "date":
+                        case "datetime":
+                            schema = Yup.date().nullable().typeError("Invalid date");
+                            break;
+                        case "checkbox":
+                            schema = Yup.boolean();
+                            break;
+                        default:
+                            schema = Yup.string();
                     }
-                    if (field.validation) {
-                         if (field.validation.required) schema = schema.required(field.validation.message || `${field.label || 'Field'} is required`);
-                         if (field.validation.min !== undefined) schema = field.type === 'number' ? schema.min(field.validation.min) : schema.min(field.validation.min);
-                         if (field.validation.max !== undefined) schema = field.type === 'number' ? schema.max(field.validation.max) : schema.max(field.validation.max);
-                         if (field.validation.matches) schema = schema.matches(new RegExp(field.validation.matches), field.validation.message);
-                         if (field.validation.email) schema = schema.email(field.validation.message);
-                    } else if (field.required) {
-                        schema = schema.required(`${field.label || 'Field'} is required`);
+                    // Support both nested 'validation' object and root-level attributes
+                    const v = field.validation || {};
+                    
+                    if (v.required || field.required) {
+                        schema = schema.required(v.message || `${field.label || "Field"} is required`);
+                    }
+
+                    if (field.type === 'number') {
+                        const min = v.min !== undefined ? v.min : field.min;
+                        const max = v.max !== undefined ? v.max : field.max;
+                        if (min !== undefined) schema = schema.min(min, `Must be at least ${min}`);
+                        if (max !== undefined) schema = schema.max(max, `Must be at most ${max}`);
+                    } else {
+                        // For strings, map min/max/minLength/maxLength to Yup length validation
+                        const minLen = v.minLength !== undefined ? v.minLength : (field.minLength !== undefined ? field.minLength : (v.min !== undefined ? v.min : field.min));
+                        const maxLen = v.maxLength !== undefined ? v.maxLength : (field.maxLength !== undefined ? field.maxLength : (v.max !== undefined ? v.max : field.max));
+                        
+                        if (minLen !== undefined) schema = schema.min(minLen, `Must be at least ${minLen} characters`);
+                        if (maxLen !== undefined) schema = schema.max(maxLen, `Must be at most ${maxLen} characters`);
+                    }
+
+                    const pattern = v.matches || field.pattern;
+                    if (pattern) {
+                         schema = schema.matches(new RegExp(pattern), v.message || "Invalid format");
+                    }
+
+                    if (v.email) {
+                        schema = schema.email(v.message || "Invalid email format");
                     }
                     acc[field.name] = schema;
                 });
@@ -179,49 +209,93 @@ const DynamicForm = React.memo(React.forwardRef(({
             ? generallistOptions[field.generallist] || []
             : field.options;
 
+        // Apply filterOptionsBy if present in schema
+        if (typeof field.filterOptionsBy === "function" && Array.isArray(options)) {
+          options = field.filterOptionsBy(options, formik.values);
+        }
+
         // For select with generallist, find the selected option object
-        const selectValue = field.generallist && formik.values[field.name]
-            ? options.find(opt => opt.value === formik.values[field.name]) || null
+        const selectValue =
+          field.generallist && formik.values[field.name]
+            ? options.find(
+                (opt) => opt.value === formik.values[field.name],
+              ) || null
             : formik.values[field.name];
 
+        // Support isDisabled from schema
+        const isDisabled =
+          typeof field.isDisabled === "function"
+            ? field.isDisabled(formik.values)
+            : field.isDisabled;
+
+        // Support dynamic placeholder from schema (function or static)
+        let placeholder = field.placeholder;
+        if (typeof field.placeholder === "function") {
+          placeholder = field.placeholder(formik.values, field, formik);
+        }
+
         return (
-            <Component
-                {...field}
-                key={field.name}
-                ref={(el) => {
-                    if (el) fieldRefs.current.set(field.name, el);
-                    else fieldRefs.current.delete(field.name);
-                }}
-                options={options}
-                value={field.type === 'select' ? selectValue : formik.values[field.name]}
-                onChange={handleChange}
-                errors={formik.errors[field.name]}
-                touched={formik.touched[field.name]}
-                titleGenerallist={!!field.generallist}
-                ResourcePage={field.generallist || field.ResourcePage || ResourcePage}
-                isLoading={field.generallist ? isLoadingOptions : false}
-                className="mb-4"
-            />
+          <Component
+            {...field}
+            key={field.name}
+            ref={(el) => {
+              if (el) fieldRefs.current.set(field.name, el);
+              else fieldRefs.current.delete(field.name);
+            }}
+            options={options}
+            value={
+              field.type === "select"
+                ? selectValue
+                : formik.values[field.name]
+            }
+            onChange={handleChange}
+            errors={formik.errors[field.name]}
+            touched={formik.touched[field.name]}
+            titleGenerallist={!!field.generallist}
+            ResourcePage={
+              field.generallist || field.ResourcePage || ResourcePage
+            }
+            isLoading={field.generallist ? isLoadingOptions : false}
+            isDisabled={isDisabled}
+            placeholder={placeholder}
+            className="mb-4"
+          />
         );
-    }, [components, formik.values, formik.errors, formik.touched, formik.handleChange, formik.setFieldValue, generallistOptions, isLoadingOptions]); 
+      },
+      [
+        components,
+        formik.values,
+        formik.errors,
+        formik.touched,
+        formik.handleChange,
+        formik.setFieldValue,
+        generallistOptions,
+        isLoadingOptions,
+      ],
+    );
 
     return (
-        <div className="flex-1">
-            {/* Form Sections */}
-            {sections?.map((section, idx) => (
-                <div key={idx} className={idx > 0 ? "mt-8" : ""}>
-                    {/* Section Fields */}
-                    <div className="grid grid-cols-12 gap-x-6 gap-y-4">
-                        {section.fields.map(field => (
-                            <div key={field.name} className={field.gridWidth || 'col-span-12'}>
-                                {renderField(field)}
-                            </div>
-                        ))}
-                    </div>
+      <div className="flex-1">
+        {/* Form Sections */}
+        {sections?.map((section, idx) => (
+          <div key={idx} className={idx > 0 ? "mt-8" : ""}>
+            {/* Section Fields */}
+            <div className="grid grid-cols-12 gap-x-6 gap-y-4">
+              {section.fields.map((field) => (
+                <div
+                  key={field.name}
+                  className={field.gridWidth || "col-span-12"}
+                >
+                  {renderField(field)}
                 </div>
-            ))}
-        </div>
-    );
-}));
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      );
+    },
+  ),
+);
 
 export default DynamicForm;

@@ -221,7 +221,15 @@
     "postFailed": { "en": "Failed to post", "ar": "فشل الترحيل" },
     "unPostFailed": { "en": "Failed to unpost", "ar": "فشل إلغاء الترحيل" },
     "validatePostFailed": { "en": "Failed to validate post", "ar": "فشل التحقق من الترحيل" },
-    "validateUnPostFailed": { "en": "Failed to validate unpost", "ar": "فشل التحقق من إلغاء الترحيل" }
+    "validateUnPostFailed": { "en": "Failed to validate unpost", "ar": "فشل التحقق من إلغاء الترحيل" },
+    "loading": { "en": "Loading...", "ar": "جاري التحميل..." },
+    "loadingSave": { "en": "Saving...", "ar": "جاري الحفظ..." },
+    "loadingEdit": { "en": "Updating...", "ar": "جاري التحديث..." },
+    "loadingDelete": { "en": "Deleting...", "ar": "جاري الحذف..." },
+    "loadingSubmit": { "en": "Submitting...", "ar": "جاري الإرسال..." },
+    "loadingData": { "en": "Loading data...", "ar": "جاري تحميل البيانات..." },
+    "noResults": { "en": "No results found", "ar": "لا توجد نتائج" },
+    "selectOption": { "en": "Select an option", "ar": "اختر خياراً" }
   },
     "NoYes": {
       "title": { "en": "Yes/No", "ar": "نعم/لا" },

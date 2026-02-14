@@ -52,7 +52,13 @@ export const VendorsForm = {
                         api: "VendorGroups/GetLookup",
                         labelKey: "vendorGroupId",
                         valueKey: "vendorGroupId"
-                    }
+                    },
+                    dependsOn: "dataAreaId", // tells the form this field depends on another
+                    filterOptionsBy: (options, values) =>
+                        options.filter(
+                            (opt) => opt.dataAreaId?.toLowerCase() === values.dataAreaId?.toLowerCase()
+                        ), // filters options based on the value of dataAreaId
+                    isDisabled: (values) => !values.dataAreaId // disables if no dataAreaId
                 },
                 {
                     name: "currencyCode",

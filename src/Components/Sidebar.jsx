@@ -113,6 +113,7 @@ const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }
       ref={menuRef}
       style={style}
       className="bg-white border border-borderColor shadow-2xl rounded-2xl p-2 w-56 animate-in fade-in zoom-in-95 duration-200"
+      onMouseLeave={onClose}
     >
       <ul className="space-y-1">
         {/* Direct Items */}
@@ -188,7 +189,8 @@ const SidebarItem = memo(({
     toggleModule, 
     handleNavigation, 
     isActiveRoute, 
-    handleCollapsedClick,
+    // handleCollapsedClick,
+    handleCollapsedHover,
     activeFloatingMenu 
 }) => {
   
@@ -263,9 +265,21 @@ const SidebarItem = memo(({
         <div>
           <div
             className="relative"
-            onClick={(e) =>
-              isCollapsed ? handleCollapsedClick(e, module) : toggleModule(module)
-            }
+            // onClick={(e) =>
+            //   isCollapsed ? handleCollapsedClick(e, module) : toggleModule(module)
+            // }
+            onClick={(e) => {
+              if (!isCollapsed) {
+                toggleModule(module);
+              }
+              // In collapsed mode, click does nothing special - hover shows the menu
+            }}
+            onMouseEnter={(e) => {
+              if (isCollapsed && module.subMenu) {
+                const rect = e.currentTarget.getBoundingClientRect();
+                handleCollapsedHover(module, rect);
+              }
+            }}
           >
             <CustomBtn
               type="button"
@@ -610,56 +624,65 @@ export default function Sidebar() {
     setExpandedModule(isOpening ? module.keyModule : null);
 
     // Navigate to first child if no child is currently active
-    const hasActiveChild =
-      module.subItems &&
-      module.subItems.some((item) => {
-        const fullPath = item.routeModule
-          ? `/${item.routeModule}/${item.routePage}`
-          : `/${item.routePage}`;
-        return isActiveRoute(fullPath);
-      });
+  //   const hasActiveChild =
+  //     module.subItems &&
+  //     module.subItems.some((item) => {
+  //       const fullPath = item.routeModule
+  //         ? `/${item.routeModule}/${item.routePage}`
+  //         : `/${item.routePage}`;
+  //       return isActiveRoute(fullPath);
+  //     });
 
-    if (
-      isOpening &&
-      !hasActiveChild &&
-      module.subItems &&
-      module.subItems.length > 0
-    ) {
-      const firstItem = module.subItems[0];
-      const fullPath = firstItem.routeModule
-        ? `/${firstItem.routeModule}/${firstItem.routePage}`
-        : `/${firstItem.routePage}`;
-      handleNavigation(fullPath);
-    }
+  //   if (
+  //     isOpening &&
+  //     !hasActiveChild &&
+  //     module.subItems &&
+  //     module.subItems.length > 0
+  //   ) {
+  //     const firstItem = module.subItems[0];
+  //     const fullPath = firstItem.routeModule
+  //       ? `/${firstItem.routeModule}/${firstItem.routePage}`
+  //       : `/${firstItem.routePage}`;
+  //     handleNavigation(fullPath);
+  //   }
   };
 
-  // --- Handlers for Hover/Click in Collapsed Mode ---
+  // --- Handlers for Hover in Collapsed Mode ---
+  const handleCollapsedHover = (module, rect) => {
+    if (!isCollapsed) return;
+    setActiveFloatingMenu({ module, rect });
+  };
+
+  const handleCollapsedLeave = () => {
+    if (!isCollapsed) return;
+    setActiveFloatingMenu(null);
+  };
 
   const handleCollapsedClick = (e, module) => {
     if (!isCollapsed) return;
 
     // Navigate to first child if available and not already active
-    const hasActiveChild =
-      module.subItems &&
-      module.subItems.some((item) => {
-        const fullPath = item.routeModule
-          ? `/${item.routeModule}/${item.routePage}`
-          : `/${item.routePage}`;
-        return isActiveRoute(fullPath);
-      });
+    // const hasActiveChild =
+    //   module.subItems &&
+    //   module.subItems.some((item) => {
+    //     const fullPath = item.routeModule
+    //       ? `/${item.routeModule}/${item.routePage}`
+    //       : `/${item.routePage}`;
+    //     return isActiveRoute(fullPath);
+    //   });
 
-    if (
-      !hasActiveChild &&
-      module.subMenu &&
-      module.subItems &&
-      module.subItems.length > 0
-    ) {
-      const firstItem = module.subItems[0];
-      const fullPath = firstItem.routeModule
-        ? `/${firstItem.routeModule}/${firstItem.routePage}`
-        : `/${firstItem.routePage}`;
-      handleNavigation(fullPath);
-    }
+    // if (
+    //   !hasActiveChild &&
+    //   module.subMenu &&
+    //   module.subItems &&
+    //   module.subItems.length > 0
+    // ) {
+    //   const firstItem = module.subItems[0];
+    //   const fullPath = firstItem.routeModule
+    //     ? `/${firstItem.routeModule}/${firstItem.routePage}`
+    //     : `/${firstItem.routePage}`;
+    //   handleNavigation(fullPath);
+    // }
 
     if (module.subMenu) {
       e.preventDefault();
@@ -670,6 +693,7 @@ export default function Sidebar() {
           : { module, rect }
       );
     } else {
+      // For standalone items, navigate directly
       handleNavigation(module.routePage ? `/${module.routePage}` : "/");
     }
   };
@@ -679,11 +703,10 @@ export default function Sidebar() {
       {/* Main Sidebar Container */}
       <aside
         className={`
-                m-2 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[calc(100vh-16px)] flex flex-col font-sans rounded-2xl border-borderColor sticky top-2
-                relative transition-all duration-300 ease-in-out
-                ${isCollapsed ? "w-16 px-2" : "w-64 px-2"} 
-                z-40
-            `}
+            m-2 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[calc(100vh-16px)] flex flex-col font-sans rounded-2xl border-borderColor sticky top-2
+            ${isCollapsed ? "w-16 px-2" : "w-64 px-2"} 
+            z-40
+          `}
       >
         {/* Toggle Button */}
         <button
@@ -732,6 +755,7 @@ export default function Sidebar() {
                     handleNavigation={handleNavigation}
                     isActiveRoute={isActiveRoute}
                     handleCollapsedClick={handleCollapsedClick}
+                    handleCollapsedHover={handleCollapsedHover}
                     activeFloatingMenu={activeFloatingMenu}
                   />
                 ))}
@@ -758,6 +782,7 @@ export default function Sidebar() {
                       handleNavigation={handleNavigation}
                       isActiveRoute={isActiveRoute}
                       handleCollapsedClick={handleCollapsedClick}
+                      handleCollapsedHover={handleCollapsedHover}
                       activeFloatingMenu={activeFloatingMenu}
                     />
                   ))}

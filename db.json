@@ -1,0 +1,216 @@
+{
+  "Vendors": [
+    {
+      "recId": 1,
+      "code": "V001",
+      "name": "Vendor One",
+      "vendorAccountNumber": "ACC001",
+      "vendorGroupId": "VG001",
+      "currencyCode": "USD",
+      "dataAreaId": "company1",
+      "vendorPartyType": "Organization",
+      "createdOn": "2024-01-15T10:30:00Z"
+    },
+    {
+      "recId": 2,
+      "code": "V002",
+      "name": "Vendor Two",
+      "vendorAccountNumber": "ACC002",
+      "vendorGroupId": "VG002",
+      "currencyCode": "EUR",
+      "dataAreaId": "company2",
+      "vendorPartyType": "Individual",
+      "createdOn": "2024-01-20T14:45:00Z"
+    }
+  ],
+  "VendorGroups": [
+    {
+      "vendorGroupId": "VG001",
+      "description": "Local Suppliers",
+      "dataAreaId": "company1"
+    },
+    {
+      "vendorGroupId": "VG002",
+      "description": "International Suppliers",
+      "dataAreaId": "company2"
+    },
+    {
+      "vendorGroupId": "VG003",
+      "description": "Premium Partners",
+      "dataAreaId": "company1"
+    }
+  ],
+  "Currencies": [
+    {
+      "recId": 1,
+      "currencyCode": "USD",
+      "name": "US Dollar",
+      "createdOn": "2023-01-01T00:00:00Z"
+    },
+    {
+      "recId": 2,
+      "currencyCode": "EUR",
+      "name": "Euro",
+      "createdOn": "2023-01-01T00:00:00Z"
+    },
+    {
+      "recId": 3,
+      "currencyCode": "GBP",
+      "name": "British Pound",
+      "createdOn": "2023-01-01T00:00:00Z"
+    },
+    {
+      "recId": 4,
+      "currencyCode": "SAR",
+      "name": "Saudi Riyal",
+      "createdOn": "2023-01-01T00:00:00Z"
+    }
+  ],
+  "Departments": [
+    {
+      "recId": 1,
+      "code": "DEPT001",
+      "name": "Finance",
+      "operatingUnitNumber": "OU001",
+      "operatingUnitType": "Division",
+      "createdOn": "2023-06-01T08:00:00Z"
+    },
+    {
+      "recId": 2,
+      "code": "DEPT002",
+      "name": "Operations",
+      "operatingUnitNumber": "OU002",
+      "operatingUnitType": "Department",
+      "createdOn": "2023-06-01T08:00:00Z"
+    },
+    {
+      "recId": 3,
+      "code": "DEPT003",
+      "name": "Procurement",
+      "operatingUnitNumber": "OU003",
+      "operatingUnitType": "Department",
+      "createdOn": "2023-06-01T08:00:00Z"
+    }
+  ],
+  "Item": [
+    {
+      "recId": 1,
+      "code": "IT001",
+      "itemNumber": "ITEM-001",
+      "searchName": "Office Chair",
+      "dataAreaId": "company1",
+      "inventoryUnitSymbol": "PCS",
+      "productType": "Product",
+      "createdOn": "2023-09-10T12:30:00Z"
+    },
+    {
+      "recId": 2,
+      "code": "IT002",
+      "itemNumber": "ITEM-002",
+      "searchName": "Desk Lamp",
+      "dataAreaId": "company1",
+      "inventoryUnitSymbol": "PCS",
+      "productType": "Product",
+      "createdOn": "2023-09-15T09:15:00Z"
+    },
+    {
+      "recId": 3,
+      "code": "IT003",
+      "itemNumber": "ITEM-003",
+      "searchName": "Cleaning Service",
+      "dataAreaId": "company2",
+      "inventoryUnitSymbol": "HRS",
+      "productType": "Service",
+      "createdOn": "2023-09-20T14:00:00Z"
+    }
+  ],
+  "SubmissionDocument": [
+    {
+      "recId": 1,
+      "code": "SD001",
+      "name": "RFQ 2024-001",
+      "description": "Request for Quotation - Office Supplies",
+      "biddingType": "OpenBidding",
+      "status": "Published",
+      "transDate": "2024-02-01T00:00:00Z",
+      "executionDate": "2024-02-15T00:00:00Z",
+      "createdOn": "2024-01-25T10:00:00Z"
+    },
+    {
+      "recId": 2,
+      "code": "SD002",
+      "name": "Tender 2024-002",
+      "description": "International Tender - IT Services",
+      "biddingType": "ClosedBidding",
+      "status": "Draft",
+      "transDate": "2024-03-01T00:00:00Z",
+      "executionDate": "2024-03-20T00:00:00Z",
+      "createdOn": "2024-01-30T15:30:00Z"
+    }
+  ],
+  "SubmissionDocumentLine": [
+    {
+      "recId": 1,
+      "submissionDocId": 1,
+      "itemNumber": "ITEM-001",
+      "itemName": "Office Chair",
+      "purchaseQuantity": 50,
+      "departmentName": "Finance",
+      "createdOn": "2024-01-25T10:00:00Z"
+    },
+    {
+      "recId": 2,
+      "submissionDocId": 1,
+      "itemNumber": "ITEM-002",
+      "itemName": "Desk Lamp",
+      "purchaseQuantity": 100,
+      "departmentName": "Operations",
+      "createdOn": "2024-01-25T10:00:00Z"
+    }
+  ],
+  "Vendors/GetdataArea": [
+    {
+      "legalEntityId": "company1",
+      "name": "Company A"
+    },
+    {
+      "legalEntityId": "company2",
+      "name": "Company B"
+    }
+  ],
+  "VendorGroups/GetLookup": [
+    {
+      "vendorGroupId": "VG001",
+      "description": "Local Suppliers",
+      "dataAreaId": "company1"
+    },
+    {
+      "vendorGroupId": "VG002",
+      "description": "International Suppliers",
+      "dataAreaId": "company2"
+    },
+    {
+      "vendorGroupId": "VG003",
+      "description": "Premium Partners",
+      "dataAreaId": "company1"
+    }
+  ],
+  "Currencies/GetLookup": [
+    {
+      "currencyCode": "USD",
+      "name": "US Dollar"
+    },
+    {
+      "currencyCode": "EUR",
+      "name": "Euro"
+    },
+    {
+      "currencyCode": "GBP",
+      "name": "British Pound"
+    },
+    {
+      "currencyCode": "SAR",
+      "name": "Saudi Riyal"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./Styles/main.scss";
 import store from "./store/index.jsx";
 import { Provider } from "react-redux";
+import "./utils/mockServerInit.js"; // Initialize mock server mode indicator
 
 // Phase 7 (P3 #18): Runtime metadata validation — dev-only, zero cost in production
 if (import.meta.env.DEV) {
