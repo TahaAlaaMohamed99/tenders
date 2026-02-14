@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/useFromLocalStorage";
+import { getApiBaseUrl } from "../config/apiConfig";
 
 /**
  * API Service
@@ -9,12 +10,12 @@ import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/
  * - Dynamic language headers
  * - Comprehensive error handling
  * - 401/403 response handling
+ * - Support for mock server via JSON server
  */
 
 // Create base Axios instance
-const config = getLocalStorageAtob('Configuration') || {};
 export const Api = axios.create({
-  baseURL: config?.urlApi,
+  baseURL: getApiBaseUrl(),
   headers: {
     Accept: "*/*",
     // Note: Content-Type is set automatically by Axios based on request body
@@ -46,8 +47,7 @@ Api.interceptors.request.use(
     
     // Ensure base URL is set (handles lazy config loading)
     if (!config.baseURL) {
-      const latestConfig = getLocalStorageAtob('Configuration') || {};
-      config.baseURL = latestConfig?.urlApi;
+      config.baseURL = getApiBaseUrl();
     }
     
     return config;

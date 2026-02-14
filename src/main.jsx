@@ -4,6 +4,7 @@ import App from "./App.jsx";
 import "./Styles/main.scss";
 import store from "./store/index.jsx";
 import { Provider } from "react-redux";
+import "./utils/mockServerInit.js"; // Initialize mock server mode indicator
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

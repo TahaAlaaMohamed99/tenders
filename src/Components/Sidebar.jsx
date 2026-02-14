@@ -711,11 +711,10 @@ export default function Sidebar() {
       {/* Main Sidebar Container */}
       <aside
         className={`
-                m-2 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[calc(100vh-16px)] flex flex-col font-sans rounded-2xl border-borderColor sticky top-2
-                relative transition-all duration-300 ease-in-out
-                ${isCollapsed ? "w-16 px-2" : "w-64 px-2"} 
-                z-40
-            `}
+            m-2 bg-white shadow-[4px_0_24px_rgba(0,0,0,0.02)] h-[calc(100vh-16px)] flex flex-col font-sans rounded-2xl border-borderColor sticky top-2
+            ${isCollapsed ? "w-16 px-2" : "w-64 px-2"} 
+            z-40
+          `}
       >
         {/* Toggle Button */}
         <button
