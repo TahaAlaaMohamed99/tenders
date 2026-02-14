@@ -12,20 +12,11 @@ if (import.meta.env.DEV) {
     Promise.all([
       import("./ConfigData/SidebarLogs.json"),
       import("./ConfigData/DataPages.jsx"),
-      import("./ConfigData/GridSchemas.jsx"),
       import("./ConfigData/FormSchemas.jsx"),
-    ]).then(([sidebarModule, dataPagesModule, gridModule, formModule]) => {
+    ]).then(([sidebarModule, dataPagesModule, formModule]) => {
       validateAllMetadata({
         sidebarLogs: sidebarModule.default,
         dataPages: dataPagesModule.DataPages,
-        gridSchemas: {
-          Vendors: gridModule.VendorsGrid,
-          VendorGroups: gridModule.VendorGroupsGrid,
-          Currencies: gridModule.CurrenciesGrid,
-          Departments: gridModule.DepartmentsGrid,
-          Items: gridModule.ItemsGrid,
-          SubmissionDocuments: gridModule.SubmissionDocumentsGrid,
-        },
         formSchemas: {
           Vendors: formModule.VendorsForm,
           VendorGroups: formModule.VendorGroupsForm,

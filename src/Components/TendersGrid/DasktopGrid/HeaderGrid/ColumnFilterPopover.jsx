@@ -19,7 +19,7 @@ import useGetGenerallist from "../../../../Hooks/useGetGenerallist";
  * Manages its own local filter state, fetches lookup/general-list
  * options on open, and delegates apply/clear to TendersGridContext.
  *
- * @param {object}  column       – Column definition from GridSchemas
+ * @param {object}  column       – Column definition (from DataPages/CommonGridSchemas)
  * @param {boolean} isOpen       – Whether the popover is visible
  * @param {function} onClose     – Called to close the popover
  * @param {object}  triggerRef   – React ref to the trigger element (for positioning)

@@ -179,7 +179,7 @@ export const validateDataPages = (dataPages, sidebarLogs = []) => {
   return { errors, warnings };
 };
 
-// ─────────── GridSchemas validation ───────────
+// ─────────── CommonGridSchemas validation ───────────
 
 /**
  * Validate a single grid schema (columns array).
@@ -347,7 +347,7 @@ export const validateAllMetadata = ({
   totalErrors += dp.errors;
   totalWarnings += dp.warnings;
 
-  // 3. GridSchemas
+  // 3. GridSchemas (validated via DataPages columns)
   Object.entries(gridSchemas).forEach(([name, schema]) => {
     const gs = validateGridSchema(name, schema);
     totalErrors += gs.errors;

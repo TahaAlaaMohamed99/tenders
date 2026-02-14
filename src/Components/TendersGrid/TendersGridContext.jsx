@@ -257,9 +257,6 @@ export const TendersGridProvider = ({ children, ...props }) => {
   }, [getData]);
 
   const handleRowSelect = useCallback((row) => {
-    // Skip selection if this row is disabled via disableRowSelect prop
-    if (props.disableRowSelect && props.disableRowSelect(row)) return;
-
     setSelectedRows((prev) => {
       const isSelected = prev.includes(row);
       return isSelected
@@ -275,15 +272,13 @@ export const TendersGridProvider = ({ children, ...props }) => {
           : [...prev, row];
       });
     }
-  }, [props.setselectesRowInsert, props.disableRowSelect]);
+  }, [props.setselectesRowInsert]);
   const handleSelectAll = useCallback((maxSelected) => {
     const selectRows = (rows, limit) => {
       const result = [];
       const process = (items) => {
         for (const row of items) {
           if (result.length >= limit) break;
-          // Skip rows that are disabled via disableRowSelect
-          if (props.disableRowSelect && props.disableRowSelect(row)) continue;
           result.push(row);
           if (row.children?.length > 0) {
             process(row.children);
@@ -295,9 +290,7 @@ export const TendersGridProvider = ({ children, ...props }) => {
     };
 
     // Count only selectable rows for "all selected" check
-    const selectableRows = props.disableRowSelect
-      ? allRows.filter((r) => !props.disableRowSelect(r))
-      : allRows;
+    const selectableRows = allRows;
     const isAllSelected = selectedRows.length === selectableRows.length && selectableRows.length > 0;
     const newSelection = isAllSelected ? [] : selectRows(getData, maxSelected);
 
@@ -307,7 +300,7 @@ export const TendersGridProvider = ({ children, ...props }) => {
     if (props.setselectesRowInsert) {
       props.setselectesRowInsert(newSelection);
     }
-  }, [getData, allRows, selectedRows.length, props.setselectesRowInsert, props.disableRowSelect]);
+  }, [getData, allRows, selectedRows.length, props.setselectesRowInsert]);
 
 
   const searchTimeoutRef = useRef(null);

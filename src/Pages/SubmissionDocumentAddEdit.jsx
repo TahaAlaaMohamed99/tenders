@@ -14,7 +14,7 @@ import useGetGenerallist from '../Hooks/useGetGenerallist';
 import CustomeSelect from '../Components/Form/CustomSelect';
 import CustomTextarea from '../Components/Form/CustomTextarea';
 import useGetSelected from '../Hooks/useGetSelected';
-import GenericGridPage from '../Components/GenericGridPage';
+import GenericGridPageLine from '../Components/GenericGridPageLine';
 import { DataPagesLine } from '../ConfigData/DataPagesLine';
 import  SubmissionDocumentLineAddEdit  from './SubmissionDocumentLineAddEdit';
 import ConfirmationModal from '../Components/ConfirmationModal';
@@ -266,8 +266,8 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                         )}
                     </Formik>
                     <div className='mt-10'>
-                        {/* Phase 1: GenericGridPageLine merged into GenericGridPage with apiOverride */}
-                        <GenericGridPage
+                        {/* Phase 1: GenericGridPageLine restored */}
+                        <GenericGridPageLine
                             apiOverride={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
                             isGetAll={false}
                             DataPage={DataPagesLine.SubmissionDocumentLine}
