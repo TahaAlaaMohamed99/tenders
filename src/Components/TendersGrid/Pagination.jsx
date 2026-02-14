@@ -1,6 +1,6 @@
 import React, { useMemo, useContext, useCallback, memo } from "react";
 import CustomeSelect from "../Form/CustomSelect";
-import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
+import { setLocalStorageBtoa } from "../../utils/localStorage";
 import TranslationText from "../TranslationText";
 import { TendersGridContext } from "./TendersGridContext";
 

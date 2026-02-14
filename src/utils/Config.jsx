@@ -69,15 +69,11 @@ const Config = {
    */
   PAGE_PERMISSION_BASE,
 
-  /**
-   * Get API base URL from environment
-   */
-  apiBaseUrl: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
-
-  /**
-   * Get app environment
-   */
-  environment: import.meta.env.MODE || "development",
+  // Phase 4: apiBaseUrl and environment are unused — runtime config comes from
+  // Ip_config.json via useConfig hook. Kept commented for potential future use.
+  // @see docs/04-configuration.md#duplication-analysis
+  // apiBaseUrl: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
+  // environment: import.meta.env.MODE || "development",
 
   /**
    * Check if running in development mode

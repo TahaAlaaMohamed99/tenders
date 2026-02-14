@@ -11,7 +11,7 @@ import CustomDateRangePicker from "../Form/CustomDateRangePicker";
 import PopupModalSlide from "../PopupModalSlide";
 import { IconFilter } from "../../assets/Icons";
 import CustomeSelect from "../Form/CustomSelect";
-import { setLocalStorageBtoa } from "../../utils/useFromLocalStorage";
+import { setLocalStorageBtoa } from "../../utils/localStorage";
 import useGetLookup from "../../Hooks/useGetLookup";
 import useGetGenerallist from "../../Hooks/useGetGenerallist";
 import { TendersGridContext } from "./TendersGridContext";
@@ -40,7 +40,7 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
     });
     return initialLists;
   });
-  const { getLookupFilterGrid } = useGetLookup();
+  const { getLookup } = useGetLookup();
   const { getGenerallist } = useGetGenerallist();
 
   const FilterColumns = columnState.all.filter(
@@ -62,17 +62,20 @@ export default function FilterGrid({ isVisible, setIsVisible }) {
       }
 
       if (column.lookupName && !dropdownLists[column.lookupName]?.length) {
-        getLookupFilterGrid(
+        getLookup(
           column.lookupName,
           column?.keysLookup?.name || "name",
+          null, // extraLabelKey - not used in grid filters
           column?.keysLookup?.recId || "recId",
+          setIsLoading,
           (data) =>
             setDropdownLists((prev) => ({
               ...prev,
               [column.lookupName]: data,
             })),
-          column.keyRecId || "recId",
-          column.keyGetLookup != false ? true : false
+          [], // extraKeys
+          null, // disabledList
+          column.keyGetLookup !== false // isLookupValue
         );
       }
     });

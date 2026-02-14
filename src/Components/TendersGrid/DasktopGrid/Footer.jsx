@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import FixedColumns from "./HeaderGrid/FixedColumns";
 import DefaultColumns from "./HeaderGrid/DefaultColumns";
 import { TendersGridContext } from "../TendersGridContext";
-import useFormatNumber from "../../../utils/useFormatNumber";
+import useFormatNumber from "../../../utils/formatNumber";
 import TranslationText from "../../TranslationText";
 
 const Footer = ({ totalDefaultColumnsWidthPx, scrollableContainerDataRef }) => {
@@ -22,11 +22,18 @@ const Footer = ({ totalDefaultColumnsWidthPx, scrollableContainerDataRef }) => {
   } = useContext(TendersGridContext);
   const { rowActionList } = useContext(TendersGridContext);
   const [originalTotals, setOriginalTotals] = useState({});
+  /**
+   * Phase 1 fix: The reduce callback was missing `return acc` in the else
+   * branch, causing `undefined` accumulator after the first row that lacked
+   * the column key, which produced NaN totals.
+   * @see docs/07-action-plan.md#6-deduplicate-filter-logic
+   */
   const handleTotalAmount = (columnKey) => {
     const total = getData.reduce((acc, current) => {
       if (current[columnKey]) {
         return acc + Number(current[columnKey]);
       }
+      return acc;
     }, 0);
     return useFormatNumber(total);
   };
@@ -90,10 +97,12 @@ const Footer = ({ totalDefaultColumnsWidthPx, scrollableContainerDataRef }) => {
               style={{ width: totalDefaultColumnsWidthPx }}
             >
               <div className={"row_Grid  "}>
+                {/* Phase 0 fix: `level` was undefined here (P0 bug from docs/07-action-plan.md#1.4).
+                   Footer does not track tree depth, so we use 0. */}
                 {isTree && (
                   <div
                     className="row_Item"
-                    style={{ paddingInlineStart: `${level * 40}px` }}
+                    style={{ paddingInlineStart: "0px" }}
                   ></div>
                 )}
                 {columnState?.default &&

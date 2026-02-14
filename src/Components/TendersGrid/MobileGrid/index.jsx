@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useformatDataGrid } from "../../../utils/useformatDataGrid";
+import { useformatDataGrid } from "../../../utils/formatDataGrid";
 import TranslationText from "../../TranslationText";
 import { IconRowActions, IconTreeView } from "../../../assets/Icons";
 import { TendersGridContext } from "../TendersGridContext";

@@ -13,14 +13,18 @@ import TranslationText from "./TranslationText";
 /**
  * ViewerRec Component - Displays record details
  * 
- * @param {Object} props - Component props
- * @param {Object} props.data - Record data to display
- * @param {Array} props.columns - Column definitions
+ * Phase 6 fix: Accept both `data` and `dataHeader` props (HeaderPageAddEdit passes `dataHeader`).
+ * 
+ * @param {Object} props
+ * @param {Object} [props.data] - Record data to display
+ * @param {Object} [props.dataHeader] - Alias for data (used by HeaderPageAddEdit)
+ * @param {Array}  props.columns - Column definitions from ColumnsHeaderPage.json
  * @param {string} props.ResourcePage - Translation namespace
  * @returns {JSX.Element|null}
  */
-export default function ViewerRec({ data, columns, ResourcePage = "" }) {
-  if (!data || !columns || columns.length === 0) {
+export default function ViewerRec({ data, dataHeader, columns, ResourcePage = "" }) {
+  const recordData = data || dataHeader;
+  if (!recordData || !columns || columns.length === 0) {
     return null;
   }
 
@@ -33,7 +37,7 @@ export default function ViewerRec({ data, columns, ResourcePage = "" }) {
               <TranslationText title={col.label || col.key} page={ResourcePage} />
             </span>
             <span className="text-sm font-medium text-titleColor dark:text-titleColorDark">
-              {data[col.key] || "-"}
+              {recordData[col.key] || "-"}
             </span>
           </div>
         ))}

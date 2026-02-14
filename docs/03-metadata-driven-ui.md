@@ -1,8 +1,33 @@
 # Metadata-Driven UI Architecture
 
+> **Last Updated**: 2026-02-08  
+> **Related Docs**: [Architecture](./00-architecture-overview.md#1-metadata-driven-architecture) | [Components](./01-components.md) | [Hooks](./02-hooks.md) | [Configuration](./04-configuration.md) | [Unused Metadata](./06-unused-and-gaps.md#3-unused-config-entries)
+
 ## Overview
 
 This application uses a **metadata-driven architecture** where UI structure is defined declaratively in JSON/config files rather than hardcoded in components. This enables adding new CRUD pages without writing new components.
+
+### Metadata Files at a Glance
+
+| # | File | Lines | Purpose | Status | Consumers |
+|---|------|-------|---------|--------|-----------|
+| 1 | [`SidebarLogs.json`](#1-sidebarlogsjson--page-registry) | 68 | Page registry, routes, menus | ✅ Active | DynamicRouter, Sidebar |
+| 2 | [`DataPages.jsx`](#2-datapagesjsx--page-configuration) | 154 | Page → API/schema/component mapping | ✅ Active | Router, GenericGridPage |
+| 3 | [`GridSchemas.jsx`](#3-gridschemasjsx--column-definitions) | 354 | Grid column definitions | ✅ Active | TendersGrid |
+| 4 | [`FormSchemas.jsx`](#4-formschemasjsx--form-field-definitions) | 323 | Form field definitions | ✅ Active | DynamicForm |
+| 5 | [`componentRegistry.jsx`](#5-componentregistryjsx--component-mapping) | 328 | Field type → Component mapping | ✅ Active | DynamicForm |
+| 6 | [`OrderMenus.jsx`](#6-ordermenusjsx--menu-ordering) | 26 | Sidebar module ordering + icons | ✅ Active | useProcessMenu |
+| 7 | [`resources.json`](#7-resourcesjson--translations) | - | i18n translations (en/ar) | ✅ Active | TranslationText |
+| 8 | [`Generallist.json`](#8-generallistjson--enum-options) | - | Enum/lookup options | ✅ Active | useGetGenerallist |
+| 9 | [`StatusList.json`](#9-statuslistjson--workflow-status-styles) | 44 | Workflow status → CSS | ✅ Active | HeaderPageAddEdit |
+| 10 | [`ColumnsHeaderPage.json`](#10-columnsheaderpagejson--record-viewer-columns) | 12 | Record detail columns | ✅ Active | ViewerRec |
+| 11 | [`ParentEntityRoutes.json`](#11-parententityroutesjson--parent-navigation) | 11 | Parent entity nav links | ✅ Active | HeaderPageAddEdit |
+| 12 | [`FilterSchemas.jsx`](#12-filterschemasjsx--advanced-filters-placeholder) | 14 | Advanced filters | ❌ Placeholder | None |
+| 13 | [`ActionSchemas.jsx`](#13-actionschemasjsx--rowbulk-actions-placeholder) | 17 | Row/bulk actions | ❌ Placeholder | None |
+| 14 | [`DataPagesLine.jsx`](#14-datapageslinejsx--child-grid-configurations) | 20 | Child grid config | ✅ Active | SubmissionDocumentAddEdit |
+| 15 | [`DataPagesHierarchyGrid.jsx`](#15-datapageshierarchygridjsx--hierarchy-config-unused) | 22 | Hierarchy config | ❌ Placeholder | None |
+
+**Active**: 12 | **Placeholder/Dead**: 3
 
 ---
 
@@ -511,7 +536,7 @@ DataPages[keyPage]
 **Files**:
 - `src/Components/GenericGridPage.jsx`
 - `src/Components/TendersGrid/index.jsx`
-- `src/utils/useformatDataGrid.jsx` (cell formatting)
+- `src/utils/formatDataGrid.jsx` (cell formatting) — *renamed from `useformatDataGrid.jsx` in Phase 7*
 
 ---
 
@@ -629,7 +654,7 @@ Vendors: {
 | `DataPages` | `DynamicRouter.RouteFactory` | `src/Routes/DynamicRouter.jsx` |
 | `GridSchemas` | `TendersGrid` | `src/Components/TendersGrid/` |
 | `FormSchemas` | `DynamicForm` | `src/Components/DynamicForm.jsx` |
-| `column.type` | `useformatDataGrid` | `src/utils/useformatDataGrid.jsx` |
+| `column.type` | `useformatDataGrid` | `src/utils/formatDataGrid.jsx` |
 | `field.type` | `componentRegistry` | `src/ConfigData/componentRegistry.jsx` |
 
 ### ✅ No UI Logic Leakage Into Metadata
@@ -791,15 +816,50 @@ const SetupPages = lazy(() => import('./ConfigData/SetupPages'));
 
 ## Summary
 
-| Aspect | Status |
-|--------|--------|
-| **Metadata Coverage** | 11 pages fully configured |
-| **Extensibility** | High (new pages via config only) |
-| **Consistency** | High (all pages use same pattern) |
-| **Documentation** | Low (no schema docs or examples) |
-| **Validation** | None (no schema validation) |
-| **Dead Metadata** | 3 files (FilterSchemas, ActionSchemas, DataPagesHierarchyGrid) |
+| Aspect | Status | Action |
+|--------|--------|--------|
+| **Metadata Coverage** | 11 pages fully configured | ✅ Complete |
+| **Extensibility** | High (new pages via config only) | ✅ Good |
+| **Consistency** | High (all pages use same pattern) | ✅ Good |
+| **Documentation** | Low (no schema docs or examples) | See this doc |
+| **Validation** | None (no schema validation) | [07-action-plan.md](./07-action-plan.md#18-add-metadata-schema-validation) |
+| **Dead Metadata** | 3 files (FilterSchemas, ActionSchemas, DataPagesHierarchyGrid) | [06-unused-and-gaps.md](./06-unused-and-gaps.md#3-unused-config-entries) |
 
 **Biggest Win**: The metadata-driven architecture is the strongest part of this codebase. It enables rapid development and ensures consistency.
 
 **Biggest Gap**: No validation or documentation for metadata schemas. Developers must reverse-engineer the structure from existing examples.
+
+---
+
+## Cross-Reference Index
+
+| Topic | Related Document |
+|-------|-----------------|
+| Architecture overview | [00-architecture-overview.md](./00-architecture-overview.md#1-metadata-driven-architecture) |
+| Components consuming metadata | [01-components.md](./01-components.md#2-generic-page-components) |
+| Hooks processing metadata | [02-hooks.md](./02-hooks.md#13-useprocessmenu) |
+| Runtime configuration | [04-configuration.md](./04-configuration.md) |
+| OCP violations in metadata | [05-solid-clean-architecture.md](./05-solid-clean-architecture.md#open-closed-principle-ocp) |
+| Dead/placeholder metadata | [06-unused-and-gaps.md](./06-unused-and-gaps.md#3-unused-config-entries) |
+| Cleanup plan | [07-action-plan.md](./07-action-plan.md#11-remove-dead-code) |
+| Runtime schema validation | `src/utils/validateMetadata.js` (Phase 7, P3 #18) |
+
+---
+
+### Runtime Metadata Validation (Phase 7)
+
+A dev-only runtime validator was added in Phase 7 (`src/utils/validateMetadata.js`).
+It runs automatically at startup via dynamic import in `main.jsx` and validates:
+
+- **SidebarLogs.json**: Required fields, duplicate `keyPage`, valid `showMenu` values
+- **DataPages**: Required fields (`Api`, `componentViwe`, `keyId`), column/form structure, cross-reference with SidebarLogs
+- **GridSchemas**: Column keys, duplicate keys, width consistency, min/max width logic
+- **FormSchemas**: Field names, valid types, `async-select` → `lookup` config
+
+Zero cost in production (gated behind `import.meta.env.DEV`).
+
+---
+
+**Document Version**: 3.0  
+**Last Updated**: 2026-02-08  
+**Config Files Verified**: All 16 files verified in codebase + runtime validation active

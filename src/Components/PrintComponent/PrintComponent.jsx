@@ -5,7 +5,7 @@ import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
 import useDeviceType from "../../Hooks/useDeviceType";
 import { Tooltip } from "react-tooltip";
-import useFormateDataPrint from "../../utils/useFormateDataPrint";
+import useFormateDataPrint from "../../utils/formatDataPrint";
 
 const PrintComponent = ({
   Columns,

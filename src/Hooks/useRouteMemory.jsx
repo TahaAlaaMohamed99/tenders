@@ -9,7 +9,7 @@
 
 import { useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setLocalStorageBtoa, getLocalStorageAtob } from "../utils/useFromLocalStorage";
+import { setLocalStorageBtoa, getLocalStorageAtob } from "../utils/localStorage";
 
 /**
  * Route storage keys by context
@@ -96,14 +96,11 @@ export default function useRouteMemory(context = "general") {
   };
 }
 
-/**
- * Get previous route without hook (for non-component usage)
- * 
- * @param {string} context - Route context
- * @param {string} fallback - Fallback route
- * @returns {string} Previous route
- */
+// Phase 6: Commented out dead export — not imported anywhere
+// @see docs/06-unused-and-gaps.md#42-useroutememorygetprevroutestatic
+/*
 export const getPrevRouteStatic = (context = "general", fallback = "/") => {
   const key = context === "setup" ? ROUTE_KEYS.SETUP : ROUTE_KEYS.GENERAL;
   return getLocalStorageAtob(key, fallback);
 };
+*/

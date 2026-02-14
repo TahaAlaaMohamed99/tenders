@@ -29,6 +29,8 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
     setOpenedChildGrid,
    } = useContext(TendersGridContext);
 
+
+
   return (
     <div
       className={` row_Grid rounded-s-lg ${onClickRow ? "cursor-pointer " : ""} ${selectedRows.some(r => r.recId === row.recId) ? "selected" : ""}`}

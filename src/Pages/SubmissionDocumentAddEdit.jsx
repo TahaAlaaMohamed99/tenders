@@ -266,14 +266,16 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                         )}
                     </Formik>
                     <div className='mt-10'>
+                        {/* Phase 1: GenericGridPageLine restored */}
                         <GenericGridPageLine
-                            ApiGetAllLines={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
+                            apiOverride={`SubmissionDocumentLine/GetAlLinesByPerantId?parentId=${id}`}
+                            isGetAll={false}
                             DataPage={DataPagesLine.SubmissionDocumentLine}
                             ResourcePage={ResourcePage}
                             refreshKey={refreshKey}
                             onClickRow={(row) => {
                                 setShowmodalLine(true);
-                                setRecIdLine(row.recId);
+                                setRecIdLine(row ? row.recId : 0);
                             }}
                             handleDelete={!isReadOnly ? handleDeleteLines : null}
                             setselectesRowInsert={setSelectedLines}

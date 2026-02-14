@@ -3,6 +3,7 @@ import { preventInvalidNumberInput } from "../../utils/validation";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
 import { useSafeSelector } from "../../Hooks/useSafeSelector";
+import { extractInputProps } from "../../utils/filterDOMProps";
 
 /**
  * CustomInput Component:
@@ -32,33 +33,20 @@ import { useSafeSelector } from "../../Hooks/useSafeSelector";
  * @param {string} labelBgColor - Custom background color for the label (e.g., "bg-white", "bg-gray-50"). Defaults to bgWhite/bgWhiteDark.
  */
 const CustomInput = React.forwardRef(({
+  // Component-specific props (NOT passed to <input>)
   label,
-  type,
-  value,
-  placeholder,
-  onChange,
-  onBlur,
   touched,
   errors,
-  disabled,
   Required,
   className,
-  autoComplete,
-  name,
   icon,
   ResourcePage = "",
-  dir,
   lang,
   labelBgColor = "bg-bgColor dark:bg-bgColorDark",
   forceLightMode = false,
   isSmall = false,
-  // Filter out non-DOM props that shouldn't be spread to input
-  gridWidth,
-  lookup,
-  validation,
-  required,
-  isNumber, // Filter out isNumber
-  ...props // Capture any other props
+  // All other props (may include both DOM-safe and custom props)
+  ...allProps
 }, ref) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -68,7 +56,10 @@ const CustomInput = React.forwardRef(({
     (state) => state.themeSlice?.currentLanguage
   );
   const effectiveLang = lang || currentLanguage || "en";
-  const isRtl = effectiveLang === "ar" || dir === "rtl";
+  const isRtl = effectiveLang === "ar" || allProps.dir === "rtl";
+
+  // Extract only safe DOM props for <input> element
+  const inputProps = extractInputProps(allProps);
 
   const handleFocus = () => setIsFocused(true);
 
@@ -77,22 +68,26 @@ const CustomInput = React.forwardRef(({
   };
   const handleBlur = (event) => {
     setIsFocused(false);
-    if (onBlur) onBlur(event);
+    if (inputProps.onBlur) inputProps.onBlur(event);
   };
   const handleKeyDown = (e) => {
-    if (type === "number") {
+    if (inputProps.type === "number") {
       preventInvalidNumberInput(e);
     }
   }
 
-  const textPlaceholder = useTranslationText({ page: ResourcePage, title: placeholder, lang: effectiveLang });
+  const textPlaceholder = useTranslationText({ 
+    page: ResourcePage, 
+    title: inputProps.placeholder, 
+    lang: effectiveLang 
+  });
   
   return (
     <div className={`w-full ${className || ""}`}>
       <div className="relative">
         {label && (
           <label 
-            htmlFor={`arkaan_${name}`}
+            htmlFor={`arkaan_${inputProps.name}`}
             className={`
               input-label-floating z-10
               ${labelBgColor}
@@ -113,21 +108,15 @@ const CustomInput = React.forwardRef(({
         )}
         
         <input
-          {...props} // Spread remaining props to input
-          type={showPassword ? "text" : type}
+          {...inputProps}
+          type={showPassword ? "text" : inputProps.type}
           placeholder={textPlaceholder}
-          dir={dir}
-          disabled={disabled}
-          value={value}
-          onChange={disabled ? null : onChange}
-          onFocus={disabled ? null : handleFocus}
-          onBlur={disabled ? null : handleBlur}
+          onFocus={inputProps.disabled ? null : handleFocus}
+          onBlur={inputProps.disabled ? null : handleBlur}
           onKeyDown={handleKeyDown}
-          min={type === "number" ? "0" : undefined}
-          id={`arkaan_${name}`}
-          autoComplete={autoComplete}
-          name={name}
-          ref={ref} // Forwarded Ref
+          min={inputProps.type === "number" ? "0" : undefined}
+          id={`arkaan_${inputProps.name}`}
+          ref={ref}
           className={`
             input-field-base
             ${isSmall ? "!h-8 !py-0 !text-xs !px-3 !rounded-md" : ""}
@@ -138,12 +127,12 @@ const CustomInput = React.forwardRef(({
                 ? `border-primary ${!forceLightMode ? "dark:border-primaryDark" : ""}` 
                 : `border-borderColor ${!forceLightMode ? "dark:border-borderColorDark" : ""}`
             }
-            ${disabled ? `opacity-60 cursor-not-allowed bg-disabled ${!forceLightMode ? "dark:bg-bgColorDark" : ""}` : ""}
-            ${(type === "password" || icon) ? (isRtl ? "pl-12" : "pr-12") : ""}
+            ${inputProps.disabled ? `opacity-60 cursor-not-allowed bg-disabled ${!forceLightMode ? "dark:bg-bgColorDark" : ""}` : ""}
+            ${(inputProps.type === "password" || icon) ? (isRtl ? "pl-12" : "pr-12") : ""}
           `}
         />
         
-        {type === "password" && (
+        {inputProps.type === "password" && (
           <button
             type="button"
             onClick={handleShowPassword}

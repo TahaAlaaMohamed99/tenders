@@ -2,7 +2,10 @@
  * @fileoverview ModaRemoveBookmark Component
  * 
  * Modal for confirming bookmark removal.
+ * Phase 1 fix: Corrected prop names to match ConfirmationModal interface
+ * (isVisible, onCancel, description, confirmButtonLabel, cancelButtonLabel).
  * 
+ * @see docs/06-unused-and-gaps.md#13-modaremovebookmarkjsx
  * @module Components/Layout/componentsNavbar/ModaRemoveBookmark
  */
 
@@ -12,10 +15,10 @@ import ConfirmationModal from "../../ConfirmationModal";
 /**
  * ModaRemoveBookmark - Bookmark removal confirmation
  * 
- * @param {Object} props - Component props
+ * @param {Object} props
  * @param {boolean} props.isOpen - Modal visibility
  * @param {Function} props.onConfirm - Confirm handler
- * @param {Function} props.onClose - Close handler
+ * @param {Function} props.onClose - Close/cancel handler
  * @returns {JSX.Element|null}
  */
 export default function ModaRemoveBookmark({ 
@@ -27,13 +30,14 @@ export default function ModaRemoveBookmark({
 
   return (
     <ConfirmationModal
-      isOpen={isOpen}
+      isVisible={isOpen}
       onConfirm={onConfirm}
-      onClose={onClose}
+      onCancel={onClose}
       title="removeBookmark"
-      message="confirmRemoveBookmark"
-      confirmText="remove"
-      cancelText="cancel"
+      description="confirmRemoveBookmark"
+      confirmButtonLabel="remove"
+      cancelButtonLabel="cancel"
+      type="delete"
     />
   );
 }

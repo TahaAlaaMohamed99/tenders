@@ -18,6 +18,61 @@ import { DataPages } from "../ConfigData/DataPages";
 
 // --- Sub-Components ---
 
+/**
+ * TreeNodeLevel3 — Renders 3rd-level sub-items inside the sidebar tree.
+ * Phase 1 refactor: Deduplicated from two identical blocks
+ * (direct-items 3rd-level and sub-module-items 3rd-level).
+ * @see docs/05-solid-clean-architecture.md (SRP Violation 2 – Sidebar)
+ */
+const TreeNodeLevel3 = ({ items, parentRoutePage, isOpen, handleNavigation, isActiveRoute }) => {
+  if (!items || items.length === 0) return null;
+
+  return (
+    <div
+      className={`
+        overflow-hidden transition-all duration-300 ease-in-out
+        ${isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
+      `}
+    >
+      <ul className="relative ml-6 rtl:mr-6 rtl:ml-0 pl-2 rtl:pr-2">
+        {items.map((sub, sIdx) => {
+          const subPath = parentRoutePage
+            ? `/${parentRoutePage}/${sub.routePage}`
+            : `/${sub.routePage}`;
+          const isSubActive = isActiveRoute(subPath);
+          const isLastSub = sIdx === items.length - 1;
+
+          return (
+            <li key={sub.keyPage} className="relative">
+              {/* Level 3 Spine */}
+              <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
+                {!isLastSub && (
+                  <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
+                )}
+                <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
+              </div>
+              <CustomBtn
+                type="button"
+                title={sub.keyPage}
+                ResourcePage="Sidebar"
+                onClick={() => handleNavigation(subPath)}
+                className={`
+                  text-xs py-1.5 px-3 rounded-md w-full text-start
+                  ${
+                    isSubActive
+                      ? "bg-gray-200 text-gray-900 font-medium"
+                      : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                  }
+                `}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
+
 // 1. Floating Menu Component
 const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }) => {
   const menuRef = useRef(null);
@@ -331,47 +386,15 @@ const SidebarItem = memo(({
                             />
                         </div>
 
-                        {/* 3rd Level Render */}
+                        {/* 3rd Level — Phase 1: deduplicated via TreeNodeLevel3 */}
                         {has3rdLevel && (
-                             <div className={`
-                                overflow-hidden transition-all duration-300 ease-in-out
-                                ${is3rdLevelOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
-                             `}>
-                                 <ul className="relative ml-6 rtl:mr-6 rtl:ml-0 pl-2 rtl:pr-2">
-                                     {item.subItems.map((sub, sIdx) => {
-                                         const subPath = `/${sub.routePage}`; // Simple path construction for now
-                                         const isSubActive = isActiveRoute(subPath);
-                                         const isLastSub = sIdx === item.subItems.length - 1;
-
-                                         return (
-                                             <li key={sub.keyPage} className="relative">
-                                                  {/* Level 3 Spine */}
-                                                  <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
-                                                      {!isLastSub && (
-                                                          <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
-                                                      )}
-                                                      <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
-                                                  </div>
-                                                  
-                                                  <CustomBtn
-                                                    type="button"
-                                                    title={sub.keyPage}
-                                                    ResourcePage="Sidebar"
-                                                    onClick={() => handleNavigation(subPath)} // Demo nav
-                                                    className={`
-                                                        text-xs py-1.5 px-3 rounded-md w-full text-start
-                                                        ${
-                                                            isSubActive
-                                                            ? "bg-gray-200 text-gray-900 font-medium"
-                                                            : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                                                        }
-                                                    `}
-                                                  />
-                                             </li>
-                                         )
-                                      })}
-                                  </ul>
-                             </div>
+                          <TreeNodeLevel3
+                            items={item.subItems}
+                            parentRoutePage={null}
+                            isOpen={is3rdLevelOpen}
+                            handleNavigation={handleNavigation}
+                            isActiveRoute={isActiveRoute}
+                          />
                         )}
                       </li>
                     );
@@ -454,46 +477,15 @@ const SidebarItem = memo(({
                                                 />
                                             </div>
 
-                                            {/* 3rd Level Render (duplicate logic for now, could be componentized) */}
+                                            {/* 3rd Level — Phase 1: deduplicated via TreeNodeLevel3 */}
                                             {has3rdLevel && (
-                                                <div className={`
-                                                    overflow-hidden transition-all duration-300 ease-in-out
-                                                    ${is3rdLevelOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}
-                                                `}>
-                                                    <ul className="relative ml-6 rtl:mr-6 rtl:ml-0 pl-2 rtl:pr-2">
-                                                        {item.subItems.map((sub, sIdx) => {
-                                                            const subPath = `/${item.routePage}/${sub.routePage}`; // Fix parent route usage
-                                                            const isSubActive = isActiveRoute(subPath);
-                                                            const isLastSub = sIdx === item.subItems.length - 1;
-
-                                                            return (
-                                                                <li key={sub.keyPage} className="relative">
-                                                                    {/* Level 3 Spine */}
-                                                                    <div className="absolute -left-[20px] rtl:-right-[20px] rtl:left-auto top-0 w-5 h-full flex flex-col items-center rtl:scale-x-[-1]">
-                                                                        {!isLastSub && (
-                                                                            <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-300 h-full"></div>
-                                                                        )}
-                                                                        <IconTreeEnd className="text-gray-300 w-full h-auto z-10" />
-                                                                    </div>
-                                                                    <CustomBtn
-                                                                        type="button"
-                                                                        title={sub.keyPage}
-                                                                        ResourcePage="Sidebar"
-                                                                        onClick={() => handleNavigation(subPath)}
-                                                                        className={`
-                                                                            text-xs py-1.5 px-3 rounded-md w-full text-start
-                                                                            ${
-                                                                                isSubActive
-                                                                                ? "bg-gray-200 text-gray-900 font-medium"
-                                                                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                                                                            }
-                                                                        `}
-                                                                    />
-                                                                </li>
-                                                            )
-                                                        })}
-                                                    </ul>
-                                                </div>
+                                              <TreeNodeLevel3
+                                                items={item.subItems}
+                                                parentRoutePage={item.routePage}
+                                                isOpen={is3rdLevelOpen}
+                                                handleNavigation={handleNavigation}
+                                                isActiveRoute={isActiveRoute}
+                                              />
                                             )}
                                         </li>
                                      );

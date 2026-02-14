@@ -46,11 +46,16 @@ export const getLocalStorageAtob = (key, defaultValue) => {
 };
 
 
-export const getLocalStorageAll= () => {
-  Object.fromEntries(
+// Phase 5 fix: Added missing `return` statement (was broken + unused).
+// @see docs/06-unused-and-gaps.md#61-getlocalstorageall
+// Commented out — currently unused, kept for potential future use.
+/*
+export const getLocalStorageAll = () => {
+  return Object.fromEntries(
     Object.entries(localStorage).filter(([key]) => key !== 'theme' && key !== 'language')
   );
 };
+*/
 
 // ==================== Auth Storage Utilities ====================
 

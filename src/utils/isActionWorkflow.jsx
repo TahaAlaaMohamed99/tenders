@@ -1,51 +1,53 @@
 /**
  * @fileoverview isActionWorkflow Utility
  * 
- * Determines if a specific workflow action should be shown
- * based on record status and workflow levels.
+ * Determines if a workflow action should be available based on
+ * workflow level data, user permissions, and record status.
  * 
+ * Phase 0 fix: Rewritten to match actual consumer (HeaderPageAddEdit.jsx)
+ * which expects { show: boolean, level: object | null }.
+ * 
+ * Previous implementation returned a simple boolean with a different
+ * signature (action, statusId, workflowLevel), but the only consumer
+ * calls it as isActionWorkflow(LevelsWorkFlow?.data, isAllowedModify, statusId)
+ * and reads .show and .level from the result.
+ * 
+ * @see docs/07-action-plan.md#1.5
  * @module utils/isActionWorkflow
  */
 
 /**
- * Check if workflow action should be visible
+ * Check if a workflow action should be visible and get the current level.
  * 
- * @param {string} action - Action name (e.g., "submit", "approve")
- * @param {number} statusId - Current record status
- * @param {number} workflowLevel - Current workflow level
- * @returns {boolean} Whether action should be shown
+ * @param {Array|null} workflowLevels - Array of workflow level objects from LevelsWorkFlow.data
+ * @param {boolean} isAllowedModify - Whether the user has permission to modify
+ * @param {number} statusId - Current record status (0=Draft, 1=Submitted, 2=FullyApproved, 3=Rejected, 4=Posted)
+ * @returns {{ show: boolean, level: object|null }} Whether the action is available and the current level data
  * 
  * @example
- * if (isActionWorkflow("submit", record.statusId, record.level)) {
- *   // Show submit button
+ * const canTakeAction = isActionWorkflow(LevelsWorkFlow?.data, isAllowedModify, statusId);
+ * if (canTakeAction?.show) {
+ *   // Render approval/rejection buttons
+ *   const currentLevel = canTakeAction.level; // { recId, levelNumber, status, ... }
  * }
  */
-export function isActionWorkflow(action, statusId, workflowLevel = 0) {
-  // Status IDs:
-  // 0 = Draft
-  // 1 = Submitted
-  // 2 = FullyApproved
-  // 3 = Rejected
-  // 4 = Posted
-
-  switch (action) {
-    case "submit":
-      return statusId === 0; // Only show Submit for Draft
-    
-    case "approve":
-    case "reject":
-      return statusId === 1; // Only show for Submitted
-    
-    case "post":
-      return statusId === 2; // Only show for FullyApproved
-    
-    case "unpost":
-      return statusId === 4; // Only show for Posted
-    
-    case "resubmit":
-      return statusId === 3; // Only show for Rejected
-    
-    default:
-      return false;
+export function isActionWorkflow(workflowLevels, isAllowedModify, statusId) {
+  // No workflow data or not submitted — no action available
+  if (!workflowLevels || !Array.isArray(workflowLevels) || statusId !== 1) {
+    return { show: false, level: null };
   }
+
+  // Find the first pending level (status === 1 means pending approval)
+  const pendingLevel = workflowLevels.find(
+    (level) => level.status === 1
+  );
+
+  if (!pendingLevel) {
+    return { show: false, level: null };
+  }
+
+  return {
+    show: isAllowedModify === true,
+    level: pendingLevel,
+  };
 }

@@ -102,8 +102,11 @@ export default function useHandleSubmit() {
           />
         );
     } catch (error) {
-      const backendMessage = error?.details || error?.message || error ||
-        (recId === "0" ? "addFailed" : "editFailed");
+      // Extract a string message — error.details may be an object (API validation response)
+      const rawMessage = error?.message || error?.title || error?.details?.title;
+      const backendMessage = typeof rawMessage === "string"
+        ? rawMessage
+        : (recId === "0" ? "addFailed" : "editFailed");
 
       toast.error(
         <TranslationText title={backendMessage} ResourcePage={resourcePage} />

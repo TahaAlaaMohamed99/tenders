@@ -28,9 +28,15 @@ import useTranslationText from "../Hooks/useTranslationText";
 export default function TranslationText({ title, page, enumName }) {
   // Get current language from Redux store
   const currentLanguage = useSelector((state) => state.themeSlice.currentLanguage);
-  
+
+  // Guard: if title is not a string (e.g. an error object was passed), coerce it
+  // to prevent "Objects are not valid as a React child" crash.
+  const safeTitle = typeof title === "string"
+    ? title
+    : title?.title || title?.message || String(title ?? "");
+
   // Use translation hook with current language
-  const translatedText = useTranslationText({ title, lang: currentLanguage, page, enumName });
+  const translatedText = useTranslationText({ title: safeTitle, lang: currentLanguage, page, enumName });
   
   return translatedText;
 }

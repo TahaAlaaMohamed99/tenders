@@ -1,10 +1,15 @@
 # Configuration & Environment Review
 
+> **Last Updated**: 2026-02-08  
+> **Related Docs**: [Architecture](./00-architecture-overview.md#why-runtime-config-ip_configjson) | [Hooks](./02-hooks.md#1-useconfig) | [Unused Code](./06-unused-and-gaps.md#35-utilsconfigjsx)
+
 ## Overview
 
 This document analyzes the dual configuration system in the codebase:
-1. **Runtime Configuration**: `public/Ip_config.json`
-2. **Build-time Configuration**: `src/utils/Config.jsx`
+1. **Runtime Configuration**: `public/Ip_config.json` — ✅ Active, production-ready
+2. **Build-time Configuration**: `src/utils/Config.jsx` — ✅ Active (permission wrapper + env vars)
+
+> **Phase 0 Correction**: `Config.jsx` was previously documented as dead code, but it is actively imported by `HeaderPageAddEdit.jsx` and `SubmissionDocumentLineAddEdit.jsx` for `Config.isAllow()` permission checking. It delegates to `src/utils/permissions.js`.
 
 ---
 
@@ -88,9 +93,17 @@ App.jsx (mount)
 
 ### Where utils/Config is Used
 
-**Grep Results**: `import Config from` → **0 matches**
+> **Phase 0 Correction**: Previous docs stated 0 matches. Re-verified below.
 
-**Evidence**: `src/utils/Config.jsx` is never imported by any file in the codebase.
+| File | Usage | Line |
+|------|-------|------|
+| `HeaderPageAddEdit.jsx` | `Config.isAllow("Delete", confiPage)` | 108 |
+| `HeaderPageAddEdit.jsx` | `Config.isAllow("Post", confiPage)` | 109 |
+| `HeaderPageAddEdit.jsx` | `Config.isAllow("UnPost", confiPage)` | 110 |
+| `HeaderPageAddEdit.jsx` | `Config.isAllow("Modify", confiPage)` | 111 |
+| `SubmissionDocumentLineAddEdit.jsx` | `Config.isAllow("Modify", ConfiMainPage)` | 58 |
+
+**Evidence**: `src/utils/Config.jsx` IS imported by 2 files. It wraps `src/utils/permissions.js` and provides `isAllow()`, `hasAnyPermission()`, `hasAllPermissions()`, `canViewPage()`, `isDev()`, `isProd()`, and environment variables.
 
 ---
 
@@ -98,15 +111,15 @@ App.jsx (mount)
 
 | Aspect | Ip_config.json | utils/Config.jsx |
 |--------|----------------|------------------|
-| **Type** | Runtime | Build-time |
+| **Type** | Runtime | Build-time + Permission wrapper |
 | **Format** | JSON | JavaScript |
 | **Location** | `public/` | `src/utils/` |
-| **Loaded When** | On app mount | At build time |
+| **Loaded When** | On app mount | At build time (static imports) |
 | **Can Change Without Rebuild** | ✅ Yes | ❌ No |
-| **Used By** | `useConfig`, `Api` | **NONE** |
+| **Used By** | `useConfig`, `Api` | `HeaderPageAddEdit`, `SubmissionDocumentLineAddEdit` |
 | **Storage** | localStorage | N/A |
-| **Purpose** | API URL configuration | Environment abstraction |
-| **Status** | ✅ Active | ❌ Dead code |
+| **Purpose** | API URL configuration | Permission checking + environment detection |
+| **Status** | ✅ Active | ✅ Active (Phase 0 corrected) |
 
 ---
 
@@ -612,8 +625,28 @@ if (cachedConfig && !isExpired(cachedConfig)) {
 - Follows industry best practices for SPAs
 
 **Action Items**:
-1. ✅ Keep `Ip_config.json`
-2. ❌ Remove `utils/Config.jsx`
-3. ⚠️ Add fallback for missing config
-4. ⚠️ Add validation for config schema
-5. ⚠️ Document deployment process
+
+| # | Action | Priority | Status | Reference |
+|---|--------|----------|--------|-----------|
+| 1 | Keep `Ip_config.json` | P0 | ✅ Done | - |
+| 2 | Remove `utils/Config.jsx` | P3 | ⏳ Pending | [06-unused-and-gaps.md](./06-unused-and-gaps.md#35-utilsconfigjsx) |
+| 3 | Add fallback for missing config | P2 | ⏳ Pending | [07-action-plan.md](./07-action-plan.md#4-add-fallback-to-useconfig) |
+| 4 | Add validation for config schema | P3 | ⏳ Pending | [07-action-plan.md](./07-action-plan.md#18-add-metadata-schema-validation) |
+| 5 | Document deployment process | P3 | ⏳ Pending | [07-action-plan.md](./07-action-plan.md#17-document-ip_configjson) |
+
+---
+
+## Cross-Reference Index
+
+| Topic | Related Document |
+|-------|-----------------|
+| Architecture decision rationale | [00-architecture-overview.md](./00-architecture-overview.md#why-runtime-config-ip_configjson) |
+| `useConfig` hook implementation | [02-hooks.md](./02-hooks.md#1-useconfig) |
+| Dead `Config.jsx` file | [06-unused-and-gaps.md](./06-unused-and-gaps.md#35-utilsconfigjsx) |
+| DIP violation in useConfig | [05-solid-clean-architecture.md](./05-solid-clean-architecture.md#-violation-2-useconfig-direct-api-service-coupling) |
+| Fallback implementation plan | [07-action-plan.md](./07-action-plan.md#4-add-fallback-to-useconfig) |
+
+---
+
+**Document Version**: 2.0  
+**Last Updated**: 2026-02-08

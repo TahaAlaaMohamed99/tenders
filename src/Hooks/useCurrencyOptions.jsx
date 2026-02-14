@@ -1,3 +1,15 @@
+/**
+ * @fileoverview useCurrencyOptions Hook — COMMENTED OUT (Phase 6)
+ *
+ * Dead code: Not imported by any component.
+ * Fetches currency list from restcountries.com — external API dependency.
+ * Kept commented for potential future use. If needed, should fetch from backend API instead.
+ *
+ * @see docs/06-unused-and-gaps.md#21-usecurrencyoptionsjsx
+ * @module Hooks/useCurrencyOptions
+ */
+
+/*
 import { useState, useEffect } from "react";
 
 export default function useCurrencyOptions() {
@@ -29,3 +41,4 @@ export default function useCurrencyOptions() {
 
   return options;
 }
+*/

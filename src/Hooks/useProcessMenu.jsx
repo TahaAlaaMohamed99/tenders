@@ -114,38 +114,20 @@ export const useProcessMenu = (items, order, dataPages) => {
   }, [items, order, dataPages]);
 };
 
-/**
- * Restructure modules with subModule hierarchy
- * Utility function for sidebar rendering
- * 
- * @param {Array} modules - Processed modules from useProcessMenu
- * @returns {Array} Modules with nested subModule structure
- */
+// Phase 2: Commented out unused export `restructureModules`
+// @see docs/06-unused-and-gaps.md#41-useprocessmenurestructuremodules
+// Kept for potential future use (sidebar rendering with subModule hierarchy).
+/*
 export const restructureModules = (modules) => {
   return modules.map((module) => {
     if (!module.hasSubModules) {
       return module;
     }
-
-    // Combine direct subItems with subModule items
     return {
       ...module,
-      // Direct items (no subModule)
       directItems: module.subItems || [],
-      // Grouped items by subModule
       groupedItems: module.subModuleList,
     };
   });
 };
-
-// Usage example:
-/*
-const processedMenu = useProcessMenu(
-  menuItems,
-  menuOrder,
-  dataPages,
-);
-
-// For subModule support:
-const structuredMenu = restructureModules(processedMenu);
 */
