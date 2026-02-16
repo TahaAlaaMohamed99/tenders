@@ -1,9 +1,8 @@
-import React from "react";
-import { useFormatDate } from "./formatDate";
-import useFormatTime from "./formatTime";
-import useFormatNumber from "./formatNumber";
+import { formatDate } from "./formatDate";
+import formatTime from "./formatTime";
+import formatNumber from "./formatNumber";
 
-function useFormateDataPrint({
+function FormatDataPrint({
   column,
   row,
   currentLanguage,
@@ -24,19 +23,21 @@ function useFormateDataPrint({
   switch (column.type) {
     case "date":
       return (
-        <p className={className}>{useFormatDate(value, currentLanguage)}</p>
+        <p className={className}>{formatDate(value, currentLanguage)}</p>
       );
 
     case "dateTime":
       return (
         <p className={className}>
-          {useFormatDate(value, currentLanguage, true)}
+          {formatDate(value, currentLanguage, true)}
         </p>
       );
+
     case "generalList":
       return <p>{matchGeneralLst(listGenenralList, column.printKey)}</p>;
+
     case "salary":
-      return <p className={className}>{useFormatNumber(value)}</p>;
+      return <p className={className}>{formatNumber(value)}</p>;
 
     case "email":
     case "tel":
@@ -80,7 +81,7 @@ function useFormateDataPrint({
 
     case "time":
       return (
-        <p className={className}>{useFormatTime(value, currentLanguage)}</p>
+        <p className={className}>{formatTime(value, currentLanguage)}</p>
       );
 
     case "boolean":
@@ -99,4 +100,4 @@ function useFormateDataPrint({
   }
 }
 
-export default useFormateDataPrint;
+export default FormatDataPrint;

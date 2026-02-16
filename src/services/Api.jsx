@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/useFromLocalStorage";
+import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/localStorage";
 import { getApiBaseUrl } from "../config/apiConfig";
 
 /**
@@ -163,6 +163,11 @@ Api.interceptors.response.use(
  * Call this after useConfig hook fetches the configuration
  */
 export const updateApiBaseUrl = () => {
+  // Don't overwrite base URL if in mock mode
+  if (localStorage.getItem('USE_MOCK_SERVER') === 'true') {
+     return;
+  }
+
   const latestConfig = getLocalStorageAtob('Configuration') || {};
   if (latestConfig?.urlApi) {
     Api.defaults.baseURL = latestConfig.urlApi;

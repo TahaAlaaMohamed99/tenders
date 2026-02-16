@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import FixedColumns from "./HeaderGrid/FixedColumns";
 import DefaultColumns from "./HeaderGrid/DefaultColumns";
 import { TendersGridContext } from "../TendersGridContext";
-import useFormatNumber from "../../../utils/formatNumber";
+import formatNumber from "../../../utils/formatNumber";
 import TranslationText from "../../TranslationText";
 
 const Footer = ({ totalDefaultColumnsWidthPx, scrollableContainerDataRef }) => {
@@ -35,7 +35,7 @@ const Footer = ({ totalDefaultColumnsWidthPx, scrollableContainerDataRef }) => {
       }
       return acc;
     }, 0);
-    return useFormatNumber(total);
+    return formatNumber(total);
   };
 
   const viewTotal =

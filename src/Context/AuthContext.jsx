@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { getApiBaseUrl } from "../config/apiConfig";
 import {
   getAuthStorage,
   setAuthStorage,
@@ -64,9 +65,8 @@ export const AuthProvider = ({ children }) => {
    */
   const login = useCallback(async (userName, password, rememberMe = true) => {
     try {
-      // Get API base URL from config
-      const config = getLocalStorageAtob('Configuration') || {};
-      const baseUrl = config?.urlApi || import.meta.env.VITE_API_URL;
+      // Get API base URL from centralized config
+      const baseUrl = getApiBaseUrl();
       
       const response = await axios.post(`${baseUrl}Authentication/Login`, {
         userName,

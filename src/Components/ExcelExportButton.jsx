@@ -1,7 +1,7 @@
 import React from "react";
 import { IconXsl } from "../assets/Icons";
-import { useFormatDate } from "../utils/formatDate";
-import useFormatNumber from "../utils/formatNumber";
+import { formatDate } from "../utils/formatDate";
+import formatNumber from "../utils/formatNumber";
 import useTranslationText from "../Hooks/useTranslationText";
 import useDeviceType from "../Hooks/useDeviceType";
 import TranslationText from "./TranslationText";
@@ -40,17 +40,17 @@ const ExcelExportButton = ({
     try {
       switch (column.type) {
         case "date":
-          return useFormatDate(value, currentLanguage);
+          return formatDate(value, currentLanguage);
 
         case "dateTime":
-          return useFormatDate(
+          return formatDate(
             value,
             currentLanguage,
             row[column.secondKey] != undefined ? !row[column.secondKey] : true
           );
 
         case "salary":
-          return useFormatNumber(value);
+          return formatNumber(value);
 
         case "email":
         case "tel":
@@ -112,7 +112,7 @@ const ExcelExportButton = ({
   const exportToExcel = () => {
     const originalTitle = document.title; // Save original title
     const currentDate = new Date();
-    const formattedDate = useFormatDate(currentDate, currentLanguage); // Format date based on language
+    const formattedDate = formatDate(currentDate, currentLanguage); // Format date based on language
     const baseFileName = ResourcePage || fileName.replace(".xls", "");
     const dynamicFileName = `${baseFileName}-${formattedDate}.xls`; // e.g., SalesReport-24-Apr-2025.xls
     document.title = `${baseFileName}-${formattedDate}`; // Set document.title without extension

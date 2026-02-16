@@ -36,7 +36,7 @@ export const getLocalStorageAtob = (key, defaultValue) => {
       // Parse the decoded string into a JavaScript object using JSON.parse
       return JSON.parse(decodedItem);
     }
-  } catch (error) {
+  } catch {
     // If any error occurs (e.g., data is invalid or error during decoding), return the default value
     return defaultValue;
   }

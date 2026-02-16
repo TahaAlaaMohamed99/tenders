@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { useformatDataGrid } from "../../../utils/formatDataGrid";
+import { formatDataGrid } from "../../../utils/formatDataGrid";
 import TranslationText from "../../TranslationText";
 import { IconRowActions, IconTreeView } from "../../../assets/Icons";
 import { TendersGridContext } from "../TendersGridContext";
@@ -82,7 +82,7 @@ export default function MobileGrid() {
                       />
                     </span>
                   </h4>
-                  {useformatDataGrid(
+                  {formatDataGrid(
                     column,
                     row,
                     routeKey,
@@ -109,7 +109,7 @@ export default function MobileGrid() {
                       title={column.generallist ? column.title : column.title}
                     />{" "}
                   </h4>
-                  {useformatDataGrid(
+                  {formatDataGrid(
                     column,
                     row,
                     routeKey,

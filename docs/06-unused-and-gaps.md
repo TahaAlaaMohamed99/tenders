@@ -506,7 +506,7 @@ npx depcheck
 - ~~`useFormatNumber.jsx`~~ → `formatNumber.jsx` ✅ **Renamed (Phase 7)**
 - ~~`useFormatTime.jsx`~~ → `formatTime.jsx` ✅ **Renamed (Phase 7)**
 - ~~`useFormateDataPrint.jsx`~~ → `formatDataPrint.jsx` ✅ **Renamed (Phase 7)**
-- ~~`useformatDataGrid.jsx`~~ → `formatDataGrid.jsx` ✅ **Renamed (Phase 7)**
+- ~~`formatDataGrid.jsx`~~ → `formatDataGrid.jsx` ✅ **Renamed (Phase 7)**
 - ~~`useFromLocalStorage.jsx`~~ → `localStorage.jsx` ✅ **Renamed (Phase 7)**
 
 **Status**: ⚠️ Misleading Naming
@@ -525,7 +525,7 @@ npx depcheck
 # mv src/utils/useFormatNumber.jsx src/utils/formatNumber.jsx
 # mv src/utils/useFormatTime.jsx src/utils/formatTime.jsx
 # mv src/utils/useFormateDataPrint.jsx src/utils/formatDataPrint.jsx
-# mv src/utils/useformatDataGrid.jsx src/utils/formatDataGrid.jsx
+# mv src/utils/formatDataGrid.jsx src/utils/formatDataGrid.jsx
 # mv src/utils/useFromLocalStorage.jsx src/utils/localStorage.jsx
 ```
 
@@ -696,7 +696,7 @@ if (!Component) {
 | ~~`useFormatNumber.jsx`~~ | Non-hook with "use" prefix | ✅ Renamed to `formatNumber.jsx` (Phase 7) | P3 |
 | ~~`useFormatTime.jsx`~~ | Non-hook with "use" prefix | ✅ Renamed to `formatTime.jsx` (Phase 7) | P3 |
 | ~~`useFormateDataPrint.jsx`~~ | Non-hook with "use" prefix | ✅ Renamed to `formatDataPrint.jsx` (Phase 7) | P3 |
-| ~~`useformatDataGrid.jsx`~~ | Non-hook with "use" prefix | ✅ Renamed to `formatDataGrid.jsx` (Phase 7) | P3 |
+| ~~`formatDataGrid.jsx`~~ | Non-hook with "use" prefix | ✅ Renamed to `formatDataGrid.jsx` (Phase 7) | P3 |
 | ~~`useFromLocalStorage.jsx`~~ | Non-hook with "use" prefix | ✅ Renamed to `localStorage.jsx` (Phase 7) | P3 |
 
 ---

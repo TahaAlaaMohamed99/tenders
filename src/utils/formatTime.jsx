@@ -1,4 +1,4 @@
-const useFormatTime = (value, lang = "en") => {
+const formatTime = (value, lang = "en") => {
   if (!value) return "";
 
   let date;
@@ -24,4 +24,4 @@ const useFormatTime = (value, lang = "en") => {
   return new Intl.DateTimeFormat(lang, options).format(date);
 };
 
-export default useFormatTime;
+export default formatTime;

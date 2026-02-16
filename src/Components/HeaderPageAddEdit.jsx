@@ -1,20 +1,15 @@
-<<<<<<< refactor
 /**
  * @fileoverview HeaderPageAddEdit Component
  *
  * Phase 1 refactor: Extracted workflow logic into useWorkflowActions,
  * transaction logic into useTransactionActions.
- * Modals remain inline but logic is fully delegated to hooks.
  *
  * @see docs/07-action-plan.md#2-refactor-headerpageaddeditjsx
  * @see docs/05-solid-clean-architecture.md (SRP Violation 1)
  * @module Components/HeaderPageAddEdit
  */
 
-import React, { useState } from "react";
-=======
-import React, { useEffect, useState, useMemo } from "react";
->>>>>>> main
+import React, { useState, useMemo } from "react";
 import TranslationText from "./TranslationText";
 import {
   Approved,
@@ -22,10 +17,6 @@ import {
   IconAddDoc,
   IconBookmark,
   IconCalculate,
-<<<<<<< refactor
-=======
-  IconColsed,
->>>>>>> main
   IconBack,
   IconDocumentView,
   IconEdit,
@@ -38,11 +29,6 @@ import {
   IconTrash,
   IconTreeView,
   IconUnPost,
-<<<<<<< refactor
-=======
-  IconValidatePost,
-  IconValidateUnpost,
->>>>>>> main
   Rejected,
   SearchDocumentIcon,
 } from "../assets/Icons";
@@ -55,31 +41,17 @@ import ViewerRec from "./ViewerRec";
 import "../Styles/Components/HeaderPageAddEdit/HeaderPageAddEdit.css";
 import parentEntityRoutes from "../ConfigData/ParentEntityRoutes.json";
 import ConfirmationModal from "./ConfirmationModal";
-<<<<<<< refactor
-=======
-import { toast } from "react-toastify";
-import { Api } from "../services/Api";
->>>>>>> main
 import ModaRemoveBookmark from "./Layout/componentsNavbar/ModaRemoveBookmark";
 import useDeviceType from "../Hooks/useDeviceType";
 import HierarchyAll from "./HierarchyAll";
 import { DataPagesHierarchyGrid } from "../ConfigData/DataPagesHierarchyGrid";
 import ColumnsHeaderPage from "../ConfigData/ColumnsHeaderPage.json";
-<<<<<<< refactor
 import useFullRouteChain from "../Hooks/useFullRouteChain";
 import Config from "../utils/Config";
-=======
-import useTranslationText from "../Hooks/useTranslationText";
-import useFullRouteChain from "../Hooks/useFullRouteChain";
-import Config from "../utils/Config";
-import useHandleSubmit from "../Hooks/useHandleSubmit";
-import useHandleDelete from "../Hooks/useHandleDelete";
->>>>>>> main
 import { isActionWorkflow } from "../utils/isActionWorkflow";
 import CustomTextarea from "./Form/CustomTextarea";
 import ConfettiExplosion from "react-confetti-explosion";
 import BottomSheet from "./BottomSheet";
-<<<<<<< refactor
 
 // Phase 1 — extracted hooks
 import useWorkflowActions from "../Hooks/useWorkflowActions";
@@ -92,21 +64,7 @@ import useTransactionActions from "../Hooks/useTransactionActions";
  *  1. Header rendering (title, breadcrumbs, status badge)
  *  2. Actions toolbar (built from `renderActionsList`)
  *  3. Mobile BottomSheet fallback
- *  4. Delegates workflow / transaction / delete logic to hooks
- *
- * @param {string}  option           - "add" | "edit"
- * @param {number}  id               - Record id
- * @param {string}  ResourcePage     - Translation namespace
- * @param {number}  statusId         - Workflow status id
- * @param {Object}  dataHeader       - ViewerRec data
- * @param {Function} onSubmit        - Save callback
- * …see previous JSDoc for full prop list
-=======
-import signalRService from "../services/signalRService";
-
-/**
- * HeaderPageAddEdit Component:
- * This component renders the page header with action buttons based on the current mode (add or edit).
+ *  4. Delegates workflow / transaction / delete logic to hooks (SRP)
  *
  * @param {string} option - Specifies whether the mode is "add" or "edit".
  * @param {number} id - The identifier for the item, used to determine if it's an existing item (for editing).
@@ -114,9 +72,35 @@ import signalRService from "../services/signalRService";
  * @param {number} statusId - The current status of the item, used to determine the status text and styling.
  * @param {string} titleAdd - The page title for add mode.
  * @param {string} titleEdit - The page title for edit mode.
+ * @param {string} apiKey - API entity prefix (e.g. "PurchaseOrder").
  * @param {object} dataHeader - Employee data, displayed if not null.
+ * @param {string} columnsKey - Key to lookup column definitions for `ViewerRec`.
+ * @param {Function} goBackPrev - Custom go-back function (overrides default route chain back).
  * @param {Function} onSubmit - Callback function triggered when the "Save" or "Submit" button is clicked.
->>>>>>> main
+ * @param {boolean} viewOnly - If true, hides save/edit actions.
+ * @param {boolean} isLoadingSubmit - Loading state for the save button.
+ * @param {object} hierarchyAll - Config for hierarchy view modal (Api, key).
+ * @param {boolean} showEditButton - Controls visibility of the edit icon/button.
+ * @param {string} parentEntityKey - Key for parent entity routing logic.
+ * @param {object} parentEntityValues - Values needed for parent entity route construction.
+ * @param {boolean} isEdited - Disables actions if form is edited but not saved.
+ * @param {Array} btnHeaderPage - Custom extra buttons configuration array.
+ * @param {object} confiPage - Page configuration object (used for permissions like `subModule`).
+ * @param {object} ErrorsKeys - Mapped keys for error logging navigation.
+ * @param {boolean} errorListPage - If true, adjusts UI for error list context.
+ * @param {object} data - Current record data (needed for status updates).
+ * @param {Function} setData - Setter for local record data.
+ * @param {Function} fetchData - Refetch function to update data after actions.
+ * @param {boolean} isDelete - Controls visibility of the delete button.
+ * @param {object} LevelsWorkFlow - Workflow levels data for approval logic.
+ * @param {Function} setWorkFlowTransaction - Updates workflow state in parent.
+ * @param {boolean} isCalculate - Controls visibility of the calculate button.
+ * @param {Function} setReplayFetchLine - Trigger to refresh line items.
+ * @param {boolean} isviewContract - Controls visibility of contract view button.
+ * @param {Function} setViewContract - Setter for contract view toggle.
+ * @param {boolean} viewContract - Current state of contract view toggle.
+ * @param {string} fillApi - API endpoint for Fill action.
+ * @param {boolean} isFill - If true, uses Fill logic instead of Calculate.
  */
 export default function HeaderPageAddEdit({
   option,
@@ -140,14 +124,10 @@ export default function HeaderPageAddEdit({
   isEdited,
   btnHeaderPage = null,
   confiPage = "",
-<<<<<<< refactor
-  ErrorsKeys = { key1: "name", key2: "code" },
-=======
   ErrorsKeys = {
     key1: "name",
     key2: "code",
   },
->>>>>>> main
   errorListPage = false,
   data,
   setData,
@@ -163,34 +143,19 @@ export default function HeaderPageAddEdit({
   fillApi = null,
   isFill = false,
 }) {
-<<<<<<< refactor
   // -- Permissions -------------------------------------------------------
-=======
->>>>>>> main
   const isAllowedDelete = Config.isAllow("Delete", confiPage);
   const isAllowedPost = Config.isAllow("Post", confiPage);
   const isAllowedUnPost = Config.isAllow("UnPost", confiPage);
   const isAllowedModify = Config.isAllow("Modify", confiPage);
-<<<<<<< refactor
 
   // -- Selectors / dispatch ----------------------------------------------
   const deviceType = useDeviceType();
   const { isBookmarkedEdit, bookmarkDataEdit } = useSelector(
     (state) => state.bookmarkSlice
   );
-  const dispatch = useDispatch();
 
-  // -- Derived data ------------------------------------------------------
-  const statusName = Generallist?.WorkflowStatus?.find(
-    (status) => status.value == statusId
-  );
-=======
-  const deviceType = useDeviceType();
-  // Extract specific properties from the Redux store using useSelector.
-  const { isBookmarkedEdit, bookmarkDataEdit } = useSelector(
-    (state) => state.bookmarkSlice
-  );
-  // Current language logic
+  // Current language logic (from main)
   const currentLanguage = useSelector(
     (state) => state.themeSlice.currentLanguage
   );
@@ -198,41 +163,13 @@ export default function HeaderPageAddEdit({
     (state) => state.resourcesSlice?.ReduxResources
   );
   const ReduxResources = useMemo(() => resourcesFromRedux || {}, [resourcesFromRedux]);
-  const { handleSubmitFormPost } = useHandleSubmit();
-  const { handleDelete } = useHandleDelete();
 
-  // Initialize the useDispatch hook to dispatch Redux actions.
   const dispatch = useDispatch();
-  // Filters the status name based on the statusId (safe access)
+
+  // -- Derived data ------------------------------------------------------
   const statusName = Generallist?.WorkflowStatus?.find(
     (status) => status.value == statusId
   );
-
-  //
-  const { goBackInChain, openInNewTabErrorLog } = useFullRouteChain();
-
-  const [showModalDelete, setShowModalDelete] = useState(false);
-  const [showModaPost, setShowModalPost] = useState(false);
-  const [showModaSubmitted, setShowModaSubmitted] = useState(false);
-  const [showModaCalculate, setShowModaCalculate] = useState(false);
-
-  const [showModaReCall, setShowModaReCall] = useState(false);
-  const [showModalHierarchyAll, setShowModalHierarchyAll] = useState(false);
-  const [showModalUnPost, setShowModalUnPost] = useState(false);
-  const [isVisibleRemoveBookmark, setIsVisibleRemoveBookmark] = useState(false);
-  const [deleteBookmark, setDeleteBookmark] = useState({});
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [isOpenBottomSheet, setIsOpenBottomSheet] = useState(false);
-  const [isLoadingValidate, setIsLoadingValidate] = useState(false);
-  const [isLoadingApprovalsCycle, setIsLoadingApprovalsCycle] = useState(false);
-  const [isFullyApproved, setIsFullyApproved] = useState(false);
-  const [approvalsCycleModal, setApprovalsCycleModal] = useState({
-    show: false,
-    type: "",
-  });
-  const [comment, setComment] = useState("");
-
->>>>>>> main
   const transactionName = Generallist.TransactionName?.find(
     (page) => page.label == confiPage?.keyPage
   );
@@ -241,10 +178,7 @@ export default function HeaderPageAddEdit({
     isAllowedModify,
     statusId
   );
-<<<<<<< refactor
 
-=======
->>>>>>> main
   let matchedKeys = {};
   if (data) {
     Object.entries(data).forEach(([dataKey, value]) => {
@@ -255,7 +189,6 @@ export default function HeaderPageAddEdit({
       });
     });
   }
-<<<<<<< refactor
 
   const { goBackInChain, openInNewTabErrorLog } = useFullRouteChain();
 
@@ -298,14 +231,12 @@ export default function HeaderPageAddEdit({
   const [showModalHierarchyAll, setShowModalHierarchyAll] = useState(false);
   const [showModalUnPost, setShowModalUnPost] = useState(false);
   const [isVisibleRemoveBookmark, setIsVisibleRemoveBookmark] = useState(false);
-  const [deleteBookmark, setDeleteBookmark] = useState({});
   const [selectedItem, setSelectedItem] = useState(null);
   const [isOpenBottomSheet, setIsOpenBottomSheet] = useState(false);
 
   // -- Bookmark handler --------------------------------------------------
   const handleBookmarkToggle = () => {
     if (isBookmarkedEdit) {
-      setDeleteBookmark(bookmarkDataEdit);
       setIsVisibleRemoveBookmark(true);
     } else {
       dispatch(addBookmark(bookmarkDataEdit));
@@ -313,210 +244,6 @@ export default function HeaderPageAddEdit({
   };
 
   // -- Bottom-sheet handlers ---------------------------------------------
-=======
-  const onCalculate = () => {
-    const url = isFill ? `${fillApi}/${id}` : `${apiKey}/Calculate?id=${id}`;
-
-    Api.post(url)
-      .then((res) => {
-        if (res?.data?.success) {
-          toast.success(
-            <TranslationText
-              page={ResourcePage}
-              title={res?.data?.message || "calculateSuccess"}
-            />
-          );
-          setReplayFetchLine(true);
-          setShowModaCalculate(false);
-        }
-      })
-      .catch(() => {
-        toast.error(
-          <TranslationText page={ResourcePage} title="calculateError" />
-        );
-        setShowModaCalculate(false);
-      });
-  };
-
-  const onToggleWorkflow = ({ action }) => {
-    Api.post(`${apiKey}/${action}`, {
-      transactionName: transactionName?.value,
-      transcationRecId: Number(id),
-    })
-      .then((res) => {
-        toast.success(
-          <TranslationText
-            title={
-              action == "ReCall"
-                ? "reCalledSuccessfully"
-                : "submittedSuccessfully"
-            }
-            page={ResourcePage}
-          />
-        );
-        if (action == "ReCall") {
-          setData({ ...data, status: 1 });
-        } else {
-          setData({ ...data, status: res.data, isSendNotification: true });
-          if (fetchData) {
-            fetchData();
-          }
-        }
-      })
-      .catch((err) => {
-        if (err?.details?.errorMessage) {
-          openInNewTabErrorLog("/ErrorList", {
-            errors: err.details.errorMessage,
-            prevRoute: window.location.pathname,
-            ResourcePage,
-            ErrorsKeys: matchedKeys,
-          });
-        }
-        toast.error(
-          <TranslationText
-            title={action == "ReCall" ? "reCalledFailed" : "submittedFailed"}
-            page={ResourcePage}
-          />
-        );
-      });
-  };
-
-  const onCancelApproval = () => {
-    setApprovalsCycleModal({
-      show: false,
-      type: "",
-    });
-    setComment();
-  };
-
-  const onApprovalsCycle = (type) => {
-    const dataLevel = canTakeAction?.level;
-    setIsLoadingApprovalsCycle(true);
-    const sendData = {
-      recId: dataLevel?.recId,
-      transactionName: transactionName?.value,
-      comment: comment || null,
-      name: "",
-      status: type == "approval" ? 2 : 3,
-    };
-    Api.put("WorkFlowTransactionLog/UpdateStatusLevel", sendData)
-      .then((res) => {
-        const resData = res.data;
-        if (resData.message == 200) {
-          if (
-            type == "approval" &&
-            dataLevel?.levelNumber == LevelsWorkFlow.total
-          ) {
-            Api.post(
-              `${apiKey}/ChangeStatusToFullyApproved?TransactionRecId=${id}&TransactionName=${transactionName?.value}`
-            )
-              .then((Response) => {
-                onCancelApproval();
-                setIsLoadingApprovalsCycle(false);
-                toast.success(
-                  <TranslationText
-                    page="General"
-                    title="successfullyApproval"
-                  />
-                );
-                setIsFullyApproved(true);
-                setData({ ...data, status: 3 });
-              })
-              .catch((err) => {
-                toast.error(
-                  <TranslationText page="General" title="failedApproval" />
-                );
-              });
-          } else if (type == "rejecte") {
-            Api.post(
-              `${apiKey}/ChangeStatusToRejected?TransactionRecId=${id}&TransactionName=${transactionName?.value}`
-            )
-              .then((Response) => {
-                setData({ ...data, status: 4 });
-                onCancelApproval();
-                setIsLoadingApprovalsCycle(false);
-                toast.success(
-                  <TranslationText
-                    page="General"
-                    title="successfullyRejected"
-                  />
-                );
-              })
-              .catch((err) => {
-                toast.error(
-                  <TranslationText page="General" title="failedRejected" />
-                );
-              });
-          } else {
-            const upDataWorkFlowTransaction = {
-              data: LevelsWorkFlow?.data.map((item) =>
-                item.recId === dataLevel.recId ? { ...item, status: 2 } : item
-              ),
-              total: LevelsWorkFlow?.total,
-            };
-            const sendNotificationData = upDataWorkFlowTransaction?.data?.find(
-              (item) => item.status === 1
-            );
-            signalRService.sendNotification(
-              sendNotificationData?.userRecId,
-              sendNotificationData?.tranasctionRecId,
-              sendNotificationData?.transactionName,
-              data?.code,
-              1
-            );
-            setWorkFlowTransaction(upDataWorkFlowTransaction);
-            onCancelApproval();
-            toast.success(
-              <TranslationText page="General" title="successfullyApproval" />
-            );
-            setIsLoadingApprovalsCycle(false);
-          }
-        } else {
-          toast.error(resData.messageText);
-          onCancelApproval();
-          setIsLoadingApprovalsCycle(false);
-          window.location.reload();
-        }
-      })
-      .catch((error) => {
-        setIsLoadingApprovalsCycle(false);
-        onCancelApproval();
-        window.location.reload();
-        toast.error(
-          <TranslationText
-            page="General"
-            title={type == "approval" ? "failedApproval" : "failedRejected"}
-          />
-        );
-      });
-  };
-  const ConfirmDelete = async () => {
-    await handleDelete({
-      apiPage: apiKey,
-      recId: id,
-      resourcePage: ResourcePage,
-      onSuccess: () => {
-        goBackInChain();
-      },
-    });
-    setShowModalDelete(false);
-  };
-  const handleTransactionAction = ({ action, setData }) => {
-    handleSubmitFormPost(
-      apiKey,
-      action,
-      id,
-      ResourcePage,
-      action == "ValidatePost" || action == "ValidateUnPost"
-        ? setIsLoadingValidate
-        : null,
-      data,
-      (ErrorsKeys = matchedKeys),
-      setData ? setData : null,
-      action == "Post" || action == "UnPost" ? fetchData : null
-    );
-  };
->>>>>>> main
   const handleOpenSheet = (item) => {
     setSelectedItem(item);
     setIsOpenBottomSheet(true);
@@ -526,25 +253,12 @@ export default function HeaderPageAddEdit({
     setSelectedItem(null);
   };
 
-<<<<<<< refactor
   // =====================================================================
   // Build the actions list
   // =====================================================================
   const renderActionsList = [];
 
   // Save
-=======
-  // Toggles the bookmark state (add or remove)
-  const handleBookmarkToggle = () => {
-    if (isBookmarkedEdit) {
-      setDeleteBookmark(bookmarkDataEdit);
-      setIsVisibleRemoveBookmark(true);
-    } else {
-      dispatch(addBookmark(bookmarkDataEdit));
-    }
-  };
-  const renderActionsList = [];
->>>>>>> main
   if (
     onSubmit &&
     !viewOnly &&
@@ -559,29 +273,19 @@ export default function HeaderPageAddEdit({
       icon: <IconSave />,
     });
   }
-<<<<<<< refactor
 
   // Submit
-=======
->>>>>>> main
   if (id > 0 && !viewOnly && isAllowedModify && statusId == "1") {
     renderActionsList.push({
       tooltip: "submit",
       onClick: () => setShowModaSubmitted(true),
       className: "",
       disabled: isEdited,
-<<<<<<< refactor
       icon: <IconSubmitted />,
     });
   }
 
   // ReCall
-=======
-
-      icon: <IconSubmitted />,
-    });
-  }
->>>>>>> main
   if (
     id > 0 &&
     isAllowedModify &&
@@ -597,55 +301,31 @@ export default function HeaderPageAddEdit({
       icon: <IconReCall />,
     });
   }
-<<<<<<< refactor
 
   // Approval
-=======
->>>>>>> main
   if (id > 0 && canTakeAction?.show && statusId == "2") {
     renderActionsList.push({
       tooltip: "approval",
       onClick: () =>
-<<<<<<< refactor
         workflow.setApprovalsCycleModal({ show: true, type: "approval" }),
-=======
-        setApprovalsCycleModal({
-          show: true,
-          type: "approval",
-        }),
->>>>>>> main
       className: "",
       icon: <Approved />,
     });
   }
-<<<<<<< refactor
 
   // Rejection
-=======
->>>>>>> main
   if (id > 0 && canTakeAction?.show && statusId == "2") {
     renderActionsList.push({
       tooltip: "rejecte",
       onClick: () =>
-<<<<<<< refactor
         workflow.setApprovalsCycleModal({ show: true, type: "rejecte" }),
-=======
-        setApprovalsCycleModal({
-          show: true,
-          type: "rejecte",
-        }),
->>>>>>> main
       className: "",
       icon: <Rejected />,
     });
   }
-<<<<<<< refactor
 
   // Calculate / Fill
   if (id > 0 && !viewOnly && isAllowedModify && isCalculate === true) {
-=======
-  if (id > 0 && !viewOnly && isAllowedModify && isCalculate == true) {
->>>>>>> main
     renderActionsList.push({
       tooltip: isFill ? "fill" : "calculate",
       onClick: () => setShowModaCalculate(true),
@@ -654,15 +334,10 @@ export default function HeaderPageAddEdit({
       icon: <IconCalculate />,
     });
   }
-<<<<<<< refactor
 
   // Custom header buttons
   if (btnHeaderPage) {
     btnHeaderPage.forEach((btn) => {
-=======
-  if (btnHeaderPage) {
-    btnHeaderPage.map((btn) => {
->>>>>>> main
       renderActionsList.push({
         tooltip: btn.tooltip,
         onClick: () => btn.onclick(),
@@ -673,11 +348,8 @@ export default function HeaderPageAddEdit({
       });
     });
   }
-<<<<<<< refactor
 
   // Post
-=======
->>>>>>> main
   if (id > 0 && statusId == "3" && isAllowedPost) {
     renderActionsList.push({
       tooltip: "Post",
@@ -687,11 +359,8 @@ export default function HeaderPageAddEdit({
       icon: <IconPost className="w-full h-full" />,
     });
   }
-<<<<<<< refactor
 
   // UnPost
-=======
->>>>>>> main
   if (id > 0 && statusId == "999" && isAllowedUnPost) {
     renderActionsList.push({
       tooltip: "UnPost",
@@ -700,45 +369,13 @@ export default function HeaderPageAddEdit({
       icon: <IconUnPost className="w-full h-full" />,
     });
   }
-<<<<<<< refactor
 
   // Bookmark
-=======
-  // if (id > 0 && statusId != "999" && statusId > 0) {
-  //   renderActionsList.push({
-  //     tooltip: "validatePost",
-  //     onClick: () =>
-  //       !isLoadingValidate &&
-  //       !isEdited &&
-  //       handleTransactionAction({ action: "ValidatePost" }),
-  //     className: "",
-  //     disabled: isEdited,
-  //     isLoading: isLoadingValidate,
-  //     icon: <IconValidatePost className="w-full h-full" />,
-  //   });
-  // }
-  // if (id > 0 && statusId == "999" && statusId > 0) {
-  //   renderActionsList.push({
-  //     tooltip: "validateUnPost",
-  //     onClick: () =>
-  //       !isLoadingValidate &&
-  //       handleTransactionAction({ action: "ValidateUnPost" }),
-  //     className: "btn-secondary",
-  //     disabled: isEdited,
-  //     isLoading: isLoadingValidate,
-  //     icon: <IconValidateUnpost className="w-full h-full" />,
-  //   });
-  // }
->>>>>>> main
   if (option === "edit" && id > 0 && showBookmark) {
     renderActionsList.push({
       tooltip: isBookmarkedEdit ? "removeBookmark" : "addBookmark",
       onClick: () => handleBookmarkToggle(),
-<<<<<<< refactor
       className: `btn_Header_End btn-default`,
-=======
-      className: `btn_Header_End   btn-default`,
->>>>>>> main
       activeClassName: isBookmarkedEdit ? " Active" : "",
       disabled: false,
       isLoading: false,
@@ -752,10 +389,7 @@ export default function HeaderPageAddEdit({
     });
   }
 
-<<<<<<< refactor
   // Hierarchy
-=======
->>>>>>> main
   if (id > 0 && hierarchyAll != null) {
     renderActionsList.push({
       tooltip: "hierarchyAll",
@@ -767,22 +401,15 @@ export default function HeaderPageAddEdit({
     });
   }
 
-<<<<<<< refactor
   // Parent entity link
-=======
->>>>>>> main
   if (parentEntityKey != null) {
     renderActionsList.push({
       tooltip: "parentEntityRoutes",
       onClick: () => {
         const routeTemplate =
-<<<<<<< refactor
           parentEntityRoutes[parentEntityKey][
             parentEntityValues?.parentEntity
           ];
-=======
-          parentEntityRoutes[parentEntityKey][parentEntityValues?.parentEntity];
->>>>>>> main
         const route = routeTemplate.replace(
           "0",
           parentEntityValues?.parentEntityRecId
@@ -795,17 +422,11 @@ export default function HeaderPageAddEdit({
       icon: <IconNewTab className="w-full h-full" />,
     });
   }
-<<<<<<< refactor
 
   // Delete
   if (
     id > 0 &&
-    (confiPage?.subModule === "Transaction" ? statusId == "1" : true) &&
-=======
-  if (
-    id > 0 &&
     (confiPage?.subModule == "Transaction" ? statusId == "1" : true) &&
->>>>>>> main
     isAllowedDelete &&
     isDelete
   ) {
@@ -819,10 +440,7 @@ export default function HeaderPageAddEdit({
     });
   }
 
-<<<<<<< refactor
   // Contract toggle
-=======
->>>>>>> main
   if (isviewContract) {
     renderActionsList.push({
       tooltip: viewContract ? "Contract" : "Contract Document",
@@ -831,18 +449,13 @@ export default function HeaderPageAddEdit({
       icon: viewContract ? <IconDocumentView /> : <SearchDocumentIcon />,
     });
   }
-<<<<<<< refactor
 
   // Sort: Delete first, Save second, others after
-=======
-  // Sort actions: Delete first, Save second, others after
->>>>>>> main
   const getSortOrder = (tooltip) => {
     if (tooltip === "delete") return 1;
     if (tooltip === "save") return 2;
     return 3;
   };
-<<<<<<< refactor
   const sortedActionsList = [...renderActionsList].sort(
     (a, b) => getSortOrder(a.tooltip) - getSortOrder(b.tooltip)
   );
@@ -850,13 +463,6 @@ export default function HeaderPageAddEdit({
   // =====================================================================
   // Render helpers
   // =====================================================================
-=======
-  
-  const sortedActionsList = [...renderActionsList].sort((a, b) => 
-    getSortOrder(a.tooltip) - getSortOrder(b.tooltip)
-  );
-
->>>>>>> main
   const renderActions = () => (
     <>
       {sortedActionsList.map((btn, index) => (
@@ -866,13 +472,9 @@ export default function HeaderPageAddEdit({
           disabled={btn.disabled}
           isLoading={btn.isLoading}
           onClick={btn.onClick}
-<<<<<<< refactor
           className={`btn_text_icon ${btn.className || ""} ${
             btn?.activeClassName || ""
           }`}
-=======
-          className={`btn_text_icon ${btn.className || ''} ${btn?.activeClassName || ''}`}
->>>>>>> main
           icon={btn.icon}
           title={btn.tooltip}
           ResourcePage={btn?.Resource || "General"}
@@ -880,26 +482,17 @@ export default function HeaderPageAddEdit({
       ))}
     </>
   );
-<<<<<<< refactor
 
   // =====================================================================
   // JSX
   // =====================================================================
-=======
->>>>>>> main
   return (
     <>
       <div className="Header_Page">
         <div className="Header_container">
-<<<<<<< refactor
           {workflow.isFullyApproved ||
             (statusId == 3 && (
               <div className="absolute top-1/2 start-1/2">
-=======
-          {isFullyApproved ||
-            (statusId == 3 && (
-              <div className=" absolute top-1/2 start-1/2">
->>>>>>> main
                 <ConfettiExplosion
                   height="100vh"
                   particleCount="250"
@@ -909,15 +502,9 @@ export default function HeaderPageAddEdit({
               </div>
             ))}
 
-<<<<<<< refactor
           {/* Header start: icon, title, status badge */}
           <div className="Header_Start">
             {deviceType !== "mobile" && (
-=======
-          {/* Header start section with icon, title, and status */}
-          <div className="Header_Start">
-            {deviceType != "mobile" && (
->>>>>>> main
               <div className="icon">
                 {option === "edit" && id > 0 ? (
                   <IconEdit />
@@ -936,13 +523,9 @@ export default function HeaderPageAddEdit({
             </h3>
             {statusId && statusName && (
               <div
-<<<<<<< refactor
                 className={`state_rec ${
                   StatusList?.WorkflowStatus?.[statusId] || ""
                 }`}
-=======
-                className={`state_rec ${StatusList?.WorkflowStatus?.[statusId] || ''}`}
->>>>>>> main
               >
                 <p className="status_text text_ellipsis">
                   <TranslationText
@@ -955,14 +538,9 @@ export default function HeaderPageAddEdit({
             )}
           </div>
 
-<<<<<<< refactor
           {/* Header end: actions */}
           <div className="Header_End">
             {renderActionsList.length > 0 && deviceType === "mobile" && (
-=======
-          <div className="Header_End">
-            {renderActionsList.length > 0 && deviceType == "mobile" && (
->>>>>>> main
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -976,7 +554,6 @@ export default function HeaderPageAddEdit({
                 </span>
               </button>
             )}
-<<<<<<< refactor
             {renderActionsList.length > 0 && deviceType === "mobile" ? (
               <BottomSheet isOpen={isOpenBottomSheet} closeSheet={closeSheet}>
                 <div className="max-h-[70vh] overflow-y-auto Container_BottomSheet">
@@ -1004,35 +581,6 @@ export default function HeaderPageAddEdit({
                   ))}
                 </div>
               </BottomSheet>
-=======
-            {renderActionsList.length > 0 && deviceType == "mobile" ? (
-              <>
-                <BottomSheet isOpen={isOpenBottomSheet} closeSheet={closeSheet}>
-                  <div className="max-h-[70vh] overflow-y-auto  Container_BottomSheet">
-                    {renderActionsList.map((action, index) => (
-                      <button
-                        key={index}
-                        onClick={() => {
-                          action.onClick(selectedItem);
-                          closeSheet();
-                        }}
-                        className={`btn_action ${
-                          action?.activeClassName || ""
-                        }`}
-                      >
-                        <span className="icon_action">{action.icon}</span>
-                        <span className="title_action">
-                          <TranslationText
-                            page={action.Resource ? action.Resource : "General"}
-                            title={action.tooltip}
-                          />
-                        </span>
-                      </button>
-                    ))}
-                  </div>
-                </BottomSheet>
-              </>
->>>>>>> main
             ) : (
               renderActions()
             )}
@@ -1049,12 +597,8 @@ export default function HeaderPageAddEdit({
             />
           </div>
         </div>
-<<<<<<< refactor
 
         {/* Viewer Record */}
-=======
-        {/* Viewer Record Component */}
->>>>>>> main
         {dataHeader != null && columnsKey && (
           <ViewerRec
             columns={ColumnsHeaderPage[columnsKey]}
@@ -1063,7 +607,6 @@ export default function HeaderPageAddEdit({
           />
         )}
       </div>
-<<<<<<< refactor
 
       {/* ======================== Modals ======================== */}
 
@@ -1089,25 +632,6 @@ export default function HeaderPageAddEdit({
         isVisible={showModaPost || showModaSubmitted || showModaCalculate}
         ResourcePage={ResourcePage}
         type="primary"
-=======
-      <ConfirmationModal
-        isVisible={showModalDelete}
-        ResourcePage={ResourcePage}
-        type={"delete"}
-        title={"messageOneRemove"}
-        description="confirmOneDelete"
-        icon={<IconTrash />}
-        confirmButtonLabel="delete"
-        onConfirm={() => ConfirmDelete()}
-        onCancel={() => {
-          setShowModalDelete(false);
-        }}
-      />
-      <ConfirmationModal
-        isVisible={showModaPost || showModaSubmitted || showModaCalculate}
-        ResourcePage={ResourcePage}
-        type={"primary"}
->>>>>>> main
         title={
           showModaSubmitted
             ? "messageSubmitted"
@@ -1141,7 +665,6 @@ export default function HeaderPageAddEdit({
         }
         onConfirm={() => {
           if (showModaSubmitted) {
-<<<<<<< refactor
             workflow.onToggleWorkflow({ action: "Submit" });
             setShowModaSubmitted(false);
           } else if (showModaCalculate) {
@@ -1150,14 +673,6 @@ export default function HeaderPageAddEdit({
             });
           } else {
             transaction.handleTransactionAction({ action: "Post", setData });
-=======
-            onToggleWorkflow({ action: "Submit" });
-            setShowModaSubmitted(false);
-          } else if (showModaCalculate) {
-            onCalculate();
-          } else {
-            handleTransactionAction({ action: "Post", setData });
->>>>>>> main
             setShowModalPost(false);
           }
         }}
@@ -1170,26 +685,18 @@ export default function HeaderPageAddEdit({
           }
         }}
       />
-<<<<<<< refactor
 
       {/* UnPost / ReCall */}
       <ConfirmationModal
         isVisible={showModalUnPost || showModaReCall}
         ResourcePage={ResourcePage}
         type="default"
-=======
-      <ConfirmationModal
-        isVisible={showModalUnPost || showModaReCall}
-        ResourcePage={ResourcePage}
-        type={"default"}
->>>>>>> main
         title={showModaReCall ? "manageReCall" : "messageOneUnPost"}
         description={showModaReCall ? "confirmReCall" : "confirmOneUnPost"}
         icon={showModaReCall ? <IconReCall /> : <IconUnPost />}
         confirmButtonLabel={showModaReCall ? "reCall" : "unPosted"}
         onConfirm={() => {
           if (showModaReCall) {
-<<<<<<< refactor
             workflow.onToggleWorkflow({ action: "ReCall" });
             setShowModaReCall(false);
           } else {
@@ -1197,12 +704,6 @@ export default function HeaderPageAddEdit({
               action: "UnPost",
               setData,
             });
-=======
-            onToggleWorkflow({ action: "ReCall" });
-            setShowModaReCall(false);
-          } else {
-            handleTransactionAction({ action: "UnPost", setData });
->>>>>>> main
             setShowModalUnPost(false);
           }
         }}
@@ -1211,7 +712,6 @@ export default function HeaderPageAddEdit({
           setShowModaReCall(false);
         }}
       />
-<<<<<<< refactor
 
       {/* Approval / Rejection cycle */}
       <ConfirmationModal
@@ -1231,23 +731,11 @@ export default function HeaderPageAddEdit({
         }
         description={
           workflow.approvalsCycleModal?.type === "approval"
-=======
-      <ConfirmationModal
-        isVisible={approvalsCycleModal?.show}
-        onCancel={() => onCancelApproval()}
-        icon={
-          approvalsCycleModal?.type == "approval" ? <Approved /> : <Rejected />
-        }
-        type={approvalsCycleModal?.type == "approval" ? "primary" : "delete"}
-        description={
-          approvalsCycleModal?.type == "approval"
->>>>>>> main
             ? "descriptionApproved"
             : "descriptionRejected"
         }
         subTitle={`${ResourcePage}?.title`}
         ResourcePage="General"
-<<<<<<< refactor
         isLoadingBtn={workflow.isLoadingApprovalsCycle}
         title={
           workflow.approvalsCycleModal?.type === "approval"
@@ -1262,21 +750,12 @@ export default function HeaderPageAddEdit({
         onConfirm={() =>
           workflow.onApprovalsCycle(workflow.approvalsCycleModal?.type)
         }
-=======
-        isLoadingBtn={isLoadingApprovalsCycle}
-        title={approvalsCycleModal?.type == "approval" ? "approval" : "rejecte"}
-        confirmButtonLabel={
-          approvalsCycleModal?.type == "approval" ? "approval" : "rejecte"
-        }
-        onConfirm={() => onApprovalsCycle(approvalsCycleModal?.type)}
->>>>>>> main
       >
         <div className="mt-4 ConfirmationModal_approved">
           <CustomTextarea
             label="comment"
             ResourcePage="GeneralField"
             placeholder="pleaseEnterComment"
-<<<<<<< refactor
             value={workflow.comment}
             onChange={(e) => workflow.setComment(e.target.value)}
           />
@@ -1284,28 +763,17 @@ export default function HeaderPageAddEdit({
       </ConfirmationModal>
 
       {/* Remove bookmark */}
+      {/* Remove bookmark */}
       <ModaRemoveBookmark
         isOpen={isVisibleRemoveBookmark}
         onConfirm={() => {
-          // Bookmark removal handled via Redux dispatch
-          setIsVisibleRemoveBookmark(false);
+            dispatch(addBookmark(bookmarkDataEdit));
+            setIsVisibleRemoveBookmark(false);
         }}
         onClose={() => setIsVisibleRemoveBookmark(false)}
       />
 
       {/* Hierarchy */}
-=======
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-        </div>
-      </ConfirmationModal>
-      <ModaRemoveBookmark
-        isVisibleRemoveBookmark={isVisibleRemoveBookmark}
-        deleteBookmark={deleteBookmark}
-        onCancel={() => setIsVisibleRemoveBookmark(false)}
-      />
->>>>>>> main
       {hierarchyAll != null && (
         <HierarchyAll
           isVisible={showModalHierarchyAll}

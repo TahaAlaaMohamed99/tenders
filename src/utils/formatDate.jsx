@@ -13,7 +13,7 @@ const config = getLocalStorageAtob("Configuration");
 // Set default timezone
 const DEFAULT_TIMEZONE = config?.TIMEZONE;
 
-export const useFormatDate = (
+export const formatDate = (
   date,
   currentLanguage = "en",
   includeTime = false

@@ -16,14 +16,14 @@ const USE_MOCK_SERVER = localStorage.getItem('USE_MOCK_SERVER') === 'true';
 
 export const getApiBaseUrl = () => {
   if (USE_MOCK_SERVER) {
-    return 'http://localhost:3001';
+    return 'http://localhost:3001/api/';
   }
   
   // Fallback to stored configuration
   try {
     const config = JSON.parse(atob(localStorage.getItem('Configuration') || ''));
     return config?.urlApi || 'http://localhost:5000';
-  } catch (e) {
+  } catch {
     return 'http://localhost:5000';
   }
 };

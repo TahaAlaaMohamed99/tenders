@@ -389,7 +389,7 @@ export const cellFormatters = {
   // ... extensible
 };
 
-// useformatDataGrid.jsx
+// formatDataGrid.jsx
 const formatter = cellFormatters[type] || cellFormatters.text;
 return formatter(value, currentLanguage, column);
 ```

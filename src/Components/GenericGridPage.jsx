@@ -42,14 +42,13 @@ const GenericGridPage = ({
         totalRow,
         PageNumber,
         pageSize,
-        selectedRows,
         showModalDelete,
         handlePageChange,
         handlePageSize,
         handleDelete,
         confirmDelete,
-        cancelDelete, // Use if exposed
-        setShowModalDelete // For manual modal control if needed
+        setShowModalDelete, // For manual modal control if needed
+        setSelectedRows // Required for TendersGrid selection sync
     } = useGenericGridController({
         api: DataPage.Api,
         DataPage,
@@ -97,7 +96,8 @@ const GenericGridPage = ({
                 handleDelete={handleDelete}
                 // Top-level grids usually control selection state here or passed down? 
                 // TendersGrid expects setselectesRowInsert sometimes.
-                setselectesRowInsert={props.setselectesRowInsert} 
+                // Connect TendersGrid selection to Controller
+                setselectesRowInsert={setSelectedRows} 
             />
             
             <ConfirmationModal

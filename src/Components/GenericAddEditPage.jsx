@@ -72,10 +72,7 @@ const GenericAddEditPage = ({ DataPage, ResourcePage, ...props }) => {
         });
     };
 
-    const handleDelete = () => {
-        console.warn("Generic Delete not fully implemented in GenericAddEditPage yet");
-        // Implement confirm modal logic here if using Generic Delete
-    };
+
 
     const handleBack = () => {
          navigate(-1);
@@ -102,6 +99,8 @@ const GenericAddEditPage = ({ DataPage, ResourcePage, ...props }) => {
                 isLoadingSubmit={isSubmitting}
                 showBookmark={false}
                 viewOnly={false}
+                apiKey={DataPage.Api}
+                confiPage={DataPage}
             />
             <div className="px-4 py-6">
                 <DynamicForm 

@@ -536,7 +536,7 @@ DataPages[keyPage]
 **Files**:
 - `src/Components/GenericGridPage.jsx`
 - `src/Components/TendersGrid/index.jsx`
-- `src/utils/formatDataGrid.jsx` (cell formatting) — *renamed from `useformatDataGrid.jsx` in Phase 7*
+- `src/utils/formatDataGrid.jsx` (cell formatting) — *renamed from `formatDataGrid.jsx` in Phase 7*
 
 ---
 
@@ -654,7 +654,7 @@ Vendors: {
 | `DataPages` | `DynamicRouter.RouteFactory` | `src/Routes/DynamicRouter.jsx` |
 | `GridSchemas` | `TendersGrid` | `src/Components/TendersGrid/` |
 | `FormSchemas` | `DynamicForm` | `src/Components/DynamicForm.jsx` |
-| `column.type` | `useformatDataGrid` | `src/utils/formatDataGrid.jsx` |
+| `column.type` | `formatDataGrid` | `src/utils/formatDataGrid.jsx` |
 | `field.type` | `componentRegistry` | `src/ConfigData/componentRegistry.jsx` |
 
 ### ✅ No UI Logic Leakage Into Metadata

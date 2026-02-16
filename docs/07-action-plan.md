@@ -506,7 +506,7 @@ Vendors: {
 2. `useFormatNumber.jsx` → `formatNumber.jsx` ✅
 3. `useFormatTime.jsx` → `formatTime.jsx` ✅
 4. `useFormateDataPrint.jsx` → `formatDataPrint.jsx` ✅
-5. `useformatDataGrid.jsx` → `formatDataGrid.jsx` ✅
+5. `formatDataGrid.jsx` → `formatDataGrid.jsx` ✅
 6. `useFromLocalStorage.jsx` → `localStorage.jsx` ✅
 (23 imports updated across 17 files)
 

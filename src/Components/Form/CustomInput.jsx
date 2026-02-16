@@ -93,7 +93,7 @@ const CustomInput = React.forwardRef(({
               ${labelBgColor}
               ${isFocused 
                 ? `text-primary ${!forceLightMode ? "dark:text-primaryDark" : ""}` 
-                : disabled 
+                : inputProps.disabled 
                   ? `text-textColor ${!forceLightMode ? "dark:text-textColorDark" : ""} opacity-60` 
                   : `text-titleColor ${!forceLightMode ? "dark:text-titleColorDark" : ""}`
               }

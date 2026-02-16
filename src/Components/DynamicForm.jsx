@@ -205,7 +205,7 @@ const DynamicForm = React.memo(React.forwardRef(({
             : formik.handleChange;
 
         // Get options from generallist if specified
-        const options = field.generallist 
+        let options = field.generallist 
             ? generallistOptions[field.generallist] || []
             : field.options;
 

@@ -617,7 +617,7 @@ useGridSearch()       // Debounced search
 
 **Features**:
 - Renders editable cells (CustomInput, CustomSelect, CustomCheckbox, CustomDatePicker)
-- Renders read-only cells via `formatDataGrid` *(renamed from `useformatDataGrid` in Phase 7)*
+- Renders read-only cells via `formatDataGrid` *(renamed from `formatDataGrid` in Phase 7)*
 - Handles cell value updates
 - Checks editability based on column config
 

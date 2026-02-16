@@ -539,7 +539,7 @@ The following files in `src/utils/` are named with `use` prefix but are **NOT Re
 | ~~`useFormatNumber.jsx`~~ | Pure function | ✅ `formatNumber.jsx` (Phase 7) |
 | ~~`useFormatTime.jsx`~~ | Pure function | ✅ `formatTime.jsx` (Phase 7) |
 | ~~`useFormateDataPrint.jsx`~~ | Pure function | ✅ `formatDataPrint.jsx` (Phase 7) |
-| ~~`useformatDataGrid.jsx`~~ | Pure function | ✅ `formatDataGrid.jsx` (Phase 7) |
+| ~~`formatDataGrid.jsx`~~ | Pure function | ✅ `formatDataGrid.jsx` (Phase 7) |
 | ~~`useFromLocalStorage.jsx`~~ | Utility exports | ✅ `localStorage.jsx` (Phase 7) |
 
 **Why This Matters**:

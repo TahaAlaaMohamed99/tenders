@@ -14,6 +14,7 @@
  */
 
 import { useMemo } from 'react';
+import { canViewPage } from '../utils/permissions';
 
 /**
  * Process menu items into hierarchical structure
@@ -35,6 +36,11 @@ export const useProcessMenu = (items, order, dataPages) => {
       const elementPage = dataPages[item.keyPage];
       if (elementPage == null) {
         return null;
+      }
+
+      // Check permissions
+      if (!canViewPage(item.keyPage)) {
+        return null; // Skip if user doesn't have View permission
       }
 
       // Standalone item (no keyModule or same as title)

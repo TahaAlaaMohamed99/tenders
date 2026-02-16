@@ -1,4 +1,4 @@
-const useFormatNumber = (number, language = "en") => {
+const formatNumber = (number, language = "en") => {
   if (number == null || isNaN(number)) {
     return "";
   }
@@ -14,4 +14,4 @@ const useFormatNumber = (number, language = "en") => {
   return formatter.format(number);
 };
 
-export default useFormatNumber;
+export default formatNumber;

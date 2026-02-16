@@ -4,9 +4,9 @@ import { memo } from "react";
  * IMPORTANT: These format functions should NOT be hooks
  * They should be imported from utility files as regular functions
  */
-import { useFormatDate } from "./formatDate";
-import useFormatNumber from "./formatNumber";
-import useFormatTime from "./formatTime";
+import { formatDate } from "./formatDate";
+import formatNumber from "./formatNumber";
+import formatTime from "./formatTime";
 import Resources from "../ConfigData/resources.json";
 import Generallists from "../ConfigData/Generallist.json";
 import { hasFormatter, getFormatter } from "./cellFormatters";
@@ -77,8 +77,6 @@ const CellAvatar = memo(({ value, imageKey, secondKeyText }) => {
 
 CellAvatar.displayName = "CellAvatar";
 
-
-
 /**
  * Memoized Status Component
  */
@@ -108,7 +106,7 @@ const stopPropagation = (e) => e.stopPropagation();
  * @param {function} navigateWithChain - Navigation function (optional)
  * @returns {JSX.Element|null} Formatted cell content
  */
-export const useformatDataGrid = (
+export const formatDataGrid = (
   column,
   row,
   routeKey,
@@ -130,19 +128,17 @@ export const useformatDataGrid = (
   switch (column.type) {
     case "date":
       return (
-        <p className={className}>{useFormatDate(value, currentLanguage)}</p>
-
+        <p className={className}>{formatDate(value, currentLanguage)}</p>
       );
 
     case "dateTime":
       return (
-        <p className={className}>{useFormatDate(value, currentLanguage)}</p>
-
+        <p className={className}>{formatDate(value, currentLanguage)}</p>
       );
 
     case "salary":
       return (
-        <p className={className}>{useFormatNumber(value)}</p>
+        <p className={className}>{formatNumber(value)}</p>
       );
 
     case "email":
@@ -208,7 +204,7 @@ export const useformatDataGrid = (
 
     case "time":
       return (
-        <p className={className}>{useFormatTime(value, currentLanguage)}</p>
+        <p className={className}>{formatTime(value, currentLanguage)}</p>
       );
 
     default: {
@@ -225,9 +221,9 @@ export const useformatDataGrid = (
           className,
           routeKey,
           helpers: {
-            formatDate: useFormatDate,
-            formatNumber: useFormatNumber,
-            formatTime: useFormatTime,
+            formatDate: formatDate,
+            formatNumber: formatNumber,
+            formatTime: formatTime,
             Resources,
             Generallists,
             buildRouteAddEdit,
@@ -243,4 +239,3 @@ export const useformatDataGrid = (
     }
   }
 };
-
