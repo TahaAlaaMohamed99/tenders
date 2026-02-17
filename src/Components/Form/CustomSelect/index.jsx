@@ -86,11 +86,11 @@ const CustomeSelect = React.forwardRef(({
 }, ref) => {
   const navigate = useNavigate();
   // Custom input component for the react-select's Input component
-  const CustomInput = (props) => {
+  const CustomInput = React.useMemo(() => (props) => {
     return (
       <components.Input {...props} autoComplete={`arkaan_Select${label}`} innerRef={ref} />
     );
-  };
+  }, [label, ref]);
 
   // Extract the current theme (light/dark) from the Redux store
   // const { theme } = useSafeSelector((state) => state.themeSlice);

@@ -264,7 +264,8 @@ export const VendorsActions = {
 
 ### 3.4 dummyData.json
 
-**Location**: `src/ConfigData/dummyData.json`
+**Location**: `src/ConfigData/dummyData.json` (Deleted)
+**Status**: Removed
 
 **Purpose**: Mock data for development.
 

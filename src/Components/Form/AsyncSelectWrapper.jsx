@@ -42,6 +42,7 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
                     const mapped = data.map(item => ({
                         value: item[lookup.valueKey || 'id'],
                         label: item[lookup.labelKey || 'name'],
+                        ...item, // Spread original item properties so filterOptionsBy can access them
                         original: item
                     }));
                     setOptions(mapped);
@@ -59,28 +60,47 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
         fetchOptions();
     }, [lookup?.api, lookup?.labelKey, lookup?.valueKey]);
 
+    // Filter options if filterOptionsBy is provided
+    const filteredOptions = useMemo(() => {
+        if (typeof props.filterOptionsBy === 'function' && props.formValues) {
+            return props.filterOptionsBy(options, props.formValues);
+        }
+        return options;
+    }, [options, props.filterOptionsBy, props.formValues]);
+
+    // useEffect(() => {
+    //     console.log('[AsyncSelectWrapper] Value:', value, 'Type:', typeof value);
+    // }, [value]);
+
+    // useEffect(() => {
+    //     console.log('[AsyncSelectWrapper] Filtered Options:', filteredOptions);
+    // }, [filteredOptions]);
+
     // Convert string value to object for react-select
     const selectedValue = useMemo(() => {
-        if (!value) return null;
+        if (value === null || value === undefined || value === '') return null;
         
         // If already an object with value property, use it
         if (typeof value === 'object' && value !== null && 'value' in value) {
             return value;
         }
         
-        // If string, find matching option or create one
+        // If string or number, find matching option or create one
         if (typeof value === 'string' || typeof value === 'number') {
-            const found = options.find(opt => opt.value === value);
-            if (found) return found;
+            const found = filteredOptions.find(opt => opt.value == value);
+            if (found) {
+                return found;
+            }
             // Fallback: create option from value
             return { value: value, label: value };
         }
         
         return null;
-    }, [value, options]);
+    }, [value, filteredOptions]);
 
     // Handle change - extract value for form state
     const handleChange = (selected) => {
+        // console.log('[AsyncSelectWrapper] handleChange selected:', selected);
         // Pass the value string to the form, not the whole object
         const newValue = selected ? selected.value : '';
         onChange(newValue);
@@ -93,7 +113,7 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
         <CustomeSelect
             {...props}
             ref={ref}
-            options={options}
+            options={filteredOptions}
             isLoading={isLoading}
             ResourcePage={props.ResourcePage || lookup?.ResourcePage}
             value={selectedValue}

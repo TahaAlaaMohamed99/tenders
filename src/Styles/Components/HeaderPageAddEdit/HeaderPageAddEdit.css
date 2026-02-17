@@ -79,6 +79,31 @@
   @apply bg-red-50 text-red-700 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800;
 }
 
+/* Calculating - Info Blue */
+.state_rec.Calculating {
+  @apply bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800;
+}
+
+/* FaildCalculate - Warning Orange */
+.state_rec.FaildCalculate {
+  @apply bg-orange-50 text-orange-700 border border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800;
+}
+
+/* Calculated - Info Blue */
+.state_rec.Calculated {
+  @apply bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800;
+}
+
+/* Posting - Info Blue */
+.state_rec.Posting {
+  @apply bg-blue-50 text-blue-700 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800;
+}
+
+/* FaildPost - Warning Orange */
+.state_rec.FaildPost {
+  @apply bg-orange-50 text-orange-700 border border-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-800;
+}
+
 /* Posted - Primary */
 .state_rec.Posted {
   @apply bg-primary text-bgColor border-primary dark:bg-primaryDark dark:text-bgColorDark dark:border-primaryDark;

@@ -187,6 +187,22 @@ const DynamicForm = React.memo(React.forwardRef(({
         }
     }, [sections]);
 
+    // Calculate dependencies
+    const dependencyMap = useMemo(() => {
+        const deps = {};
+        if (sections) {
+            sections.forEach(section => {
+                section.fields.forEach(field => {
+                    if (field.dependsOn) {
+                        if (!deps[field.dependsOn]) deps[field.dependsOn] = [];
+                        deps[field.dependsOn].push(field.name);
+                    }
+                });
+            });
+        }
+        return deps;
+    }, [sections]);
+
     const renderField = useCallback((field) => {
         const Component = components[field.type];
         if (!Component) {
@@ -200,9 +216,20 @@ const DynamicForm = React.memo(React.forwardRef(({
             );
         }
 
-        const handleChange = (field.type === 'select' || field.type === 'async-select')
-            ? (e) => formik.setFieldValue(field.name, e) 
-            : formik.handleChange;
+        const handleChange = (e) => {
+            if (field.type === 'select' || field.type === 'async-select') {
+                formik.setFieldValue(field.name, e);
+            } else {
+                formik.handleChange(e);
+            }
+
+            // Clear dependent fields if any
+            if (dependencyMap[field.name]) {
+                dependencyMap[field.name].forEach(depField => {
+                    formik.setFieldValue(depField, '');
+                });
+            }
+        };
 
         // Get options from generallist if specified
         let options = field.generallist 
@@ -258,6 +285,7 @@ const DynamicForm = React.memo(React.forwardRef(({
             isLoading={field.generallist ? isLoadingOptions : false}
             isDisabled={isDisabled}
             placeholder={placeholder}
+            formValues={formik.values}
             className="mb-4"
           />
         );
@@ -271,6 +299,7 @@ const DynamicForm = React.memo(React.forwardRef(({
         formik.setFieldValue,
         generallistOptions,
         isLoadingOptions,
+        dependencyMap
       ],
     );
 

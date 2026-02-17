@@ -1339,7 +1339,7 @@
       "name": "RFQ 2024-001",
       "description": "Request for Quotation - Office Supplies",
       "biddingType": "OpenBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2024-02-01T00:00:00Z",
       "executionDate": "2024-02-15T00:00:00Z",
       "createdOn": "2024-01-25T10:00:00Z"
@@ -1350,7 +1350,7 @@
       "name": "Tender 2024-002",
       "description": "International Tender - IT Services",
       "biddingType": "ClosedBidding",
-      "status": "Draft",
+      "status": 1,
       "transDate": "2024-03-01T00:00:00Z",
       "executionDate": "2024-03-20T00:00:00Z",
       "createdOn": "2024-01-30T15:30:00Z"
@@ -1361,7 +1361,7 @@
       "name": "Project Gamma - 3",
       "description": "Description for project 3",
       "biddingType": "OpenBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1372,7 +1372,7 @@
       "name": "Project Delta - 4",
       "description": "Description for project 4",
       "biddingType": "ClosedBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1383,7 +1383,7 @@
       "name": "Project Delta - 5",
       "description": "Description for project 5",
       "biddingType": "OpenBidding",
-      "status": "Closed",
+      "status": 4,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1394,7 +1394,7 @@
       "name": "Project Delta - 6",
       "description": "Description for project 6",
       "biddingType": "ClosedBidding",
-      "status": "Closed",
+      "status": 4,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1405,7 +1405,7 @@
       "name": "Project Delta - 7",
       "description": "Description for project 7",
       "biddingType": "ClosedBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1416,7 +1416,7 @@
       "name": "Project Alpha - 8",
       "description": "Description for project 8",
       "biddingType": "ClosedBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1427,7 +1427,7 @@
       "name": "Project Delta - 9",
       "description": "Description for project 9",
       "biddingType": "ClosedBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1438,7 +1438,7 @@
       "name": "Project Alpha - 10",
       "description": "Description for project 10",
       "biddingType": "ClosedBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1449,7 +1449,7 @@
       "name": "Project Delta - 11",
       "description": "Description for project 11",
       "biddingType": "OpenBidding",
-      "status": "Closed",
+      "status": 4,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1460,7 +1460,7 @@
       "name": "Project Beta - 12",
       "description": "Description for project 12",
       "biddingType": "OpenBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1471,7 +1471,7 @@
       "name": "Project Beta - 13",
       "description": "Description for project 13",
       "biddingType": "ClosedBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1482,7 +1482,7 @@
       "name": "Project Delta - 14",
       "description": "Description for project 14",
       "biddingType": "OpenBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1493,7 +1493,7 @@
       "name": "Project Gamma - 15",
       "description": "Description for project 15",
       "biddingType": "ClosedBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1504,7 +1504,7 @@
       "name": "Project Beta - 16",
       "description": "Description for project 16",
       "biddingType": "ClosedBidding",
-      "status": "Draft",
+      "status": 1,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1515,7 +1515,7 @@
       "name": "Project Alpha - 17",
       "description": "Description for project 17",
       "biddingType": "OpenBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1526,7 +1526,7 @@
       "name": "Project Beta - 18",
       "description": "Description for project 18",
       "biddingType": "OpenBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1537,7 +1537,7 @@
       "name": "Project Beta - 19",
       "description": "Description for project 19",
       "biddingType": "OpenBidding",
-      "status": "Draft",
+      "status": 1,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1548,7 +1548,7 @@
       "name": "Project Delta - 20",
       "description": "Description for project 20",
       "biddingType": "ClosedBidding",
-      "status": "Published",
+      "status": 999,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1559,7 +1559,7 @@
       "name": "Project Beta - 21",
       "description": "Description for project 21",
       "biddingType": "OpenBidding",
-      "status": "Draft",
+      "status": 1,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -1570,7 +1570,7 @@
       "name": "Project Gamma - 22",
       "description": "Description for project 22",
       "biddingType": "OpenBidding",
-      "status": "Approved",
+      "status": 3,
       "transDate": "2026-02-15T20:41:25.944Z",
       "executionDate": "2026-02-27T10:28:05.944Z",
       "createdOn": "2026-02-15T20:41:25.944Z"
@@ -2080,6 +2080,11 @@
       "purchaseQuantity": 15,
       "departmentName": "Production 4",
       "createdOn": "2026-02-15T20:41:25.944Z"
+    },
+    {
+      "parentRecId": 0,
+      "purchaseQuantity": "",
+      "recId": 57
     }
   ],
   "Vendors_GetdataArea": [

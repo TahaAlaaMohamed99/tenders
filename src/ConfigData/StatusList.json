@@ -1,28 +1,53 @@
 {
   "RecordStatus": [
     {
-      "label": "Draft",
-      "value": 0,
-      "className": "Draft"
+      "label": "New",
+      "value": 1,
+      "className": "New"
     },
     {
       "label": "Submitted",
-      "value": 1,
+      "value": 2,
       "className": "Submitted"
     },
     {
       "label": "FullyApproved",
-      "value": 2,
+      "value": 3,
       "className": "FullyApproved"
     },
     {
       "label": "Rejected",
-      "value": 3,
+      "value": 4,
       "className": "Rejected"
     },
     {
+      "label": "Calculating",
+      "value": 9,
+      "className": "Calculating"
+    },
+    {
+      "label": "FaildCalculate",
+      "value": 10,
+      "className": "FaildCalculate"
+    },
+    {
+      "label": "Calculated",
+      "value": 11,
+      "className": "Calculated"
+    },
+    {
+      "label": "Posting",
+      "value": 12,
+      "className": "Posting"
+    },
+    {
+      "label": "FaildPost",
+      "value": 13,
+      "className": "FaildPost"
+    },
+    {
       "label": "Posted",
-      "value": 4,
+      "value": 999,
       "className": "Posted"
     }
   ],
@@ -31,6 +56,11 @@
     "2": "Submitted",
     "3": "FullyApproved",
     "4": "Rejected",
+    "9": "Calculating",
+    "10": "FaildCalculate",
+    "11": "Calculated",
+    "12": "Posting",
+    "13": "FaildPost",
     "999": "Posted"
   }
 }

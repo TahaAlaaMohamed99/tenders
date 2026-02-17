@@ -33,11 +33,15 @@
  */
 export function isActionWorkflow(workflowLevels, isAllowedModify, statusId) {
   // No workflow data or not submitted — no action available
-  if (!workflowLevels || !Array.isArray(workflowLevels) || statusId !== 1) {
+  // statusId is now an integer: 1=New, 2=Submitted, etc.
+  // "Submitted" (2) corresponds to the pending approval state
+  if (!workflowLevels || !Array.isArray(workflowLevels) || statusId !== 2) {
     return { show: false, level: null };
   }
 
-  // Find the first pending level (status === 1 means pending approval)
+  // Find the first pending level (status === 1 means pending approval in workflow definition?)
+  // Note: Workflow levels in DB might still use integers? 
+  // If workflow levels use integers, we keep finding 1.
   const pendingLevel = workflowLevels.find(
     (level) => level.status === 1
   );

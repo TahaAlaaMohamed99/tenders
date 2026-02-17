@@ -109,22 +109,24 @@ export const DataPages = {
         Api: "VendorGroups",
         componentViwe: GenericGridPage,
         componentAddEdit: GenericAddEditPage,
-        keyId: "vendorGroupId",
+        keyId: "recId",
         ExcelExport: true,
         isSearch: true,
         isFilterGrid: true,
         columns: [
+            { ...CommonColumns.Code, width: 150, maxWidth: 180 },
             {
                 key: "vendorGroupId",
                 title: "vendorGroupId",
-                fixed: true,
                 width: 150,
                 maxWidth: 180,
                 minWidth: 100,
                 isFilter: true
             },
+            { ...CommonColumns.Name, fixed: true, width: 200, maxWidth: 280 },
             { ...CommonColumns.Description, title: "description" },
-            CommonColumns.DataAreaId
+            CommonColumns.DataAreaId,
+            CommonColumns.CreatedOn
         ],
         formSchema: VendorGroupsForm,
         titleAdd: "addVendorGroup",

@@ -83,6 +83,14 @@ export const VendorGroupsForm = {
             title: "Vendor Group Info",
             fields: [
                 {
+                    name: "code",
+                    label: "code",
+                    type: "text",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "enterCode"
+                },
+                {
                     name: "dataAreaId",
                     label: "dataAreaId",
                     type: "async-select",
@@ -102,6 +110,14 @@ export const VendorGroupsForm = {
                     required: true,
                     gridWidth: "col-span-6",
                     placeholder: "enterVendorGroupId"
+                },
+                {
+                    name: "name",
+                    label: "name",
+                    type: "text",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "enterName"
                 },
                 {
                     name: "description",
