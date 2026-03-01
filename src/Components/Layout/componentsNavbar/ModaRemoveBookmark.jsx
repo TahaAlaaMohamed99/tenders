@@ -9,7 +9,6 @@
  * @module Components/Layout/componentsNavbar/ModaRemoveBookmark
  */
 
-import React from "react";
 import ConfirmationModal from "../../ConfirmationModal";
 
 /**

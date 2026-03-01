@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
 import { toast } from "react-toastify";
 import { Formik, Form } from "formik";
 import { loginSchema } from "../utils/validation";
-
+import { Api } from "../services/Api";
+import { parseJwtToken, setLocalStorageBtoa } from "../utils/localStorage";
 import CustomInput from "../Components/Form/CustomInput";
 import CustomBtn from "../Components/CustomBtn";
 import {
@@ -16,13 +15,7 @@ import {
 import TranslationText from "../Components/TranslationText";
 
 export default function Login() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-
-  // Get the redirect path from location state, default to dashboard
-  const from = location.state?.from?.pathname || "/dashboard";
 
   const initialValues = {
     userName: "",
@@ -34,18 +27,52 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const result = await login(values.userName, values.password, values.rememberMe);
+      const response = await Api.post("Authentication/Login", {
+        userName: values.userName,
+        password: values.password,
+        remmberMe: values.rememberMe,
+      });
 
-      if (result.success) {
-        toast.success(<TranslationText title="loginSuccessful" />);
-        // Navigate to the originally requested page or dashboard
-        navigate(from, { replace: true });
+      const data = response.data || response;
+      if (!data?.token) {
+        throw new Error("Token not received");
+      }
+
+      const parsedUser = parseJwtToken(data.token);
+      if (!parsedUser) {
+        throw new Error("Failed to parse token");
+      }
+
+      const dataUser = { id: parsedUser.userId, userName: parsedUser.userName };
+      const userPermissions = parsedUser.permissions;
+
+      // Ensure Api.jsx automatically uses this for subsequent calls
+      localStorage.setItem("userToken", data.token);
+
+      const permissionResponse = await Api.get("Permission/GetAllPermissions");
+      const permissions = permissionResponse?.data || permissionResponse || [];
+
+      setLocalStorageBtoa("userPermissions", userPermissions);
+      setLocalStorageBtoa("permissionsSystem", permissions);
+      setLocalStorageBtoa("user", dataUser);
+      setLocalStorageBtoa("expiration", data.expiration);
+
+      toast.success(<TranslationText title="loginSuccessful" />);
+      
+      const homePath = localStorage.getItem("renderHome");
+      if (homePath) {
+        window.location.href = `/${homePath}`;
       } else {
-        toast.error(result.error || <TranslationText title="loginFailed" />);
+        window.location.href = "/";
       }
     } catch (error) {
-      toast.error(<TranslationText title="genericError" />);
       console.error("Login error:", error);
+      const errorMessage =
+        error?.details?.message ||
+        error?.details?.[""]?.[0] ||
+        error.message ||
+        "Unknown error";
+      toast.error(errorMessage || <TranslationText title="loginFailed" />);
     } finally {
       setIsLoading(false);
     }

@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * UserAvatar Component
  * Displays the user's profile image or initials with a consistent style.

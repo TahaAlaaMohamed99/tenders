@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, memo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux"; // Redux hooks
-import { useAuth } from "../Context/AuthContext";
+import { clearAuthStorage } from "../utils/localStorage";
 import { useProcessMenu } from "../Hooks/useProcessMenu";
 import CustomBtn from "./CustomBtn";
 import { LogoText, IconArrowDown, IconHelp, IconLogout, IconArrowLeft, LogoIcon, IconTreeView } from "../assets/Icons"; 
@@ -542,7 +542,6 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { logout } = useAuth();
 
   const menuSettings = useSelector((state) => state.menuSettingsSlice);
   const isCollapsed = !menuSettings?.isSidebarExpanded;
@@ -591,7 +590,7 @@ export default function Sidebar() {
   };
 
   const confirmLogout = () => {
-    logout();
+    clearAuthStorage();
     setShowLogoutConfirm(false);
     navigate("/login");
   };

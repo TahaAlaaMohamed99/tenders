@@ -7,8 +7,6 @@
  * @module assets/Icons/UnusedIcons
  */
 
-import React from "react";
-
 export const IconRadio = ({ className }) => (
   <svg
     className={className}

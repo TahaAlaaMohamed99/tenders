@@ -23,10 +23,13 @@ import componentRegistry from '../ConfigData/componentRegistry';
  * @param {Object} props
  * @param {Object} props.DataPage - The full configuration object (must contain formSchema)
  * @param {string} props.ResourcePage - The resource key for localization/API
- */
-
-const GenericAddEditPage = ({ DataPage, ResourcePage, ...props }) => {
-    useLayout(ResourcePage);
+ * @param {Object} props.ConfigPage - The configuration object for the page
+ * 
+ * */
+// config Main Page
+const GenericAddEditPage = ({ DataPage, ResourcePage, ConfigPage, ...props }) => {
+    const activeConfig = ConfigPage || DataPage;
+    useLayout(ResourcePage, activeConfig); // Passing activeConfig as the configPage argument
     const { id } = useParams();
     const navigate = useNavigate();
     
@@ -100,7 +103,7 @@ const GenericAddEditPage = ({ DataPage, ResourcePage, ...props }) => {
                 showBookmark={false}
                 viewOnly={false}
                 apiKey={DataPage.Api}
-                confiPage={DataPage}
+                confiPage={activeConfig}
             />
             <div className="px-4 py-6">
                 <DynamicForm 

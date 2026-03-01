@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { 
   IconLanguage, 
@@ -17,7 +17,7 @@ import ConfirmationModal from "./ConfirmationModal";
 import TranslationText from "./TranslationText";
 
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Context/AuthContext";
+import { clearAuthStorage } from "../utils/localStorage";
 
 /**
  * Header Component
@@ -32,7 +32,6 @@ import { useAuth } from "../Context/AuthContext";
 export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { logout } = useAuth();
   
   // State Selectors
   const breadcrumbs = useSelector((state) => state.breadcrumbsSlice.breadcrumbs);
@@ -66,7 +65,7 @@ export default function Header() {
   };
 
   const handleConfirmLogout = () => {
-    logout();
+    clearAuthStorage();
     setActiveModal(null);
     navigate('/login');
   };

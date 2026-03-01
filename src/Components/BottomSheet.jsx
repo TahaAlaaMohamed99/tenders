@@ -7,7 +7,7 @@
  * @module Components/BottomSheet
  */
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 /**
  * BottomSheet Component - Mobile action sheet

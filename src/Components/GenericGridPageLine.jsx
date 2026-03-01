@@ -1,7 +1,7 @@
-import React from 'react';
 import TendersGrid from './TendersGrid';
 import Loading from './loader';
 import useGenericGridController from '../Hooks/useGenericGridController';
+import Config from '../utils/Config';
 
 /**
  * GenericGridPageLine
@@ -17,6 +17,7 @@ import useGenericGridController from '../Hooks/useGenericGridController';
  * @param {boolean} [props.isGetAll=true]
  * @param {*} [props.refreshKey]
  * @param {boolean} [props.isReadOnly=false]
+ * @param {Object} [props.ConfigPage] - Config for permission checks (Add/Delete)
  */
 const GenericGridPageLine = ({
     DataPage,
@@ -26,8 +27,10 @@ const GenericGridPageLine = ({
     isGetAll = true,
     refreshKey,
     isReadOnly = false,
+    ConfigPage,
     ...props
 }) => {
+    const activeConfig = ConfigPage || DataPage;
     // Controller Hook
     const {
         isLoading,
@@ -78,11 +81,11 @@ const GenericGridPageLine = ({
             handlePageChange={handlePageChange}
             handlePageSize={handlePageSize}
             onClickRow={handleNavigate}
-            AddBtn={!isReadOnly ? { onClick: handleAdd } : null}
+            AddBtn={!isReadOnly && Config.isAllow('Add', activeConfig) ? { onClick: handleAdd } : null}
             isSelected={!isReadOnly}
             {...props}
             // For line mode, delete is often passed down or handled via props.handleDelete
-            handleDelete={props.handleDelete} 
+            handleDelete={!isReadOnly && Config.isAllow('Delete', activeConfig) ? props.handleDelete : null}
             setselectesRowInsert={props.setselectesRowInsert || setSelectedRows}
         />
     );

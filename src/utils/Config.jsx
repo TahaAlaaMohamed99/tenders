@@ -1,89 +1,44 @@
-/**
- * @fileoverview Config Utility
- * 
- * Application configuration and environment helpers.
- * Delegates permission logic to the permissions module (Single Responsibility Principle).
- * 
- * @module utils/Config
- */
+import { getLocalStorageAtob } from "./localStorage";
 
-import {
-  isAllowed,
-  hasAnyPermission,
-  hasAllPermissions,
-  getUserPermissions,
-  canViewPage,
-  PERMISSION_ACTIONS,
-  PAGE_PERMISSION_BASE,
-} from "./permissions";
+class Config {
+    /**
+     * Checks if the user has the required permissions.
+     *
+     * @param {string[]} codes - An array of permission codes to check.
+     * @param {boolean} [checkAll=false] - Whether to check if all codes are required (true) or any one code (false).
+     * @returns {boolean} - Returns true if the user has the required permissions, otherwise false.
+     */
+    static isAllow(keyActions, ConfiPage, checkAll = false) {
+        try {
+            const userPermissions = getLocalStorageAtob("userPermissions", []);
+            const permissionsSystem = getLocalStorageAtob("permissionsSystem", []);
 
-/**
- * Configuration object with app settings and permission helpers
- * 
- * Note: Permission methods delegate to the permissions module for better separation of concerns.
- * This maintains backward compatibility while following SOLID principles.
- */
-const Config = {
-  /**
-   * Check if user is allowed to perform action on a page
-   * Delegates to permissions module for actual permission checking.
-   * 
-   * @param {string} action - Action type ("View", "Add", "Edit", "Delete", "Post", "UnPost", "Modify")
-   * @param {Object|string} pageConfig - Page configuration object with keyPage, or page key string
-   * @returns {boolean} Whether action is allowed
-   * 
-   * @example
-   * if (Config.isAllow("Delete", confiPage)) {
-   *   // Show delete button
-   * }
-   */
-  isAllow: (action, pageConfig) => isAllowed(action, pageConfig, { allowInDev: Config.isDev() }),
+            const actions = Array.isArray(keyActions) ? keyActions : [keyActions];
 
-  /**
-   * Check if user has any of the specified permissions
-   */
-  hasAnyPermission,
-
-  /**
-   * Check if user has all of the specified permissions
-   */
-  hasAllPermissions,
-
-  /**
-   * Get all user permissions
-   */
-  getUserPermissions,
-
-  /**
-   * Check if user can view a specific page
-   */
-  canViewPage,
-
-  /**
-   * Permission action constants for external use
-   */
-  PERMISSION_ACTIONS,
-
-  /**
-   * Page permission base IDs for external use
-   */
-  PAGE_PERMISSION_BASE,
-
-  // Phase 4: apiBaseUrl and environment are unused — runtime config comes from
-  // Ip_config.json via useConfig hook. Kept commented for potential future use.
-  // @see docs/04-configuration.md#duplication-analysis
-  // apiBaseUrl: import.meta.env.VITE_API_URL || "http://localhost:3000/api",
-  // environment: import.meta.env.MODE || "development",
-
-  /**
-   * Check if running in development mode
-   */
-  isDev: () => import.meta.env.DEV === true,
-
-  /**
-   * Check if running in production mode
-   */
-  isProd: () => import.meta.env.PROD === true,
-};
+            const permissionNames = actions.map(
+                (action) => ConfiPage.showMenu == "menuReportSetup"
+                    ? `${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`:
+                    ConfiPage.KeyPermission
+                    ? `${ConfiPage.keyModule}:${ConfiPage.KeyPermission}:${action}`
+                    : `${ConfiPage.keyModule}:${ConfiPage.subModule ? ConfiPage.subModule + ":" : ""}${ConfiPage.keyPage}:${action}`
+            );
+            const matchedIds = permissionNames
+                .map((name) => {
+                    const found = permissionsSystem.find((p) => p.name === name);
+                    return found?.recId;
+                })
+                .filter(Boolean);
+            const userIds = userPermissions.every(p => typeof p === 'object' && 'permissionRecId' in p)
+                ? userPermissions.map(p => p.permissionRecId)
+                : userPermissions;
+            const isAllowed = checkAll
+                ? matchedIds.every((id) => userIds.includes(id))
+                : matchedIds.some((id) => userIds.includes(id));
+            return isAllowed;
+        } catch (error) {
+            return false;
+        }
+    }
+}
 
 export default Config;

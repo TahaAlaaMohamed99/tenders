@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import ActionModal from "./ActionModal";
 import { IconColsed } from "../assets/Icons";
 import CustomBtn from "./CustomBtn";

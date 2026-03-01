@@ -9,7 +9,6 @@
  */
 
 /*
-import React from 'react';
 import DynamicPlaceholder from '../Components/DynamicPlaceholder';
 
 export default function Vendors(props) {
@@ -20,8 +19,6 @@ export default function Vendors(props) {
 */
 
 // Phase 6: Minimal stub to prevent route errors
-import React from 'react';
-
 export default function Vendors() {
   return (
     <div className="p-6 flex items-center justify-center h-64">

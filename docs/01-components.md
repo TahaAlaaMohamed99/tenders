@@ -87,7 +87,8 @@ This document catalogs all **56 components** in the codebase, organized by categ
 
 **⚠️ Hardcoded Values** (see [06-unused-and-gaps.md](./06-unused-and-gaps.md#103-hardcoded-user-data)):
 ```javascript
-// Line 163 — should use AuthContext.user instead
+// src/Components/Layout/Header.jsx
+// Line 163 — should use localStorage user instead
 const user = { name: "Admin User", email: "admin@example.com", image: null };
 ```
 
@@ -164,7 +165,7 @@ Sidebar/
 
 **Status**: ✅ Clean
 
-**Issue**: Hardcoded fallback user data (`"Admin User"`, `"admin@example.com"`) should come from AuthContext.
+**Issue**: Hardcoded fallback user data (`"Admin User"`, `"admin@example.com"`) should come from parsed user stored in `localStorage`.
 
 ---
 
@@ -400,30 +401,30 @@ HeaderPageAddEdit/
 
 **Issues**:
 
-1. **SRP Concern**: Manages too many responsibilities in one provider:
-   - Column state (visibility, width, order)
-   - Row selection (single, multi, all)
-   - Sorting (multi-column)
-   - Filtering (inline + advanced)
-   - Searching (debounced)
-   - Tree expansion
-   - Row editing
-   - localStorage persistence
+1.  **SRP Concern**: Manages too many responsibilities in one provider:
+    -   Column state (visibility, width, order)
+    -   Row selection (single, multi, all)
+    -   Sorting (multi-column)
+    -   Filtering (inline + advanced)
+    -   Searching (debounced)
+    -   Tree expansion
+    -   Row editing
+    -   localStorage persistence
 
-2. **Duplicated Filter Logic**: The `handleFilterGrid` callback and the `useEffect` that re-applies filters contain identical logic (~70 lines duplicated):
-   - Date range comparison
-   - Multi-select matching
-   - String contains logic
+2.  **Duplicated Filter Logic**: The `handleFilterGrid` callback and the `useEffect` that re-applies filters contain identical logic (~70 lines duplicated):
+    -   Date range comparison
+    -   Multi-select matching
+    -   String contains logic
 
-3. **ISP Violation**: All consumers receive all 50 values even if they only need 2-3
+3.  **ISP Violation**: All consumers receive all 50 values even if they only need 2-3
 
 **Consumers** (all grid sub-components):
-- [DasktopGrid](#33-dasktopgrid), [BodyGrid](#38-bodygrid), [HeaderGrid](#34-headergrid)
-- [FixedColumns](#35-fixedcolumns), [DefaultColumns](#36-defaultcolumns)
-- [FixedRows](#39-fixedrows), [DefaultRows](#310-defaultrows)
-- [ResizableColumn](#37-resizablecolumn), [FilterGrid](#315-filtergrid)
-- [Pagination](#316-pagination), [CustomizeColumn](#317-customizecolumn)
-- [MobileGrid](#314-mobilegrid), [Footer](#312-footer)
+-   [DasktopGrid](#33-dasktopgrid), [BodyGrid](#38-bodygrid), [HeaderGrid](#34-headergrid)
+-   [FixedColumns](#35-fixedcolumns), [DefaultColumns](#36-defaultcolumns)
+-   [FixedRows](#39-fixedrows), [DefaultRows](#310-defaultrows)
+-   [ResizableColumn](#37-resizablecolumn), [FilterGrid](#315-filtergrid)
+-   [Pagination](#316-pagination), [CustomizeColumn](#317-customizecolumn)
+-   [MobileGrid](#314-mobilegrid), [Footer](#312-footer)
 
 **Suggested Refactor** (see [07-action-plan.md](./07-action-plan.md#3-split-tendersgridcontext-isp-violation)):
 ```javascript
@@ -459,9 +460,9 @@ useGridSearch()       // Debounced search
 **Status**: ✅ Clean
 
 **Features**:
-- Synchronized horizontal scroll across header, body, footer
-- Frozen columns (fixed) + scrollable columns (default)
-- Virtual scroll bar
+-   Synchronized horizontal scroll across header, body, footer
+-   Frozen columns (fixed) + scrollable columns (default)
+-   Virtual scroll bar
 
 ---
 
@@ -526,15 +527,15 @@ useGridSearch()       // Debounced search
 **Status**: ⚠️ Needs Refactor — [SRP Violation](./05-solid-clean-architecture.md#-violation-4-resizablecolumnjsx)
 
 **Issue**: Does too much:
-- Column header rendering + translation
-- Resize handle with mouse events (mouseDown/mouseMove/mouseUp)
-- Sort controls (asc/desc)
-- Inline filter dropdown with API fetching (via [`useGetLookup`](./02-hooks.md#7-usegetlookup) and [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist))
+-   Column header rendering + translation
+-   Resize handle with mouse events (mouseDown/mouseMove/mouseUp)
+-   Sort controls (asc/desc)
+-   Inline filter dropdown with API fetching (via [`useGetLookup`](./02-hooks.md#7-usegetlookup) and [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist))
 
 **Dependencies**:
-- [TendersGridContext](#32-tendersgridcontext) — sort state, filter state
-- [ActionModal](#52-actionmodal) — filter dropdown
-- [`useTranslationText`](./02-hooks.md#17-usetranslationtext)
+-   [TendersGridContext](#32-tendersgridcontext) — sort state, filter state
+-   [ActionModal](#52-actionmodal) — filter dropdown
+-   [`useTranslationText`](./02-hooks.md#17-usetranslationtext)
 
 **Suggested Fix** (see [07-action-plan.md](./07-action-plan.md#14-extract-resizablecolumn-filter-dropdown)):
 ```
@@ -559,10 +560,10 @@ useGridSearch()       // Debounced search
 **Status**: ✅ Clean
 
 **Features**:
-- Virtual scrolling (renders 25 rows per batch)
-- Loads more on scroll (threshold: 20 rows from bottom)
-- Tree flattening for hierarchical data
-- Empty state handling
+-   Virtual scrolling (renders 25 rows per batch)
+-   Loads more on scroll (threshold: 20 rows from bottom)
+-   Tree flattening for hierarchical data
+-   Empty state handling
 
 ---
 
@@ -616,10 +617,10 @@ useGridSearch()       // Debounced search
 **Status**: ✅ Clean
 
 **Features**:
-- Renders editable cells (CustomInput, CustomSelect, CustomCheckbox, CustomDatePicker)
-- Renders read-only cells via `formatDataGrid` *(renamed from `formatDataGrid` in Phase 7)*
-- Handles cell value updates
-- Checks editability based on column config
+-   Renders editable cells (CustomInput, CustomSelect, CustomCheckbox, CustomDatePicker)
+-   Renders read-only cells via `formatDataGrid` *(renamed from `formatDataGrid` in Phase 7)*
+-   Handles cell value updates
+-   Checks editability based on column config
 
 ---
 
@@ -676,10 +677,10 @@ This will throw a ReferenceError in tree mode.
 **Status**: ✅ Clean
 
 **Features**:
-- Card layout for each row
-- Shows fixed + defaultMobile columns
-- Tree expansion support
-- Row actions via BottomSheet
+-   Card layout for each row
+-   Shows fixed + defaultMobile columns
+-   Tree expansion support
+-   Row actions via BottomSheet
 
 ---
 
@@ -698,16 +699,16 @@ This will throw a ReferenceError in tree mode.
 **Status**: ✅ Clean
 
 **Features**:
-- Renders filter inputs for all `isFilter` columns
-- Supports text, number, date range, select, multi-select
-- Fetches lookup/generallist options on open (via [`useGetLookup`](./02-hooks.md#7-usegetlookup), [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist))
-- Persists filter values to localStorage
-- Uses [PopupModalSlide](#54-popupmodalslide) for side panel
+-   Renders filter inputs for all `isFilter` columns
+-   Supports text, number, date range, select, multi-select
+-   Fetches lookup/generallist options on open (via [`useGetLookup`](./02-hooks.md#7-usegetlookup), [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist))
+-   Persists filter values to localStorage
+-   Uses [PopupModalSlide](#54-popupmodalslide) for side panel
 
 **Dependencies**:
-- [TendersGridContext](#32-tendersgridcontext) — column state, filter values
-- [`useGetLookup`](./02-hooks.md#7-usegetlookup) — fetch API lookup options
-- [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist) — fetch enum options
+-   [TendersGridContext](#32-tendersgridcontext) — column state, filter values
+-   [`useGetLookup`](./02-hooks.md#7-usegetlookup) — fetch API lookup options
+-   [`useGetGenerallist`](./02-hooks.md#6-usegetgenerallist) — fetch enum options
 
 ---
 
@@ -726,10 +727,10 @@ This will throw a ReferenceError in tree mode.
 **Status**: ✅ Clean
 
 **Features**:
-- Smart page range (shows max 5 pages + first/last)
-- Page size selector (10, 20, 50, 100, 150, 200)
-- Responsive layout (mobile vs desktop)
-- Persists page size to localStorage
+-   Smart page range (shows max 5 pages + first/last)
+-   Page size selector (10, 20, 50, 100, 150, 200)
+-   Responsive layout (mobile vs desktop)
+-   Persists page size to localStorage
 
 ---
 
@@ -747,10 +748,10 @@ This will throw a ReferenceError in tree mode.
 **Status**: ✅ Clean
 
 **Features**:
-- Drag-and-drop column reordering (@dnd-kit)
-- Toggle column visibility (desktop + mobile)
-- Persists to localStorage
-- Excludes fixed columns from reordering
+-   Drag-and-drop column reordering (@dnd-kit)
+-   Toggle column visibility (desktop + mobile)
+-   Persists to localStorage
+-   Excludes fixed columns from reordering
 
 ---
 
@@ -808,11 +809,11 @@ All form components follow a standard interface:
 **Status**: ✅ Clean
 
 **Features**:
-- Floating label
-- Password visibility toggle
-- Number validation (prevents non-digits)
-- Icon support
-- RTL support
+-   Floating label
+-   Password visibility toggle
+-   Number validation (prevents non-digits)
+-   Icon support
+-   RTL support
 
 ---
 
@@ -825,11 +826,11 @@ All form components follow a standard interface:
 **Status**: ✅ Clean
 
 **Features**:
-- Single/multi select
-- Floating label
-- Custom dropdown indicator (rotating arrow)
-- Generallist translation support
-- Optional add/edit button for lookups
+-   Single/multi select
+-   Floating label
+-   Custom dropdown indicator (rotating arrow)
+-   Generallist translation support
+-   Optional add/edit button for lookups
 
 ---
 
@@ -846,9 +847,9 @@ All form components follow a standard interface:
 **Status**: ✅ Clean
 
 **Features**:
-- Auto-fetches on mount
-- Converts string value ↔ object for react-select
-- Passes original item via `onSelectionChange`
+-   Auto-fetches on mount
+-   Converts string value ↔ object for react-select
+-   Passes original item via `onSelectionChange`
 
 ---
 
@@ -1097,7 +1098,7 @@ All form components follow a standard interface:
 
 **Status**: ✅ Clean
 
-**Issue**: Hardcoded fallback URL should come from AuthContext.
+**Issue**: Hardcoded fallback URL should come from parsed user in `localStorage`.
 
 ---
 
@@ -1259,10 +1260,10 @@ All form components follow a standard interface:
 **Status**: ✅ Clean
 
 **Features**:
-- Uses [HeaderPageAddEdit](#25-headerpageaddedit) for header
-- Uses [DynamicForm](#24-dynamicform) for main form
-- Uses [GenericGridPage](#21-genericgridpage) with `apiOverride` for line items (Phase 1)
-- Custom line item add/edit modal ([SubmissionDocumentLineAddEdit](#63-submissiondocumentlineaddedit))
+-   Uses [HeaderPageAddEdit](#25-headerpageaddedit) for header
+-   Uses [DynamicForm](#24-dynamicform) for main form
+-   Uses [GenericGridPage](#21-genericgridpage) with `apiOverride` for line items (Phase 1)
+-   Custom line item add/edit modal ([SubmissionDocumentLineAddEdit](#63-submissiondocumentlineaddedit))
 
 **Hooks Used**: [`useGetById`](./02-hooks.md#5-usegetbyid), [`useHandleSubmit`](./02-hooks.md#11-usehandlesubmit)
 
@@ -1296,10 +1297,10 @@ All form components follow a standard interface:
 **Status**: ✅ Clean
 
 **Features**:
-- Uses [HeaderPageAddEdit](#25-headerpageaddedit) for header
-- Custom Formik form (not [DynamicForm](#24-dynamicform))
-- Individual field components with full control
-- Workflow integration (post/unpost, submit/approve)
+-   Uses [HeaderPageAddEdit](#25-headerpageaddedit) for header
+-   Custom Formik form (not [DynamicForm](#24-dynamicform))
+-   Individual field components with full control
+-   Workflow integration (post/unpost, submit/approve)
 
 **Hooks Used**: [`useGetById`](./02-hooks.md#5-usegetbyid), [`useHandleSubmit`](./02-hooks.md#11-usehandlesubmit), [`useLayout`](./02-hooks.md#12-uselayout)
 
@@ -1351,7 +1352,7 @@ export default function Vendors(props) {
 | TendersGrid System | 19 | 16 | 3 (Context, ResizableColumn, Footer) | 0 |
 | Form Components | 12 | 12 | 0 | 0 |
 | Shared UI | 15 | 13 | 2 (ExcelExport, ModaRemoveBookmark) | 0 |
-| Specialized Pages | 6 | 5 | 0 | 1 (Vendors.jsx) |
+| Specialized Pages | 6 | 5 | 1 (Vendors.jsx) | 0 |
 | **Total** | **62 files** | **53** | **7** | **2** |
 
 ---
@@ -1375,7 +1376,6 @@ export default function Vendors(props) {
 
 ## Key Takeaways
 
-1. **Form components** are well-designed and consistent — all 12 follow the same interface (LSP compliant)
 2. **TendersGrid** is sophisticated but `TendersGridContext` needs splitting (ISP violation, 50+ values)
 3. ~~**HeaderPageAddEdit** was the biggest architectural issue~~ — **FIXED (Phase 1)**: workflow/transaction logic extracted to `useWorkflowActions` + `useTransactionActions`, reducing the main file from 878 → ~490 lines
 4. ~~**Generic page pattern** had minor duplication~~ — **FIXED (Phase 1)**: `GenericGridPageLine` merged into `GenericGridPage` with `apiOverride` prop

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FixedColumns from "./HeaderGrid/FixedColumns";
 import DefaultColumns from "./HeaderGrid/DefaultColumns";
 import { TendersGridContext } from "../TendersGridContext";

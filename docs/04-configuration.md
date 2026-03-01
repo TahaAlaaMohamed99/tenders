@@ -9,7 +9,7 @@ This document analyzes the dual configuration system in the codebase:
 1. **Runtime Configuration**: `public/Ip_config.json` — ✅ Active, production-ready
 2. **Build-time Configuration**: `src/utils/Config.jsx` — ✅ Active (permission wrapper + env vars)
 
-> **Phase 0 Correction**: `Config.jsx` was previously documented as dead code, but it is actively imported by `HeaderPageAddEdit.jsx` and `SubmissionDocumentLineAddEdit.jsx` for `Config.isAllow()` permission checking. It delegates to `src/utils/permissions.js`.
+> **Phase 0 Correction**: `Config.jsx` was previously documented as dead code, but it is actively imported by `HeaderPageAddEdit.jsx` and `SubmissionDocumentLineAddEdit.jsx` for `Config.isAllow()` permission checking. It checks permissions natively directly from localStorage `getLocalStorageAtob`.
 
 ---
 
@@ -103,7 +103,7 @@ App.jsx (mount)
 | `HeaderPageAddEdit.jsx` | `Config.isAllow("Modify", confiPage)` | 111 |
 | `SubmissionDocumentLineAddEdit.jsx` | `Config.isAllow("Modify", ConfiMainPage)` | 58 |
 
-**Evidence**: `src/utils/Config.jsx` IS imported by 2 files. It wraps `src/utils/permissions.js` and provides `isAllow()`, `hasAnyPermission()`, `hasAllPermissions()`, `canViewPage()`, `isDev()`, `isProd()`, and environment variables.
+**Evidence**: `src/utils/Config.jsx` IS imported by 2 files. It provides native dynamic string permission calculations matching local storage configurations via `isAllow()`.
 
 ---
 

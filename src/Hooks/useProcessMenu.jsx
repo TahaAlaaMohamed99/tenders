@@ -14,7 +14,7 @@
  */
 
 import { useMemo } from 'react';
-import { canViewPage } from '../utils/permissions';
+import Config from '../utils/Config';
 
 /**
  * Process menu items into hierarchical structure
@@ -39,7 +39,12 @@ export const useProcessMenu = (items, order, dataPages) => {
       }
 
       // Check permissions
-      if (!canViewPage(item.keyPage)) {
+      const isAllowed =
+          item?.checkPermission == false
+            ? true
+            : Config.isAllow("View", elementPage);
+      
+      if (!isAllowed) {
         return null; // Skip if user doesn't have View permission
       }
 
@@ -119,21 +124,3 @@ export const useProcessMenu = (items, order, dataPages) => {
       .filter(Boolean);
   }, [items, order, dataPages]);
 };
-
-// Phase 2: Commented out unused export `restructureModules`
-// @see docs/06-unused-and-gaps.md#41-useprocessmenurestructuremodules
-// Kept for potential future use (sidebar rendering with subModule hierarchy).
-/*
-export const restructureModules = (modules) => {
-  return modules.map((module) => {
-    if (!module.hasSubModules) {
-      return module;
-    }
-    return {
-      ...module,
-      directItems: module.subItems || [],
-      groupedItems: module.subModuleList,
-    };
-  });
-};
-*/

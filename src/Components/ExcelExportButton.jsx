@@ -1,4 +1,3 @@
-import React from "react";
 import { IconXsl } from "../assets/Icons";
 import { formatDate } from "../utils/formatDate";
 import formatNumber from "../utils/formatNumber";

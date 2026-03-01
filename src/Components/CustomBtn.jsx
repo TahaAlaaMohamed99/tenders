@@ -1,4 +1,3 @@
-import React from "react";
 import TranslationText from "./TranslationText";
 import { IconLoading, LoginDots } from "../assets/Icons";
 import "../Styles/Components/btn/btn.css";

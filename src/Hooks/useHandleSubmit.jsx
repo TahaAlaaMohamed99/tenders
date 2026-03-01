@@ -1,4 +1,3 @@
-import React from 'react'
 import { Api } from '../services/Api'
 import TranslationText from '../Components/TranslationText'
 import { toast } from 'react-toastify'

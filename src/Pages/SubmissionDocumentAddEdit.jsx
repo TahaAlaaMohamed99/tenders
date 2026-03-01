@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import HeaderPageAddEdit from '../Components/HeaderPageAddEdit';
 import useHandleSubmit from '../Hooks/useHandleSubmit';
@@ -6,7 +6,7 @@ import useGetById from '../Hooks/useGetById';
 import useLayout from '../Hooks/useLayout';
 import Loading from '../Components/loader';
 import useHandleDelete from '../Hooks/useHandleDelete';
-import { name } from 'dayjs/locale/ar';
+
 import { Form, Formik } from 'formik';
 import CustomInput from '../Components/Form/CustomInput';
 import CustomDatePicker from '../Components/Form/CustomDatePicker';
@@ -35,10 +35,12 @@ import { IconTrash } from '../assets/Icons';
  * @param {Object} props
  * @param {Object} props.DataPage - The full configuration object (must contain formSchema)
  * @param {string} props.ResourcePage - The resource key for localization/API
+ * @param {Object} props.ConfigPage - The full configuration object (must contain formSchema)
  */
 
-const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
-    useLayout(ResourcePage);
+const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ConfigPage, ...props }) => {
+    const activeConfig = ConfigPage || DataPage;
+    useLayout(ResourcePage, activeConfig);
     const { id } = useParams();
     const navigate = useNavigate();
     const { getGenerallist } = useGetGenerallist();
@@ -55,7 +57,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
     const [data, setData] = useState({});
 
     // Ref to access DynamicForm's submit method
-    const formRef = React.useRef();
+    const formRef = useRef();
 
     const { handleSubmitFormik } = useHandleSubmit();
     const { handleDeleteBatch } = useHandleDelete();
@@ -143,7 +145,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                     option={isEdit ? "edit" : "add"}
                     id={id}
                     apiKey={DataPage.Api}
-                    confiPage={DataPage}
+                    confiPage={activeConfig}
                     ResourcePage={ResourcePage}
                     titleAdd={DataPage?.titleAdd || "add"}
                     titleEdit={DataPage?.titleEdit || "edit"}
@@ -299,6 +301,7 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ...props }) => {
                 title={(recIdLine > 0 ? "edit" : "add") + "SubmissionDocument"}
                 titleSubmitBtn="save"
                 isReadOnly={isReadOnly}
+                ConfiMainPage={activeConfig}
             />
             <ConfirmationModal
                 isVisible={showModalDeleteLine}

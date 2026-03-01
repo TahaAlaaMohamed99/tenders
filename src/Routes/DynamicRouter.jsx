@@ -56,7 +56,7 @@ const RouteFactory = (sidebarLogs, dataPages) => {
  * build the React Router DOM <Routes> tree.
  * 
  * Usage:
- * Wrapped inside <PrivateRoute> in App.jsx to ensure only authenticated access.
+ * Used directly in App.jsx — rendered when userToken exists in localStorage.
  * 
  * @returns {JSX.Element} The <Routes> component populated with dynamic pages.
  */
@@ -70,6 +70,7 @@ export default function DynamicRouter() {
                     
                     {/* Default Redirect */}
                     <Route index element={<Navigate to="/dashboard" replace />} />
+                    {/*<Route path="*" element={<Navigate to="/dashboard" replace />} />*/}
                 </Route>
             </Routes>
         </Suspense>

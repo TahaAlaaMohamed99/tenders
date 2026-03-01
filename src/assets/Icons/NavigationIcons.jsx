@@ -6,8 +6,6 @@
  * @module assets/Icons/NavigationIcons
  */
 
-import React from "react";
-
 export const IconArrowDown = ({ className }) => (
   <svg
     width={16}

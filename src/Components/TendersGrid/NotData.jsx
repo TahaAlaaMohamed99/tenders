@@ -1,4 +1,3 @@
-import React from 'react'
 import { IconNotData, IconNotDataDark } from '../../assets/Icons'
 import TranslationText from '../TranslationText'
 

@@ -21,24 +21,27 @@ This document analyzes all **16 custom hooks** + **1 safe utility** in the codeb
 | [useCurrencyOptions](#2-usecurrencyoptions) | 32 | ❌ Dead | API fetch | None |
 | [useDeviceType](#3-usedevicetype) | 45 | ✅ | Responsive | Header, Pagination |
 | [useFullRouteChain](#4-usefullroutechain) | 38 | ✅ Fixed | Navigation | HeaderPageAddEdit |
-| [useGetById](#5-usegetbyid) | 44 | ✅ | API fetch | GenericAddEditPage |
-| [useGetGenerallist](#6-usegetgenerallist) | 82 | ⚠️ DIP | Data lookup | DynamicForm, FilterGrid |
-| [useGetLookup](#7-usegetlookup) | 61 | ✅ Fixed | API fetch | FilterGrid, ColumnFilterPopover |
-| [useGetSelected](#8-usegetselected) | 31 | ✅ | Pure computation | (Vendor pages) |
-| [useGridData](#9-usegriddata) | 64 | ⚠️ | API fetch | GenericGridPage |
-| [useHandleDelete](#10-usehandledelete) | 68 | ✅ | API action | GenericGridPage |
-| [useHandleSubmit](#11-usehandlesubmit) | 198 | ✅ Fixed | API action | GenericAddEditPage, HeaderPageAddEdit |
-| [useLayout](#12-uselayout) | 17 | ✅ | Redux | Generic pages |
-| [useProcessMenu](#13-useprocessmenu) | 151 | ⚠️ | Computation | Sidebar |
-| [useRouteMemory](#14-useroutememory) | 110 | ✅ | Navigation | (Vendor pages) |
-| [useSafeSelector](#15-usesafeselector) | 15 | ✅ | Redux | Form components |
-| [useTheme](#16-usetheme) | 53 | ✅ | Initialization | `App.jsx` |
-| [useTranslationText](#17-usetranslationtext) | 46 | ✅ | i18n | Throughout app |
+| [useGenericGridController](#5-usegenericgridcontroller) | 115 | ✅ | State / API | GenericGridPage, Line |
+| [useGetById](#6-usegetbyid) | 44 | ✅ | API fetch | GenericAddEditPage |
+| [useGetGenerallist](#7-usegetgenerallist) | 82 | ⚠️ DIP | Data lookup | DynamicForm, FilterGrid |
+| [useGetLookup](#8-usegetlookup) | 61 | ✅ Fixed | API fetch | FilterGrid, ColumnFilterPopover |
+| [useGetSelected](#9-usegetselected) | 31 | ✅ | Pure computation | (Vendor pages) |
+| [useGridData](#10-usegriddata) | 64 | ⚠️ | API fetch | GenericGridPage |
+| [useHandleDelete](#11-usehandledelete) | 68 | ✅ | API action | GenericGridPage |
+| [useHandleSubmit](#12-usehandlesubmit) | 198 | ✅ Fixed | API action | GenericAddEditPage, HeaderPageAddEdit |
+| [useLayout](#13-uselayout) | 17 | ✅ | Redux | Generic pages |
+| [useProcessMenu](#14-useprocessmenu) | 151 | ⚠️ | Computation | Sidebar |
+| [useRouteMemory](#15-useroutememory) | 110 | ✅ | Navigation | (Vendor pages) |
+| [useSafeSelector](#16-usesafeselector) | 15 | ✅ | Redux | Form components |
+| [useTheme](#17-usetheme) | 53 | ✅ | Initialization | `App.jsx` |
+| [useTransactionActions](#18-usetransactionactions) | 112 | ✅ | API action | HeaderPageAddEdit |
+| [useTranslationText](#19-usetranslationtext) | 46 | ✅ | i18n | Throughout app |
+| [useWorkflowActions](#20-useworkflowactions) | 231 | ✅ | API action | HeaderPageAddEdit |
 
 **Runtime Bugs**: 3 fixed (2026-02-08), 0 remaining in hooks  
 **Dead Hooks**: 1 (`useCurrencyOptions`) — **commented out (Phase 6)**  
 **DIP Violations**: ~~1 (`useGetGenerallist`)~~ — **FIXED (Phase 2)**: replaced `store.getState()` with `useSelector`  
-**New Hooks (Phase 1)**: `useWorkflowActions.js`, `useTransactionActions.js` (extracted from HeaderPageAddEdit)
+**New Hooks (Phase 1)**: `useWorkflowActions.js`, `useTransactionActions.js` (extracted from `HeaderPageAddEdit`) and `useGenericGridController.js`.
 
 ---
 
@@ -747,6 +750,52 @@ useFullRouteChain
 
 ---
 
+## 18. useTransactionActions
+
+**Location**: `src/Hooks/useTransactionActions.jsx` (112 lines)
+
+**Purpose**: Encapsulates Post, UnPost, Calculate/Fill, and Delete logic. Extracted from `HeaderPageAddEdit.jsx`.
+
+**State**: Internal (`isLoadingValidate`), relies heavily on external setters.
+
+**Dependencies**: `useHandleSubmit`, `useHandleDelete`, `Api.post`, `toast`
+
+**Reusability**: High (used by headers performing transactions)
+
+**Called By**: `HeaderPageAddEdit.jsx`
+
+**Recommendation**: ✅ Clean. Good use of SRP.
+
+---
+
+## 19. useTranslationText
+
+**Location**: `src/Hooks/useTranslationText.jsx` (46 lines)
+
+**Purpose**: Client-side translation fallback mapping strings to their localized values.
+
+**Status**: ✅ Clean
+
+---
+
+## 20. useWorkflowActions
+
+**Location**: `src/Hooks/useWorkflowActions.jsx` (231 lines)
+
+**Purpose**: Encapsulates Submit, ReCall, Approval-cycle, and Rejection logic. Extracted from `HeaderPageAddEdit.jsx`.
+
+**State**: Internal (`isLoadingApprovalsCycle`, `isFullyApproved`, `approvalsCycleModal`, `comment`)
+
+**Dependencies**: `Api`, `toast`, `signalRService`
+
+**Reusability**: High (for any entity going through a workflow)
+
+**Called By**: `HeaderPageAddEdit.jsx`
+
+**Recommendation**: ✅ Clean. Much better separation of concerns than before.
+
+---
+
 ## Best Practices Followed
 
 1. ✅ **Custom hooks start with `use`** (except utils with wrong naming)
@@ -777,6 +826,6 @@ useFullRouteChain
 
 ---
 
-**Document Version**: 2.0  
-**Last Updated**: 2026-02-08  
-**Hook Count**: 16 hooks + 1 safe utility (`useSafeSelector.js`)
+**Document Version**: 2.1  
+**Last Updated**: 2026-02-26  
+**Hook Count**: 19 hooks + 1 safe utility (`useSafeSelector.js`)

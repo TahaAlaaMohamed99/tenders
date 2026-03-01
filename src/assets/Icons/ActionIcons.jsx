@@ -6,8 +6,6 @@
  * @module assets/Icons/ActionIcons
  */
 
-import React from "react";
-
 /**
  * Save Icon
  */

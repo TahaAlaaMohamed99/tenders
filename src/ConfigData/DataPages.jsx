@@ -19,7 +19,11 @@ export const DataPages = {
         keyId: "id",
         isSelected: false,
         ...DefaultGrid,
-        formSchema: DefaultForm
+        formSchema: DefaultForm,
+        keyPage: "Dashboard",
+        keyModule: "Dashboard",
+        showMenu: "mainMenu",
+        checkPermission: false
     },
     Journal: {
         Api: "Journal",
@@ -29,7 +33,10 @@ export const DataPages = {
         ...DefaultGrid,
         formSchema: DefaultForm,
         titleAdd: "addJournal",
-        titleEdit: "editJournal"
+        titleEdit: "editJournal",
+        keyPage: "Journal",
+        keyModule: "Journal",
+        showMenu: "mainMenu"
     },
     SubmissionDocuments: {
         Api: "SubmissionDocument",
@@ -73,7 +80,10 @@ export const DataPages = {
         titleAdd: "addSubmissionDocument",
         titleEdit: "editSubmissionDocument",
         subModule: "Transaction",
+        KeyPermission: "SubmissionDocument",
         keyPage: "SubmissionDocuments",
+        keyModule: "Journal",
+        showMenu: "mainMenu"
     },
     Reports: {
         Api: "Reports",
@@ -93,7 +103,10 @@ export const DataPages = {
         ],
         formSchema: DefaultForm,
         titleAdd: "addReport",
-        titleEdit: "editReport"
+        titleEdit: "editReport",
+        keyPage: "Reports",
+        keyModule: "Reports",
+        showMenu: "mainMenu"
     },
     Setup: {
         Api: "Setup",
@@ -103,7 +116,10 @@ export const DataPages = {
         ...DefaultGrid,
         formSchema: DefaultForm,
         titleAdd: "addSetup",
-        titleEdit: "editSetup"
+        titleEdit: "editSetup",
+        keyPage: "Setup",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
     },
     VendorGroups: {
         Api: "VendorGroups",
@@ -130,7 +146,11 @@ export const DataPages = {
         ],
         formSchema: VendorGroupsForm,
         titleAdd: "addVendorGroup",
-        titleEdit: "editVendorGroup"
+        titleEdit: "editVendorGroup",
+        KeyPermission: "VendorGroup",
+        keyPage: "VendorGroups",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
     },
     Currencies: {
         Api: "Currencies",
@@ -147,7 +167,11 @@ export const DataPages = {
         ],
         formSchema: CurrenciesForm,
         titleAdd: "addCurrency",
-        titleEdit: "editCurrency"
+        titleEdit: "editCurrency",
+        KeyPermission: "Currency",
+        keyPage: "Currencies",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
     },
     Items: {
         Api: "Item",
@@ -187,7 +211,11 @@ export const DataPages = {
         ],
         formSchema: ItemsForm,
         titleAdd: "addItem",
-        titleEdit: "editItem"
+        titleEdit: "editItem",
+        KeyPermission: "Item",
+        keyPage: "Items",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
     },
     Departments: {
         Api: "Department",
@@ -219,7 +247,11 @@ export const DataPages = {
         ],
         formSchema: DepartmentsForm,
         titleAdd: "addDepartment",
-        titleEdit: "editDepartment"
+        titleEdit: "editDepartment",
+        KeyPermission: "Department",
+        keyPage: "Departments",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
     },
     Settings: {
         Api: "Settings",
@@ -229,7 +261,10 @@ export const DataPages = {
         ...DefaultGrid,
         formSchema: DefaultForm,
         titleAdd: "addSetting",
-        titleEdit: "editSetting"
+        titleEdit: "editSetting",
+        keyPage: "Settings",
+        keyModule: "Settings",
+        showMenu: "settings"
     },
     Vendors: {
         Api: "Vendors",
@@ -275,6 +310,10 @@ export const DataPages = {
         ...VendorsActions,
         formSchema: VendorsForm,
         titleAdd: "addVendor",
-        titleEdit: "editVendor"
+        titleEdit: "editVendor",
+        KeyPermission: "Vendor",
+        keyPage: "Vendors",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
     }
 };

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import ResizableColumn from "./ResizableColumn";
 import { TendersGridContext } from "../../TendersGridContext";
 

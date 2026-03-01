@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import TendersGrid from './TendersGrid';
 import useLayout from '../Hooks/useLayout';
@@ -6,6 +6,7 @@ import Loading from './loader';
 import ConfirmationModal from './ConfirmationModal';
 import { IconTrash } from '../assets/Icons';
 import useGenericGridController from '../Hooks/useGenericGridController';
+import Config from '../utils/Config';
 
 /**
  * GenericGridPage
@@ -19,6 +20,7 @@ import useGenericGridController from '../Hooks/useGenericGridController';
  * @param {boolean} [props.isGetAll=true]
  * @param {*} [props.refreshKey]
  * @param {boolean} [props.isReadOnly=false]
+ * @param {Object} [props.ConfigPage] - Used exclusively for permissions override
  */
 const GenericGridPage = ({
     DataPage,
@@ -27,10 +29,13 @@ const GenericGridPage = ({
     isGetAll = true,
     refreshKey,
     isReadOnly = false,
+    ConfigPage,
     ...props
 }) => {
+    const activeConfig = ConfigPage || DataPage;
+
     // Set Page Title (Top-level feature)
-    useLayout(ResourcePage);
+    useLayout(ResourcePage, activeConfig); // Passing activeConfig as the configPage argument
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -90,10 +95,10 @@ const GenericGridPage = ({
                 handlePageChange={handlePageChange}
                 handlePageSize={handlePageSize}
                 onClickRow={handleNavigate}
-                AddBtn={!isReadOnly ? { onClick: handleAdd } : null}
-                isSelected={!isReadOnly}
+                AddBtn={!isReadOnly && Config.isAllow("Add", activeConfig) ? { onClick: handleAdd } : null}
+                isSelected={!isReadOnly && DataPage.isSelected !== false && Config.isAllow("Delete", activeConfig)}
                 {...props}
-                handleDelete={handleDelete}
+                handleDelete={Config.isAllow("Delete", activeConfig) ? handleDelete : null}
                 // Top-level grids usually control selection state here or passed down? 
                 // TendersGrid expects setselectesRowInsert sometimes.
                 // Connect TendersGrid selection to Controller

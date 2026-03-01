@@ -3,7 +3,8 @@
         "keyPage": "Dashboard",
         "keyModule": null,
         "routePage": "dashboard",
-        "showMenu": "mainMenu"
+        "showMenu": "mainMenu",
+        "checkPermission": false
     },
      {
         "keyPage": "Journal",
@@ -63,6 +64,7 @@
         "keyPage": "Settings",
         "keyModule": null,
         "routePage": "Settings",
-        "showMenu": "settings"
+        "showMenu": "settings",
+        "checkPermission": false
     }
 ]

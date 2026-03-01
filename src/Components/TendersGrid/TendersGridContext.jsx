@@ -84,9 +84,8 @@ export const TendersGridProvider = ({ children, ...props }) => {
     }
 
     try {
-      const value = localStorage.getItem(key);
-      if (value) {
-        const parsed = JSON.parse(atob(value));
+      const parsed = getLocalStorageAtob(key, null);
+      if (parsed) {
         localStorageCache.current.set(key, parsed);
         return parsed;
       }

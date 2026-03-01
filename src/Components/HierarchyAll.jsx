@@ -7,7 +7,6 @@
  * @module Components/HierarchyAll
  */
 
-import React from "react";
 import TranslationText from "./TranslationText";
 
 /**

@@ -292,15 +292,17 @@ import dummyData from "../ConfigData/dummyData.json";  // ← Imported
 
 ---
 
-### 3.5 utils/Config.jsx
+### 3.5 utils/Config.jsx (Dead Variables)
 
 **Location**: `src/utils/Config.jsx` (93 lines)
 
-**Purpose**: Permission wrapper + environment helpers. Delegates to `src/utils/permissions.js`.
+**Purpose**: Standalone central dynamic permission checker matching `getLocalStorageAtob` rules via `isAllow`.
 
-**Status**: ✅ **Active** (Phase 0 corrected — was incorrectly classified as dead code)
+**Status**: ✅ **Active** (Phase 0 corrected — was incorrectly classified as dead code. Dead variables commented out in Phase 4)
 
-**Evidence**: Imported by `HeaderPageAddEdit.jsx` (line 45) and `SubmissionDocumentLineAddEdit.jsx` (line 9). Used for `Config.isAllow("Delete", confiPage)` etc.
+**Evidence**: 
+- Imported by `HeaderPageAddEdit.jsx` (line 45) and `SubmissionDocumentLineAddEdit.jsx` (line 9). Used for `Config.isAllow("Delete", confiPage)` etc.
+- `apiBaseUrl` and `environment` are commented out, as the app uses `Ip_config.json` for runtime configuration.
 
 **Recommendation**: **Keep** — this is NOT dead code. It's the permission checking facade used by page-level components. See [04-configuration.md](./04-configuration.md) for updated analysis.
 
@@ -572,7 +574,7 @@ Vendors: {
 const fallbackUrl = "https://via.placeholder.com/40";  // ← Hardcoded
 ```
 
-**Recommendation**: Use from `AuthContext.user.imageUrl` or app config.
+**Recommendation**: Use from `localStorage` `user.imageUrl` or app config.
 
 ---
 
@@ -589,7 +591,7 @@ const user = {
 };
 ```
 
-**Recommendation**: Use from `AuthContext.user`.
+**Recommendation**: Use from `localStorage` `user`.
 
 ---
 
@@ -666,7 +668,7 @@ if (!Component) {
 | `ActionSchemas.jsx` | Placeholder | Remove or implement | P3 |
 | `DataPagesHierarchyGrid.jsx` | Placeholder | Remove or implement | P3 |
 | `dummyData.json` | Dead import | Remove import | P3 |
-| `utils/Config.jsx` | Dead code | Remove | P3 |
+| `utils/Config.jsx` | ✅ Active | Keep (corrected Phase 0) | - |
 
 ---
 

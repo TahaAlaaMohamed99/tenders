@@ -1,5 +1,3 @@
-import React from "react";
-
 /**
  * LanguageSelector Component
  * Renders the list of available languages.

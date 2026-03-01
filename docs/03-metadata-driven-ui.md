@@ -688,8 +688,8 @@ Vendors: {
 |----------------|----------|-----------|
 | `pageSize: 20` default | `GenericGridPage.jsx:40` | In `DataPages` config as `defaultPageSize` |
 | `"Dashboard"` fallback title | `Header.jsx:89` | Remove fallback or add to config |
-| User avatar URL | `UserAvatar.jsx:22`, `ProfileMenu.jsx:19` | From `AuthContext.user.imageUrl` |
-| `"Admin User"` / `"admin@example.com"` | `Header.jsx:163` | From `AuthContext.user` |
+| User avatar URL | `UserAvatar.jsx:22`, `ProfileMenu.jsx:19` | From `localStorage["user"].imageUrl` |
+| `"Admin User"` / `"admin@example.com"` | `Header.jsx:163` | From `localStorage["user"]` |
 
 ---
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useEffect, useContext, useState } from "react";
+import { useCallback, useRef, useEffect, useContext, useState } from "react";
 import { IconGridSort, IconTextField } from "../../../../assets/Icons";
 import TranslationText from "../../../TranslationText";
 import { TendersGridContext } from "../../TendersGridContext";

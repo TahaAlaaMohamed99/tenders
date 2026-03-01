@@ -1,4 +1,4 @@
-import { BrowserRouter as Router,Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useConfig from "./Hooks/useConfig";
 import { ToastContainer } from "react-toastify";
@@ -9,18 +9,17 @@ import {
   IconSuccess,
   IconWarning,
 } from "./assets/Icons";
-import { AuthProvider, useAuth } from "./Context/AuthContext";
-import PrivateRoute from "./Routes/PrivateRoute";
-import Login from "./Pages/Login";
-import DynamicRouter from "./Routes/DynamicRouter";
 import { useTheme } from "./Hooks/useTheme";
 import AppTooltip from "./Components/AppTooltip";
+import DynamicRouter from "./Routes/DynamicRouter";
+import PublicRoutes from "./Routes/PublicRoutes";
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
   useConfig();
   useTheme();
   const { currentLanguage } = useSelector((state) => state.themeSlice);
+  
+  const userToken = localStorage.getItem("userToken");
 
   return (
     <>
@@ -53,21 +52,7 @@ function AppContent() {
       />
       <AppTooltip />
 
-      <Routes>
-        <Route
-          path="/login"
-          element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />}
-        />
-
-        <Route
-          path="/*"
-          element={
-            <PrivateRoute>
-              <DynamicRouter />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
+      {userToken ? <DynamicRouter /> : <PublicRoutes />}
     </>
   );
 }
@@ -75,9 +60,7 @@ function AppContent() {
 export default function App() {
   return (
     <Router>
-      <AuthProvider>
-        <AppContent />
-      </AuthProvider>
+      <AppContent />
     </Router>
   );
 }

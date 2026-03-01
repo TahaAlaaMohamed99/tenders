@@ -15,11 +15,11 @@ tenders/
 │   └── TenderApp.png
 ├── src/
 │   ├── main.jsx                ← Entry point (Redux Provider + App)
-│   ├── App.jsx                 ← Router + AuthProvider + AppContent
+│   ├── App.jsx                 ← Router + AppContent (token-based routing)
 │   ├── assets/
 │   │   ├── fonts/              ← Cairo (Arabic), Roboto (Latin)
 │   │   └── Icons/              ← SVG icon components
-│   ├── Components/             ← 56 UI components (see 01-components.md)
+│   ├── Components/             ← 57 UI components (see 01-components.md)
 │   ├── ConfigData/             ← Metadata-driven configuration (see 03-metadata-driven-ui.md)
 │   │   ├── SidebarLogs.json    ← Page registry (routes, modules, menus)
 │   │   ├── DataPages.jsx       ← Page config (API, schemas, components)
@@ -31,16 +31,14 @@ tenders/
 │   │   ├── resources.json      ← i18n translations (en/ar)
 │   │   ├── Generallist.json    ← Enum/lookup options
 │   │   └── StatusList.json     ← Workflow status definitions
-│   ├── Context/
-│   │   └── AuthContext.jsx     ← JWT authentication state
-│   ├── Hooks/                  ← 16 custom hooks (see 02-hooks.md)
+│   ├── Hooks/                  ← 20 custom hooks (see 02-hooks.md)
 │   ├── Layouts/
 │   │   └── DashboardLayout.jsx ← Main layout (Sidebar + Header + Outlet)
 │   ├── Pages/                  ← Specialized page components
 │   ├── Routes/
-│   │   ├── DynamicRouter.jsx   ← Metadata-driven route generation
-│   │   └── PrivateRoute.jsx    ← Authentication guard
-│   ├── services/
+│   │   ├── DynamicRouter.jsx   ← Metadata-driven route generation (used directly in App.jsx)
+│   │   └── PublicRoutes.jsx    ← Login/public routes wrapper
+│   ├── services/               ← API client and SignalR
 │   │   ├── Api.jsx             ← Axios instance with interceptors
 │   │   └── signalRService.jsx  ← Real-time service (stub)
 │   ├── store/                  ← Redux store (4 slices)
@@ -52,10 +50,10 @@ tenders/
 ```
 
 **Key Counts**:
-- **Components**: 56 (50 clean, 6 need refactor)
-- **Hooks**: 16 (3 runtime bugs fixed as of 2026-02-08)
+- **Components**: 57
+- **Hooks**: 20
 - **Config Files**: 16 metadata files
-- **Pages**: 11 configured entities
+- **Pages**: 12 configured entities
 
 ## Technology Stack
 
@@ -65,7 +63,7 @@ tenders/
 | UI Framework | React | 18.3 | ✅ Active | Functional components, hooks |
 | Routing | react-router-dom | 7.0 | ✅ Active | Dynamic route generation |
 | State Management (Global) | Redux Toolkit | 2.4 | ✅ Active | 4 slices (see below) |
-| State Management (Auth) | React Context | - | ✅ Active | JWT auth management |
+| State Management (Auth) | localStorage | - | ✅ Active | JWT + Base64 UTF-8 safe storage |
 | Forms | Formik + Yup | 2.4 + 1.4 | ✅ Active | Schema-driven validation |
 | HTTP Client | Axios | 1.7 | ✅ Active | Interceptors for auth |
 | Styling | Tailwind CSS + SCSS | 3.4 | ✅ Active | Utility-first + custom styles |
@@ -125,19 +123,23 @@ SidebarLogs.json (Page Registry)
 ```
 Login Page
     │
-    └──▶ AuthContext.login(username, password)
+    └──▶ Api.post(baseURL/Authentication/Login)
             │
-            ├──▶ POST {baseURL}/Authentication/Login
-            │       └──▶ Response: { token, expiration }
+            ├──▶ Response: { token, expiration }
             │
-            ├──▶ parseJwtToken(token)
+            ├──▶ parseJwtToken(token) (from utils/localStorage)
             │       └──▶ Extract: { userId, userName, permissions[] }
             │
-            ├──▶ setAuthStorage(token, user, expiration)
-            │       └──▶ localStorage["AuthData"] (base64)
+            ├──▶ Api.get(Permission/GetAllPermissions)
+            │       └──▶ Extract: { systemPermissions[] }
             │
-            └──▶ Navigate to /dashboard
+            ├──▶ setLocalStorageBtoa()
+            │       └──▶ Stores config/auth data (base64 + UTF-8 safe)
+            │
+            └──▶ Full Page Reload (window.location.href)
 ```
+
+**See Also**: [05-solid-clean-architecture.md#-followed-auth-refactoring](./05-solid-clean-architecture.md#-followed-auth-refactoring)
 
 ### API Request Flow
 
@@ -270,28 +272,17 @@ dispatch(toggleTheme());
 
 ### React Context
 
-**AuthContext** ([`src/Context/AuthContext.jsx`](../src/Context/AuthContext.jsx)):
+**TendersGridContext** ([`src/Components/TendersGrid/TendersGridContext.jsx`](../src/Components/TendersGrid/TendersGridContext.jsx)):
+See [3. TendersGrid System](#3-tendersgrid-system) above.
 
-```javascript
-{
-  user: { userId, userName, permissions[] },  // User profile
-  token: string,                              // JWT token
-  isAuthenticated: boolean,                   // Auth status
-  isLoading: boolean,                         // Loading state
-  login: (username, password) => Promise,     // Login action
-  logout: () => void,                         // Logout action
-  hasPermission: (action, pageConfig) => boolean,  // Permission check
-  getPermissions: () => number[]              // Get all permissions
-}
-```
+*(Note: `AuthContext` was removed in Phase 8 refactor in favor of direct localStorage access via UTF-8 safe utils)*
 
 **Usage**:
 ```javascript
-import { useAuth } from '../Context/AuthContext';
+import { getLocalStorageAtob } from '../utils/localStorage';
 
-const { user, hasPermission, logout } = useAuth();
+const user = getLocalStorageAtob("user", null);
 ```
-
 ### Local State
 
 | State Type | Management | Scope | Example |
@@ -322,14 +313,14 @@ RouteFactory(SidebarLogs, DataPages) {
 }
 ```
 
-### Protected Routes
+### Protected Routes (App.jsx)
 
-**File**: `src/Routes/PrivateRoute.jsx`
+**File**: `src/App.jsx`
 
-- Checks `isAuthenticated` from AuthContext
-- Validates token expiration
-- Auto-logout on expired token
-- Redirects to `/login` with return path
+- Uses `DynamicRouter` directly (no wrapper) vs `PublicRoutes` based on token presence.
+- Reads `localStorage.getItem("userToken")`
+- Automatically loads `DashboardLayout` for authenticated users.
+- Loads `Login` page and `ForgotPassword` only for unauthenticated users.
 
 ## Internationalization (i18n)
 
@@ -408,61 +399,31 @@ const text = translate({ title: 'save', page: 'General' });
 
 ### Permission Calculation
 
-**File**: [`src/utils/permissions.js`](../src/utils/permissions.js)
+**File**: [`src/utils/Config.jsx`](../src/utils/Config.jsx)
 
-**Formula**:
-```javascript
-Permission ID = PAGE_PERMISSION_BASE[pageKey] + PERMISSION_ACTIONS[action]
-```
-
-**Example**:
-```javascript
-// Vendors page (base: 84) + Delete action (offset: 3)
-// = Permission ID 87
-
-const canDelete = user.permissions.includes(87);
-```
-
-### Permission Actions
-
-| Action | Offset | Description | Used In |
-|--------|--------|-------------|---------|
-| View | 0 | View list/details | Grid pages |
-| Add | 1 | Create new record | Add button |
-| Edit | 2 | Update existing record | Edit button |
-| Delete | 3 | Delete record | Delete button |
-| Post | 4 | Post transaction | HeaderPageAddEdit |
-| UnPost | 5 | Unpost transaction | HeaderPageAddEdit |
-| Modify | 6 | Modify posted record | HeaderPageAddEdit |
-| Submit | 7 | Submit for approval | Workflow |
-| Approve | 8 | Approve submitted record | Workflow |
-| Reject | 9 | Reject submitted record | Workflow |
+**Logic**:
+`Config.isAllow(action, ConfiPage)` reads the `permissionsSystem` and `userPermissions` arrays from UTF-8 safe base64 `localStorage`. 
+It computes permission identifier strings like `${keyModule}:${subModule}:${keyPage}:${action}` to dynamically check if the required UI element is enabled for the active user role. This replaces the old integer-based static ID calculation, removing the need for `src/utils/permissions.js`.
 
 ### Usage
 
 **In Components**:
 ```javascript
-import { isAllow } from '../utils/permissions';
+import Config from '../utils/Config';
 
-const canDelete = isAllow("Delete", pageConfig);
+const canDelete = Config.isAllow("Delete", pageConfig);
 
 {canDelete && (
   <button onClick={handleDelete}>Delete</button>
 )}
 ```
 
-**In AuthContext** ([`src/Context/AuthContext.jsx`](../src/Context/AuthContext.jsx)):
-```javascript
-const { hasPermission } = useAuth();
-
-const canDelete = hasPermission("Delete", pageConfig);
-```
-
 **Permission Storage**:
-- JWT token contains `permissions[]` array
+- JWT token contains `Permissions` claim (comma-separated IDs)
 - Parsed on login via `parseJwtToken()`
-- Stored in `AuthContext.user.permissions`
-- Checked on every protected action
+- Individual string IDs converted to Numbers and saved
+- Stored in `localStorage["userPermissions"]` (UTF-8 safe base64)
+- `Config.isAllow()` reads from localStorage to determine access
 
 **See Also**: [00-architecture-overview.md#authentication-flow](./00-architecture-overview.md#authentication-flow)
 
@@ -660,7 +621,7 @@ const VendorsPage = lazy(() => import('./Pages/VendorsPage'));
 6. `HeaderPageAddEdit.jsx` - Removed dead `resourcesSlice?.ReduxResources` selector (slice does not exist in store)
 
 ⚠️ **Documentation Correction (Phase 0)**:
-- `src/utils/Config.jsx` is **NOT dead code** — it's actively used by `HeaderPageAddEdit.jsx` and `SubmissionDocumentLineAddEdit.jsx` for `Config.isAllow()` permission checking. Previous docs incorrectly classified it as dead code. It is a permission wrapper delegating to `src/utils/permissions.js`.
+- `src/utils/Config.jsx` is **NOT dead code** — it's actively used by `HeaderPageAddEdit.jsx` and `SubmissionDocumentLineAddEdit.jsx` for `Config.isAllow()` permission checking. Previous docs incorrectly classified it as dead code. It is the centralized dynamic permission calculator overriding the old module approach.
 
 ✅ **Phase 1 — Components Refactor**:
 - HeaderPageAddEdit split into hooks (`useWorkflowActions`, `useTransactionActions`)
@@ -698,12 +659,12 @@ See [07-action-plan.md](./07-action-plan.md) for complete roadmap.
 | Metric | Value | Status | Target |
 |--------|-------|--------|--------|
 | **Architecture Maturity** | 8.0/10 | 🟢 Good | 8/10 |
-| **Component Count** | 56 | ✅ Good | - |
-| **Clean Components** | 50 (89%) | ✅ Good | 95% |
+| **Component Count** | 57 | ✅ Good | - |
+| **Clean Components** | 51 (89%) | ✅ Good | 95% |
 | **Needs Refactor** | 6 (11%) | 🟡 Acceptable | <5% |
 | **Largest Component** | ~490 lines (HeaderPageAddEdit, post-refactor) | 🟡 Improving | <300 lines |
 | **Average Component Size** | ~150 lines | ✅ Good | <200 lines |
-| **Hook Count** | 16 | ✅ Good | - |
+| **Hook Count** | 20 | ✅ Good | - |
 | **Runtime Bugs** | 0 remaining | ✅ All Fixed | 0 |
 | **Dead Code** | ~0 lines (commented out, not deleted) | ✅ Clean | 0 |
 | **Test Coverage** | 0% | 🔴 Critical | 40%+ |
@@ -751,6 +712,6 @@ See [07-action-plan.md](./07-action-plan.md) for complete roadmap.
 
 ---
 
-**Document Version**: 5.0  
-**Last Updated**: 2026-02-08  
-**Last Refactoring Phase**: Phase 7 **COMPLETE** (all 28 action items implemented — 100%)
+**Document Version**: 6.0  
+**Last Updated**: 2026-03-01  
+**Last Refactoring Phase**: Phase 8 **COMPLETE** (Auth refactored, PrivateRoute/AuthContext/permissions.js removed, ProtectedRoutes/PublicRoutes added)

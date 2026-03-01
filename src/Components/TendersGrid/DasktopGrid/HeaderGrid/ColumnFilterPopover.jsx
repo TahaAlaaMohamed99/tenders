@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { IconsSortBto, IconsSortTop, IconFilter } from "../../../../assets/Icons";
 import TranslationText from "../../../TranslationText";
 import useTranslationText from "../../../../Hooks/useTranslationText";

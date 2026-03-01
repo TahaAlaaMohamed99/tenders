@@ -170,7 +170,7 @@
     "editVendor": { "en": "Edit Vendor", "ar": "تعديل مورد" },
     "addedSuccessfully": { "en": "Added successfully", "ar": "تم الإضافة بنجاح" },
     "editSuccessfully": { "en": "Updated successfully", "ar": "تم التعديل بنجاح" },
-    "addFailed": { "en": "Failed to add", "ar": "فشل الإطافة" },
+    "addFailed": { "en": "Failed to add", "ar": "فشل الإضافة" },
     "editFailed": { "en": "Failed to update", "ar": "فشل التعديل" },
     "deleteSuccessfully": { "en": "Deleted successfully", "ar": "تم الحذف بنجاح" },
     "deleteFailed": { "en": "Failed to delete", "ar": "فشل الحذف" },
@@ -229,7 +229,24 @@
     "loadingSubmit": { "en": "Submitting...", "ar": "جاري الإرسال..." },
     "loadingData": { "en": "Loading data...", "ar": "جاري تحميل البيانات..." },
     "noResults": { "en": "No results found", "ar": "لا توجد نتائج" },
-    "selectOption": { "en": "Select an option", "ar": "اختر خياراً" }
+    "selectOption": { "en": "Select an option", "ar": "اختر خياراً" },
+    "AccountSettings": { "en": "Account Settings", "ar": "إعدادات الحساب" },
+    "YouDoNotHavePermissionToAccess": { "en": "You do not have permission to access this page", "ar": "ليس لديك صلاحية للوصول إلى هذه الصفحة" },
+    "addBookmark": { "en": "Add Bookmark", "ar": "إضافة إشارة مرجعية" },
+    "removeBookmark": { "en": "Remove Bookmark", "ar": "إزالة إشارة مرجعية" },
+    "confirmRemoveBookmark": { "en": "Are you sure you want to remove this bookmark?", "ar": "هل أنت متأكد أنك تريد إزالة هذه الإشارة المرجعية؟" },
+    "code": { "en": "Code", "ar": "الكود" },
+    "name": { "en": "Name", "ar": "الاسم" },
+    "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
+    "description": { "en": "Description", "ar": "الوصف" },
+    "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" },
+    "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
+    "departmentName": { "en": "Department Name", "ar": "اسم القسم" },
+    "item": { "en": "Item", "ar": "الصنف" },
+    "unit": { "en": "Unit", "ar": "الوحدة" },
+    "department": { "en": "Department", "ar": "القسم" },
+    "itemNumber": { "en": "Item Number", "ar": "رقم الصنف" },
+    "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" }
   },
     "NoYes": {
       "title": { "en": "Yes/No", "ar": "نعم/لا" },
@@ -308,18 +325,14 @@
       }
     },
     "Department": {
-      "departmentName": { "en": "Department Name", "ar": "اسم القسم" },
       "manager": { "en": "Manager", "ar": "المدير" }
     },
     "Vendors": {
-      "code": { "en": "Code", "ar": "الكود" },
-      "name": { "en": "Name", "ar": "الاسم" },
       "vendorAccountNumber": { "en": "Account Number", "ar": "رقم الحساب" },
       "vendorGroupId": { "en": "Vendor Group", "ar": "مجموعة المورد" },
       "currencyCode": { "en": "Currency", "ar": "العملة" },
       "dataAreaId": { "en": "Data Area", "ar": "منطقة البيانات" },
       "vendorPartyType": { "en": "Party Type", "ar": "نوع الطرف" },
-      "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
       "enterName": { "en": "Enter vendor name", "ar": "أدخل اسم المورد" },
       "enterCode": { "en": "Enter vendor code", "ar": "أدخل كود المورد" },
       "enterVendorAccountNumber": { "en": "Enter account number", "ar": "أدخل رقم الحساب" },
@@ -329,23 +342,14 @@
     },
     "VendorGroups": {
         "vendorGroupId": { "en": "Group ID", "ar": "رقم المجموعة" },
-        "description": { "en": "Description", "ar": "الوصف" },
         "dataAreaId": { "en": "Data Area ID", "ar": "معرف منطقة البيانات" },
-        "enterVendorGroupId": { "en": "Enter group ID", "ar": "أدخل رقم المجموعة" },
-        "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" }
+        "enterVendorGroupId": { "en": "Enter group ID", "ar": "أدخل رقم المجموعة" }
     },
     "Currencies": {
         "currencyCode": { "en": "Currency Code", "ar": "رمز العملة" },
-        "name": { "en": "Name", "ar": "الاسم" },
-        "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
-        "USD": { "en": "USD", "ar": "دولار أمريكي" },
-        "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+        "USD": { "en": "USD", "ar": "دولار أمريكي" }
     },
     "Items": {
-    "itemNumber": {
-      "en": "Item Number",
-      "ar": "رقم الصنف"
-    },
     "enterItemNumber": {
       "en": "Enter item number",
       "ar": "أدخل رقم الصنف"
@@ -381,33 +385,9 @@
       "en": "Enter product type",
       "ar": "أدخل نوع المنتج"
     },
-    "code": {
-      "en": "Code",
-      "ar": "الكود"
-    },
-    "name": {
-      "en": "Name",
-      "ar": "الاسم"
-    },
-    "createdOn": {
-      "en": "Created On",
-      "ar": "تاريخ الإنشاء"
-    },
-    "item": {
-    "en": "Item",
-    "ar": "الصنف"
-    },
-    "unit": {
-      "en": "Unit",
-      "ar": "الوحدة"
-    },
     "purchaseQuantity": {
       "en": "Quantity",
       "ar": "الكمية"
-    },
-    "department": {
-      "en": "Department",
-      "ar": "القسم"
     },
     "unknownUnit": {
       "en": "Unknown Unit",
@@ -421,23 +401,14 @@
       },
       "enterUnitNumber": { "en": "Enter unit number", "ar": "أدخل رقم الوحدة" },
       "operatingUnitType": { "en": "Unit Type", "ar": "نوع الوحدة" },
-      "enterUnitType": { "en": "Enter unit type", "ar": "أدخل نوع الوحدة" },
-      "code": { "en": "Code", "ar": "الكود" },
-      "name": { "en": "Name", "ar": "الاسم" },
-      "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" }
+      "enterUnitType": { "en": "Enter unit type", "ar": "أدخل نوع الوحدة" }
     },
   "SubmissionDocuments": {
-      "code": { "en": "Code", "ar": "الكود" },
-      "name": { "en": "Name", "ar": "الاسم" },
-      "description": { "en": "Description", "ar": "الوصف" },
       "biddingType": { "en": "Bidding Type", "ar": "نوع المناقصة" },
       "status": { "en": "Status", "ar": "الحالة" },
       "transDate": { "en": "Transaction Date", "ar": "تاريخ المعاملة" },
       "executionDate": { "en": "Execution Date", "ar": "تاريخ التنفيذ" },
-      "createdOn": { "en": "Created On", "ar": "تاريخ الإنشاء" },
       "isVoid": { "en": "Is Void", "ar": "ملغي" },
-      "enterName": { "en": "Enter name", "ar": "أدخل الاسم" },
-      "enterDescription": { "en": "Enter description", "ar": "أدخل الوصف" },
       "selectBiddingType": { "en": "Select bidding type", "ar": "اختر نوع المناقصة" },
       "selectTransDate": { "en": "Select transaction date", "ar": "اختر تاريخ المعاملة" },
       "selectExecutionDate": { "en": "Select execution date", "ar": "اختر تاريخ التنفيذ" },
@@ -445,15 +416,10 @@
       "addedSuccessfully": { "en": "Document added successfully", "ar": "تمت إضافة الوثيقة بنجاح" },
       "editSuccessfully": { "en": "Document updated successfully", "ar": "تم تحديث الوثيقة بنجاح" },
       "addFailed": { "en": "Failed to add document", "ar": "فشل في إضافة الوثيقة" },
-      "item": { "en": "Item", "ar": "الصنف" },
-      "unit": { "en": "Unit", "ar": "الوحدة" },
       "purchaseQuantity": { "en": "Purchase Quantity", "ar": "كمية الشراء" },
-      "department": { "en": "Department", "ar": "القسم" },
       "unknownUnit": { "en": "UNKNOWN UNIT", "ar": "وحدة غير معروفة" },
       "editFailed": { "en": "Failed to update document", "ar": "فشل في تحديث الوثيقة" },
-      "itemNumber": { "en": "Item Number", "ar": "رقم الصنف" },
-      "itemName": { "en": "Item Name", "ar": "اسم الصنف" },
-      "departmentName": { "en": "Department Name", "ar": "اسم القسم" }
+      "itemName": { "en": "Item Name", "ar": "اسم الصنف" }
     },
   "Sidebar": {
       "Dashboard": {
@@ -537,12 +503,8 @@
       "collapse": { "en": "Collapse", "ar": "طي" },
       "openedChild": { "en": "Opened Child", "ar": "فرع مفتوح" },
       "closedChild": { "en": "Closed Child", "ar": "فرع مغلق" },
-      "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" },
-      "maximizeWidth": { "en": "Maximize", "ar": "تكبير" },
-      "minimizeWidth": { "en": "Minimize", "ar": "تصغير" },
       "close": { "en": "Close", "ar": "إغلاق" },
       "importExcel": { "en": "Import Excel", "ar": "استيراد إكسل" },
-      "add": { "en": "Add", "ar": "إضافة" },
       "insert": { "en": "Insert", "ar": "إدراج" },
       "saveChange": { "en": "Save Changes", "ar": "حفظ التغييرات" },
       "Search": { "en": "Search", "ar": "بحث" },
@@ -552,10 +514,12 @@
       "Clear": { "en": "Clear", "ar": "مسح" },
       "Select": { "en": "Select", "ar": "اختر" },
       "Type": { "en": "Type", "ar": "اكتب" },
-      "noData": { "en": "No Data Found", "ar": "لا توجد بيانات" }
+      "noData": { "en": "No Data Found", "ar": "لا توجد بيانات" },
+      "applyFilters": { "en": "Apply Filters", "ar": "تطبيق التصفية" },
+      "clearFilter": { "en": "Clear Filter", "ar": "مسح التصفية" },
+      "tender": { "en": "Tender", "ar": "مناقصة" }
     },
     "GeneralField": {
-      "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" },
       "fromDate": { "en": "From Date", "ar": "من تاريخ" },
       "toDate": { "en": "To Date", "ar": "إلى تاريخ" }
     }

@@ -33,12 +33,12 @@ let isRedirecting = false;
  */
 Api.interceptors.request.use(
   (config) => {
-    // Get fresh auth data on each request
-    const authData = getAuthStorage();
+    // Get fresh token on each request
+    const token = localStorage.getItem("userToken");
     
     // Add Authorization header if token exists
-    if (authData?.token) {
-      config.headers.Authorization = `Bearer ${authData.token}`;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     
     // Add language header dynamically

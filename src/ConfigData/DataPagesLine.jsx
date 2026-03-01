@@ -33,6 +33,10 @@ export const DataPagesLine = {
             },
             CommonColumns.CreatedOn
         ],
-        formSchema: SubmissionDocumentsForm
+        formSchema: SubmissionDocumentsForm,
+        keyPage: "SubmissionDocuments",
+        keyModule: "Journal",
+        subModule: "Transaction",
+        showMenu: "mainMenu"
     },
 };

@@ -74,6 +74,41 @@ server.post('/api/Authentication/Login', (req, res) => {
   }
 });
 
+// Permission Mock - Returns all system permissions
+// This is called after login to populate permissionsSystem in localStorage.
+// Config.isAllow() builds names as: keyModule:subModule?:keyPage:action
+server.get('/api/Permission/GetAllPermissions', (req, res) => {
+  const actions = ['View', 'Add', 'Modify', 'Delete'];
+  const pages = [
+    // keyModule, subModule (null if none), keyPage
+    ['Dashboard', null, 'Dashboard'],
+    ['Journal', null, 'Journal'],
+    ['Journal', 'Transaction', 'SubmissionDocuments'],
+    ['Reports', null, 'Reports'],
+    ['Setup', null, 'Setup'],
+    ['Setup', null, 'VendorGroups'],
+    ['Setup', null, 'Currencies'],
+    ['Setup', null, 'Items'],
+    ['Setup', null, 'Departments'],
+    ['Setup', null, 'Vendors'],
+    ['Settings', null, 'Settings'],
+  ];
+
+  let recId = 1;
+  const permissions = [];
+  for (const [keyModule, subModule, keyPage] of pages) {
+    for (const action of actions) {
+      const name = subModule
+        ? `${keyModule}:${subModule}:${keyPage}:${action}`
+        : `${keyModule}:${keyPage}:${action}`;
+      permissions.push({ recId: recId++, name });
+    }
+  }
+
+  console.log(`[MockServer] Returning ${permissions.length} permissions`);
+  res.json(permissions);
+});
+
 // =========================================================================
 // 2. MIDDLEWARE & REWRITES (RPC -> REST)
 // =========================================================================

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import FixedColumns from "./FixedColumns";
 import DefaultColumns from "./DefaultColumns";
 import { TendersGridContext } from "../../TendersGridContext";

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Form, Formik } from "formik";
 import PopupModalSlide from "../Components/PopupModalSlide";
 import useGetById from "../Hooks/useGetById";
@@ -133,7 +133,7 @@ export default function SubmissionDocumentLineAddEdit({
       <Formik
         innerRef={formikRef}
         initialValues={{
-          parentRecId: data?.parentRecId || parentRecId || parentId,
+          parentRecId: data?.parentRecId || parentRecId,
           purchaseQuantity: data?.purchaseQuantity || "",
           itemRecId: data?.itemRecId || "",
           departmentRecId: data?.departmentRecId || "",

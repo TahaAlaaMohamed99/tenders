@@ -6,8 +6,6 @@
  * @module assets/Icons/StatusIcons
  */
 
-import React from "react";
-
 /**
  * Success Icon - Green checkmark
  */
