@@ -18,22 +18,24 @@ class Config {
             const permissionNames = actions.map(
                 (action) => ConfiPage.showMenu == "menuReportSetup"
                     ? `${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`:
-                    ConfiPage.KeyPermission
-                    ? `${ConfiPage.keyModule}:${ConfiPage.KeyPermission}:${action}`
-                    : `${ConfiPage.keyModule}:${ConfiPage.subModule ? ConfiPage.subModule + ":" : ""}${ConfiPage.keyPage}:${action}`
+                    `${ConfiPage.keyModule}:${ConfiPage.subModule ? ConfiPage.subModule + ":" : ""}${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`
             );
+
             const matchedIds = permissionNames
                 .map((name) => {
                     const found = permissionsSystem.find((p) => p.name === name);
                     return found?.recId;
                 })
                 .filter(Boolean);
+
             const userIds = userPermissions.every(p => typeof p === 'object' && 'permissionRecId' in p)
                 ? userPermissions.map(p => p.permissionRecId)
                 : userPermissions;
+
             const isAllowed = checkAll
                 ? matchedIds.every((id) => userIds.includes(id))
                 : matchedIds.some((id) => userIds.includes(id));
+                
             return isAllowed;
         } catch (error) {
             return false;

@@ -73,6 +73,13 @@ export const getAuthStorage = () => {
 export const clearAuthStorage = () => {
   localStorage.removeItem(AUTH_STORAGE_KEY);
   localStorage.removeItem('isAuthenticated');
+  
+  // Clear the tokens set during Login.jsx
+  localStorage.removeItem("userToken");
+  localStorage.removeItem("userPermissions");
+  localStorage.removeItem("permissionsSystem");
+  localStorage.removeItem("user");
+  localStorage.removeItem("expiration");
 };
 
 /**

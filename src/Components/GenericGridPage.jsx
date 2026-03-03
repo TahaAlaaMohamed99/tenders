@@ -95,7 +95,7 @@ const GenericGridPage = ({
                 handlePageChange={handlePageChange}
                 handlePageSize={handlePageSize}
                 onClickRow={handleNavigate}
-                AddBtn={!isReadOnly && Config.isAllow("Add", activeConfig) ? { onClick: handleAdd } : null}
+                AddBtn={!isReadOnly && Config.isAllow("Modify", activeConfig) ? { onClick: handleAdd } : null}
                 isSelected={!isReadOnly && DataPage.isSelected !== false && Config.isAllow("Delete", activeConfig)}
                 {...props}
                 handleDelete={Config.isAllow("Delete", activeConfig) ? handleDelete : null}

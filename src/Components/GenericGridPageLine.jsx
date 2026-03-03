@@ -81,7 +81,7 @@ const GenericGridPageLine = ({
             handlePageChange={handlePageChange}
             handlePageSize={handlePageSize}
             onClickRow={handleNavigate}
-            AddBtn={!isReadOnly && Config.isAllow('Add', activeConfig) ? { onClick: handleAdd } : null}
+            AddBtn={!isReadOnly && Config.isAllow('Modify', activeConfig) ? { onClick: handleAdd } : null}
             isSelected={!isReadOnly}
             {...props}
             // For line mode, delete is often passed down or handled via props.handleDelete

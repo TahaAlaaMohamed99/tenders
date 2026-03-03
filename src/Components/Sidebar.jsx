@@ -592,7 +592,7 @@ export default function Sidebar() {
   const confirmLogout = () => {
     clearAuthStorage();
     setShowLogoutConfirm(false);
-    navigate("/login");
+    window.location.href = "/";
   };
 
   const handleNavigation = (path) => {

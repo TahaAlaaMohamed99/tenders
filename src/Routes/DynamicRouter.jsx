@@ -69,8 +69,7 @@ export default function DynamicRouter() {
                     {RouteFactory(SidebarLogs, DataPages)}
                     
                     {/* Default Redirect */}
-                    <Route index element={<Navigate to="/dashboard" replace />} />
-                    {/*<Route path="*" element={<Navigate to="/dashboard" replace />} />*/}
+                    <Route path="*" element={<Navigate to="/" replace />} />
                 </Route>
             </Routes>
         </Suspense>

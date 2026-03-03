@@ -67,7 +67,7 @@ export default function Header() {
   const handleConfirmLogout = () => {
     clearAuthStorage();
     setActiveModal(null);
-    navigate('/login');
+    window.location.href = "/";
   };
 
   return (

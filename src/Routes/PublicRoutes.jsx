@@ -7,9 +7,12 @@ const Login = lazy(() => import("../Pages/Login"));
 export default function PublicRoutes() {
   return (
     <Suspense fallback={<Loading />}>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+      <Routes >
+        <Route path="/" index element={<Login />} />
+         <Route
+          path="*"
+          element={<Login />}
+        />
       </Routes>
     </Suspense>
   );
