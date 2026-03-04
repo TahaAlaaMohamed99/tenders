@@ -79,7 +79,6 @@ export const DataPages = {
         formSchema: SubmissionDocumentsForm,
         titleAdd: "addSubmissionDocument",
         titleEdit: "editSubmissionDocument",
-        subModule: "Transaction",
         KeyPermission: "SubmissionDocument",
         keyPage: "SubmissionDocuments",
         keyModule: "Journal",
