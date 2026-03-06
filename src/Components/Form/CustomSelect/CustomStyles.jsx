@@ -98,7 +98,7 @@ const CustomStyles = (errors, touched, isFocused, isSmall = false, isNoBorder = 
       border: `1px solid ${colors.borderColor}`,
       padding: "0.25rem",
       fontSize: "0.875rem",
-      zIndex: 9999,
+      zIndex: 9999999, // Must be above ActionModal (999999)
       borderRadius: "0.75rem",
       marginTop: "0.25rem",
       opacity: 1,
@@ -106,7 +106,7 @@ const CustomStyles = (errors, touched, isFocused, isSmall = false, isNoBorder = 
     }),
     menuPortal: (provided) => ({
       ...provided,
-      zIndex: 9999,
+      zIndex: 9999999, // Must be above ActionModal (999999)
     }),
     menuList: (provided) => ({
       ...provided,

@@ -75,7 +75,7 @@
   @apply stroke-primary dark:stroke-primaryDark;
 }
 .custom-date-picker .react-calendar {
-  @apply p-1.5 ltr:font-sans rtl:font-cairo border-[1.2px] bg-white dark:bg-bgWhiteDark rounded-lg mt-1 overflow-hidden;
+  @apply p-1.5 ltr:font-sans rtl:font-cairo border-[1.2px] bg-white dark:bg-bgWhiteDark rounded-lg mt-1 overflow-hidden z-[1000] relative;
 }
 .custom-date-picker .react-calendar .react-calendar__tile {
   @apply text-titleColor dark:text-titleColorDark;

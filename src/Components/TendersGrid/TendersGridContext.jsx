@@ -194,13 +194,14 @@ export const TendersGridProvider = ({ children, ...props }) => {
         return true;
       });
     
-    if (hasActiveFilters) {
+    if (hasActiveFilters && !props.onFilterChange) {
       // Phase 5: Deduplicated — uses shared applyGridFilters utility
+      // ONLY apply IF client-side filtering is active (i.e., onFilterChange is not passed down)
       setGetData(applyGridFilters(props.data, valuesFilter));
     } else {
       setGetData(props.data || []);
     }
-  }, [props.data, valuesFilter]);
+  }, [props.data, valuesFilter, props.onFilterChange]);
 
   const handleColumnSettingsChange = useCallback((updatedColumns) => {
     const fixed = updatedColumns.filter((col) => col?.fixed);
@@ -547,15 +548,27 @@ export const TendersGridProvider = ({ children, ...props }) => {
   // @see docs/07-action-plan.md#6-deduplicate-filter-logic
   const handleFilterGrid = useCallback((values, fields) => {
     setValuesFilter(values);
-    setGetData(applyGridFilters(props.data, values, fields));
-  }, [props.data]);
+    if (props.onFilterChange) {
+      // Backend Filtering: Let the parent controller handle filtering
+      props.onFilterChange(values);
+    } else {
+      // Fallback: Client-side Filtering if no backend handler is provided
+      setGetData(applyGridFilters(props.data, values, fields));
+    }
+  }, [props.data, props.onFilterChange]);
 
   const handleClearFilter = useCallback(() => {
     const filterKey = `TendersGrid_Filters_${props.GridKey}`;
     localStorage.removeItem(filterKey);
     setValuesFilter({});
-    setGetData(props.data);
-  }, [props.data, props.GridKey]);
+    if (props.onFilterChange) {
+      // Backend Filtering: Clear filters by passing empty object or null
+      props.onFilterChange(null);
+    } else {
+      // Fallback: Client-side Filtering
+      setGetData(props.data);
+    }
+  }, [props.data, props.GridKey, props.onFilterChange]);
 
   const contextValue = useMemo(() => ({
     ...props,

@@ -58,7 +58,7 @@ export default function CustomDateRangePicker({
 
   return (
     <div className={`w-full ${className || ""}`}>
-      <div className="relative">
+      <div className={`relative ${isFocused ? "z-[100]" : "z-auto"}`}>
         {label && (
           <label 
             className={`

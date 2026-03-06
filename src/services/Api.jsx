@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/localStorage";
+import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/useFromLocalStorage";
 import { getApiBaseUrl } from "../config/apiConfig";
 
 /**
@@ -33,12 +33,12 @@ let isRedirecting = false;
  */
 Api.interceptors.request.use(
   (config) => {
-    // Get fresh token on each request
-    const token = localStorage.getItem("userToken");
+    // Get fresh auth data on each request
+    const authData = getAuthStorage();
     
     // Add Authorization header if token exists
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (authData?.token) {
+      config.headers.Authorization = `Bearer ${authData.token}`;
     }
     
     // Add language header dynamically
@@ -163,11 +163,6 @@ Api.interceptors.response.use(
  * Call this after useConfig hook fetches the configuration
  */
 export const updateApiBaseUrl = () => {
-  // Don't overwrite base URL if in mock mode
-  if (localStorage.getItem('USE_MOCK_SERVER') === 'true') {
-     return;
-  }
-
   const latestConfig = getLocalStorageAtob('Configuration') || {};
   if (latestConfig?.urlApi) {
     Api.defaults.baseURL = latestConfig.urlApi;

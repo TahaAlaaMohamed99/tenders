@@ -50,6 +50,7 @@ const GenericGridPage = ({
         showModalDelete,
         handlePageChange,
         handlePageSize,
+        handleFilterChange,
         handleDelete,
         confirmDelete,
         setShowModalDelete, // For manual modal control if needed
@@ -94,6 +95,7 @@ const GenericGridPage = ({
                 isLoading={isLoading}
                 handlePageChange={handlePageChange}
                 handlePageSize={handlePageSize}
+                onFilterChange={handleFilterChange} // Added for backend filtering
                 onClickRow={handleNavigate}
                 AddBtn={!isReadOnly && Config.isAllow("Modify", activeConfig) ? { onClick: handleAdd } : null}
                 isSelected={!isReadOnly && DataPage.isSelected !== false && Config.isAllow("Delete", activeConfig)}

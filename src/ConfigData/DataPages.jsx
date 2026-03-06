@@ -1,7 +1,7 @@
 import GenericGridPage from "../Components/GenericGridPage";
 import GenericAddEditPage from "../Components/GenericAddEditPage";
 import { CommonColumns } from "./CommonGridSchemas";
-import { VendorsFilter } from "./FilterSchemas";
+import { VendorGroupsFilter, VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
 import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
 import SubmissionDocumentAddEdit from "../Pages/SubmissionDocumentAddEdit";
@@ -130,23 +130,30 @@ export const DataPages = {
         isFilterGrid: true,
         columns: [
             { ...CommonColumns.Code, width: 150, maxWidth: 180 },
+            { ...CommonColumns.Name, fixed: true, width: 200, maxWidth: 280 },
+            { ...CommonColumns.Description, title: "description" },
+            CommonColumns.DataAreaId, // Parent field — must appear before vendorGroupId
             {
                 key: "vendorGroupId",
                 title: "vendorGroupId",
                 width: 150,
                 maxWidth: 180,
                 minWidth: 100,
-                isFilter: true
+                isFilter: true,
+                // Column header filter → async-select (FilterGrid drawer overridden by VendorGroupsFilter.overrides)
+                filterLookup: {
+                    api: "VendorGroups/GetLookup",
+                    labelKey: "vendorGroupId",
+                    valueKey: "vendorGroupId"
+                }
             },
-            { ...CommonColumns.Name, fixed: true, width: 200, maxWidth: 280 },
-            { ...CommonColumns.Description, title: "description" },
-            CommonColumns.DataAreaId,
             CommonColumns.CreatedOn
         ],
         formSchema: VendorGroupsForm,
         titleAdd: "addVendorGroup",
         titleEdit: "editVendorGroup",
         KeyPermission: "VendorGroup",
+        filterSchema: VendorGroupsFilter, // Link the new dependent filter schema
         keyPage: "VendorGroups",
         keyModule: "Setup",
         showMenu: "mainMenu"
@@ -203,6 +210,7 @@ export const DataPages = {
                 width: 130,
                 maxWidth: 160,
                 type: "status",
+                isFilter: true,  // enable in column header filter so generallist renders
                 generallist: "ProductType",
                 className: "state_Primary"
             },
@@ -240,6 +248,8 @@ export const DataPages = {
                 width: 150,
                 maxWidth: 200,
                 type: "status",
+                isFilter: true,
+                generallist: "OperatingUnitType", // column header filter renders a select
                 className: "state_Primary"
             },
             CommonColumns.CreatedOn
@@ -284,6 +294,7 @@ export const DataPages = {
                 maxWidth: 220,
                 isFilter: true
             },
+            CommonColumns.DataAreaId, // Parent field — must appear before vendorGroupId
             {
                 key: "vendorGroupId",
                 title: "vendorGroupId",
@@ -291,23 +302,29 @@ export const DataPages = {
                 maxWidth: 200,
                 isFilter: true,
                 type: "status",
-                className: "state_Primary"
+                className: "state_Primary",
+                // Column header filter: async-select (overridden in FilterGrid drawer by VendorsFilter.overrides)
+                filterLookup: {
+                    api: "VendorGroups/GetLookup",
+                    labelKey: "vendorGroupId",
+                    valueKey: "vendorGroupId"
+                }
             },
             CommonColumns.CurrencyCode,
-            CommonColumns.DataAreaId,
             {
                 key: "vendorPartyType",
                 title: "vendorPartyType",
                 width: 150,
                 maxWidth: 200,
                 type: "status",
-                className: "state_Primary"
+                className: "state_Primary",
+                generallist: "VendorPartyType" // Column header filter: generallist select
             },
             CommonColumns.CreatedOn
         ],
-        ...VendorsFilter,
         ...VendorsActions,
         formSchema: VendorsForm,
+        filterSchema: VendorsFilter, // async-select overrides for lookup fields
         titleAdd: "addVendor",
         titleEdit: "editVendor",
         KeyPermission: "Vendor",
