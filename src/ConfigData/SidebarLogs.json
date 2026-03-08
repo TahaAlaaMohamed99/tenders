@@ -64,7 +64,18 @@
         "keyPage": "Settings",
         "keyModule": null,
         "routePage": "Settings",
-        "showMenu": "settings",
-        "checkPermission": false
+        "showMenu": "settings"
+    },
+    {
+        "keyPage": "Users",
+        "keyModule": "Settings",
+        "routePage": "Users",
+        "showMenu": "settings"
+    },
+    {
+        "keyPage": "Roles",
+        "keyModule": "Settings",
+        "routePage": "Roles",
+        "showMenu": "settings"
     }
 ]

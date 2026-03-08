@@ -3,7 +3,7 @@ import GenericAddEditPage from "../Components/GenericAddEditPage";
 import { CommonColumns } from "./CommonGridSchemas";
 import { VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
-import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
+import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm, UsersForm, RolesForm } from "./FormSchemas";
 import SubmissionDocumentAddEdit from "../Pages/SubmissionDocumentAddEdit";
 import DashboardPage from "../Pages/DashboardPage";
 
@@ -167,7 +167,7 @@ export const DataPages = {
         formSchema: CurrenciesForm,
         titleAdd: "addCurrency",
         titleEdit: "editCurrency",
-        KeyPermission: "Currency",
+        KeyPermission: "Currinces",
         keyPage: "Currencies",
         keyModule: "Setup",
         showMenu: "mainMenu"
@@ -314,5 +314,56 @@ export const DataPages = {
         keyPage: "Vendors",
         keyModule: "Setup",
         showMenu: "mainMenu"
+    },
+    Users: {
+        Api: "User",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "id",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        columns: [
+            { ...CommonColumns.Name, key: "firstName", title: "firstName" },
+            { ...CommonColumns.Name, key: "lastName", title: "lastName" },
+            { ...CommonColumns.Name, key: "userName", title: "userName" },
+            { ...CommonColumns.Name, key: "email", title: "email" },
+            { ...CommonColumns.Name, key: "address", title: "address" },
+        ],
+        formSchema: UsersForm,
+        titleAdd: "addUser",
+        titleEdit: "editUser",
+        KeyPermission: "User",
+        keyPage: "Users",
+        keyModule: null,
+        showMenu: "settings"
+    },
+    Roles: {
+        Api: "Role",
+        componentViwe: GenericGridPage,
+        componentAddEdit: GenericAddEditPage,
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        columns: [
+            { ...CommonColumns.Name, key: "name", title: "name" },
+            { ...CommonColumns.Name, key: "code", title: "code" },
+            {
+                key: "granted",
+                title: "granted",
+                width: 100,
+                type: "status",
+                generallist: "NoYes",
+                className: "state_Primary"
+            }
+        ],
+        formSchema: RolesForm,
+        titleAdd: "addRole",
+        titleEdit: "editRole",
+        KeyPermission: "Role",
+        keyPage: "Roles",
+        keyModule: null,
+        showMenu: "settings"
     }
 };

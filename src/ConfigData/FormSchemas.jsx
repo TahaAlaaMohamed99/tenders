@@ -343,3 +343,31 @@ export const SubmissionDocumentLinesForm = {
         }
     ]
 };
+export const UsersForm = {
+    sections: [
+        {
+            title: "User Info",
+            fields: [
+                { name: "firstName", label: "firstName", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "lastName", label: "lastName", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "userName", label: "userName", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "email", label: "email", type: "email", required: true, gridWidth: "col-span-6" },
+                { name: "password", label: "password", type: "password", required: true, gridWidth: "col-span-6" },
+                { name: "address", label: "address", type: "text", required: false, gridWidth: "col-span-12" },
+            ]
+        }
+    ]
+};
+
+export const RolesForm = {
+    sections: [
+        {
+            title: "Role Info",
+            fields: [
+                { name: "name", label: "name", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "code", label: "code", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "granted", label: "granted", type: "checkbox", required: false, gridWidth: "col-span-6" },
+            ]
+        }
+    ]
+};

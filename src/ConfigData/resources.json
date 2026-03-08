@@ -246,7 +246,19 @@
     "unit": { "en": "Unit", "ar": "الوحدة" },
     "department": { "en": "Department", "ar": "القسم" },
     "itemNumber": { "en": "Item Number", "ar": "رقم الصنف" },
-    "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" }
+    "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" },
+    "firstName": { "en": "First Name", "ar": "الاسم الأول" },
+    "lastName": { "en": "Last Name", "ar": "اسم العائلة" },
+    "userName": { "en": "Username", "ar": "اسم المستخدم" },
+    "email": { "en": "Email", "ar": "البريد الإلكتروني" },
+    "address": { "en": "Address", "ar": "العنوان" },
+    "granted": { "en": "Granted", "ar": "ممنوح" },
+    "addUser": { "en": "Add User", "ar": "إضافة مستخدم" },
+    "editUser": { "en": "Edit User", "ar": "تعديل مستخدم" },
+    "addRole": { "en": "Add Role", "ar": "إضافة دور" },
+    "editRole": { "en": "Edit Role", "ar": "تعديل دور" },
+    "addPermission": { "en": "Add Permission", "ar": "إضافة صلاحية" },
+    "editPermission": { "en": "Edit Permission", "ar": "تعديل صلاحية" }
   },
     "NoYes": {
       "title": { "en": "Yes/No", "ar": "نعم/لا" },
@@ -473,6 +485,18 @@
       "LogoutAccount": {
          "en": "Logout Account",
          "ar": "تسجيل خروج" 
+      },
+      "Users": {
+         "en": "Users",
+         "ar": "المستخدمين" 
+      },
+      "Roles": {
+         "en": "Roles",
+         "ar": "الأدوار" 
+      },
+      "Permissions": {
+         "en": "Permissions",
+         "ar": "الصلاحيات" 
       }
     },
     "Grid": {
