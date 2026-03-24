@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useMemo } from "react";
 import Select, { components } from "react-select";
 import customStyles from "./CustomStyles";
 import CustomStylesDark from "./CustomStylesDark";
@@ -58,7 +58,7 @@ const CustomDropdownIndicator = (props) => {
     </components.DropdownIndicator>
   );
 };
-const CustomeSelect = React.forwardRef(({
+const CustomeSelect = ({
   isMulti,
   options,
   disabled = false,
@@ -83,10 +83,11 @@ const CustomeSelect = React.forwardRef(({
   labelBgColor = "bg-bgColor dark:bg-bgColorDark",
   lang,
   isSmall,
-}, ref) => {
+  ref,
+}) => {
   const navigate = useNavigate();
   // Custom input component for the react-select's Input component
-  const CustomInput = React.useMemo(() => (props) => {
+  const CustomInput = useMemo(() => (props) => {
     return (
       <components.Input {...props} autoComplete={`arkaan_Select${label}`} innerRef={ref} />
     );
@@ -212,6 +213,6 @@ const CustomeSelect = React.forwardRef(({
       )}
     </div>
   );
-});
+};
 
 export default CustomeSelect;

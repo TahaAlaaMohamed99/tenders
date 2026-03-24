@@ -12,9 +12,28 @@ const useGridData = (ApiGet, setDataGrid, setIsLoading, isGetAll = true) => {
   const fetchGridData = useCallback(async (PageNumber, PageSize) => {
     setIsLoading(true);
     try {
-      const response = await Api.get(
-        `/${ApiGet}${isGetAll ? `/GetAll?` : "&"}${PageNumber ? `pageNumber=${PageNumber}` : ""}${PageSize ? `&pageSize=${PageSize}` : ""}`
-      );
+      // Build the URL flexibly:
+      // 1. If isGetAll is true, append /GetAll
+      // 2. Otherwise, use & if there are already params, or ? if not
+      let url = `/${ApiGet}`;
+      
+      if (isGetAll === true) {
+        // Only append /GetAll if not already present and if it's a simple resource path
+        if (!url.includes("/GetAll") && !url.includes("?") && !url.split('/').pop().includes('=')) {
+          url += "/GetAll";
+        }
+      }
+      
+      const separator = url.includes("?") ? "&" : "?";
+      const paginationParams = [];
+      if (PageNumber) paginationParams.push(`pageNumber=${PageNumber}`);
+      if (PageSize) paginationParams.push(`pageSize=${PageSize}`);
+      
+      if (paginationParams.length > 0) {
+        url += `${separator}${paginationParams.join("&")}`;
+      }
+
+      const response = await Api.get(url);
       if (response !== 404) {
         const hasMetaTotal =
           response?.totalCount !== undefined ||

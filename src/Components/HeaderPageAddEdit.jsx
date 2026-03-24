@@ -159,10 +159,6 @@ export default function HeaderPageAddEdit({
   const currentLanguage = useSelector(
     (state) => state.themeSlice.currentLanguage
   );
-  const resourcesFromRedux = useSelector(
-    (state) => state.resourcesSlice?.ReduxResources
-  );
-  const ReduxResources = useMemo(() => resourcesFromRedux || {}, [resourcesFromRedux]);
 
   const dispatch = useDispatch();
 

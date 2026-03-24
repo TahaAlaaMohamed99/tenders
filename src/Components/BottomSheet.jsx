@@ -7,7 +7,7 @@
  * @module Components/BottomSheet
  */
 
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 
 /**
  * BottomSheet Component - Mobile action sheet
@@ -16,7 +16,7 @@ import { useEffect } from "react";
  * @param {boolean} props.isOpen - Whether sheet is visible
  * @param {Function} props.onClose - Close handler
  * @param {string} props.title - Sheet title
- * @param {React.ReactNode} props.children - Content
+ * @param {ReactNode} props.children - Content
  * @returns {JSX.Element|null}
  */
 export default function BottomSheet({ 

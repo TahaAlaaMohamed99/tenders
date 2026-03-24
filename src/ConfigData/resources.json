@@ -60,6 +60,22 @@
     "ar": "تذكرني"
   },
     "General": {
+    "Setup": {
+      "en": "Setup",
+      "ar": "الإعدادات"
+    },
+    "Journal": {
+      "en": "Journal",
+      "ar": "اليومية"
+    },
+    "Settings": {
+      "en": "Settings",
+      "ar": "الإعدادات العامة"
+    },
+    "Other": {
+      "en": "Other",
+      "ar": "أخرى"
+    },
     "logout": {
       "en": "Logout",
       "ar": "تسجيل خروج"
@@ -79,6 +95,10 @@
     "save": {
       "en": "Save",
       "ar": "حفظ"
+    },
+    "clearChanges": {
+      "en": "Clear Changes",
+      "ar": "مسح التغييرات"
     },
     "delete": {
       "en": "Delete",
@@ -168,6 +188,12 @@
     "editSetting": { "en": "Edit Setting", "ar": "تعديل إعداد" },
     "addVendor": { "en": "Add Vendor", "ar": "إضافة مورد" },
     "editVendor": { "en": "Edit Vendor", "ar": "تعديل مورد" },
+    "addTermsandSpecificationsBooklet": { "en": "Add Terms And Spec. Brochure", "ar": "إضافة كراسة الشروط والمواصفات" },
+    "editTermsandSpecificationsBooklet": { "en": "Edit Terms And Spec. Brochure", "ar": "تعديل كراسة الشروط والمواصفات" },
+    "addTermsandSpecificationsBookletLine": { "en": "Add Line", "ar": "إضافة بند" },
+    "editTermsandSpecificationsBookletLine": { "en": "Edit Line", "ar": "تعديل بند" },
+    "addRoles": { "en": "ADD ROLES", "ar": "إضافة أدوار" },
+    "editRoles": { "en": "EDIT ROLES", "ar": "تعديل أدوار" },
     "addedSuccessfully": { "en": "Added successfully", "ar": "تم الإضافة بنجاح" },
     "editSuccessfully": { "en": "Updated successfully", "ar": "تم التعديل بنجاح" },
     "addFailed": { "en": "Failed to add", "ar": "فشل الإضافة" },
@@ -249,16 +275,89 @@
     "openInNewTab": { "en": "Open in New Tab", "ar": "فتح في تبويب جديد" },
     "firstName": { "en": "First Name", "ar": "الاسم الأول" },
     "lastName": { "en": "Last Name", "ar": "اسم العائلة" },
-    "userName": { "en": "Username", "ar": "اسم المستخدم" },
+    "userName": { "en": "User name", "ar": "اسم المستخدم" },
     "email": { "en": "Email", "ar": "البريد الإلكتروني" },
     "address": { "en": "Address", "ar": "العنوان" },
+    "amount": { "en": "Amount", "ar": "الكمية" },
+    "price": { "en": "Price", "ar": "السعر" },
+    "enterAmount": { "en": "Enter amount", "ar": "أدخل الكمية" },
+    "enterPrice": { "en": "Enter price", "ar": "أدخل السعر" },
     "granted": { "en": "Granted", "ar": "ممنوح" },
     "addUser": { "en": "Add User", "ar": "إضافة مستخدم" },
     "editUser": { "en": "Edit User", "ar": "تعديل مستخدم" },
     "addRole": { "en": "Add Role", "ar": "إضافة دور" },
     "editRole": { "en": "Edit Role", "ar": "تعديل دور" },
+
     "addPermission": { "en": "Add Permission", "ar": "إضافة صلاحية" },
-    "editPermission": { "en": "Edit Permission", "ar": "تعديل صلاحية" }
+    "editPermission": { "en": "Edit Permission", "ar": "تعديل صلاحية" },
+    "codeRequired": { "en": "Code is required", "ar": "الكود مطلوب" },
+    "firstNameRequired": { "en": "First name is required", "ar": "الاسم الأول مطلوب" },
+    "lastNameRequired": { "en": "Last name is required", "ar": "اسم العائلة مطلوب" },
+    "userNameRequired": { "en": "Username is required", "ar": "اسم المستخدم مطلوب" },
+    "emailRequired": { "en": "Email is required", "ar": "البريد الإلكتروني مطلوب" },
+    "passwordRequired": { "en": "Password is required", "ar": "كلمة المرور مطلوبة" },
+    "passwordTooShort": { "en": "Password is too short (min 6 characters)", "ar": "كلمة المرور قصيرة جداً (6 أحرف على الأقل)" },
+    "passwordsMustMatch": { "en": "Passwords must match", "ar": "كلمات المرور يجب أن تتطابق" },
+    "successfullyAssigned": { "en": "Successfully assigned", "ar": "تم التعيين بنجاح" },
+    "assignRoles": { "en": "Assign Roles", "ar": "تعيين أدوار" },
+    "historyEmployeeUser": { "en": "Employee User History", "ar": "سجل مستخدم الموظف" },
+    "pleaseEnterCode": { "en": "Please enter code", "ar": "الرجاء إدخال الكود" },
+    "pleaseEnterFirstName": { "en": "Please enter first name", "ar": "الرجاء إدخال الاسم الأول" },
+    "pleaseEnterLastName": { "en": "Please enter last name", "ar": "الرجاء إدخال اسم العائلة" },
+    "pleaseEnterUserName": { "en": "Please enter username", "ar": "الرجاء إدخال اسم المستخدم" },
+    "enterPassword": { "en": "Enter password", "ar": "أدخل كلمة المرور" },
+    "enterConfirmPassword": { "en": "Enter confirm password", "ar": "أدخل تأكيد كلمة المرور" },
+    "pleaseEnterAddress": { "en": "Please enter address", "ar": "الرجاء إدخال العنوان" },
+    "pleaseSelectEmployeeRec": { "en": "Please select employee", "ar": "الرجاء اختيار الموظف" },
+    "history": { "en": "History", "ar": "السجل" },
+    "permissionsTitle": { "en": "Permissions", "ar": "الصلاحيات" },
+    "successfullyEdit": { "en": "Permissions updated successfully", "ar": "تم تحديث الصلاحيات بنجاح" },
+    "successfullyDefaulted": { "en": "Default permissions applied successfully", "ar": "تم تطبيق الصلاحيات الافتراضية بنجاح" },
+    "countPermissions": { "en": "Total Permissions", "ar": "إجمالي الصلاحيات" },
+    "page": { "en": "Page", "ar": "الصفحة" },
+    "selectAll": { "en": "Select All", "ar": "تحديد الكل" },
+    "ResetDefault": { "en": "Reset to Default Permissions", "ar": "إعادة تعيين الصلاحيات الافتراضية" },
+    "fromDate": { "en": "From Date", "ar": "من تاريخ" },
+    "toDate": { "en": "To Date", "ar": "إلى تاريخ" },
+    "roleAssignment": { "en": "Role Assignment", "ar": "تعيين الأدوار" },
+    "Roles": { "en": "Roles", "ar": "الأدوار" },
+    "roleName": { "en": "Role Name", "ar": "اسم الدور" },
+    "pleaseSelect": { "en": "Please select", "ar": "الرجاء الاختيار" },
+    "pleaseSelectRole": { "en": "Please select role", "ar": "الرجاء اختيار الدور" }
+  },
+  "Users": {
+    "title": { "en": "Users", "ar": "المستخدمين" },
+    "data": { "en": "Data", "ar": "البيانات" },
+    "confirmPassword": { "en": "Confirm Password", "ar": "تأكيد كلمة المرور" }
+  },
+  "User": {
+    "title": { "en": "Users", "ar": "المستخدمين" }
+  },
+  "Roles": {
+    "title": { "en": "Roles", "ar": "الأدوار" },
+    "data": { "en": "Data", "ar": "البيانات" }
+  },
+  "Role": {
+    "title": { "en": "Roles", "ar": "الأدوار" }
+  },
+  "userPermissions": {
+    "permissionsTitle": { "en": "Permissions", "ar": "الصلاحيات" },
+    "successfullyEdit": { "en": "Permissions updated successfully", "ar": "تم التحديث بنجاح" },
+    "successfullyDefaulted": { "en": "Default permissions applied successfully", "ar": "تم تطبيق الصلاحيات الافتراضية بنجاح" },
+    "page": { "en": "Page", "ar": "الصفحة" },
+    "selectAll": { "en": "Select All", "ar": "تحديد الكل" },
+    "View": { "en": "View", "ar": "عرض" },
+    "Modify": { "en": "Modify", "ar": "تعديل" },
+    "Delete": { "en": "Delete", "ar": "حذف" },
+    "MassPost": { "en": "Mass Post", "ar": "ترحيل جماعي" },
+    "MassUnPost": { "en": "Mass Unpost", "ar": "إلغاء ترحيل جماعي" },
+    "Post": { "en": "Post", "ar": "ترحيل" },
+    "UnPost": { "en": "Unpost", "ar": "إلغاء ترحيل" },
+    "AssignPermissions": { "en": "Assign Permissions", "ar": "تعيين صلاحيات" },
+    "AssignToUser": { "en": "Assign To User", "ar": "تعيين لمستخدم" },
+    "RemoveUserRoles": { "en": "Remove User Roles", "ar": "إزالة أدوار" },
+    "UserSetDefaultPermissions": { "en": "Default Permissions", "ar": "صلاحيات افتراضية" },
+    "AssignPermissionToUser": { "en": "Assign To User", "ar": "تعيين لمستخدم" }
   },
     "NoYes": {
       "title": { "en": "Yes/No", "ar": "نعم/لا" },
@@ -340,6 +439,7 @@
       "manager": { "en": "Manager", "ar": "المدير" }
     },
     "Vendors": {
+      "title": { "en": "Vendors", "ar": "الموردين" },
       "vendorAccountNumber": { "en": "Account Number", "ar": "رقم الحساب" },
       "vendorGroupId": { "en": "Vendor Group", "ar": "مجموعة المورد" },
       "currencyCode": { "en": "Currency", "ar": "العملة" },
@@ -353,15 +453,18 @@
       "selectDataArea": { "en": "Select data area", "ar": "اختر منطقة البيانات" }
     },
     "VendorGroups": {
+        "title": { "en": "Vendor Groups", "ar": "مجموعات الموردين" },
         "vendorGroupId": { "en": "Group ID", "ar": "رقم المجموعة" },
         "dataAreaId": { "en": "Data Area ID", "ar": "معرف منطقة البيانات" },
         "enterVendorGroupId": { "en": "Enter group ID", "ar": "أدخل رقم المجموعة" }
     },
     "Currencies": {
+        "title": { "en": "Currencies", "ar": "العملات" },
         "currencyCode": { "en": "Currency Code", "ar": "رمز العملة" },
         "USD": { "en": "USD", "ar": "دولار أمريكي" }
     },
     "Items": {
+    "title": { "en": "Items", "ar": "الأصناف" },
     "enterItemNumber": {
       "en": "Enter item number",
       "ar": "أدخل رقم الصنف"
@@ -407,6 +510,7 @@
     }
   },
   "Departments": {
+      "title": { "en": "Departments", "ar": "الأقسام" },
       "operatingUnitNumber": {
         "en": "Unit Number",
         "ar": "رقم الوحدة" 
@@ -416,6 +520,7 @@
       "enterUnitType": { "en": "Enter unit type", "ar": "أدخل نوع الوحدة" }
     },
   "SubmissionDocuments": {
+      "title": { "en": "Submission Documents", "ar": "وثائق التقديم" },
       "biddingType": { "en": "Bidding Type", "ar": "نوع المناقصة" },
       "status": { "en": "Status", "ar": "الحالة" },
       "transDate": { "en": "Transaction Date", "ar": "تاريخ المعاملة" },
@@ -497,6 +602,10 @@
       "Permissions": {
          "en": "Permissions",
          "ar": "الصلاحيات" 
+      },
+      "TermsandSpecificationsBooklet": {
+         "en": "Terms And Spec. Brochure",
+         "ar": "كراسة الشروط والمواصفات" 
       }
     },
     "Grid": {
@@ -542,9 +651,5 @@
       "applyFilters": { "en": "Apply Filters", "ar": "تطبيق التصفية" },
       "clearFilter": { "en": "Clear Filter", "ar": "مسح التصفية" },
       "tender": { "en": "Tender", "ar": "مناقصة" }
-    },
-    "GeneralField": {
-      "fromDate": { "en": "From Date", "ar": "من تاريخ" },
-      "toDate": { "en": "To Date", "ar": "إلى تاريخ" }
     }
 }

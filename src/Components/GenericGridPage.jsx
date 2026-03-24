@@ -100,9 +100,8 @@ const GenericGridPage = ({
                 {...props}
                 handleDelete={Config.isAllow("Delete", activeConfig) ? handleDelete : null}
                 // Top-level grids usually control selection state here or passed down? 
-                // TendersGrid expects setselectesRowInsert sometimes.
-                // Connect TendersGrid selection to Controller
-                setselectesRowInsert={setSelectedRows} 
+                // TendersGrid expects setSelectedRows sometimes.
+                setSelectedRows={setSelectedRows} 
             />
             
             <ConfirmationModal

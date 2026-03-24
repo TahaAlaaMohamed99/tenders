@@ -1,5 +1,6 @@
 import { CommonColumns } from "./CommonGridSchemas";
-import { SubmissionDocumentsForm } from "./FormSchemas";
+import { SubmissionDocumentsForm, TermsandSpecificationsBookletLineForm } from "./FormSchemas";
+import RolesAddEditLine from "../Pages/Users/RolesAddEditLine";
 
 export const DataPagesLine = {
     SubmissionDocumentLine: {
@@ -36,7 +37,58 @@ export const DataPagesLine = {
         formSchema: SubmissionDocumentsForm,
         keyPage: "SubmissionDocuments",
         keyModule: "Journal",
-        subModule: "Transaction",
         showMenu: "mainMenu"
     },
+    RolesAddEditLine: {
+        Api: "User/GetRolesByUserId",
+        keyId: "roleId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: false,
+        columns: [
+            {
+                key: "roleName",
+                title: "roleName",
+                width: 150,
+                maxWidth: 200,
+                fixed: true,
+                isFilter: true
+            },
+            CommonColumns.CreatedOn
+        ],
+        AddEditComponent: RolesAddEditLine,
+        keyPage: "Roles",
+        ResourcePage: "Roles",
+        KeyPermission: "Role",
+    },
+    TermsandSpecificationsBookletLine: {
+        Api: "TermsandSpecificationsBookletLine",
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: false,
+        columns: [
+            CommonColumns.Code,
+            { ...CommonColumns.Name, fixed: true, width: 250, maxWidth: 350 },
+            {
+                key: "amount",
+                title: "amount",
+                width: 120,
+                maxWidth: 150,
+                isFilter: true
+            },
+            {
+                key: "price",
+                title: "price",
+                width: 120,
+                maxWidth: 150,
+                isFilter: true
+            },
+            CommonColumns.CreatedOn
+        ],
+        formSchema: TermsandSpecificationsBookletLineForm,
+        keyPage: "TermsandSpecificationsBooklet",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
+    }
 };

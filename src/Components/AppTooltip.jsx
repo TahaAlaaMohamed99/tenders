@@ -23,13 +23,16 @@ const AppTooltip = () => {
       id="global-tooltip"
       // Use efficient strategy: only render content when active
       render={({ content, activeAnchor }) => {
-        if (!content || !activeAnchor) return null;
+        // Defensive: fallback to manual attribute if content is missing from react-tooltip
+        const tooltipTitle = content || activeAnchor?.getAttribute("data-tooltip-content");
+        
+        if (!tooltipTitle || !activeAnchor) return null;
 
         // Extract the resource page from the anchor element's data attribute
         const resourcePage =
           activeAnchor.getAttribute("data-resource-page") || "General";
 
-        return <TranslationText page={resourcePage} title={content} />;
+        return <TranslationText page={resourcePage} title={tooltipTitle} />;
       }}
       // Global styling (can be adjusted via CSS targeting .app-tooltip)
       className="app-tooltip remove-arrow"

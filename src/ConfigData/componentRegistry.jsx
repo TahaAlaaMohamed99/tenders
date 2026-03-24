@@ -1,3 +1,5 @@
+import { ComponentType } from 'react';
+
 /**
  * @fileoverview Component Registry - Central hub for all form field components
  * 
@@ -78,7 +80,7 @@ import CustomDateRangePicker from '../Components/Form/CustomDateRangePicker';
 /**
  * Component Registry - Maps field types to React components
  * 
- * @type {Object.<string, React.ComponentType>}
+ * @type {Object.<string, ComponentType>}
  * 
  * @example
  * // In DynamicForm.jsx:
@@ -100,19 +102,19 @@ export const componentRegistry = {
    * Email input with email validation hint
    * Uses CustomInput with type="email"
    */
-  email: (props) => <CustomInput {...props} type="email" />,
+  email: (props) => <CustomInput {...props} type="email" ref={props.ref} />,
   
   /**
    * Password input with visibility toggle
    * Uses CustomInput with type="password"
    */
-  password: (props) => <CustomInput {...props} type="password" />,
+  password: (props) => <CustomInput {...props} type="password" ref={props.ref} />,
   
   /**
    * Numeric input with number keyboard on mobile
    * Uses CustomInput with type="number"
    */
-  number: (props) => <CustomInput {...props} type="number" />,
+  number: (props) => <CustomInput {...props} type="number" ref={props.ref} />,
   
   /**
    * Multi-line text area for longer content
@@ -231,7 +233,7 @@ export const componentRegistry = {
    * Date and time picker combined
    * Uses CustomDatePicker with viewTime=true
    */
-  datetime: (props) => <CustomDatePicker {...props} viewTime />,
+  datetime: (props) => <CustomDatePicker {...props} viewTime ref={props.ref} />,
 
   // =========================================
   // FUTURE: ADVANCED TYPES
@@ -288,7 +290,7 @@ export const componentRegistry = {
  * Gets a component from the registry by type
  * 
  * @param {string} type - The field type (e.g., "text", "select")
- * @returns {React.ComponentType|null} The component or null if not found
+ * @returns {ComponentType|null} The component or null if not found
  * 
  * @example
  * const TextComponent = getComponent("text");

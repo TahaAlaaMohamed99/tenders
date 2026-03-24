@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback, memo, useState, useEffect, useRef } from "react";
+import { useContext, useMemo, useCallback, memo, useState, useEffect, useRef, Fragment } from "react";
 import FixedRows from "./FixedRows";
 import DefaultRows from "./DefaultRows";
 import DropdownGrid from "../../DropdownGrid";
@@ -35,14 +35,14 @@ const EmptyRow = memo(() => (
 
 EmptyRow.displayName = "EmptyRow";
 
-const flattenRows = (rows, openRows, level = 0) => {
+const flattenRows = (rows, openRows, idKey, level = 0) => {
   const flattened = [];
 
   rows.forEach((row) => {
     flattened.push({ ...row, level });
 
-    if (openRows[row.recId] && row.children && row.children.length > 0) {
-      flattened.push(...flattenRows(row.children, openRows, level + 1));
+    if (openRows[row[idKey]] && row.children && row.children.length > 0) {
+      flattened.push(...flattenRows(row.children, openRows, idKey, level + 1));
     }
   });
 
@@ -66,6 +66,7 @@ const BodyGrid = ({
     rowActionList,
     getData,
     isSelectorHight,
+    keyId = "recId",
   } = useContext(TendersGridContext);
 
   const [displayedRowsCount, setDisplayedRowsCount] = useState(ROWS_PER_BATCH);
@@ -90,8 +91,8 @@ const BodyGrid = ({
  
 
   const flattenedRows = useMemo(
-    () => flattenRows(getData, openRows),
-    [getData, openRows]
+    () => flattenRows(getData, openRows, keyId),
+    [getData, openRows, keyId]
   );
 
   const displayedRows = useMemo(
@@ -106,9 +107,10 @@ const BodyGrid = ({
   const renderRowsFixed = useCallback(
     (rows) => {
       return rows.map((row, rowIndex) => {
-        const isOpen = !!openRows[row.recId];
+        const rowId = row[keyId];
+        const isOpen = !!openRows[rowId];
         return (
-          <React.Fragment key={row.recId || rowIndex}>
+          <Fragment key={rowId || rowIndex}>
             <FixedRows
               row={row}
               openRows={openRows}
@@ -116,7 +118,7 @@ const BodyGrid = ({
               toggleRow={toggleRow}
               level={row.level}
             />
-          </React.Fragment>
+          </Fragment>
         );
       });
     },
@@ -127,13 +129,13 @@ const BodyGrid = ({
     (rows) => {
       return rows.map((row, rowIndex) => {
         return (
-          <React.Fragment key={row.recId || rowIndex}>
+          <Fragment key={row[keyId] || rowIndex}>
             <DefaultRows
               row={row}
               level={row.level}
               rowsLength={rows.length}
             />
-          </React.Fragment>
+          </Fragment>
         );
       });
     },
@@ -144,9 +146,9 @@ const BodyGrid = ({
     (rows) => {
       return rows.map((row, rowIndex) => {
         return (
-          <React.Fragment key={row.recId || rowIndex}>
+          <Fragment key={row[keyId] || rowIndex}>
             <EmptyRow />
-          </React.Fragment>
+          </Fragment>
         );
       });
     },
@@ -156,15 +158,15 @@ const BodyGrid = ({
   const renderRowActionList = useCallback(
     (rows) => {
       return rows.map((row, rowIndex) => {
-        const isSelected = selectedRows.some(r => r.recId == row.recId);
+        const isSelected = selectedRows.some(r => r[keyId] == row[keyId]);
          return (
-          <React.Fragment key={row.recId || rowIndex}>
+          <Fragment key={row[keyId] || rowIndex}>
             <RowAction
               row={row}
               rowActionList={rowActionList}
               isSelected={isSelected}
             />
-          </React.Fragment>
+          </Fragment>
         );
       });
     },

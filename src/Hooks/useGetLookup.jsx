@@ -30,8 +30,19 @@ const useGetLookup = () => {
       setIsLoading(true);
       const response = await Api.get(`${api}${isLookupValue ? `` : '/GetLookup'}`);
 
+      // Support both plain array and wrapped responses (SOLID)
+      const listData = Array.isArray(response)
+        ? response
+        : (response?.data || response?.Data || []);
+
+      if (!Array.isArray(listData)) {
+          console.error(`[useGetLookup] API did not return an array. Received:`, response);
+          setList([]);
+          return;
+      }
+
       // Map the response to include label, value, and extra keys dynamically
-      const data = response.map((item) => {
+      const data = listData.map((item) => {
         const mappedItem = {
           label: extraLabelKey
             ? `${item[labelKey]}-${item[extraLabelKey]}` // Concatenate value and extraLabelKey if provided

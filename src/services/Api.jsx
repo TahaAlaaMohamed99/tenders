@@ -102,7 +102,7 @@ Api.interceptors.response.use(
         
         // Use a small delay to allow state cleanup
         setTimeout(() => {
-          window.location.href = "/login";
+          window.location.href = "/";
           isRedirecting = false;
         }, 100);
       }

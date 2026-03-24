@@ -1,0 +1,92 @@
+.permissions-log-container {
+  @apply w-full h-full flex flex-col;
+
+  .permissions-header {
+    @apply border-b border-borderColor dark:border-borderColorDark mb-4 px-2 py-3;
+    
+    .select-all-wrapper-left {
+      @apply flex items-center cursor-pointer;
+    }
+
+    .count-badge-total {
+      @apply bg-primary text-white px-2 py-0.5 text-[10px] font-bold rounded-full shadow-sm min-w-[20px] text-center;
+    }
+  }
+
+  .area-accordion {
+    @apply mb-4 border border-borderColor dark:border-borderColorDark rounded-lg overflow-hidden;
+    
+    .module-accordion {
+      @apply mb-2 border-l-4 border-l-blue-500 rounded-md;
+    }
+  }
+
+  .table {
+    @apply w-full bg-bgColor dark:bg-bgColorDark;
+    
+    thead {
+      @apply h-10 border-b border-borderColorDark border-opacity-20;
+      
+      th {
+        @apply text-textColor dark:text-textColorDark font-semibold text-[0.85rem] px-2 text-center;
+      }
+    }
+
+    /* 
+       Table Row Styling:
+       Uses @apply for layout and standard transitions for smoothness.
+       The 'selected' class matches the main data grid theme.
+    */
+    tr {
+       @apply divide-x rtl:divide-x-reverse divide-borderColorDark dark:divide-borderColor divide-opacity-10 transition-colors duration-200;
+       
+       &:hover {
+         @apply bg-bgColor/50 dark:bg-bgColorDark/50;
+       }
+       
+       &.selected {
+         @apply bg-primary dark:bg-primaryDark bg-opacity-20 dark:bg-opacity-20;
+       }
+    }
+
+    /* 
+       Global Cell Alignment:
+       Ensures all text is centered across the entire table.
+       !important is used to override any library-specific or inline styles.
+    */
+    th, td {
+      @apply text-center;
+      text-align: center !important;
+    }
+
+    thead {
+      th {
+        @apply text-textColor dark:text-textColorDark font-semibold text-[0.85rem] px-2;
+      }
+    }
+
+    tbody {
+      @apply divide-y divide-borderColorDark dark:divide-borderColor divide-opacity-10;
+      tr {
+        /* The tr rule here was removed as it's now defined directly under .table */
+        /* The border-b was removed because divide-y handles it */
+        /* The hover was moved to the tr rule directly under .table */
+        
+        td {
+          @apply h-10 py-1.5 px-3 text-textColor dark:text-textColorDark;
+          text-align: center;
+          
+          &.text-left {
+            @apply pl-4 font-medium;
+            text-align: left;
+          }
+          
+          .justify-center {
+            display: flex;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+}

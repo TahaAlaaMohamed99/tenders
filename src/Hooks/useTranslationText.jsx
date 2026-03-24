@@ -28,7 +28,7 @@ const useTranslationText = ({ title, lang, page, enumName }) => {
         return Resources[page][title][lang];
     }
 
-    // 3. Try General/Global lookup (common keys like 'logout', 'cancel')
+    // 3. Try General/Global lookup (common keys like 'logout', 'cancel', common field placeholders)
     if (Resources?.["General"]?.[title]?.[lang]) {
         return Resources["General"][title][lang];
     }

@@ -1,6 +1,6 @@
 # Component Documentation
 
-> **Last Updated**: 2026-02-08  
+> **Last Updated**: 2026-03-15  
 > **Related Docs**: [Architecture](./00-architecture-overview.md) | [Hooks](./02-hooks.md) | [Metadata](./03-metadata-driven-ui.md) | [SOLID Audit](./05-solid-clean-architecture.md) | [Unused Code](./06-unused-and-gaps.md)
 
 ## Overview
@@ -28,7 +28,7 @@ This document catalogs all **56 components** in the codebase, organized by categ
 | [6. Specialized Pages](#6-specialized-pages) | 6 | 5 | 0 | 1 (Vendors.jsx) |
 | **Total** | **61 files** | **57** | **3** | **1** |
 
-> **Phase 1 Changes**: `GenericGridPageLine` deleted (merged into `GenericGridPage`). `HeaderPageAddEdit` refactored (logic extracted to hooks). `Sidebar` 3rd-level tree deduplicated. `ModaRemoveBookmark` props fixed. `Footer.jsx` reduce bug fixed.
+> **Phase 2 Changes (2026-03-15)**: **React 19 Upgrade**: Removed `React.forwardRef` in favor of standard `ref` props. `UsersAddEdit` refactored to use `DynamicForm`. `RolesAddEditLine` refactored to use `DynamicForm`. `useGridData` API URL construction fixed. `Stepper.jsx` React import fixed. `DynamicForm` support for `viewOnly` prop added.
 
 > **Note**: Total files includes sub-component files (e.g., `CustomStyles.jsx`, `CustomStylesDark.jsx` inside `CustomSelect/`). Unique logical components: ~56.
 
@@ -132,6 +132,51 @@ Sidebar/
 ├── SidebarItem.jsx (single menu item)
 └── TreeNode.jsx (recursive tree rendering)
 ```
+
+---
+
+### 1.6 Stepper
+
+**Location**: `src/Components/Stepper.jsx` (71 lines)
+
+**Responsibility**: Professional, data-driven navigation for multi-step forms. Supports horizontal and vertical layouts.
+
+**Props**:
+- `steps`: Array of step objects `{ title, icon, onClick, disabled, ResourcePage }`
+- `activeStep`: Index of the current active step
+- `direction`: `"horizontal"` | `"vertical"`
+- `ResourcePage`: Default translation namespace for step titles
+
+**Usage**: Used in `UsersAddEdit.jsx`, `RolesAddEdit.jsx`, and `SubmissionDocumentAddEdit.jsx`.
+
+**Status**: ✅ Clean (SOLID compliant)
+
+**Features**:
+- Decoupled from step content (renders navigation only)
+- Visual connectors between steps
+- Fully responsive styling via `Stepper.scss`
+- Supports explicit unmounting of inactive steps in parent for performance (Data-Driven Pattern)
+
+---
+
+### 1.7 CommonLogLine
+
+**Location**: `src/Components/Layout/CommonLogLine.jsx` (47 lines)
+
+**Responsibility**: Professional, reusable component for rendering history/logs using `GenericGridPageLine` pattern.
+
+**Props**:
+- `DataGrid`: Grid configuration from `DataPagesLine.jsx`
+- `ResourcePage`: Translation namespace
+- `ApiGetAllLines`: API endpoint for logs
+- `parentData`: Object with `parentId` and `parentName`
+- `replayFetch`: Trigger for refreshing data
+
+**Usage**: Designed for history tabs in Add/Edit pages (e.g., User employee history).
+
+**Status**: ✅ Clean (SRP-compliant wrapper)
+
+---
 
 ---
 
@@ -257,18 +302,21 @@ GenericAddEditPage
 - `initialData`: Initial form values
 - `isEdit`: Edit mode flag
 - `id`: Record ID
+- `viewOnly`: Permission-based styling flag
 - `isSubmitting`: Loading state
 
-**Usage**: Rendered by `GenericAddEditPage`
+**Usage**: Rendered by `GenericAddEditPage`, `UsersAddEdit`, and `RolesAddEditLine`.
 
 **Status**: ✅ Clean
 
 **Features**:
 - Renders form from `formSchema.sections[].fields[]`
-- Yup validation from field definitions
+- Yup validation from field definitions (supports `mustMatch` for cross-field validation)
 - Auto-focus first field
 - Loads generallist options for select fields
-- Exposes `submitForm()` via ref
+- Supports `onBlur` for better field interaction tracking
+- Standardizes `Required` indicators (asterisks) via metadata
+- Exposes `submitForm()` via standard React 19 `ref` prop (removal of `forwardRef`)
 
 **Schema Example**:
 ```javascript
@@ -1328,16 +1376,28 @@ All form components follow a standard interface:
 
 **Status**: ❌ Uses [DynamicPlaceholder](./06-unused-and-gaps.md#11-dynamicplaceholderjsx) (dead code debugging component)
 
-**Code**:
-```javascript
-import DynamicPlaceholder from '../Components/DynamicPlaceholder';
+**Recommendation**: Should use [GenericGridPage](#21-genericgridpage) instead.
 
-export default function Vendors(props) {
-  return <DynamicPlaceholder {...props} />;
-}
-```
+---
 
-**Recommendation**: Should use [GenericGridPage](#21-genericgridpage) instead, or be removed if the `DataPages` entry for Vendors already routes to `GenericGridPage`.
+### 6.7 UsersAddEdit
+**Location**: `src/Pages/Users/UsersAddEdit.jsx`
+**Responsibility**: Comprehensive user management wizard.
+**Hooks**: `useGetById`, `useHandleSubmit`, `useLayout`, `useFullRouteChain`.
+**Status**: ✅ Clean (Refactored to use [DynamicForm](#24-dynamicform) in Phase 2)
+
+### 6.8 RolesAddEdit
+**Location**: `src/Pages/Roles/RolesAddEdit.jsx`
+**Responsibility**: Role creation and permission mapping.
+**Hooks**: `useGetById`, `useHandleSubmit`.
+**Status**: ✅ Clean (SOLID)
+
+### 6.9 RolesAddEditLine
+**Location**: `src/Pages/Users/RolesAddEditLine.jsx`
+**Responsibility**: Popup modal for assigning roles to specific users.
+**Status**: ✅ Clean (Refactored to use [DynamicForm](#24-dynamicform) in Phase 2)
+
+---
 
 ---
 
@@ -1396,6 +1456,7 @@ export default function Vendors(props) {
 | SOLID violations in components | [05-solid-clean-architecture.md](./05-solid-clean-architecture.md) |
 | Unused/dead components | [06-unused-and-gaps.md](./06-unused-and-gaps.md#1-unused-components) |
 | Refactoring priorities | [07-action-plan.md](./07-action-plan.md) |
+| Security Management Guide | [08-security-management.md](./08-security-management.md) |
 
 ---
 

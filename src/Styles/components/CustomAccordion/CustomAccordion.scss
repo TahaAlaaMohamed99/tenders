@@ -1,0 +1,55 @@
+.Custom_Accordion {
+  @apply bg-transparent w-full mb-0 border-b border-borderColor dark:border-borderColorDark last:border-b-0;
+  
+  svg {
+    @apply w-full h-full;
+  }
+
+  .Accordion_Header {
+    @apply flex justify-between cursor-pointer items-center py-4 px-2 hover:bg-black hover:bg-opacity-5 dark:hover:bg-white dark:hover:bg-opacity-5 transition-colors duration-200;
+    
+    .Header_content {
+      @apply flex gap-3 items-center flex-1;
+      
+      .select_all_checkbox_left {
+        @apply flex items-center;
+      }
+      
+      .icon {
+        @apply w-5 h-5 opacity-80;
+      }
+
+      .title {
+        @apply font-semibold text-base text-titleColor dark:text-titleColorDark;
+      }
+
+      .count_selected {
+         @apply bg-primary text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-auto mr-4 min-w-[20px] shadow-sm;
+         text-align: center;
+      }
+    }
+
+    .header_actions {
+      @apply flex items-center gap-3;
+      
+      .icon_arrow {
+        @apply w-4 h-4 ease-linear duration-200 opacity-60;
+      }
+    }
+  }
+
+  .Accordion_Body {
+    @apply ease-linear duration-200 overflow-hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+  }
+
+  &.active_Accordion {
+    .icon_arrow {
+      @apply rotate-180;
+    }
+  }
+
+  &:hover {
+    @apply border-opacity-30;
+  }
+}

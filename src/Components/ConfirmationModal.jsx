@@ -10,7 +10,7 @@ import "../Styles/Components/ConfirmationModal/Confirmation_Modal.css";
  * 
  * @param {Object} props
  * @param {string} [props.title] - The title of the modal.
- * @param {React.ReactNode} [props.icon] - Optional icon to display in the header or body.
+ * @param {ReactNode} [props.icon] - Optional icon to display in the header or body.
  * @param {string} [props.description] - Main description text.
  * @param {string} [props.type] - Style variant: 'delete', 'primary', 'viweComment', etc.
  * @param {string} [props.confirmButtonLabel] - Label for the primary action button.
@@ -19,7 +19,7 @@ import "../Styles/Components/ConfirmationModal/Confirmation_Modal.css";
  * @param {Function} props.onCancel - Handler for closing/cancelling.
  * @param {string} [props.ResourcePage=""] - Translation namespace.
  * @param {boolean} props.isVisible - Controls visibility.
- * @param {React.ReactNode} [props.children] - Custom content body.
+ * @param {ReactNode} [props.children] - Custom content body.
  * @param {boolean} [props.InfoModal=false] - If true, hides action buttons.
  * @param {boolean} [props.isLoadingBtn=false] - Shows loading state on confirm button.
  * @param {boolean} [props.confirmDisabled=false] - Disables the confirm button.

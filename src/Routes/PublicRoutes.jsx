@@ -8,11 +8,8 @@ export default function PublicRoutes() {
   return (
     <Suspense fallback={<Loading />}>
       <Routes >
-        <Route path="/" index element={<Login />} />
-         <Route
-          path="*"
-          element={<Login />}
-        />
+        <Route path="/" element={<Login />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   );

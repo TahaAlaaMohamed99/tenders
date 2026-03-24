@@ -1,0 +1,134 @@
+.stepper_container {
+  @apply py-4 sm:px-8 px-4 flex;
+  .stepper {
+    @apply flex sm:justify-center justify-start w-full;
+    .step,
+    .tab {
+      @apply flex  items-center;
+      .Content {
+        @apply flex  items-center;
+        .icon {
+          @apply rounded-lg  w-10 h-10  flex items-center justify-center relative after:-z-10  after:content-[''] after:absolute   after:rounded  after:bg-borderColor dark:after:bg-borderColorDark after:inline-block;
+          svg {
+            @apply w-5 h-5;
+          }
+        }
+        .title {
+          @apply text-sm font-medium text-center;
+        }
+      }
+      &.default_step {
+        .icon {
+          @apply bg-white dark:bg-bgWhiteDark text-textColor dark:text-textColorDark;
+        }
+        .title {
+          @apply text-textColor dark:text-textColorDark;
+        }
+      }
+      &.active_step {
+        .icon {
+          @apply bg-white dark:bg-bgWhiteDark after:bg-primary dark:after:bg-primaryDark;
+        }
+        .title,
+        .icon {
+          @apply text-primary dark:text-primaryDark;
+        }
+      }
+      &:first-child {
+        @apply w-auto;
+        justify-content: flex-end !important;
+        .icon {
+          @apply after:content-[];
+        }
+      }
+      &:last-child{
+        justify-content: flex-start !important;
+      }
+    }
+    .tab {
+      @apply p-2.5 min-w-28  cursor-pointer rounded-lg;
+      .Content {
+        .icon {
+          @apply justify-start w-auto me-2 h-auto;
+        }
+      }
+      &.default_tab {
+        @apply bg-bgWhite dark:bg-bgWhiteDark;
+        .icon,
+        .title {
+          @apply text-titleColor p-0 dark:text-titleColorDark;
+        }
+        &.disabled {
+          @apply cursor-auto;
+          .icon,
+          .title {
+            @apply text-textColor p-0 dark:text-textColorDark;
+          }
+        }
+      }
+      &.active_tab {
+        @apply bg-primary  dark:bg-primaryDark;
+        .icon,
+        .title {
+          @apply bg-transparent dark:bg-transparent text-bgColor;
+        }
+      }
+    }
+  }
+  &.stepper_container_horizontal {
+    @apply flex-col;
+    .stepper {
+      @apply items-center;
+      .step {
+        @apply flex-row-reverse justify-center w-auto min-w-36 max-w-56;
+        .Content {
+          @apply flex-col;
+          .icon {
+            @apply after:end-9 after:h-[.175rem] after:w-48;
+          }
+          .title {
+            @apply mt-2;
+          }
+        }
+      }
+      .tab {
+        @apply sm:w-auto min-w-max md:ms-6 ms-4 first:ms-0;
+      }
+    }
+    .step_content {
+      @apply md:mt-6 mt-3 ;
+    }
+  }
+  &.stepper_container_vertical {
+    @apply w-3/12 p-0;
+    .stepes_container {
+      @apply justify-start w-full;
+    }
+    .stepper {
+      @apply items-start flex-col gap-6;
+      .step {
+        .Content {
+          @apply justify-center;
+          .icon {
+            @apply after:-top-2 after:h-[.0938rem] after:w-12 after:rotate-90;
+          }
+          .title {
+            @apply ms-2;
+          }
+        }
+      }
+      .tab {
+        @apply w-full m-0;
+      }
+    }
+    .step_content {
+      @apply w-10/12 ms-8;
+    }
+  }
+  .stepes_container {
+    @apply overflow-hidden overflow-x-auto  flex items-center  justify-center  w-full;
+    .stepper {
+      @apply w-[inherit] sm:pb-0 pb-2;
+    }
+  }
+}

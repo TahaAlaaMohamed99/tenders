@@ -83,7 +83,7 @@ export default function VendorsAddEdit() {
   /**
    * Reference to Formik instance
    * Used to trigger form submission from HeaderPageAddEdit
-   * @type {React.RefObject<import('formik').FormikProps>}
+   * @type {RefObject<import('formik').FormikProps>}
    */
   const formikRef = useRef(null);
 

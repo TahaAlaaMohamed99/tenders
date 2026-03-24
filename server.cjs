@@ -76,38 +76,85 @@ server.post('/api/Authentication/Login', (req, res) => {
 
 // Permission Mock - Returns all system permissions
 // This is called after login to populate permissionsSystem in localStorage.
-// Config.isAllow() builds names as: keyModule:subModule?:keyPage:action
 server.get('/api/Permission/GetAllPermissions', (req, res) => {
-  const actions = ['View', 'Add', 'Modify', 'Delete'];
-  const pages = [
-    // keyModule, subModule (null if none), keyPage
-    ['Dashboard', null, 'Dashboard'],
-    ['Journal', null, 'Journal'],
-    ['Journal', 'Transaction', 'SubmissionDocuments'],
-    ['Reports', null, 'Reports'],
-    ['Setup', null, 'Setup'],
-    ['Setup', null, 'VendorGroups'],
-    ['Setup', null, 'Currencies'],
-    ['Setup', null, 'Items'],
-    ['Setup', null, 'Departments'],
-    ['Setup', null, 'Vendors'],
-    ['Settings', null, 'Settings'],
+  const permissions = [
+    { "recId": 1, "name": "Setup:Vendor:View", "granted": true },
+    { "recId": 2, "name": "Setup:Vendor:Modify", "granted": true },
+    { "recId": 3, "name": "Setup:Vendor:Delete", "granted": true },
+    { "recId": 4, "name": "Setup:VendorGroup:View", "granted": true },
+    { "recId": 5, "name": "Setup:VendorGroup:Modify", "granted": true },
+    { "recId": 6, "name": "Setup:VendorGroup:Delete", "granted": true },
+    { "recId": 7, "name": "Setup:Item:View", "granted": true },
+    { "recId": 8, "name": "Setup:Item:Modify", "granted": true },
+    { "recId": 9, "name": "Setup:Item:Delete", "granted": true },
+    { "recId": 10, "name": "Setup:Department:View", "granted": true },
+    { "recId": 11, "name": "Setup:Department:Modify", "granted": true },
+    { "recId": 12, "name": "Setup:Department:Delete", "granted": true },
+    { "recId": 13, "name": "Setup:SerialNumber:View", "granted": true },
+    { "recId": 14, "name": "Setup:SerialNumber:Modify", "granted": true },
+    { "recId": 15, "name": "Setup:SerialNumber:Delete", "granted": true },
+    { "recId": 16, "name": "Setup:Currinces:View", "granted": true },
+    { "recId": 17, "name": "Setup:Currinces:Modify", "granted": true },
+    { "recId": 18, "name": "Setup:Currinces:Delete", "granted": true },
+    { "recId": 19, "name": "Setup:AdvertisingMethods:View", "granted": true },
+    { "recId": 20, "name": "Setup:AdvertisingMethods:Modify", "granted": true },
+    { "recId": 21, "name": "Setup:AdvertisingMethods:Delete", "granted": true },
+    { "recId": 22, "name": "Setup:RequiredDocuments:View", "granted": true },
+    { "recId": 23, "name": "Setup:RequiredDocuments:Modify", "granted": true },
+    { "recId": 24, "name": "Setup:RequiredDocuments:Delete", "granted": true },
+    { "recId": 25, "name": "Setup:TermsandSpecificationsBooklet:View", "granted": true },
+    { "recId": 26, "name": "Setup:TermsandSpecificationsBooklet:Modify", "granted": true },
+    { "recId": 27, "name": "Setup:TermsandSpecificationsBooklet:Delete", "granted": true },
+    { "recId": 28, "name": "Journal:SubmissionDocument:View", "granted": true },
+    { "recId": 29, "name": "Journal:SubmissionDocument:Modify", "granted": true },
+    { "recId": 30, "name": "Journal:SubmissionDocument:Delete", "granted": true },
+    { "recId": 31, "name": "Journal:SubmissionDocument:MassPost", "granted": true },
+    { "recId": 32, "name": "Journal:SubmissionDocument:MassUnPost", "granted": true },
+    { "recId": 33, "name": "Journal:SubmissionDocument:Post", "granted": true },
+    { "recId": 34, "name": "Journal:SubmissionDocument:UnPost", "granted": true },
+    { "recId": 35, "name": "Role:View", "granted": true },
+    { "recId": 36, "name": "Role:Modify", "granted": true },
+    { "recId": 37, "name": "Role:Delete", "granted": true },
+    { "recId": 38, "name": "Role:AssignPermissions", "granted": true },
+    { "recId": 39, "name": "Role:AssignToUser", "granted": true },
+    { "recId": 40, "name": "Role:RemoveUserRoles", "granted": true },
+    { "recId": 41, "name": "User:View", "granted": true },
+    { "recId": 42, "name": "User:Modify", "granted": true },
+    { "recId": 43, "name": "User:Delete", "granted": true },
+    { "recId": 44, "name": "User:UserSetDefaultPermissions", "granted": true },
+    { "recId": 45, "name": "User:AssignPermissionToUser", "granted": true },
+    { "recId": 46, "name": "Permissions:View", "granted": true },
+    { "recId": 47, "name": "TranslationFile:View", "granted": true },
+    { "recId": 48, "name": "TranslationFile:Modify", "granted": true },
+    { "recId": 49, "name": "TranslationFile:Delete", "granted": true },
+    { "recId": 50, "name": "TranslationFile:Upload", "granted": true },
+    { "recId": 51, "name": "AuditLog:View", "granted": true },
+    { "recId": 52, "name": "AuditLog:Delete", "granted": true },
+    { "recId": 53, "name": "WorkFlow:View", "granted": true },
+    { "recId": 54, "name": "WorkFlow:Modify", "granted": true },
+    { "recId": 55, "name": "WorkFlow:Delete", "granted": true },
+    { "recId": 56, "name": "WorkFlowTransaction:View", "granted": true },
+    { "recId": 57, "name": "WorkFlowTransaction:Modify", "granted": true },
+    { "recId": 58, "name": "WorkFlowTransaction:Delete", "granted": true }
   ];
-
-  let recId = 1;
-  const permissions = [];
-  for (const [keyModule, subModule, keyPage] of pages) {
-    for (const action of actions) {
-      const name = subModule
-        ? `${keyModule}:${subModule}:${keyPage}:${action}`
-        : `${keyModule}:${keyPage}:${action}`;
-      permissions.push({ recId: recId++, name });
-    }
-  }
 
   console.log(`[MockServer] Returning ${permissions.length} permissions`);
   res.json(permissions);
 });
+
+// Set default permissions mock
+server.post('/api/User/SetDefaultPermissions', (req, res) => {
+  const userId = req.query.userId;
+  console.log(`[MockServer] Setting default permissions for user: ${userId}`);
+  res.status(200).json({ message: "Default permissions set successfully" });
+});
+
+server.delete('/api/User/RemoveUserRoles', (req, res) => {
+  const { userId, roleIds } = req.body;
+  console.log(`[MockServer] Removing roles ${roleIds} from user ${userId}`);
+  res.status(200).json({ message: "Roles removed successfully", isError: false });
+});
+
 
 // =========================================================================
 // 2. MIDDLEWARE & REWRITES (RPC -> REST)

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState, Fragment } from "react";
 import { formatDataGrid } from "../../../utils/formatDataGrid";
 import TranslationText from "../../TranslationText";
 import { IconRowActions, IconTreeView } from "../../../assets/Icons";
@@ -15,6 +15,7 @@ export default function MobileGrid() {
     isTree,
     toggleRow,
     currentLanguage,
+    keyId = "recId",
   } = useContext(TendersGridContext);
   const [isOpenBottomSheet, setIsOpenBottomSheet] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -29,7 +30,7 @@ export default function MobileGrid() {
 
   const renderCard = (rows, level = 0) => {
     return rows.map((row, rowIndex) => (
-      <React.Fragment key={rowIndex}>
+      <Fragment key={rowIndex}>
         <div
           className="Card_Grid"
           onClick={() => onClickRow && onClickRow(row)}
@@ -56,12 +57,12 @@ export default function MobileGrid() {
                         type="button"
                         className={
                           "icon_action_row " +
-                          (!!openRows[row.recId] ? "active" : "")
+                          (!!openRows[row[keyId]] ? "active" : "")
                         }
                         onClick={(e) => {
                           if (row.children && row.children.length > 0) {
                             e.stopPropagation();
-                            toggleRow(row.recId, row.children);
+                            toggleRow(row[keyId], row.children);
                           }
                         }}
                       >
@@ -135,10 +136,10 @@ export default function MobileGrid() {
             </button>
           )}
         </div>
-        {openRows[row.recId] &&
+        {openRows[row[keyId]] &&
           row.children &&
           renderCard(row.children, level + 1)}
-      </React.Fragment>
+      </Fragment>
     ));
   };
   return (

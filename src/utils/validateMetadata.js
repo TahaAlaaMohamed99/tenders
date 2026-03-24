@@ -56,7 +56,9 @@ export const validateSidebarLogs = (sidebarLogs) => {
 
     // Required fields
     REQUIRED_SIDEBAR_FIELDS.forEach((field) => {
-      if (!entry[field]) {
+      // Check for null or undefined. Empty string is allowed specifically for routePage.
+      const value = entry[field];
+      if (value === undefined || value === null || (field !== "routePage" && value === "")) {
         error("SidebarLogs", label, `missing required field "${field}"`);
         errors++;
       }

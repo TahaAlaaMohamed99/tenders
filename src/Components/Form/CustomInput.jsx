@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { preventInvalidNumberInput } from "../../utils/validation";
 import TranslationText from "../TranslationText";
 import useTranslationText from "../../Hooks/useTranslationText";
@@ -32,7 +32,7 @@ import { extractInputProps } from "../../utils/filterDOMProps";
  * @param {ref} ref - React ref for the input element.
  * @param {string} labelBgColor - Custom background color for the label (e.g., "bg-white", "bg-gray-50"). Defaults to bgWhite/bgWhiteDark.
  */
-const CustomInput = React.forwardRef(({
+const CustomInput = ({
   // Component-specific props (NOT passed to <input>)
   label,
   touched,
@@ -45,9 +45,10 @@ const CustomInput = React.forwardRef(({
   labelBgColor = "bg-bgColor dark:bg-bgColorDark",
   forceLightMode = false,
   isSmall = false,
+  ref,
   // All other props (may include both DOM-safe and custom props)
   ...allProps
-}, ref) => {
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
@@ -195,6 +196,6 @@ const CustomInput = React.forwardRef(({
       )}
     </div>
   );
-});
+};
 
 export default CustomInput;

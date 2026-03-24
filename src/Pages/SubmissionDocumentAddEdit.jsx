@@ -280,8 +280,9 @@ const SubmissionDocumentAddEdit = ({ DataPage, ResourcePage, ConfigPage, ...prop
                                 setRecIdLine(row ? row.recId : 0);
                             }}
                             handleDelete={!isReadOnly ? handleDeleteLines : null}
-                            setselectesRowInsert={setSelectedLines}
+                            setSelectedRows={setSelectedLines}
                             isReadOnly={isReadOnly}
+                            ConfigPage={activeConfig}
                         />
                     </div>
 

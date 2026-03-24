@@ -18,11 +18,13 @@
         "routePage": "SubmissionDocuments",
         "showMenu": "mainMenu"
     },
+
     {
         "keyPage": "Reports",
         "keyModule": null,
         "routePage": "Reports",
-        "showMenu": "mainMenu"
+        "showMenu": "mainMenu",
+        "checkPermission": false
     },
     {
         "keyPage": "Setup",
@@ -61,21 +63,27 @@
         "showMenu": "mainMenu"
     },
     {
+        "keyPage": "TermsandSpecificationsBooklet",
+        "keyModule": "Setup",
+        "routePage": "TermsandSpecificationsBooklet",
+        "showMenu": "mainMenu"
+    },
+    {
         "keyPage": "Settings",
         "keyModule": null,
         "routePage": "Settings",
         "showMenu": "settings"
     },
     {
-        "keyPage": "Users",
-        "keyModule": "Settings",
-        "routePage": "Users",
-        "showMenu": "settings"
-    },
-    {
         "keyPage": "Roles",
         "keyModule": "Settings",
         "routePage": "Roles",
+        "showMenu": "settings"
+    },
+    {
+        "keyPage": "Users",
+        "keyModule": "Settings",
+        "routePage": "Users",
         "showMenu": "settings"
     }
 ]
