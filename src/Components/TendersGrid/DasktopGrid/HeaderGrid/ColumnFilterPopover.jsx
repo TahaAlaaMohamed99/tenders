@@ -9,6 +9,7 @@ import CustomeSelect from "../../../Form/CustomSelect";
 import CustomDateRangePicker from "../../../Form/CustomDateRangePicker";
 import useGetLookup from "../../../../Hooks/useGetLookup";
 import useGetGenerallist from "../../../../Hooks/useGetGenerallist";
+import AsyncSelectWrapper from "../../../Form/AsyncSelectWrapper";
 
 /**
  * ColumnFilterPopover
@@ -38,15 +39,21 @@ const ColumnFilterPopover = ({ column, isOpen, onClose, triggerRef }) => {
 
   const [dropdownOptions, setDropdownOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [filterValue, setFilterValue] = useState(valuesFilter?.[column.key] || "");
+  // Use null for async-select columns (AsyncSelectWrapper expects null, not "", for empty state)
+  const [filterValue, setFilterValue] = useState(
+    column.filterLookup
+      ? (valuesFilter?.[column.key] || null)
+      : (valuesFilter?.[column.key] || "")
+  );
 
   const { getLookup } = useGetLookup();
   const { getGenerallist } = useGetGenerallist();
 
   // Sync local filter value with context
   useEffect(() => {
-    setFilterValue(valuesFilter?.[column.key] || "");
-  }, [valuesFilter, column.key]);
+    const raw = valuesFilter?.[column.key];
+    setFilterValue(column.filterLookup ? (raw || null) : (raw || ""));
+  }, [valuesFilter, column.key, column.filterLookup]);
 
   // Fetch options for select-type filters when opened
   useEffect(() => {
@@ -151,7 +158,20 @@ const ColumnFilterPopover = ({ column, isOpen, onClose, triggerRef }) => {
         {/* Filter Section */}
         {column.isFilter !== false && (
           <div className="flex flex-col gap-4 border-gray-100 dark:border-gray-700">
-            {(column.generallist || column.lookupName || column.isFilterSelect) ? (
+            {(column.filterLookup) ? (
+              // Async-select: value is a raw string, onChange returns raw string
+              <AsyncSelectWrapper
+                key={`col_async_${column.key}`}
+                lookup={column.filterLookup}
+                label={column.title}
+                ResourcePage={column?.ResourcePage || ResourcePage}
+                value={filterValue}
+                onChange={(val) => setFilterValue(val || null)}
+                isClearable
+                isSmall
+                labelBgColor="bg-white dark:bg-bgCardDark"
+              />
+            ) : (column.generallist || column.lookupName || column.isFilterSelect) ? (
               <CustomeSelect
                 isMulti={!!column.lookupName}
                 titleGenerallist={!!column.generallist}
@@ -161,6 +181,7 @@ const ColumnFilterPopover = ({ column, isOpen, onClose, triggerRef }) => {
                 onChange={(e) => setFilterValue(e)}
                 isLoading={isLoading}
                 isClearable
+                labelBgColor="bg-white dark:bg-bgCardDark"
                 placeholder={
                   useTranslationText({ page: "Grid", title: "Select", lang: currentLanguage }) +
                   " " +
@@ -179,6 +200,7 @@ const ColumnFilterPopover = ({ column, isOpen, onClose, triggerRef }) => {
               <CustomInput
                 type={column.type === "number" ? "number" : "text"}
                 value={filterValue}
+                autoComplete={column.key}
                 onChange={(e) => setFilterValue(e.target.value)}
                 placeholder={
                   useTranslationText({ page: "Grid", title: "Type", lang: currentLanguage }) +
@@ -186,6 +208,7 @@ const ColumnFilterPopover = ({ column, isOpen, onClose, triggerRef }) => {
                   useTranslationText({ page: column.ResourcePage || ResourcePage || GridKey, title: column.title, lang: currentLanguage })
                 }
                 isSmall
+                labelBgColor="bg-white dark:bg-bgCardDark"
               />
             )}
 

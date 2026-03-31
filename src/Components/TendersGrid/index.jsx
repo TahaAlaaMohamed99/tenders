@@ -164,6 +164,7 @@ function TendersGridInner() {
                 className="form-group_iconSearch w-full [&_input]:h-[34px] [&_input]:min-h-[34px] [&_input]:py-0 [&_input]:px-2 [&_input]:text-[13px] [&_input]:border [&_input]:border-gray-200 dark:[&_input]:border-gray-700 [&_input]:bg-gray-50 dark:[&_input]:bg-gray-800 [&_input]:focus:bg-white dark:[&_input]:focus:bg-gray-900 [&_input]:transition-colors"
                 placeholder="Search"
                 lang={currentLanguage}
+                autoComplete="on"
                 icon={<IconSearch className="w-3.5 h-3.5 text-gray-400" />}
                 onChange={(e) => handleSearch(e.target.value)}
               />

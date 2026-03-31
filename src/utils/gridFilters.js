@@ -91,3 +91,67 @@ export const applyGridFilters = (data, filters, fields) => {
     })
   );
 };
+
+/**
+ * Maps frontend filter state values (including objects, arrays, and date ranges)
+ * into the array format required by the backend `POST /FilterData` endpoint.
+ *
+ * @param {Object} filters - Frontend filter states
+ * @returns {Array} - Array of objects formatted for backend: { field, operator, value, valueTo }
+ */
+export const mapFiltersToBackend = (filters) => {
+  if (!filters) return [];
+
+  return Object.keys(filters).reduce((acc, key) => {
+    let val = filters[key];
+    if (val === "" || val == null) return acc;
+
+    // 1. Date range { start, end }
+    if (typeof val === 'object' && !Array.isArray(val) && (val.start || val.end)) {
+      acc.push({
+        field: key,
+        operator: 0,
+        value: val.start ? String(val.start) : null,
+        valueTo: val.end ? String(val.end) : null
+      });
+      return acc;
+    }
+
+    // 2. Multi-select lookup (Array of objects/values)
+    if (Array.isArray(val)) {
+      if (val.length === 0) return acc;
+      // Many backends handle array values via IN operator or by repeating the filter.
+      // Assuming a comma-separated string for multi-values or operator mapping. 
+      // If the backend accepts a single string:
+      const extractedValues = val.map(item => item?.value !== undefined ? String(item.value) : String(item));
+      acc.push({
+        field: key,
+        operator: 0, // Ensure the backend handles `operator: 0` for comma-separated strings if multiple 
+        value: extractedValues.join(","),
+        valueTo: null
+      });
+      return acc;
+    }
+
+    // 3. Single select lookup ({ value, label })
+    if (typeof val === 'object' && val.value !== undefined) {
+      acc.push({
+        field: key,
+        operator: 0,
+        value: String(val.value),
+        valueTo: null
+      });
+      return acc;
+    }
+
+    // 4. Default: String/Number/Primitive
+    acc.push({
+      field: key,
+      operator: 0,
+      value: String(val),
+      valueTo: null
+    });
+
+    return acc;
+  }, []);
+};

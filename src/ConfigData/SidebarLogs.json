@@ -2,7 +2,7 @@
     {
         "keyPage": "Dashboard",
         "keyModule": null,
-        "routePage": "",
+        "routePage": "/",
         "showMenu": "mainMenu",
         "checkPermission": false
     },

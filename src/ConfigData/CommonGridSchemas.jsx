@@ -45,14 +45,25 @@ export const CommonColumns = {
         title: "dataAreaId",
         width: 150,
         maxWidth: 200,
-        isFilter: true
+        isFilter: true,
+        // Used by ColumnFilterPopover to render an async-select instead of plain text
+        filterLookup: {
+            api: "Vendors/GetdataArea",
+            labelKey: "name",
+            valueKey: "legalEntityId"
+        }
     },
     CurrencyCode: {
         key: "currencyCode",
         title: "currencyCode",
         width: 130,
         maxWidth: 160,
-        isFilter: true
+        isFilter: true,
+        filterLookup: {
+            api: "Currencies/GetLookup",
+            labelKey: "name",
+            valueKey: "currencyCode"
+        }
     },
 
     // -- Item / Inventory --

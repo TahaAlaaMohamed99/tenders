@@ -11,21 +11,19 @@
  * 3. Set useMockServer to true below, or use localStorage
  */
 
-import { getLocalStorageAtob } from "../utils/localStorage";
-
 // Set to true to use JSON server mock, false for production API
 const USE_MOCK_SERVER = localStorage.getItem('USE_MOCK_SERVER') === 'true';
 
 export const getApiBaseUrl = () => {
   if (USE_MOCK_SERVER) {
-    return 'http://localhost:3001/api/';
+    return 'http://localhost:3001';
   }
   
   // Fallback to stored configuration
   try {
-    const config = getLocalStorageAtob('Configuration', {});
+    const config = JSON.parse(atob(localStorage.getItem('Configuration') || ''));
     return config?.urlApi || 'http://localhost:5000';
-  } catch {
+  } catch (e) {
     return 'http://localhost:5000';
   }
 };

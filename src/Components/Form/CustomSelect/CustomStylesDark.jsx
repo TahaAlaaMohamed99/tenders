@@ -71,6 +71,11 @@ const CustomStyles = (errors, touched, isFocused) => ({
       border:"0.03125rem solid #3a3c3d",
       padding:"0.25rem",
       fontSize: "0.875rem",
+      zIndex: 9999999, // Must be above ActionModal (999999)
+    }),
+    menuPortal: (provided) => ({
+      ...provided,
+      zIndex: 9999999, // Must be above ActionModal (999999)
     }),
     singleValue: (provided) => ({
       ...provided,

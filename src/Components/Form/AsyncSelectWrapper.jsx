@@ -118,6 +118,8 @@ const AsyncSelectWrapper = ({ lookup, gridWidth, validation, value, onChange, re
             ResourcePage={props.ResourcePage || lookup?.ResourcePage}
             value={selectedValue}
             onChange={handleChange}
+            menuPortalTarget={document.body}
+            menuPosition="fixed"
         />
     );
 };

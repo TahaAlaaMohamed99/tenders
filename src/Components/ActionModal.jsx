@@ -65,48 +65,69 @@ export default function ActionModal({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen, onClose, triggerRef]);
 
-  // --- 3. Calculate Position for Dropdown/Sidebar ---
+  // --- 3. Calculate Position for Dropdown/Sidebar (viewport-aware) ---
   useLayoutEffect(() => {
-    if (isOpen && mode === "dropdown" && triggerRef?.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      const isRTL = document.documentElement.dir === "rtl";
+    if (!isOpen || mode !== "dropdown" || !triggerRef?.current) return;
 
-      const style = {
-        position: "fixed",
-        top: rect.bottom - 5.5, // Shift up slightly to overlap
-        zIndex: 999999,
-      };
+    const rect = triggerRef.current.getBoundingClientRect();
+    const isRTL = document.documentElement.dir === "rtl";
+    const MODAL_WIDTH  = 288; // w-72 = 18rem = 288px
+    const MODAL_HEIGHT = 380; // conservative estimate for dropdown height
+    const PADDING      = 8;   // min gap from viewport edges
 
-      // Helper: Align Left Edge
-      const alignLeft = () => {
-        style.left = rect.left;
+    const style = {
+      position: "fixed",
+      zIndex: 999999,
+    };
+
+    // ── Vertical: prefer below, flip above if no room ──────────────────────
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const spaceAbove = rect.top;
+
+    if (spaceBelow >= MODAL_HEIGHT || spaceBelow >= spaceAbove) {
+      // Place below trigger
+      style.top = rect.bottom - 5.5;
+    } else {
+      // Flip above trigger
+      style.top = "auto";
+      style.bottom = window.innerHeight - rect.top + 5.5;
+    }
+
+    // ── Horizontal: respect position prop, flip if overflow ───────────────
+    const wantsRight =
+      position === "bottom-end" && !isRTL ||
+      position === "bottom-right" ||
+      (position === "bottom-start" && isRTL);
+
+    if (wantsRight) {
+      // Align right edge of modal with right edge of trigger
+      const rightAnchor = window.innerWidth - rect.right;
+      if (rect.right - MODAL_WIDTH - PADDING >= 0) {
+        // Enough space to the left → align right
+        style.left = "auto";
+        style.right = rightAnchor;
+      } else {
+        // Not enough room → flip: align left edge with trigger left
+        style.left = Math.max(PADDING, rect.left);
         style.right = "auto";
-      };
-
-      // Helper: Align Right Edge
-      const alignRight = () => {
+      }
+    } else {
+      // Align left edge of modal with left edge of trigger
+      const leftAnchor = rect.left;
+      if (leftAnchor + MODAL_WIDTH + PADDING <= window.innerWidth) {
+        // Enough space to the right → align left
+        style.left = Math.max(PADDING, leftAnchor);
+        style.right = "auto";
+      } else {
+        // Not enough room → flip: align right edge with trigger right
         style.left = "auto";
         style.right = window.innerWidth - rect.right;
-      };
-
-      // Logic Position Handling
-      if (position === "bottom-end") {
-        // End = Right in LTR, Left in RTL
-        isRTL ? alignLeft() : alignRight();
-      } else if (position === "bottom-start") {
-        // Start = Left in LTR, Right in RTL
-        isRTL ? alignRight() : alignLeft();
       }
-      // Legacy Physical Positions
-      else if (position === "bottom-right") {
-        alignRight();
-      } else if (position === "bottom-left") {
-        alignLeft();
-      }
-
-      setCoords(style);
     }
+
+    setCoords(style);
   }, [isOpen, mode, triggerRef, position]);
+
 
   if (!isOpen) return null;
 

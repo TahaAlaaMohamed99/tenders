@@ -1,17 +1,105 @@
 /**
- * @fileoverview Filter Schemas — PLACEHOLDER (Phase 6)
+ * @fileoverview Filter Schemas
  *
- * Defines the "Advanced Side Filter" configuration.
- * These filters appear in a side popup or drawer, allowing complex queries.
- * Currently empty — placeholder for future implementation.
+ * Defines the "Advanced Filter Drawer" field configurations.
  *
- * @see docs/06-unused-and-gaps.md#31-filterschemasjsx
+ * Design note:
+ * - Only define fields here that need SPECIAL handling (async-select, dependent lookups, generallist).
+ * - FilterGrid.jsx will automatically render these MERGED with the page's standard column-based inputs.
+ * - Standard text/date inputs are rendered automatically by FilterGrid using the column definitions.
+ *
  * @module ConfigData/FilterSchemas
  */
 
-// Phase 6: Kept as empty export to avoid breaking spread in DataPages.jsx
-// When implementing, add filter definitions like:
-// filters: [{ field: "status", type: "multi-select", label: "Status", generallist: "WorkflowStatus" }]
+// ─── Vendors ────────────────────────────────────────────────────────────────
 export const VendorsFilter = {
-    filters: []
+    // Map: column key → override field definition
+    // Keys listed here will override the auto-generated filter input for that column
+    overrides: {
+        dataAreaId: {
+            name: "dataAreaId",
+            label: "dataAreaId",
+            type: "async-select",
+            placeholder: "selectDataArea",
+            lookup: {
+                api: "Vendors/GetdataArea",
+                labelKey: "name",
+                valueKey: "legalEntityId"
+            }
+        },
+        vendorGroupId: {
+            name: "vendorGroupId",
+            label: "vendorGroupId",
+            type: "async-select",
+            placeholder: "selectVendorGroup",
+            lookup: {
+                api: "VendorGroups/GetLookup",
+                labelKey: "vendorGroupId",
+                valueKey: "vendorGroupId"
+            },
+            dependsOn: "dataAreaId",
+            filterOptionsBy: (options, values) => {
+                if (!values?.dataAreaId) return options;
+                return options.filter(
+                    (opt) => opt.dataAreaId?.toLowerCase() === values.dataAreaId?.toLowerCase()
+                );
+            },
+            isDisabled: (values) => !values?.dataAreaId
+        },
+        currencyCode: {
+            name: "currencyCode",
+            label: "currencyCode",
+            type: "async-select",
+            placeholder: "selectCurrency",
+            lookup: {
+                api: "Currencies/GetLookup",
+                labelKey: "name",
+                valueKey: "currencyCode"
+            }
+        },
+        vendorPartyType: {
+            name: "vendorPartyType",
+            label: "vendorPartyType",
+            type: "select",
+            placeholder: "selectPartyType",
+            generallist: "VendorPartyType"
+        }
+    }
 };
+
+// ─── Vendor Groups ───────────────────────────────────────────────────────────
+export const VendorGroupsFilter = {
+    overrides: {
+        dataAreaId: {
+            name: "dataAreaId",
+            label: "dataAreaId",
+            type: "async-select",
+            placeholder: "selectDataArea",
+            lookup: {
+                api: "Vendors/GetdataArea",
+                labelKey: "name",
+                valueKey: "legalEntityId"
+            }
+        },
+        vendorGroupId: {
+            name: "vendorGroupId",
+            label: "vendorGroupId",
+            type: "async-select",
+            placeholder: "selectVendorGroup",
+            lookup: {
+                api: "VendorGroups/GetLookup",
+                labelKey: "vendorGroupId",
+                valueKey: "vendorGroupId"
+            },
+            dependsOn: "dataAreaId",
+            filterOptionsBy: (options, values) => {
+                if (!values?.dataAreaId) return options;
+                return options.filter(
+                    (opt) => opt.dataAreaId?.toLowerCase() === values.dataAreaId?.toLowerCase()
+                );
+            },
+            isDisabled: (values) => !values?.dataAreaId
+        }
+    }
+};
+

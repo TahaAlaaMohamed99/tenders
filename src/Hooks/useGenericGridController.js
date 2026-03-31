@@ -29,6 +29,7 @@ const useGenericGridController = ({
     const [pageSize, setPageSize] = useState(DataPage.defaultPageSize || 20);
     const [selectedRows, setSelectedRows] = useState([]);
     const [showModalDelete, setShowModalDelete] = useState(false);
+    const [filters, setFilters] = useState(null); // Added state for backend filters
 
     // -- Data Fetching --
     const { totalRow, fetchGridData } = useGridData(api, setDataGrid, setIsLoading, isGetAll);
@@ -43,14 +44,16 @@ const useGenericGridController = ({
             prevApiRef.current = api;
             setDataGrid([]);
             setPageNumber(1);
+            setFilters(null);
             setIsLoading(true);
         }
     }, [api]);
 
     // Fetch effect
     useEffect(() => {
-        fetchGridData(PageNumber, pageSize);
-    }, [PageNumber, pageSize, refreshKey, api, fetchGridData]);
+        // Now passing filters to fetchGridData
+        fetchGridData(PageNumber, pageSize, filters);
+    }, [PageNumber, pageSize, refreshKey, api, filters, fetchGridData]);
 
     // -- Handlers --
     const handlePageChange = useCallback((newPage) => {
@@ -60,6 +63,11 @@ const useGenericGridController = ({
     const handlePageSize = useCallback((_, newSize) => {
         setPageSize(newSize);
         setPageNumber(1);
+    }, []);
+
+    const handleFilterChange = useCallback((newFilters) => {
+        setFilters(newFilters);
+        setPageNumber(1); // Reset to first page when filtering
     }, []);
 
     const handleDelete = useCallback(() => {
@@ -72,7 +80,7 @@ const useGenericGridController = ({
             ids: selectedRows.map(row => row[DataPage.keyId || 'id']),
             resourcePage: ResourcePage,
             onSuccess: () => {
-                fetchGridData(PageNumber, pageSize);
+                fetchGridData(PageNumber, pageSize, filters);
                 setSelectedRows([]);
                 setShowModalDelete(false);
             }
@@ -92,6 +100,7 @@ const useGenericGridController = ({
         pageSize,
         selectedRows,
         showModalDelete,
+        filters,
         
         // State Setters
         setIsLoading,
@@ -100,10 +109,12 @@ const useGenericGridController = ({
         setPageSize,
         setSelectedRows,
         setShowModalDelete,
+        setFilters,
 
         // Actions
         handlePageChange,
         handlePageSize,
+        handleFilterChange,
         handleDelete,
         confirmDelete,
         cancelDelete,
