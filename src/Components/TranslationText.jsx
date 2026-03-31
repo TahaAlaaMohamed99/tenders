@@ -25,9 +25,12 @@ import useTranslationText from "../Hooks/useTranslationText";
  * // General translation
  * <TranslationText title="cancel" />
  */
-export default function TranslationText({ title, page, enumName }) {
+export default function TranslationText({ title, page, ResourcePage, enumName }) {
   // Get current language from Redux store
   const currentLanguage = useSelector((state) => state.themeSlice.currentLanguage);
+
+  // Support both 'page' and 'ResourcePage' for consistency across the codebase
+  const activePage = page || ResourcePage;
 
   // Guard: if title is not a string (e.g. an error object was passed), coerce it
   // to prevent "Objects are not valid as a React child" crash.
@@ -36,7 +39,7 @@ export default function TranslationText({ title, page, enumName }) {
     : title?.title || title?.message || String(title ?? "");
 
   // Use translation hook with current language
-  const translatedText = useTranslationText({ title: safeTitle, lang: currentLanguage, page, enumName });
+  const translatedText = useTranslationText({ title: safeTitle, lang: currentLanguage, page: activePage, enumName });
   
   return translatedText;
 }

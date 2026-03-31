@@ -1,6 +1,6 @@
 # Action Plan & Recommendations
 
-> **Last Updated**: 2026-02-08  
+> **Last Updated**: 2026-03-15  
 > **Related Docs**: [Architecture](./00-architecture-overview.md) | [Components](./01-components.md) | [Hooks](./02-hooks.md) | [Metadata](./03-metadata-driven-ui.md) | [Configuration](./04-configuration.md) | [SOLID](./05-solid-clean-architecture.md) | [Unused Code](./06-unused-and-gaps.md)
 
 ## Overview
@@ -23,11 +23,8 @@ This document provides a prioritized, actionable TODO list for improving the cod
 5. ✅ Runtime configuration for deployment flexibility
 
 **Critical Issues**:
-1. ❌ `HeaderPageAddEdit.jsx` (888 lines, 10+ responsibilities)
-2. ❌ Multiple runtime bugs (hook method mismatches)
-3. ❌ Large components violate SRP (`Sidebar`, `TendersGridContext`)
-4. ❌ ISP violations (TendersGridContext exports 50+ values)
-5. ❌ ~300 lines of dead code
+1. ❌ ISP violations (TendersGridContext exports 50+ values)
+2. ❌ ~200 lines of dead code remaining
 
 **Biggest Risk**: `HeaderPageAddEdit.jsx` is a single point of failure. Any change risks breaking multiple features.
 
@@ -665,6 +662,26 @@ if (!Component) {
 - ✅ **P3 #17**: Created `public/README.md` — `Ip_config.json` deployment guide with env-specific examples
 - ✅ **P3 #15**: Created `src/utils/cellFormatters.js` — formatter registry for OCP in `formatDataGrid.jsx`
 - ✅ **P3 #18**: Created `src/utils/validateMetadata.js` — runtime metadata validation (dev-only, zero production cost). Integrated into `main.jsx` with dynamic imports.
+
+**Phase 8 Progress (2026-03-08)**:
+- ✅ **New Components**: Integrated `UsersAddEdit`, `RolesAddEdit`, and `RolesAddEditLine`.
+- ✅ **SOLID Fix**: Refactored `PermissionsLog` (840 → 250 lines) by extracting logic to `usePermissionSelection.jsx`.
+- ✅ **UI Utility**: Implemented missing `SaveAndCancelChanges.jsx` component.
+- ✅ **Fixes**: Standardized icon imports and corrected all broken relative paths.
+- ✅ **Metadata**: Linked Users and Roles pages in `DataPages.jsx`.
+- ✅ **Docs**: Updated Architecture Overview, Component Catalog, SOLID Audit, and Hooks Analysis.
+
+**Phase 9 Progress (2026-03-08)**:
+- ✅ **API Integration**: Fully integrated `UsersAddEdit` and `RolesAddEdit` with backend routes, including Role assignment/removal UI.
+- ✅ **Stepper Standardization**: Standardized all administrative steppers to the "Data-Driven" pattern (explict unmounting).
+- ✅ **UI Improvements**: Added `code` and `granted` fields to Role and User forms.
+- ✅ **Permissions Alignment**: Aligned `PermissionsLog` with the correct `/api/User/` endpoints.
+- ✅ **Documentation**: Formally documented the "Data-Driven Stepper" pattern in Architectural Docs.
+
+**Phase 10 Progress (2026-03-15)**:
+- ✅ **API Fix**: Resolved malformed URL construction in `useGridData.jsx` when handling query parameters.
+- ✅ **SOLID Refactor**: Refactored `UsersAddEdit` (Step 0) and `RolesAddEditLine` to use `DynamicForm`, achieving significant reduction in UI code complexity.
+- ✅ **Doc Refresh**: Performed a comprehensive update of all architectural and management documents (`01`-`08`) to match the latest codebase.
 
 ---
 

@@ -201,7 +201,14 @@ export const TendersGridProvider = ({ children, ...props }) => {
     } else {
       setGetData(props.data || []);
     }
-  }, [props.data, valuesFilter, props.onFilterChange]);
+    
+    // Reset selection on data change or refresh
+    setSelectedRows([]);
+    setIsSelectedAll(false);
+    if (props.setSelectedRows) {
+      props.setSelectedRows([]);
+    }
+  }, [props.data, valuesFilter, props.refreshKey, props.onFilterChange]);
 
   const handleColumnSettingsChange = useCallback((updatedColumns) => {
     const fixed = updatedColumns.filter((col) => col?.fixed);
@@ -257,22 +264,31 @@ export const TendersGridProvider = ({ children, ...props }) => {
   }, [getData]);
 
   const handleRowSelect = useCallback((row) => {
+    const idKey = props.keyId || "recId";
+    
     setSelectedRows((prev) => {
-      const isSelected = prev.includes(row);
+      const isSelected = prev.some(r => r[idKey] === row[idKey]);
+      
+      // If there is only one row in the grid and we are unchecking it,
+      // also uncheck the "Select All" header.
+      if (isSelected && allRows.length === 1) {
+        setIsSelectedAll(false);
+      }
+
       return isSelected
-        ? prev.filter((selectedRow) => selectedRow !== row)
+        ? prev.filter((selectedRow) => selectedRow[idKey] !== row[idKey])
         : [...prev, row];
     });
 
-    if (props.setselectesRowInsert) {
-      props.setselectesRowInsert((prev) => {
-        const isSelected = prev.includes(row);
+    if (props.setSelectedRows) {
+      props.setSelectedRows((prev) => {
+        const isSelected = prev.some(r => r[idKey] === row[idKey]);
         return isSelected
-          ? prev.filter((selectedRow) => selectedRow !== row)
+          ? prev.filter((selectedRow) => selectedRow[idKey] !== row[idKey])
           : [...prev, row];
       });
     }
-  }, [props.setselectesRowInsert]);
+  }, [props.keyId, props.setSelectedRows, allRows.length]);
   const handleSelectAll = useCallback((maxSelected) => {
     const selectRows = (rows, limit) => {
       const result = [];
@@ -289,18 +305,17 @@ export const TendersGridProvider = ({ children, ...props }) => {
       return result;
     };
 
-    // Count only selectable rows for "all selected" check
     const selectableRows = allRows;
-    const isAllSelected = selectedRows.length === selectableRows.length && selectableRows.length > 0;
-    const newSelection = isAllSelected ? [] : selectRows(getData, maxSelected);
+    const isCurrentlyAllSelected = isSelectedAll; // Use state instead of calculating
+    const newSelection = isCurrentlyAllSelected ? [] : selectRows(getData, maxSelected);
 
     setSelectedRows(newSelection);
-    setIsSelectedAll(!isAllSelected);
+    setIsSelectedAll(!isCurrentlyAllSelected);
 
-    if (props.setselectesRowInsert) {
-      props.setselectesRowInsert(newSelection);
+    if (props.setSelectedRows) {
+      props.setSelectedRows(newSelection);
     }
-  }, [getData, allRows, selectedRows.length, props.setselectesRowInsert]);
+  }, [getData, allRows, selectedRows.length, props.setSelectedRows]);
 
 
   const searchTimeoutRef = useRef(null);
@@ -484,14 +499,16 @@ export const TendersGridProvider = ({ children, ...props }) => {
 
       const isOpen = !!prev[rowId];
       const newState = { ...prev };
+      const idKey = props.keyId || "recId";
 
       if (isOpen) {
         delete newState[rowId];
 
         const closeChildren = (childrenList) => {
           childrenList?.forEach((child) => {
-            if (child?.recId) {
-              delete newState[child.recId];
+            const childId = child[idKey];
+            if (childId) {
+              delete newState[childId];
             }
             if (child?.children) {
               closeChildren(child.children);
@@ -505,11 +522,12 @@ export const TendersGridProvider = ({ children, ...props }) => {
 
       return newState;
     });
-  }, []);
+  }, [props.keyId]);
 
   const toggleAllRows = useCallback(() => {
+    const idKey = props.keyId || "recId";
     setOpenRows((prev) => {
-      const allRowIds = getData.map((row) => row.recId);
+      const allRowIds = getData.map((row) => row[idKey]);
       const allOpen = allRowIds.every((rowId) => !!prev[rowId]);
 
       if (allOpen) {
@@ -520,7 +538,8 @@ export const TendersGridProvider = ({ children, ...props }) => {
       const newState = {};
       const openAllChildren = (rows) => {
         rows?.forEach((row) => {
-          newState[row.recId] = true;
+          const rowId = row[idKey];
+          if (rowId) newState[rowId] = true;
           if (row.children) {
             openAllChildren(row.children);
           }
@@ -531,7 +550,7 @@ export const TendersGridProvider = ({ children, ...props }) => {
       setIsOpenAll(true);
       return newState;
     });
-  }, [getData]);
+  }, [getData, props.keyId]);
 
   useEffect(() => {
     return () => {

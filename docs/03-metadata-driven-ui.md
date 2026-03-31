@@ -1,6 +1,6 @@
 # Metadata-Driven UI Architecture
 
-> **Last Updated**: 2026-02-08  
+> **Last Updated**: 2026-03-15  
 > **Related Docs**: [Architecture](./00-architecture-overview.md#1-metadata-driven-architecture) | [Components](./01-components.md) | [Hooks](./02-hooks.md) | [Configuration](./04-configuration.md) | [Unused Metadata](./06-unused-and-gaps.md#3-unused-config-entries)
 
 ## Overview
@@ -14,7 +14,7 @@ This application uses a **metadata-driven architecture** where UI structure is d
 | 1 | [`SidebarLogs.json`](#1-sidebarlogsjson--page-registry) | 68 | Page registry, routes, menus | ✅ Active | DynamicRouter, Sidebar |
 | 2 | [`DataPages.jsx`](#2-datapagesjsx--page-configuration) | 154 | Page → API/schema/component mapping | ✅ Active | Router, GenericGridPage |
 | 3 | [`GridSchemas.jsx`](#3-gridschemasjsx--column-definitions) | 354 | Grid column definitions | ✅ Active | TendersGrid |
-| 4 | [`FormSchemas.jsx`](#4-formschemasjsx--form-field-definitions) | 323 | Form field definitions | ✅ Active | DynamicForm |
+| 4 | [`FormSchemas.jsx`](#4-formschemasjsx--form-field-definitions) | 358 | Form field definitions | ✅ Active | DynamicForm |
 | 5 | [`componentRegistry.jsx`](#5-componentregistryjsx--component-mapping) | 328 | Field type → Component mapping | ✅ Active | DynamicForm |
 | 6 | [`OrderMenus.jsx`](#6-ordermenusjsx--menu-ordering) | 26 | Sidebar module ordering + icons | ✅ Active | useProcessMenu |
 | 7 | [`resources.json`](#7-resourcesjson--translations) | - | i18n translations (en/ar) | ✅ Active | TranslationText |
@@ -24,7 +24,7 @@ This application uses a **metadata-driven architecture** where UI structure is d
 | 11 | [`ParentEntityRoutes.json`](#11-parententityroutesjson--parent-navigation) | 11 | Parent entity nav links | ✅ Active | HeaderPageAddEdit |
 | 12 | [`FilterSchemas.jsx`](#12-filterschemasjsx--advanced-filters-placeholder) | 14 | Advanced filters | ❌ Placeholder | None |
 | 13 | [`ActionSchemas.jsx`](#13-actionschemasjsx--rowbulk-actions-placeholder) | 17 | Row/bulk actions | ❌ Placeholder | None |
-| 14 | [`DataPagesLine.jsx`](#14-datapageslinejsx--child-grid-configurations) | 20 | Child grid config | ✅ Active | SubmissionDocumentAddEdit |
+| 14 | [`DataPagesLine.jsx`](#14-datapageslinejsx--child-grid-configurations) | 63 | Child grid config | ✅ Active | SubmissionDocumentAddEdit, UsersAddEdit |
 | 15 | [`DataPagesHierarchyGrid.jsx`](#15-datapageshierarchygridjsx--hierarchy-config-unused) | 22 | Hierarchy config | ❌ Placeholder | None |
 
 **Active**: 12 | **Placeholder/Dead**: 3
@@ -152,7 +152,7 @@ export const VendorsGrid = {
 
 ### 4. FormSchemas.jsx — Form Field Definitions
 
-**Location**: `src/ConfigData/FormSchemas.jsx` (323 lines)
+**Location**: `src/ConfigData/FormSchemas.jsx` (358 lines)
 
 **Purpose**: Defines form fields for add/edit pages.
 
@@ -169,7 +169,7 @@ export const VendorsForm = {
           type: "text",                // Field type (maps to componentRegistry)
           required: true,              // Validation
           gridWidth: "col-span-6",     // Tailwind grid class
-          placeholder: "enterName",    // Placeholder key
+          placeholder: "enterName",    // Placeholder key (optional if following label naming convention)
           autoComplete: "off"          // HTML attribute
         },
         {
@@ -198,7 +198,7 @@ export const VendorsForm = {
 
 **Consumed By**: Spread into `DataPages.jsx` → passed to `DynamicForm`
 
-**Current Schemas**: VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm, SubmissionDocumentLinesForm
+**Current Schemas**: VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsGrid, SubmissionDocumentsForm, SubmissionDocumentLinesForm, UsersForm, RolesForm, RolesLineForm
 
 ---
 
@@ -282,7 +282,7 @@ export const ModuleOrderSidbar = [
 - `General`: Common UI strings
 - `Grid`: Grid-specific strings
 - `Sidebar`: Menu items
-- Page-specific: `Vendors`, `Currencies`, etc.
+- Page-specific: `Vendors`, `Currencies`, `Users` (includes `data` key), etc.
 - Enums: `BiddingType`, `WorkflowStatus`, etc.
 
 ---
@@ -438,7 +438,7 @@ export const DataPagesLine = {
 };
 ```
 
-**Consumed By**: `SubmissionDocumentAddEdit.jsx`
+**Consumed By**: `SubmissionDocumentAddEdit.jsx`, `UsersAddEdit.jsx` (Roles tab)
 
 ---
 
@@ -613,6 +613,11 @@ NewEntity: {
 
 **Result**: New page with full CRUD, grid, form, search, export — no new components needed.
 
+### 6. SOLID Metadata Optimization (Phase 2)
+In Phase 2, we optimized metadata to reduce redundancy. 
+- **Removed**: Redundant `ResourcePage` and `className: "cw_p"` from individual fields.
+- **Improved**: `useTranslationText` now automatically falls back to `General` if a key isn't found in the page-specific namespace. This single-fallback strategy simplifies the schema and ensures consistency.
+
 ---
 
 ### ⚠️ Extensibility Without Modification (Partial)
@@ -700,6 +705,7 @@ Vendors: {
 3. ✅ **Type Safety**: Field types validated by `componentRegistry.getComponent()`
 4. ✅ **Separation of Concerns**: Metadata (data) separate from interpreters (logic)
 5. ✅ **Extensibility**: New field types added without modifying form renderer
+6. ✅ **Scalability**: Complex pages like `UsersAddEdit` refactored from 300+ lines of manual Formik to ~50 lines of Metadata + `DynamicForm` (Phase 2 Success)
 
 ---
 
@@ -797,7 +803,26 @@ Contracts: {
 
 ---
 
-## Performance Considerations
+---
+
+## 16. Data-Driven Stepper Pattern
+
+**Strategy**: Shift from "Wrapper-based" Steppers (where the Stepper controls visibility of children) to "Data-Driven" Steppers (where the page renders the Stepper as navigation and explicitly unmounts inactive steps).
+
+**Benefits**:
+1. **Performance**: Inactive steps are unmounted, freeing up DOM and memory.
+2. **SOLID Compliance**: High Cohesion - the Stepper only handles navigation; the page handles step rendering.
+3. **Flexibility**: Steps can be skipped, disabled, or redirected without modifying the Stepper component itself.
+
+**Implementation Example**:
+```jsx
+// UsersAddEdit.jsx
+<Stepper steps={steps} activeStep={step} />
+<div className="content">
+  {step === 0 && <UserForm />}
+  {step === 1 && <RoleMapping />}
+</div>
+```
 
 ### Metadata Loading
 

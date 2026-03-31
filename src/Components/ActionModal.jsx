@@ -9,12 +9,12 @@ import { IconColsed } from "../assets/Icons";
  * @param {boolean} props.isOpen - Controls visibility.
  * @param {() => void} props.onClose - Callback when checking outside or pressing Escape.
  * @param {string} [props.title] - Optional title displayed in the header.
- * @param {React.ReactNode} props.children - The content to display inside the modal.
+ * @param {ReactNode} props.children - The content to display inside the modal.
  * @param {'full' | 'dropdown' | 'sidebar'} [props.mode='full'] - The display mode:
  *   - 'full': Standard centered modal with overlay (default).
  *   - 'dropdown': Positioned relative to the trigger element (popover style).
  *   - 'sidebar': Slide-out panel (can be customized for left/right).
- * @param {React.RefObject} [props.triggerRef] - Required for 'dropdown' mode. The ref of the button/element that triggers the modal.
+ * @param {RefObject} [props.triggerRef] - Required for 'dropdown' mode. The ref of the button/element that triggers the modal.
  * @param {string} [props.position='bottom-right'] - Alignment for 'dropdown'. 'bottom-start' | 'bottom-end' (logical) or 'bottom-left' | 'bottom-right' (physical).
  * @param {string} [props.className] - Custom tailwind classes for the container.
  * @param {boolean} [props.unstyled=false] - If true, removes default white background/padding/shadows, allowing full custom styling via children/className.

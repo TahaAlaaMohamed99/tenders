@@ -14,6 +14,8 @@ export const nameSchema = Yup.string()
   .min(3, 'nameMustBeAtLeast3Characters')
   .max(50, 'nameCannotExceed50Characters');
 
+export const NameSchema = nameSchema;
+
 export const creationDateSchema = Yup.date().required('pleaseSelectCreationDate');
 
 export const vacationCategorySchema = Yup.object().required('pleaseSelectVacationCategory');
@@ -25,6 +27,38 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "password must be at least 6 characters")
     .required("password required"),
+});
+
+export const userSchema = Yup.object().shape({
+  code: Yup.string().required("codeRequired"),
+  firstName: Yup.string().required("firstNameRequired"),
+  lastName: Yup.string().required("lastNameRequired"),
+  userName: Yup.string().required("userNameRequired"),
+  email: Yup.string().email("invalidEmail").required("emailRequired"),
+  password: Yup.string().when("id", {
+    is: (id) => !id || id === 0,
+    then: (schema) => schema.min(6, "passwordTooShort").required("passwordRequired"),
+    otherwise: (schema) => schema.min(6, "passwordTooShort").nullable(),
+  }),
+  confirmedPassowrd: Yup.string().oneOf(
+    [Yup.ref("password"), null],
+    "passwordsMustMatch"
+  ),
+});
+
+export const roleSchema = Yup.object().shape({
+  id: Yup.mixed(),
+  name: nameSchema,
+  code: Yup.string().when("id", {
+    is: (id) => id && id > 0,
+    then: (schema) => schema.required("codeRequired"),
+    otherwise: (schema) => schema.nullable(),
+  }),
+  granted: Yup.boolean(),
+});
+
+export const RolesLineSchema = Yup.object().shape({
+  roles: Yup.object().required("roleRequired"),
 });
 
 export const preventInvalidNumberInput = (e) => {

@@ -133,7 +133,7 @@ function TendersGridInner() {
             onClick={handleDelete}
             disabled={!hasSelectedRows}
             tooltip="Delete"
-            className={!hasSelectedRows ? 'opacity-50 cursor-not-allowed' : 'hover:text-red-500'}
+            className={!hasSelectedRows ? 'opacity-50 cursor-not-allowed' : 'delete_icon'}
           />
 
           {!isInsert && SelectedActions && (

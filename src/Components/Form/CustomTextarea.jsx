@@ -26,7 +26,7 @@ import { useSafeSelector } from "../../Hooks/useSafeSelector";
  * @param {string} lang - Language for translations (overrides Redux if provided)
  * @param {string} labelBgColor - Label background color (default: bgWhite/bgWhiteDark)
  */
-const CustomTextarea = React.forwardRef(({
+const CustomTextarea = ({
   label,
   value,
   placeholder,
@@ -42,8 +42,9 @@ const CustomTextarea = React.forwardRef(({
   ResourcePage = "",
   dir,
   lang,
-  labelBgColor = "bg-bgColor dark:bg-bgColorDark"
-}, ref) => {
+  labelBgColor = "bg-bgColor dark:bg-bgColorDark",
+  ref
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const handleFocus = () => setIsFocused(true);
   
@@ -119,6 +120,6 @@ const CustomTextarea = React.forwardRef(({
       )}
     </div>
   );
-});
+};
 
 export default CustomTextarea;

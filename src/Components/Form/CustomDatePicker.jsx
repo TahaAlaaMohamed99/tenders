@@ -31,7 +31,7 @@ import { IconCalendar, IconLoading } from "../../assets/Icons";
  * @param {string} lang - Language override (default: uses Redux state).
  * @param {string} labelBgColor - Label background color (default: bgWhite/bgWhiteDark).
  */
-const CustomDatePicker = React.forwardRef(({
+const CustomDatePicker = ({
   touched,
   errors,
   label,
@@ -50,7 +50,8 @@ const CustomDatePicker = React.forwardRef(({
   isLoading = false,
   lang,
   labelBgColor = "bg-bgColor dark:bg-bgColorDark",
-}, ref) => {
+  ref,
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   // Current language logic - use prop or Redux (safe)
   const currentLanguage = useSafeSelector(
@@ -133,6 +134,6 @@ const CustomDatePicker = React.forwardRef(({
       )}
     </div>
   );
-});
+};
 
 export default CustomDatePicker;

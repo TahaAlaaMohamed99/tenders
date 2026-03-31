@@ -1,4 +1,4 @@
-import { useState, useEffect, forwardRef, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import CustomeSelect from './CustomSelect'; // Correct path to CustomSelect
 import { Api } from '../../services/Api';
 
@@ -16,7 +16,7 @@ import { Api } from '../../services/Api';
  * @param {any} props.value - Current value (can be string or object)
  * @param {Function} props.onChange - Change handler
  */
-const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, onChange, ...props }, ref) => {
+const AsyncSelectWrapper = ({ lookup, gridWidth, validation, value, onChange, ref, ...props }) => {
     const [options, setOptions] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -122,6 +122,6 @@ const AsyncSelectWrapper = forwardRef(({ lookup, gridWidth, validation, value, o
             menuPosition="fixed"
         />
     );
-});
+};
 
 export default AsyncSelectWrapper;

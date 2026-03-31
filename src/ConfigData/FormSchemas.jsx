@@ -83,12 +83,12 @@ export const VendorGroupsForm = {
             title: "Vendor Group Info",
             fields: [
                 {
-                    name: "code",
-                    label: "code",
+                    name: "vendorGroupId",
+                    label: "vendorGroupId",
                     type: "text",
                     required: true,
                     gridWidth: "col-span-6",
-                    placeholder: "enterCode"
+                    placeholder: "enterVendorGroupId"
                 },
                 {
                     name: "dataAreaId",
@@ -102,22 +102,6 @@ export const VendorGroupsForm = {
                         labelKey: "name",
                         valueKey: "legalEntityId"
                     }
-                },
-                {
-                    name: "vendorGroupId",
-                    label: "vendorGroupId",
-                    type: "text",
-                    required: true,
-                    gridWidth: "col-span-6",
-                    placeholder: "enterVendorGroupId"
-                },
-                {
-                    name: "name",
-                    label: "name",
-                    type: "text",
-                    required: true,
-                    gridWidth: "col-span-6",
-                    placeholder: "enterName"
                 },
                 {
                     name: "description",
@@ -338,6 +322,126 @@ export const SubmissionDocumentLinesForm = {
                     required: false,
                     gridWidth: "col-span-12",
                     placeholder: "enterDescription"
+                }
+            ]
+        }
+    ]
+};
+export const UsersForm = {
+    sections: [
+        {
+            title: "User Info",
+            fields: [
+                { name: "firstName", label: "firstName", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "lastName", label: "lastName", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "userName", label: "userName", type: "text", required: true, gridWidth: "col-span-6" },
+                { name: "email", label: "email", type: "email", required: true, gridWidth: "col-span-6" },
+                { name: "password", label: "password", type: "password", required: true, gridWidth: "col-span-6" },
+                { name: "address", label: "address", type: "text", required: false, gridWidth: "col-span-6" },
+                { 
+                    name: "confirmedPassword", 
+                    label: "confirmPassword", 
+                    type: "password", 
+                    required: true, 
+                    gridWidth: "col-span-6",
+                    mustMatch: "password"
+                },
+            ]
+        }
+    ]
+};
+
+export const RolesForm = {
+    sections: [
+        {
+            title: "Role Info",
+            fields: [
+                { name: "name", label: "name", type: "text", required: true, gridWidth: "col-span-6" }
+            ]
+        }
+    ]
+};
+export const RolesLineForm = {
+    sections: [
+        {
+            title: "roleAssignment",
+            fields: [
+                {
+                    name: "parentName",
+                    label: "userName",
+                    type: "text",
+                    disabled: true,
+                    gridWidth: "col-span-12",
+                    ResourcePage: "General",
+                    labelBgColor: "bg-white dark:bg-bgWhiteDark"
+                },
+                {
+                    name: "roles",
+                    label: "Roles",
+                    type: "async-select",
+                    required: true,
+                    gridWidth: "col-span-12",
+                    lookup: {
+                        api: "Role/GetAll",
+                        labelKey: "name",
+                        valueKey: "id"
+                    },
+                    placeholder: "pleaseSelectRole",
+                    labelBgColor: "bg-white dark:bg-bgWhiteDark"
+                }
+            ]
+        }
+    ]
+};
+
+export const TermsandSpecificationsBookletForm = {
+    sections: [
+        {
+            title: "Booklet Info",
+            fields: [
+                {
+                    name: "name",
+                    label: "name",
+                    type: "text",
+                    required: true,
+                    gridWidth: "col-span-12",
+                    placeholder: "enterName",
+                    autoComplete: "off"
+                }
+            ]
+        }
+    ]
+};
+
+export const TermsandSpecificationsBookletLineForm = {
+    sections: [
+        {
+            title: "Booklet Line Info",
+            fields: [
+                {
+                    name: "name",
+                    label: "name",
+                    type: "text",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "enterName",
+                    autoComplete: "off"
+                },
+                {
+                    name: "amount",
+                    label: "amount",
+                    type: "number",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "enterAmount"
+                },
+                {
+                    name: "price",
+                    label: "price",
+                    type: "number",
+                    required: true,
+                    gridWidth: "col-span-6",
+                    placeholder: "enterPrice"
                 }
             ]
         }

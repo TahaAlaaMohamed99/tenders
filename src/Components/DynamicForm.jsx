@@ -1,4 +1,4 @@
-import React, { useRef, useLayoutEffect, useCallback, useState, useEffect, useMemo } from 'react';
+import { useRef, useLayoutEffect, useCallback, useState, useEffect, useMemo, memo, useImperativeHandle } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import TranslationText from './TranslationText';
@@ -23,7 +23,7 @@ import useGetGenerallist from '../Hooks/useGetGenerallist';
  * @param {Object} props.components - Map of { type: Component } (e.g. { text: CustomInput })
  */
 // Memoize DynamicForm to prevent unnecessary re-renders if parent props (like generic PageData) change but form props don't.
-const DynamicForm = React.memo(React.forwardRef(({ 
+const DynamicForm = memo(function DynamicForm({ 
     DataPage,
     ResourcePage,
     onSave, 
@@ -31,10 +31,12 @@ const DynamicForm = React.memo(React.forwardRef(({
     onBack,
     isEdit = false,
     id,
+    viewOnly = false,
     isSubmitting = false,
     components = {},
-    initialData = {} 
-}, ref) => {
+    initialData = {},
+    ref 
+}) {
     const { formSchema } = DataPage || {};
     const { sections } = formSchema || {};
     
@@ -115,13 +117,17 @@ const DynamicForm = React.memo(React.forwardRef(({
                         case "checkbox":
                             schema = Yup.boolean();
                             break;
+                        case "select":
+                        case "async-select":
+                            schema = Yup.mixed();
+                            break;
                         default:
                             schema = Yup.string();
                     }
                     // Support both nested 'validation' object and root-level attributes
                     const v = field.validation || {};
                     
-                    if (v.required || field.required) {
+                    if ((v.required || field.required) && !(isEdit && field.type === 'password')) {
                         schema = schema.required(v.message || `${field.label || "Field"} is required`);
                     }
 
@@ -147,6 +153,13 @@ const DynamicForm = React.memo(React.forwardRef(({
                     if (v.email) {
                         schema = schema.email(v.message || "Invalid email format");
                     }
+
+                    if (field.mustMatch) {
+                        schema = schema.oneOf(
+                            [Yup.ref(field.mustMatch), null],
+                            v.matchMessage || "passwordsMustMatch"
+                        );
+                    }
                     acc[field.name] = schema;
                 });
                 return acc;
@@ -158,9 +171,7 @@ const DynamicForm = React.memo(React.forwardRef(({
         enableReinitialize: true,
         initialValues: sections ? sections.reduce((acc, section) => {
             section.fields.forEach(field => {
-                acc[field.name] = initialData[field.name] !== undefined 
-                    ? initialData[field.name] 
-                    : (field.defaultValue !== undefined ? field.defaultValue : ''); 
+                acc[field.name] = initialData[field.name] ?? (field.defaultValue ?? ''); 
             });
             return acc;
         }, {}) : {},
@@ -171,7 +182,7 @@ const DynamicForm = React.memo(React.forwardRef(({
     });
 
     // Expose submitForm to parent via ref
-    React.useImperativeHandle(ref, () => ({
+    useImperativeHandle(ref, () => ({
         submitForm: formik.handleSubmit,
         isSubmitting: formik.isSubmitting
     }));
@@ -276,6 +287,7 @@ const DynamicForm = React.memo(React.forwardRef(({
                 : formik.values[field.name]
             }
             onChange={handleChange}
+            onBlur={formik.handleBlur}
             errors={formik.errors[field.name]}
             touched={formik.touched[field.name]}
             titleGenerallist={!!field.generallist}
@@ -287,6 +299,7 @@ const DynamicForm = React.memo(React.forwardRef(({
             placeholder={placeholder}
             formValues={formik.values}
             className="mb-4"
+            Required={(field.required || field.validation?.required) && !(isEdit && field.type === 'password')}
           />
         );
       },
@@ -296,15 +309,17 @@ const DynamicForm = React.memo(React.forwardRef(({
         formik.errors,
         formik.touched,
         formik.handleChange,
+        formik.handleBlur,
         formik.setFieldValue,
         generallistOptions,
         isLoadingOptions,
-        dependencyMap
+        dependencyMap,
+        ResourcePage
       ],
     );
 
     return (
-      <div className="flex-1">
+      <div className={`flex-1 ${viewOnly ? "view_only" : ""}`}>
         {/* Form Sections */}
         {sections?.map((section, idx) => (
           <div key={idx} className={idx > 0 ? "mt-8" : ""}>
@@ -323,8 +338,7 @@ const DynamicForm = React.memo(React.forwardRef(({
         ))}
       </div>
       );
-    },
-  ),
+}
 );
 
 export default DynamicForm;

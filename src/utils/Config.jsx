@@ -15,11 +15,27 @@ class Config {
 
             const actions = Array.isArray(keyActions) ? keyActions : [keyActions];
 
-            const permissionNames = actions.map(
-                (action) => ConfiPage.showMenu == "menuReportSetup"
-                    ? `${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`:
-                    `${ConfiPage.keyModule}:${ConfiPage.subModule ? ConfiPage.subModule + ":" : ""}${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`
-            );
+            // const permissionNames = actions.map(
+            //     (action) => ConfiPage.showMenu == "menuReportSetup"
+            //         ? `${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`:
+            //         `${ConfiPage.keyModule}:${ConfiPage.subModule ? ConfiPage.subModule + ":" : ""}${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`
+            // );
+            const permissionNames = actions.map((action) => {
+                if (ConfiPage.showMenu === "menuReportSetup") {
+                    return `${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`;
+                }
+
+                let name = "";
+                if (ConfiPage.keyModule) {
+                    name += ConfiPage.keyModule + ":";
+                }
+                if (ConfiPage.subModule) {
+                    name += ConfiPage.subModule + ":";
+                }
+                name += `${ConfiPage?.KeyPermission || ConfiPage.keyPage}:${action}`;
+                return name;
+            });
+
 
             const matchedIds = permissionNames
                 .map((name) => {

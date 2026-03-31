@@ -9,7 +9,6 @@ import {
 import { Link } from "react-router-dom";
 import { TendersGridContext } from "../../TendersGridContext";
 import { useContext } from "react";
-import useTranslationText from "../../../../Hooks/useTranslationText";
 import SharedRows from "../sharedRows";
 
 
@@ -22,18 +21,18 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
     routeKey,
     handleRowSelect,
     isSelected,
-    currentLanguage,
     isOpenChildGrid,
     toggleChildGrid,
     openedChildGrid,
     setOpenedChildGrid,
+    keyId = "recId",
    } = useContext(TendersGridContext);
 
 
 
   return (
     <div
-      className={` row_Grid rounded-s-lg ${onClickRow ? "cursor-pointer " : ""} ${selectedRows.some(r => r.recId === row.recId) ? "selected" : ""}`}
+      className={` row_Grid rounded-s-lg ${onClickRow ? "cursor-pointer " : ""} ${selectedRows.some(r => r[keyId] === row[keyId]) ? "selected" : ""}`}
       style={{ paddingInlineStart: `${level * 40}px` }}
       onClick={(e) => {
         if (onClickRow && e.target.type !== "checkbox") {
@@ -44,7 +43,7 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
       {isSelected && (
         <div className="row_Item w-10">
           <CustomCheckbox
-            value={selectedRows.some(r => r.recId == row.recId)}
+            value={selectedRows.some(r => r[keyId] == row[keyId])}
             onChange={() => handleRowSelect(row)}
             aria-label={`Select row ${row.recId}`}
           />
@@ -100,7 +99,7 @@ export default function FixedRows({ row, toggleRow, isOpen, level = 0 }) {
           onClick={(e) => {
             if (row.children && row.children.length > 0) {
               e.stopPropagation();
-              toggleRow(row.recId, row.children);
+              toggleRow(row[keyId], row.children);
             }
           }}
           data-tooltip-content={isOpen ? "collapse" : "expand"}

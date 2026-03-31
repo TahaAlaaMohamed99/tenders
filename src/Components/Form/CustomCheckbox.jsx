@@ -1,4 +1,3 @@
-import React from "react";
 import TranslationText from "../TranslationText";
 import "../../Styles/Components/Checkbox/Checkbox.css";
 
@@ -15,7 +14,7 @@ import "../../Styles/Components/Checkbox/Checkbox.css";
  * @param {string} className - Additional CSS classes for wrapper
  * @param {boolean} disabled - Disabled state
  */
-const CustomCheckbox = React.forwardRef(({
+const CustomCheckbox = ({
   value,
   label,
   onChange,
@@ -24,8 +23,9 @@ const CustomCheckbox = React.forwardRef(({
   className = "",
   disabled = false,
   touched,
-  errors
-}, ref) => {
+  errors,
+  ref
+}) => {
   const isChecked = checked !== "" ? checked : value === true;
 
   return (
@@ -88,6 +88,6 @@ const CustomCheckbox = React.forwardRef(({
       )}
     </div>
   );
-});
+};
 
 export default CustomCheckbox;

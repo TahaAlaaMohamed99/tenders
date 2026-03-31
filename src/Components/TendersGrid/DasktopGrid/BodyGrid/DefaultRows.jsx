@@ -8,11 +8,12 @@ export default function DefaultRows({ row, level = 0, rowsLength }) {
     onClickRow,
     selectedRows,
     isTree,
+    keyId = "recId",
   } = useContext(TendersGridContext);
 
   return (
     <div
-      className={"row_Grid  " + (onClickRow ? "cursor-pointer " : "") + (selectedRows.some(r => r.recId == row.recId) ? "selected" : "")}
+      className={"row_Grid  " + (onClickRow ? "cursor-pointer " : "") + (selectedRows.some(r => r[keyId] == row[keyId]) ? "selected" : "")}
       onClick={(e) => {
         if (onClickRow && e.target.type !== "checkbox") {
           onClickRow(row); 

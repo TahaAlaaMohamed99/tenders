@@ -2,7 +2,7 @@ import React from 'react'
 import CardRadio from './CardRadio'
 import TranslationText from '../TranslationText'
 
-const RadioGroup = React.forwardRef(({ KeyGenerallist, label, options, optionsIcons = null, fieldName, values, onChange, ResourcePage }, ref) => {
+const RadioGroup = ({ KeyGenerallist, label, options, optionsIcons = null, fieldName, values, onChange, ResourcePage, ref }) => {
     return (
         <div ref={ref} className='w-full flex flex-col' tabIndex={-1}>
             <label className="text-sm font-medium text-titleColor dark:text-titleColorDark mb-2"><TranslationText title={label} page={ResourcePage || `Generallist?.${KeyGenerallist}`} /></label>
@@ -20,7 +20,7 @@ const RadioGroup = React.forwardRef(({ KeyGenerallist, label, options, optionsIc
                 ))}
             </div>
         </div>
-    )
-});
+    );
+};
 
 export default RadioGroup;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DynamicForm from './DynamicForm';
 import HeaderPageAddEdit from './HeaderPageAddEdit';
@@ -38,7 +38,7 @@ const GenericAddEditPage = ({ DataPage, ResourcePage, ConfigPage, ...props }) =>
     const [data, setData] = useState({});
 
     // Ref to access DynamicForm's submit method
-    const formRef = React.useRef();
+    const formRef = useRef();
 
     const { handleSubmitFormik } = useHandleSubmit();
 

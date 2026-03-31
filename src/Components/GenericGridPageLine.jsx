@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import TendersGrid from './TendersGrid';
 import Loading from './loader';
 import useGenericGridController from '../Hooks/useGenericGridController';
 import Config from '../utils/Config';
+import TranslationText from './TranslationText';
 
 /**
  * GenericGridPageLine
@@ -18,6 +20,8 @@ import Config from '../utils/Config';
  * @param {*} [props.refreshKey]
  * @param {boolean} [props.isReadOnly=false]
  * @param {Object} [props.ConfigPage] - Config for permission checks (Add/Delete)
+ * @param {string} [props.titleGrid] - Optional localized title for the grid section
+ * @param {Object} [props.parentData] - Optional context about the parent entity { parentId, parentName }
  */
 const GenericGridPageLine = ({
     DataPage,
@@ -25,12 +29,27 @@ const GenericGridPageLine = ({
     apiOverride,
     onClickRow,
     isGetAll = true,
-    refreshKey,
+    refreshKey: externalRefreshKey,
     isReadOnly = false,
     ConfigPage,
+    titleGrid,
+    parentData,
+    permissions,
     ...props
 }) => {
     const activeConfig = ConfigPage || DataPage;
+    
+    // Permission checks with fallback to Config.isAllow
+    const isAllowedModify = permissions?.isAllowedModify ?? Config.isAllow('Modify', activeConfig);
+    const isAllowedDelete = permissions?.isAllowedDelete ?? Config.isAllow('Delete', activeConfig);
+
+    // Internal state for modal management (SOLID optimization)
+    const [showModal, setShowModal] = useState(false);
+    const [recId, setRecId] = useState(0);
+    const [internalRefreshKey, setInternalRefreshKey] = useState(0);
+
+    const refreshKey = [externalRefreshKey, internalRefreshKey].filter(k => k !== undefined).join('_');
+    
     // Controller Hook
     const {
         isLoading,
@@ -41,12 +60,8 @@ const GenericGridPageLine = ({
         handlePageChange,
         handlePageSize,
         setSelectedRows,
-        // Delete logic currently handled by parent in line mode usually? 
-        // Or if handled here, we need to expose handleDelete/confirmDelete but 
-        // GenericGridPageLine often delegates actions differently.
-        // Assuming minimal logic for now based on previous GenericGridPage mix.
     } = useGenericGridController({
-        api: apiOverride, // Line mode always uses override
+        api: apiOverride,
         DataPage,
         ResourcePage,
         isGetAll,
@@ -60,35 +75,88 @@ const GenericGridPageLine = ({
 
     // internal handlers to bridge to props
     const handleNavigate = (row) => {
-        if (onClickRow) onClickRow(row);
+        if (onClickRow === null) return;
+        
+        if (onClickRow) {
+            onClickRow(row);
+        } else if (DataPage.AddEditComponent) {
+            const idKey = DataPage.keyId || 'id';
+            setRecId(row ? row[idKey] : 0);
+            setShowModal(true);
+        }
     };
 
     const handleAdd = () => {
-        if (onClickRow) onClickRow(null);
+        if (onClickRow) {
+            onClickRow(null);
+        } else if (DataPage.AddEditComponent) {
+            setRecId(0);
+            setShowModal(true);
+        }
     };
 
+    const AddEditComponent = DataPage.AddEditComponent;
+
+    // Support both titleGrid and isTitleGrid for backward compatibility if needed, 
+    // but titleGrid is the semantic name.
+    const displayTitle = titleGrid || props.isTitleGrid;
+
     return (
-        <TendersGrid
-            GridKey={ResourcePage}
-            ResourcePage={ResourcePage}
-            {...DataPage}
-            columns={DataPage.columns}
-            data={dataGrid}
-            totalRow={totalRow}
-            PageNumber={PageNumber}
-            pageSize={pageSize}
-            isLoading={isLoading}
-            handlePageChange={handlePageChange}
-            handlePageSize={handlePageSize}
-            onClickRow={handleNavigate}
-            AddBtn={!isReadOnly && Config.isAllow('Modify', activeConfig) ? { onClick: handleAdd } : null}
-            isSelected={!isReadOnly}
-            {...props}
-            // For line mode, delete is often passed down or handled via props.handleDelete
-            handleDelete={!isReadOnly && Config.isAllow('Delete', activeConfig) ? props.handleDelete : null}
-            setselectesRowInsert={props.setselectesRowInsert || setSelectedRows}
-        />
+        <div className="generic-grid-line-container my-4">
+            {displayTitle && (
+                <div className="flex items-center gap-2 mb-4 px-1">
+                    <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                        <TranslationText title={displayTitle === true ? ResourcePage : displayTitle} page={ResourcePage} />
+                    </h3>
+                    {parentData?.parentName && (
+                        <span className="text-gray-500 dark:text-gray-400 text-sm">
+                            ({parentData.parentName})
+                        </span>
+                    )}
+                </div>
+            )}
+            <TendersGrid
+                GridKey={ResourcePage}
+                ResourcePage={ResourcePage}
+                {...DataPage}
+                data={dataGrid}
+                totalRow={totalRow}
+                PageNumber={PageNumber}
+                pageSize={pageSize}
+                isLoading={isLoading}
+                handlePageChange={handlePageChange}
+                handlePageSize={handlePageSize}
+                onClickRow={onClickRow === undefined ? handleNavigate : onClickRow}
+                AddBtn={!isReadOnly && isAllowedModify ? { onClick: handleAdd } : null}
+                isSelected={!isReadOnly}
+                {...props}
+                handleDelete={!isReadOnly && isAllowedDelete ? props.handleDelete : null}
+                setSelectedRows={props.setSelectedRows || setSelectedRows}
+            />
+
+            {/* SOLID: Automatically render AddEditComponent if defined in metadata */}
+            {AddEditComponent && (
+                <AddEditComponent
+                    isVisible={showModal}
+                    toggleClick={() => {
+                        setShowModal(false);
+                        setRecId(0);
+                    }}
+                    parentData={parentData}
+                    recId={recId}
+                    ResourcePage={ResourcePage}
+                    fetchGridData={() => {
+                        setInternalRefreshKey(prev => prev + 1);
+                        if (props.fetchGridData) props.fetchGridData();
+                    }}
+                    title={(recId > 0 ? "edit" : "add") + (DataPage.ResourcePage || ResourcePage)}
+                    titleSubmitBtn="save"
+                    isAllowedModify={isAllowedModify}
+                />
+            )}
+        </div>
     );
 };
+
 
 export default GenericGridPageLine;

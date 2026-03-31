@@ -1,3 +1,4 @@
+@use "./components/CustomTabs/CustomTabs.scss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -321,7 +322,7 @@
   @apply bg-bgWhite dark:bg-bgWhiteDark text-primary dark:text-primaryDark;
 }
 .Toastify__toast--warning {
-  @apply bg-warning;
+  @apply bg-bgWhite dark:bg-bgWhiteDark text-warning;
 }
 .Toastify__toast-container {
   z-index: 999999 !important;

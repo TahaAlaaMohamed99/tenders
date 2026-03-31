@@ -18,6 +18,7 @@ import "../Styles/Components/btn/btn.css";
  * @param {boolean} [props.isLoading=false] - Determines if the button should display a loading state.
  * @param {boolean} [props.loginDots=false] - Shows decorative dots for login style buttons.
  * @param {string} [props.tooltip] - Translation key for the tooltip.
+ * @param {boolean} [props.noTooltip=false] - If true, suppresses the tooltip even for icon-only buttons.
  * 
  * @returns {JSX.Element} - A styled button element with optional loading and icon support.
  */
@@ -34,6 +35,8 @@ export default function CustomBtn({
   isLoading = false,
   loginDots = false,
   tooltipPlacement, // New prop for manual placement control
+  noTooltip = false,
+  titleClassName = "",
   ...props
 }) {
   // A mapping object for loading labels based on the button's title
@@ -50,9 +53,10 @@ export default function CustomBtn({
         disabled={disabled} // Disables the button if `disabled` is true
         onClick={!disabled && !isLoading ? onClick : undefined} // Prevents click handling when disabled or loading
         className={`btn ${size} ${className ?? ""} relative`} // Dynamically applies classes for styling
-        // Tooltip Attributes for AppTooltip
-        data-tooltip-id="global-tooltip"
-        data-tooltip-content={props.tooltip}
+        // Tooltip Attributes for AppTooltip: 
+        // Only show if explicitly provided OR if button has no text (to explain icon)
+        data-tooltip-id={(!noTooltip && (props.tooltip || (!title && !isLoading))) ? "global-tooltip" : undefined}
+        data-tooltip-content={props.tooltip || (!title && typeof title === 'string' ? title : undefined)}
         data-resource-page={props.ResourcePage || ResourcePage}
         data-tooltip-place={tooltipPlacement}
       >
@@ -70,7 +74,7 @@ export default function CustomBtn({
         <>
           {icon && <span className="icon_btn">{icon}</span>} {/* Optional icon */}
           {title &&
-          <span className={iconEnd ? "flex-1 text-start" : ""}>
+          <span className={`${iconEnd ? "flex-1 text-start" : ""} ${titleClassName}`}>
           <TranslationText
             page={ResourcePage}
             title={title} // Displays the translated button title

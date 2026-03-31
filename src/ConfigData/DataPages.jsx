@@ -3,9 +3,12 @@ import GenericAddEditPage from "../Components/GenericAddEditPage";
 import { CommonColumns } from "./CommonGridSchemas";
 import { VendorGroupsFilter, VendorsFilter } from "./FilterSchemas";
 import { VendorsActions } from "./ActionSchemas";
-import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm } from "./FormSchemas";
+import { VendorsForm, VendorGroupsForm, CurrenciesForm, DepartmentsForm, ItemsForm, SubmissionDocumentsForm, UsersForm, RolesForm, TermsandSpecificationsBookletForm } from "./FormSchemas";
 import SubmissionDocumentAddEdit from "../Pages/SubmissionDocumentAddEdit";
 import DashboardPage from "../Pages/DashboardPage";
+import UsersAddEdit from "../Pages/Users/UsersAddEdit";
+import RolesAddEdit from "../Pages/Roles/RolesAddEdit";
+import TermsandSpecificationsBookletAddEdit from "../Pages/TermsandSpecificationsBookletAddEdit";
 
 // Default/Fallback Schemas
 const DefaultGrid = { columns: [{ key: "id", title: "ID", width: 100 }] };
@@ -36,7 +39,8 @@ export const DataPages = {
         titleEdit: "editJournal",
         keyPage: "Journal",
         keyModule: "Journal",
-        showMenu: "mainMenu"
+        showMenu: "mainMenu",
+        checkPermission: false
     },
     SubmissionDocuments: {
         Api: "SubmissionDocument",
@@ -105,7 +109,8 @@ export const DataPages = {
         titleEdit: "editReport",
         keyPage: "Reports",
         keyModule: "Reports",
-        showMenu: "mainMenu"
+        showMenu: "mainMenu",
+        checkPermission: false
     },
     Setup: {
         Api: "Setup",
@@ -118,7 +123,8 @@ export const DataPages = {
         titleEdit: "editSetup",
         keyPage: "Setup",
         keyModule: "Setup",
-        showMenu: "mainMenu"
+        showMenu: "mainMenu",
+        checkPermission: false
     },
     VendorGroups: {
         Api: "VendorGroups",
@@ -147,6 +153,8 @@ export const DataPages = {
                     valueKey: "vendorGroupId"
                 }
             },
+            { ...CommonColumns.Description, title: "description" },
+            CommonColumns.DataAreaId,
             CommonColumns.CreatedOn
         ],
         formSchema: VendorGroupsForm,
@@ -174,7 +182,7 @@ export const DataPages = {
         formSchema: CurrenciesForm,
         titleAdd: "addCurrency",
         titleEdit: "editCurrency",
-        KeyPermission: "Currency",
+        KeyPermission: "Currinces",
         keyPage: "Currencies",
         keyModule: "Setup",
         showMenu: "mainMenu"
@@ -273,7 +281,8 @@ export const DataPages = {
         titleEdit: "editSetting",
         keyPage: "Settings",
         keyModule: "Settings",
-        showMenu: "settings"
+        showMenu: "settings",
+        checkPermission: false
     },
     Vendors: {
         Api: "Vendors",
@@ -329,6 +338,69 @@ export const DataPages = {
         titleEdit: "editVendor",
         KeyPermission: "Vendor",
         keyPage: "Vendors",
+        keyModule: "Setup",
+        showMenu: "mainMenu"
+    },
+    Roles: {
+        Api: "Role",
+        componentViwe: GenericGridPage,
+        componentAddEdit: RolesAddEdit,
+        keyId: "id",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        columns: [
+            { ...CommonColumns.Name, key: "name", title: "name" }
+        ],
+        formSchema: RolesForm,
+        titleAdd: "addRole",
+        titleEdit: "editRole",
+        KeyPermission: "Role",
+        keyPage: "Roles",
+        keyModule: null,
+        showMenu: "settings"
+    },
+    Users: {
+        Api: "User",
+        componentViwe: GenericGridPage,
+        componentAddEdit: UsersAddEdit,
+        keyId: "id",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        columns: [
+            { ...CommonColumns.Name, key: "firstName", title: "firstName" },
+            { ...CommonColumns.Name, key: "lastName", title: "lastName" },
+            { ...CommonColumns.Name, key: "userName", title: "userName" },
+            { ...CommonColumns.Name, key: "email", title: "email" },
+            { ...CommonColumns.Name, key: "address", title: "address" },
+        ],
+        formSchema: UsersForm,
+        titleAdd: "addUser",
+        titleEdit: "editUser",
+        KeyPermission: "User",
+        keyPage: "Users",
+        keyModule: null,
+        showMenu: "settings"
+    },
+    TermsandSpecificationsBooklet: {
+        Api: "TermsandSpecificationsBooklet",
+        componentViwe: GenericGridPage,
+        componentAddEdit: TermsandSpecificationsBookletAddEdit,
+        keyId: "recId",
+        ExcelExport: true,
+        isSearch: true,
+        isFilterGrid: true,
+        columns: [
+            CommonColumns.Code,
+            { ...CommonColumns.Name, fixed: true, width: 300, maxWidth: 450 },
+            CommonColumns.CreatedOn
+        ],
+        formSchema: TermsandSpecificationsBookletForm,
+        titleAdd: "addTermsandSpecificationsBooklet",
+        titleEdit: "editTermsandSpecificationsBooklet",
+        KeyPermission: "TermsandSpecificationsBooklet",
+        keyPage: "TermsandSpecificationsBooklet",
         keyModule: "Setup",
         showMenu: "mainMenu"
     }

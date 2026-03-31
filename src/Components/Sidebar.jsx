@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import { useState, useEffect, useRef, memo, Fragment } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPortal } from "react-dom";
 import { useSelector, useDispatch } from "react-redux"; // Redux hooks
@@ -64,6 +64,7 @@ const TreeNodeLevel3 = ({ items, parentRoutePage, isOpen, handleNavigation, isAc
                       : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                   }
                 `}
+                titleClassName="truncate"
               />
             </li>
           );
@@ -143,7 +144,7 @@ const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }
 
         {/* SubModules */}
         {module.subModuleList?.map((subMod) => (
-           <React.Fragment key={subMod.title}>
+           <Fragment key={subMod.title}>
              {/* Optional Header for SubModule in Menu? Maybe a separator? */}
              <li className="px-3 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider border-t border-gray-100 mt-1 pt-2">
                  <TranslationText page="Sidebar" title={subMod.ResourceSubModule} />
@@ -172,7 +173,7 @@ const FloatingMenu = ({ module, rect, onClose, handleNavigation, isActiveRoute }
                     </li>
                 );
              })}
-           </React.Fragment>
+           </Fragment>
         ))}
       </ul>
     </div>,
@@ -296,6 +297,7 @@ const SidebarItem = memo(({
                   : "right"
               }
               className={buttonClass}
+              titleClassName="truncate"
               icon={
                 <span
                   className={`w-5 h-5 flex items-center justify-center transition-colors ${
@@ -377,6 +379,7 @@ const SidebarItem = memo(({
                                     : "text-textColor hover:text-titleColor hover:bg-gray-50"
                                 }
                             `}
+                            titleClassName="truncate"
                             // Render arrow if 3rd level exists
                             icon={has3rdLevel ? (
                                 <span className={`absolute right-2 rtl:left-2 rtl:right-auto transition-transform duration-200 ${is3rdLevelOpen ? 'rotate-180' : ''}`}>
@@ -469,6 +472,7 @@ const SidebarItem = memo(({
                                                             : "text-textColor hover:text-titleColor hover:bg-gray-50"
                                                         }
                                                     `}
+                                                    titleClassName="truncate"
                                                     icon={has3rdLevel ? (
                                                         <span className={`absolute right-2 rtl:left-2 rtl:right-auto transition-transform duration-200 ${is3rdLevelOpen ? 'rotate-180' : ''}`}>
                                                             <IconArrowDown className="w-2 h-2" />

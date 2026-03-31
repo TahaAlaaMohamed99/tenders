@@ -20,7 +20,7 @@ import { useSafeSelector } from "../../Hooks/useSafeSelector";
  * @param {string} [props.lang] - Explicit language override ('en'/'ar').
  * @param {string} [props.ResourcePage=""] - Translation namespace for error messages.
  */
-const OTPInput = React.forwardRef(({
+const OTPInput = ({
   length = 6,
   value,
   onChange,
@@ -33,7 +33,8 @@ const OTPInput = React.forwardRef(({
   name,
   lang,
   ResourcePage = "",
-}, ref) => {
+  ref
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const inputRefs = useRef(new Array(length).fill(null));
   
@@ -151,6 +152,6 @@ const OTPInput = React.forwardRef(({
       )}
     </div>
   );
-});
+};
 
 export default OTPInput;

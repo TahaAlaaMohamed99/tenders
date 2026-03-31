@@ -1,6 +1,6 @@
 # Hooks Analysis
 
-> **Last Updated**: 2026-02-08  
+> **Last Updated**: 2026-03-15  
 > **Related Docs**: [Architecture](./00-architecture-overview.md) | [Components](./01-components.md) | [SOLID Audit](./05-solid-clean-architecture.md) | [Unused Code](./06-unused-and-gaps.md)
 
 ## Overview
@@ -26,7 +26,7 @@ This document analyzes all **16 custom hooks** + **1 safe utility** in the codeb
 | [useGetGenerallist](#7-usegetgenerallist) | 82 | ⚠️ DIP | Data lookup | DynamicForm, FilterGrid |
 | [useGetLookup](#8-usegetlookup) | 61 | ✅ Fixed | API fetch | FilterGrid, ColumnFilterPopover |
 | [useGetSelected](#9-usegetselected) | 31 | ✅ | Pure computation | (Vendor pages) |
-| [useGridData](#10-usegriddata) | 64 | ⚠️ | API fetch | GenericGridPage |
+| [useGridData](#10-usegriddata) | 73 | ✅ Fixed | API fetch | GenericGridPage |
 | [useHandleDelete](#11-usehandledelete) | 68 | ✅ | API action | GenericGridPage |
 | [useHandleSubmit](#12-usehandlesubmit) | 198 | ✅ Fixed | API action | GenericAddEditPage, HeaderPageAddEdit |
 | [useLayout](#13-uselayout) | 17 | ✅ | Redux | Generic pages |
@@ -37,11 +37,13 @@ This document analyzes all **16 custom hooks** + **1 safe utility** in the codeb
 | [useTransactionActions](#18-usetransactionactions) | 112 | ✅ | API action | HeaderPageAddEdit |
 | [useTranslationText](#19-usetranslationtext) | 46 | ✅ | i18n | Throughout app |
 | [useWorkflowActions](#20-useworkflowactions) | 231 | ✅ | API action | HeaderPageAddEdit |
+| [usePermissionSelection](#21-usepermissionselection) | 197 | ✅ | Computation | PermissionsLog |
 
 **Runtime Bugs**: 3 fixed (2026-02-08), 0 remaining in hooks  
 **Dead Hooks**: 1 (`useCurrencyOptions`) — **commented out (Phase 6)**  
 **DIP Violations**: ~~1 (`useGetGenerallist`)~~ — **FIXED (Phase 2)**: replaced `store.getState()` with `useSelector`  
 **New Hooks (Phase 1)**: `useWorkflowActions.js`, `useTransactionActions.js` (extracted from `HeaderPageAddEdit`) and `useGenericGridController.js`.
+**Phase 2 Changes (2026-03-15)**: `useGridData` URL construction logic fixed (handling `/GetAll` with query parameters).
 
 ---
 
@@ -279,25 +281,29 @@ const { getLookup } = useGetLookup();  // ✅ Correct
 
 ## 9. useGridData
 
-**Location**: `src/Hooks/useGridData.jsx` (64 lines)
+**Location**: `src/Hooks/useGridData.jsx` (70 lines)
 
-**Purpose**: Fetches paginated grid data from API.
+**Purpose**: Fetches paginated grid data from API. Supports flexible URL patterns.
 
 **State**: Internal (`totalRow`)
 
-**Dependencies**: `Api.get`, `dummyData.json` (imported but unused)
+**Dependencies**: `Api.get`
 
 **Reusability**: Medium
 
 **Pattern**: Callback factory (accepts setters as parameters)
 
+**URL Generation Logic**:
+- If `isGetAll` is `true`, appends `/GetAll` to the endpoint.
+- Automatically handles query parameter separators (`?` vs `&`), ensuring that `/GetAll` and query params are combined correctly (e.g., `Api/GetAll?parentId=...` vs `Api/GetAll/parentId=...`).
+- Supports zero-parameter endpoints when `isGetAll` is `false`.
+
 **Called By**:
 - `GenericGridPage.jsx`
 - `GenericGridPageLine.jsx`
+- `PermissionsLog/index.jsx`
 
-**Recommendation**: Keep, remove dead import
-
-**Dead Import**: `dummyData.json` is imported but never used (fallback was removed).
+**Recommendation**: ✅ Clean (Refactored for flexibility in Phase 2 — fixed URL construction)
 
 ---
 
@@ -503,7 +509,7 @@ return { handleSubmitFormik, handleSubmitFormPost };  // ✅ Both exported
 **Lookup Order**:
 1. `Enums.[enumName].values.[title].[lang]` (if enumName provided)
 2. `[page].[title].[lang]` (if page provided)
-3. `General.[title].[lang]`
+3. `General.[title].[lang]` (Added Phase 2: SOLID shared lookup for fields and UI keys)
 4. `[title].[lang]` (root level)
 5. Fallback to `title`
 
@@ -829,3 +835,28 @@ useFullRouteChain
 **Document Version**: 2.1  
 **Last Updated**: 2026-02-26  
 **Hook Count**: 19 hooks + 1 safe utility (`useSafeSelector.js`)
+---
+
+## 21. usePermissionSelection
+
+**Location**: `src/Hooks/usePermissionSelection.jsx` (160 lines)
+
+**Purpose**: Manages the complex state and logic for selecting/deselecting permissions in a hierarchical structure (Modules -> SubModules -> Pages -> Actions).
+
+**State**: Internal (`selectPermissions`, `originalPermissions`)
+
+**Dependencies**: None (Pure React state/logic)
+
+**Reusability**: High (for any matrix-style permission interface)
+
+**Returns**:
+- `selectPermissions`: Currently selected items.
+- `togglePermission(p)`: Toggles individual item.
+- `toggleSelectAllForPage(page, actions)`: Bulk selection for a page.
+- `toggleSelectAllForSubModule(subModule)`: Bulk selection for sub-module.
+- `toggleSelectAllForModule(module)`: Bulk selection for module.
+- `getSelectedCountInModule(module)`: Recursive count of selected actions.
+
+**Status**: ✅ Clean (SRP compliance for `PermissionsLog`)
+
+**Recommendation**: Keep as-is. This hook is a prime example of extracting complex math/state from a UI component.

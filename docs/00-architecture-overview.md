@@ -60,7 +60,7 @@ tenders/
 | Layer | Technology | Version | Status | Notes |
 |-------|-----------|---------|--------|-------|
 | Build Tool | Vite | 5.4 | ✅ Active | Fast HMR, optimized builds |
-| UI Framework | React | 18.3 | ✅ Active | Functional components, hooks |
+| UI Framework | React | 19.2 | ✅ Active | Modern Ref prop support (removal of forwardRef) |
 | Routing | react-router-dom | 7.0 | ✅ Active | Dynamic route generation |
 | State Management (Global) | Redux Toolkit | 2.4 | ✅ Active | 4 slices (see below) |
 | State Management (Auth) | localStorage | - | ✅ Active | JWT + Base64 UTF-8 safe storage |
@@ -425,6 +425,11 @@ const canDelete = Config.isAllow("Delete", pageConfig);
 - Stored in `localStorage["userPermissions"]` (UTF-8 safe base64)
 - `Config.isAllow()` reads from localStorage to determine access
 
+**Permission Management UI**:
+- **PermissionsLog**: A hierarchical matrix for managing assignments. Extracted logic into `usePermissionSelection` for SRP compliance.
+- **UsersAddEdit**: Multi-step wizard for user setup, role mapping, and permission overrides.
+- **RolesAddEdit**: Specialized interface for role-based access control (RBAC).
+
 **See Also**: [00-architecture-overview.md#authentication-flow](./00-architecture-overview.md#authentication-flow)
 
 ## Build & Deployment
@@ -553,7 +558,7 @@ const canDelete = Config.isAllow("Delete", pageConfig);
 ### Memoization
 
 **Techniques Used**:
-- `React.memo` on grid row components ([`FixedRows.jsx`](../src/Components/TendersGrid/DasktopGrid/BodyGrid/FixedRows.jsx), [`DefaultRows.jsx`](../src/Components/TendersGrid/DasktopGrid/BodyGrid/DefaultRows.jsx))
+- `memo` on grid row components ([`FixedRows.jsx`](../src/Components/TendersGrid/DasktopGrid/BodyGrid/FixedRows.jsx), [`DefaultRows.jsx`](../src/Components/TendersGrid/DasktopGrid/BodyGrid/DefaultRows.jsx))
 - `useMemo` for expensive calculations:
   - Column filtering in `TendersGridContext`
   - Sorted data in `TendersGridContext`

@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { IconPrint } from "../../assets/Icons";
 import "../../Styles/Components/Print/layoutPrint.css";
 import TranslationText from "../TranslationText";
@@ -47,7 +47,7 @@ const PrintComponent = ({
     return (
       data.length > 0 &&
       data?.map((row, rowIndex) => (
-        <React.Fragment key={rowIndex}>
+        <Fragment key={rowIndex}>
           <tr>
             {filteredColumns?.map((col, colIndex) => (
               <td
@@ -71,7 +71,7 @@ const PrintComponent = ({
           {row?.children &&
             row.children.length > 0 &&
             renderRows(row.children, level + 1)}
-        </React.Fragment>
+        </Fragment>
       ))
     );
   };

@@ -49,8 +49,14 @@ export default function Login() {
       // Ensure Api.jsx automatically uses this for subsequent calls
       localStorage.setItem("userToken", data.token);
 
-      const permissionResponse = await Api.get("Permission/GetAllPermissions");
-      const permissions = permissionResponse?.data || permissionResponse || [];
+      let permissions = [];
+      try {
+        const permissionResponse = await Api.get("Permission/GetAllPermissions");
+        permissions = permissionResponse?.data || permissionResponse || [];
+      } catch (permissionError) {
+        console.warn("Failed to fetch system permissions:", permissionError);
+        // Continue login even if permissions dictionary fails
+      }
 
       setLocalStorageBtoa("userPermissions", userPermissions);
       setLocalStorageBtoa("permissionsSystem", permissions);
