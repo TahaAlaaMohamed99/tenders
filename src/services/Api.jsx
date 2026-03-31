@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/useFromLocalStorage";
+import { getLocalStorageAtob, getAuthStorage, clearAuthStorage } from "../utils/localStorage";
 import { getApiBaseUrl } from "../config/apiConfig";
 
 /**
